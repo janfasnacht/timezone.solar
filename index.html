@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var p = JSON.parse(localStorage.getItem('tz-preferences') || '{}');
+          if (p.theme === 'dark') document.documentElement.classList.add('dark');
+          else if (p.theme === 'light') document.documentElement.classList.add('light');
+        } catch(e) {}
+      })();
+    </script>
+    <title>timezone.solar — Timezone Converter</title>
+    <meta property="og:title" content="timezone.solar — Timezone Converter" />
+    <meta property="og:description" content="Convert times between cities instantly." />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
