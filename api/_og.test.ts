@@ -16,10 +16,10 @@ vi.mock('@vercel/og', () => ({
   },
 }))
 
-let runConversion: typeof import('./og')['runConversion']
+let runConversion: typeof import('./_og')['runConversion']
 
 beforeAll(async () => {
-  const mod = await import('./og')
+  const mod = await import('./_og')
   runConversion = mod.runConversion
 })
 

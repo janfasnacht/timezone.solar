@@ -11,6 +11,5 @@
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx"],
-  "exclude": ["./**/*.test.ts"]
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }

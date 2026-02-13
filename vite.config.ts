@@ -10,7 +10,7 @@ function ogDevPlugin(): Plugin {
       server.middlewares.use('/api/og', async (req, res) => {
         try {
           const url = new URL(req.url ?? '', 'http://localhost')
-          const mod = await server.ssrLoadModule('./api/og.tsx')
+          const mod = await server.ssrLoadModule('./api/_og.tsx')
           const handler = mod.default
           const response: Response = handler(new Request(url))
           const buffer = Buffer.from(await response.arrayBuffer())
