@@ -1,100 +1,13 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import { getAllEntities, type CityEntity } from '@/engine/city-entities'
 
-export type SegmentType = 'primary' | 'secondary'
-
-export interface PlaceholderSegment {
-  type: SegmentType
-  text: string
-}
-
-// Compact notation: [primary] bare=secondary
-// Both locations and times are [primary], connectors are bare secondary
-const EXAMPLES = [
-  '[Boston] [6pm] [in] [LA]',
-  '[noon] [Tokyo] to [London]',
-  '[9am] [NYC] [in] [SF]',
-  '[Zurich] [4pm] to [Chicago]',
-  '[6pm] [in] [Tokyo]',
-  '[tomorrow 3pm] [London] [in] [EST]',
-  'in [30 minutes] [in] [Berlin]',
-  '[midnight] [Seoul] to [Paris]',
-  '[Singapore] [8am] [in] [Sydney]',
-  '[Denver] [noon] to [Mumbai]',
-  '[10pm] [Hawaii] [in] [New York]',
-  '[Dubai] [3pm] to [Toronto]',
-  '[Bangkok] [7am] [in] [Amsterdam]',
-  '[Mexico City] [5pm] [in] [Madrid]',
-  '[Lagos] [noon] to [Nairobi]',
-  '[11am] [Portland] [in] [Rome]',
-  '[Istanbul] [9pm] to [São Paulo]',
-  '[Osaka] [6am] [in] [Vancouver]',
-  '[8pm] [Cairo] to [Melbourne]',
-  '[Austin] [2pm] [in] [Shanghai]',
-  '[Buenos Aires] [4pm] to [Helsinki]',
-  '[Lima] [1pm] [in] [Bangkok]',
-  '[Prague] [10am] to [Taipei]',
-  '[Stockholm] [7pm] [in] [Honolulu]',
-  '[Montreal] [3pm] to [Johannesburg]',
-  '[Tokyo]',
-  '[London]',
-  '[New York] to [Berlin]',
-  '[Zurich] to [Chicago]',
-  'in [2 hours] [in] [Tokyo]',
-  'in [45 minutes] [in] [London]',
-  '[yesterday noon] [NYC] to [LA]',
-  '[tomorrow 8am] [Paris] [in] [EST]',
-  '[5:30pm] [Mumbai] to [SF]',
-  '[7:15am] [Seoul] [in] [PST]',
-  '[noon] [Reykjavik] to [Kathmandu]',
-  '[3am] [Anchorage] [in] [Dubai]',
-  '[Saturday 2pm] [Berlin] to [Tokyo]',
-  '[Cape Town] [11am] to [Auckland]',
-  '[Lisbon] [4pm] [in] [Taipei]',
+// Time format templates — mix of 12h and 24h, various times
+const TIME_FORMATS = [
+  '3pm', '6pm', '9am', '4pm', 'noon', '8am', '10pm', '7am',
+  'midnight', '11am', '2pm', '5pm', '1pm', '6am',
+  '15:00', '18:00', '09:00', '14:00', '20:00', '07:00',
+  '5:30pm', '7:15am', '3:45pm',
 ]
-
-const FEELING_WORDS = [
-  'adventurous',
-  'jetlagged',
-  'curious',
-  'global',
-  'spontaneous',
-  'nomadic',
-  'restless',
-  'worldly',
-]
-
-function parseSegments(notation: string): PlaceholderSegment[] {
-  const segments: PlaceholderSegment[] = []
-  let i = 0
-  let secondary = ''
-
-  while (i < notation.length) {
-    const ch = notation[i]
-
-    if (ch === '[') {
-      if (secondary.trim()) {
-        segments.push({ type: 'secondary', text: secondary.trim() })
-        secondary = ''
-      }
-      const end = notation.indexOf(']', i)
-      segments.push({ type: 'primary', text: notation.slice(i + 1, end) })
-      i = end + 1
-    } else {
-      secondary += ch
-      i++
-    }
-  }
-
-  if (secondary.trim()) {
-    segments.push({ type: 'secondary', text: secondary.trim() })
-  }
-
-  return segments
-}
-
-function stripBrackets(notation: string): string {
-  return notation.replace(/\[|\]/g, '')
-}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -105,37 +18,112 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+type CityWithVibes = CityEntity & { vibes: string[] }
+
+interface GeneratedExample {
+  text: string
+  targetVibes: string[]
+}
+
+// Build examples from city entities that have vibes
+// Patterns mirror the app's actual query modes:
+//   "Boston 6pm in LA"     — city time in city
+//   "noon Tokyo to London" — time city to city
+//   "6pm in Tokyo"         — time in city (from user's tz)
+//   "Tokyo"                — current time somewhere
+function generateExamples(): GeneratedExample[] {
+  const cities = getAllEntities().filter((c): c is CityWithVibes =>
+    c.vibes !== null && c.vibes.length > 0
+  )
+  const shuffled = shuffle(cities)
+  const examples: GeneratedExample[] = []
+
+  let i = 0
+  while (i < shuffled.length) {
+    const roll = Math.random()
+
+    if (roll < 0.35 && i + 1 < shuffled.length) {
+      // "Boston 6pm in LA"
+      const src = shuffled[i]
+      const tgt = shuffled[i + 1]
+      const time = pick(TIME_FORMATS)
+      examples.push({
+        text: `${src.displayName} ${time} in ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+      })
+      i += 2
+    } else if (roll < 0.65 && i + 1 < shuffled.length) {
+      // "noon Tokyo to London"
+      const src = shuffled[i]
+      const tgt = shuffled[i + 1]
+      const time = pick(TIME_FORMATS)
+      examples.push({
+        text: `${time} ${src.displayName} to ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+      })
+      i += 2
+    } else if (roll < 0.85) {
+      // "6pm in Tokyo"
+      const city = shuffled[i]
+      const time = pick(TIME_FORMATS)
+      examples.push({
+        text: `${time} in ${city.displayName}`,
+        targetVibes: city.vibes,
+      })
+      i += 1
+    } else {
+      // "Tokyo"
+      const city = shuffled[i]
+      examples.push({
+        text: city.displayName,
+        targetVibes: city.vibes,
+      })
+      i += 1
+    }
+  }
+
+  return shuffle(examples)
+}
+
 interface RotatingPlaceholder {
-  segments: PlaceholderSegment[]
+  placeholder: string
   feelingWord: string
   /** Returns the plain-text query currently displayed in the placeholder */
   getCurrentExample: () => string
 }
 
 export function useRotatingPlaceholder(hasUserInput: boolean): RotatingPlaceholder {
-  const [pool] = useState(() => shuffle(EXAMPLES))
+  const [pool] = useState(generateExamples)
   const [index, setIndex] = useState(0)
-  const [wordIndex, setWordIndex] = useState(() => Math.floor(Math.random() * FEELING_WORDS.length))
-  const parsed = useMemo(() => pool.map(parseSegments), [pool])
 
   useEffect(() => {
     if (hasUserInput) return
 
     const interval = setInterval(() => {
       setIndex((i) => (i + 1) % pool.length)
-      setWordIndex((i) => (i + 1) % FEELING_WORDS.length)
     }, 5000)
 
     return () => clearInterval(interval)
   }, [hasUserInput, pool])
 
+  // Pick a random vibe from the current target city's vibes
+  const feelingWord = useMemo(() => {
+    const vibes = pool[index]?.targetVibes
+    if (!vibes || vibes.length === 0) return 'global'
+    return pick(vibes)
+  }, [pool, index])
+
   const getCurrentExample = useCallback(() => {
-    return stripBrackets(pool[index])
+    return pool[index].text
   }, [pool, index])
 
   return {
-    segments: parsed[index],
-    feelingWord: FEELING_WORDS[wordIndex],
+    placeholder: pool[index].text,
+    feelingWord,
     getCurrentExample,
   }
 }

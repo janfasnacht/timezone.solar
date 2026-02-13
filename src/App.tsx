@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { QueryInput } from '@/components/QueryInput'
 import { ResultCard } from '@/components/ResultCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
+import { CityVibe } from '@/components/CityVibe'
 import { HelpModal } from '@/components/HelpModal'
 import { AboutModal } from '@/components/AboutModal'
 import { SettingsModal } from '@/components/SettingsModal'
@@ -39,7 +40,7 @@ function App() {
   }, [clear, replaceUrlQuery])
 
   useKeyboardShortcuts(inputRef, toggleHelp, handleClear)
-  const { segments: placeholder, feelingWord, getCurrentExample } = useRotatingPlaceholder(currentInputValue.length > 0)
+  const { placeholder, feelingWord, getCurrentExample } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   useEffect(() => {
     if (urlQuery) {
@@ -83,62 +84,60 @@ function App() {
   const isLanding = !result && !error
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center px-4">
-      <div className={`w-full flex flex-col items-center ${isLanding ? 'my-auto' : 'mt-16'}`}>
-        {/* Logo */}
-        <div className="mb-6">
-          <SunDialLogo onClick={handleClear} />
-        </div>
-
-        {/* Input */}
-        <div className="w-full">
-          <QueryInput
-            ref={inputRef}
-            onSubmit={handleSubmit}
-            onClear={handleClear}
-            onValueChange={handleValueChange}
-            onRemoveQuery={removeQuery}
-            initialValue={inputValue}
-            placeholder={placeholder}
-            recentQueries={recentQueries}
-          />
-        </div>
-
-        {/* "Feeling X" — only on landing */}
-        {isLanding && (
-          <div className="mt-3">
-            <button
-              onClick={handleFeelingClick}
-              className="text-sm text-muted-foreground/70"
-            >
-              Feeling <span className="font-serif italic underline decoration-muted-foreground/30 underline-offset-2 transition-colors hover:text-foreground hover:decoration-foreground/30">{feelingWord}</span>?
-            </button>
-          </div>
-        )}
-
-        {/* Error */}
-        {error && (
-          <div className="mt-6 w-full">
-            <ErrorDisplay error={error} onOpenHelp={openHelp} />
-          </div>
-        )}
-
-        {/* Result */}
-        {result && (
-          <div className="mt-6 w-full">
-            <ResultCard
-              result={result}
-              isUsingCurrentTime={isUsingCurrentTime}
-              onSwap={handleSwap}
-            />
-          </div>
-        )}
+    <div className="page-glow relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col items-center px-[2rem] pt-[25vh]">
+      {/* Logo — always visible, stable position */}
+      <div className="mb-6">
+        <SunDialLogo onClick={handleClear} />
       </div>
 
-      {/* Footer */}
-      <Footer onOpenHelp={openHelp} onOpenAbout={openAbout} onOpenSettings={toggleSettings} />
+      {/* Search bar — always same position */}
+      <div className="w-full">
+        <QueryInput
+          ref={inputRef}
+          onSubmit={handleSubmit}
+          onClear={handleClear}
+          onValueChange={handleValueChange}
+          onRemoveQuery={removeQuery}
+          initialValue={inputValue}
+          placeholder={placeholder}
+          recentQueries={recentQueries}
+        />
+      </div>
 
-      {/* Panels & Modals */}
+      {/* Feeling line — only on landing */}
+      {isLanding && (
+        <div className="mt-4">
+          <CityVibe
+            fallbackFeelingWord={feelingWord}
+            onClick={handleFeelingClick}
+          />
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <div className="mt-8 w-full">
+          <ErrorDisplay error={error} onOpenHelp={openHelp} />
+        </div>
+      )}
+
+      {/* Result card */}
+      {result && (
+        <div className="mt-8 w-full">
+          <ResultCard
+            result={result}
+            isUsingCurrentTime={isUsingCurrentTime}
+            onSwap={handleSwap}
+          />
+        </div>
+      )}
+
+      {/* Footer — pushed to bottom */}
+      <div className="mt-auto">
+        <Footer onOpenHelp={openHelp} onOpenAbout={openAbout} onOpenSettings={toggleSettings} />
+      </div>
+
+      {/* Modals */}
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />

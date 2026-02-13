@@ -4,17 +4,20 @@ interface RecentSearchesProps {
   queries: string[]
   onSelect: (query: string) => void
   onRemove: (query: string) => void
+  activeIndex?: number | null
 }
 
-export function RecentSearches({ queries, onSelect, onRemove }: RecentSearchesProps) {
+export function RecentSearches({ queries, onSelect, onRemove, activeIndex }: RecentSearchesProps) {
   if (queries.length === 0) return null
 
   return (
     <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-lg border border-border bg-background shadow-lg">
-      {queries.slice(0, 10).map((query) => (
+      {queries.slice(0, 10).map((query, index) => (
         <div
           key={query}
-          className="flex items-center gap-2.5 px-4 py-2 hover:bg-muted"
+          className={`flex items-center gap-2.5 px-4 py-2 ${
+            index === activeIndex ? 'bg-muted' : 'hover:bg-muted'
+          }`}
         >
           <Clock size={13} className="flex-shrink-0 text-muted-foreground/40" />
           <button

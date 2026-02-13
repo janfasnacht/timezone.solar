@@ -21,10 +21,10 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
   const { source, target, offsetDifference, dayBoundary, dstNote } = result
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
 
-  const sourceDate = useMemo(() => {
-    const dt = DateTime.fromISO(result.sourceDateTime)
+  const targetDate = useMemo(() => {
+    const dt = DateTime.fromISO(result.targetDateTime)
     return dt.isValid ? dt.toFormat('EEE, MMM d') : null
-  }, [result.sourceDateTime])
+  }, [result.targetDateTime])
 
   const dstWarning = useMemo(() => {
     const ref = DateTime.fromISO(result.sourceDateTime)
@@ -35,100 +35,112 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
   const sourceHeroTime = isUsingCurrentTime ? sourceClock : source[timeKey]
   const targetHeroTime = isUsingCurrentTime ? targetClock : target[timeKey]
 
+  // Split time and period (AM/PM) for the target hero display
+  const targetTimeParts = useMemo(() => {
+    if (use24h) return { time: targetHeroTime, period: null }
+    const match = targetHeroTime.match(/^(.+?)\s*(AM|PM)$/i)
+    if (!match) return { time: targetHeroTime, period: null }
+    return { time: match[1], period: ' ' + match[2] }
+  }, [targetHeroTime, use24h])
+
   const copyText = `${targetHeroTime} ${target.abbreviation} (${sourceHeroTime} ${source.abbreviation})`
 
+  const isNotSameDay = dayBoundary !== 'same day'
+
+  // Highlight style for offset chip and non-same-day chip (per mockup C)
+  const highlightChip = 'rounded-[6px] border border-tomorrow-border bg-glow-strong px-[0.6rem] py-[0.25rem] font-mono text-[0.7rem] text-accent'
+  const normalChip = 'rounded-[6px] border border-border bg-surface px-[0.6rem] py-[0.25rem] font-mono text-[0.7rem] text-muted-foreground'
+
   return (
-    <div className="w-full rounded-lg border border-border bg-background p-6 shadow-sm">
-      {/* Source */}
-      <div className="mb-4">
+    <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
+      {/* Top accent gradient line */}
+      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-accent-soft to-transparent" />
+
+      <div className="p-[2rem]">
+        {/* Source row — two-column baseline */}
         <div className="flex items-baseline justify-between">
-          <span className="text-sm font-medium text-muted-foreground">
-            {source.city}{source.country ? `, ${source.country}` : ''}
-          </span>
-          {!isUsingCurrentTime && (
-            <span className="text-xs text-muted-foreground">{sourceClock}</span>
+          <div>
+            <div className="text-[0.85rem] text-muted-foreground">
+              {source.city}{source.country ? `, ${source.country}` : ''}
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-[1.3rem] font-semibold">
+              {sourceHeroTime}
+            </span>
+            <span className="ml-1 text-[0.7rem] font-mono font-normal text-muted-foreground">
+              {source.abbreviation}
+            </span>
+          </div>
+        </div>
+
+        {/* Divider + Swap — gradient lines per mockup C */}
+        <div className="my-[1.2rem] flex items-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+          <button
+            onClick={onSwap}
+            className="text-muted-foreground transition-colors hover:text-accent"
+            aria-label="Swap source and target"
+          >
+            <ArrowUpDown size={15} />
+          </button>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+        </div>
+
+        {/* Target */}
+        <div>
+          <div className="mb-1 text-[0.85rem] text-muted-foreground">
+            {target.city}{target.country ? `, ${target.country}` : ''}
+          </div>
+          <div className="flex items-baseline gap-[0.6rem]">
+            <span className="font-serif text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">
+              {targetTimeParts.time}
+              {targetTimeParts.period && (
+                <span className="text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
+              )}
+            </span>
+            <CopyButton text={copyText} />
+          </div>
+          <div className="mt-1 text-[0.75rem] font-mono text-muted-foreground">
+            {target.abbreviation} · UTC{target.offsetFromUTC}
+          </div>
+
+          {/* Detail chips */}
+          <div className="mt-[1.2rem] flex flex-wrap items-center gap-[0.5rem]">
+            <span className={highlightChip}>
+              {offsetDifference}
+            </span>
+            {isNotSameDay && (
+              <span className={highlightChip}>
+                {dayBoundary}
+              </span>
+            )}
+            {targetDate && (
+              <span className={normalChip}>
+                {targetDate}
+              </span>
+            )}
+          </div>
+
+          {/* Relative time */}
+          {result.relativeTime && (
+            <p className="mt-4 font-serif text-[0.95rem] italic text-muted-foreground">
+              {result.relativeTime}
+            </p>
           )}
         </div>
-        <div className="mt-1 text-2xl font-semibold">
-          {sourceHeroTime}
-          <span className="ml-2 text-sm font-normal text-muted-foreground">
-            {source.abbreviation}
-          </span>
-          {isUsingCurrentTime && (
-            <span className="ml-2 text-xs text-muted-foreground">now</span>
-          )}
-        </div>
-        {sourceDate && !isUsingCurrentTime && (
-          <span className="text-xs text-muted-foreground">{sourceDate}</span>
+
+        {/* DST Note */}
+        {dstNote && (
+          <p className="mt-3 text-xs text-muted-foreground">{dstNote}</p>
         )}
-        {result.anchorNote && (
-          <p className="mt-0.5 text-xs text-muted-foreground">{result.anchorNote}</p>
+
+        {/* DST Warning */}
+        {dstWarning && (
+          <p className="mt-2 text-xs text-muted-foreground">{dstWarning}</p>
         )}
+
       </div>
-
-      {/* Divider + Swap */}
-      <div className="my-4 flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <button
-          onClick={onSwap}
-          className="rounded-full border border-border p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          aria-label="Swap source and target"
-        >
-          <ArrowUpDown size={16} />
-        </button>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
-      {/* Target */}
-      <div>
-        <span className="text-sm font-medium text-muted-foreground">
-          {target.city}{target.country ? `, ${target.country}` : ''}
-        </span>
-        <div className="mt-1 flex items-center gap-2">
-          <span className="font-serif text-5xl font-bold text-accent">
-            {targetHeroTime}
-          </span>
-          <CopyButton text={copyText} />
-        </div>
-        <span className="text-sm text-muted-foreground">{target.abbreviation}</span>
-        {result.relativeTime && (
-          <p className="mt-1 text-lg font-medium text-muted-foreground">{result.relativeTime}</p>
-        )}
-      </div>
-
-      {/* Metadata */}
-      <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
-        <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium">
-          {offsetDifference}
-        </span>
-        {dayBoundary !== 'same day' && (
-          <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-foreground">
-            {dayBoundary}
-          </span>
-        )}
-      </div>
-
-      {/* IANA trust line */}
-      <p className="mt-3 font-mono text-xs text-muted-foreground">
-        {source.iana} (UTC{source.offsetFromUTC}) → {target.iana} (UTC{target.offsetFromUTC})
-      </p>
-
-      {/* DST Note */}
-      {dstNote && (
-        <p className="mt-2 text-xs text-muted-foreground">{dstNote}</p>
-      )}
-
-      {/* DST Warning */}
-      {dstWarning && (
-        <p className="mt-2 text-xs text-muted-foreground">{dstWarning}</p>
-      )}
-
-      {/* Same timezone note */}
-      {source.iana === target.iana && (
-        <p className="mt-2 text-xs text-muted-foreground">
-          Both locations are in the same timezone ({source.abbreviation})
-        </p>
-      )}
     </div>
   )
 }

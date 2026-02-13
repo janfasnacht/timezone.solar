@@ -42,6 +42,7 @@ export interface TimezoneInfo {
   country?: string
   isDST: boolean
   offsetFromUTC: string
+  entitySlug?: string
 }
 
 export interface ConversionResult {

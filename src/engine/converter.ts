@@ -11,6 +11,7 @@ function buildTimezoneInfo(dt: DateTime, resolved: ResolvedTimezone): TimezoneIn
     country: resolved.country,
     isDST: dt.isInDST,
     offsetFromUTC: dt.toFormat('ZZ'),
+    entitySlug: resolved.entitySlug,
   }
 }
 
@@ -65,7 +66,7 @@ export function swapResult(original: ConversionResult): ConversionResult {
   const now = DateTime.now()
   let relativeTime: string | null = null
   const diffFromNow = targetDt.diff(now, 'minutes').minutes
-  if (Math.abs(diffFromNow) < 24 * 60) {
+  if (Math.abs(diffFromNow) >= 1 && Math.abs(diffFromNow) < 24 * 60) {
     relativeTime = targetDt.toRelative() ?? null
   }
 
@@ -141,7 +142,10 @@ export function convert(
       if (sourceDt < nowInSource) {
         sourceDt = sourceDt.plus({ days: 1 })
         anchoredToTomorrow = true
-        anchorNote = `Interpreting as tomorrow in ${source.city}`
+        const h12 = time.hour === 0 ? 12 : time.hour > 12 ? time.hour - 12 : time.hour
+        const ampm = time.hour >= 12 ? 'pm' : 'am'
+        const minStr = time.minute ? ':' + String(time.minute).padStart(2, '0') : ''
+        anchorNote = `Showing tomorrow — ${h12}${minStr}${ampm} has passed in ${source.city}`
       }
     }
   } else {
@@ -171,7 +175,7 @@ export function convert(
   // Relative time from now
   let relativeTime: string | null = null
   const diffFromNow = targetDt.diff(now, 'minutes').minutes
-  if (Math.abs(diffFromNow) < 24 * 60) {
+  if (Math.abs(diffFromNow) >= 1 && Math.abs(diffFromNow) < 24 * 60) {
     relativeTime = targetDt.toRelative() ?? null
   }
 

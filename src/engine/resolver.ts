@@ -87,11 +87,16 @@ function cacheSet(key: string, value: ResolveResult | null): void {
 
 // --- Helpers ---
 
+function normalizeCountry(country: string): string {
+  if (country === 'United States of America' || country === 'United States') return 'USA'
+  return country
+}
+
 function cityEntryToResolved(entry: CityEntry, method: ResolvedTimezone['method']): ResolvedTimezone {
   return {
     iana: entry.timezone,
     city: entry.city,
-    country: entry.country,
+    country: normalizeCountry(entry.country),
     method,
   }
 }
@@ -163,7 +168,7 @@ function resolveLocationUncached(
   const stateIana = US_STATE_TIMEZONES[normalized]
   if (stateIana) {
     return {
-      primary: { iana: stateIana, city: originalTrimmed, country: 'United States', method: 'state' },
+      primary: { iana: stateIana, city: originalTrimmed, country: 'USA', method: 'state' },
       alternatives: [],
     }
   }

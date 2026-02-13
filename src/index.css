@@ -17,6 +17,8 @@
   /* Light mode colors (default) */
   --color-background: #faf8f5;
   --color-foreground: #1c1814;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f7f5f1;
   --color-muted: #f3f0eb;
   --color-muted-foreground: #9c9184;
   --color-border: #e8e2d9;
@@ -25,6 +27,14 @@
   --color-accent: #d48a1a;
   --color-accent-foreground: #ffffff;
   --color-accent-soft: rgba(212, 138, 26, 0.08);
+  --color-accent-text: #c07a10;
+  --color-glow: rgba(212, 138, 26, 0.04);
+  --color-glow-strong: rgba(212, 138, 26, 0.08);
+  --color-chip-bg: rgba(0, 0, 0, 0.03);
+  --color-tomorrow-bg: rgba(212, 138, 26, 0.08);
+  --color-tomorrow-border: rgba(212, 138, 26, 0.2);
+  --color-tomorrow-text: #b87010;
+  --color-text-secondary: #5c5347;
   --color-destructive: #dc4a3a;
 
   /* Radii (unchanged) */
@@ -37,33 +47,55 @@
   html:not(.light):not(.dark) {
     --color-background: #110f0c;
     --color-foreground: #e8e0d4;
+    --color-surface: #1c1915;
+    --color-surface-hover: #23201a;
     --color-muted: #1c1915;
-    --color-muted-foreground: #7a6f5f;
+    --color-muted-foreground: #8a7f6f;
     --color-border: #2a261f;
     --color-input: #1c1915;
     --color-ring: #f4a636;
     --color-accent: #f4a636;
     --color-accent-foreground: #ffffff;
     --color-accent-soft: rgba(244, 166, 54, 0.12);
+    --color-accent-text: #f4a636;
+    --color-glow: rgba(244, 166, 54, 0.06);
+    --color-glow-strong: rgba(244, 166, 54, 0.12);
+    --color-chip-bg: rgba(255, 255, 255, 0.04);
+    --color-tomorrow-bg: rgba(244, 166, 54, 0.1);
+    --color-tomorrow-border: rgba(244, 166, 54, 0.25);
+    --color-tomorrow-text: #f4a636;
+    --color-text-secondary: #b5aa98;
   }
 }
 
 html.dark {
   --color-background: #110f0c;
   --color-foreground: #e8e0d4;
+  --color-surface: #1c1915;
+  --color-surface-hover: #23201a;
   --color-muted: #1c1915;
-  --color-muted-foreground: #7a6f5f;
+  --color-muted-foreground: #8a7f6f;
   --color-border: #2a261f;
   --color-input: #1c1915;
   --color-ring: #f4a636;
   --color-accent: #f4a636;
   --color-accent-foreground: #ffffff;
   --color-accent-soft: rgba(244, 166, 54, 0.12);
+  --color-accent-text: #f4a636;
+  --color-glow: rgba(244, 166, 54, 0.06);
+  --color-glow-strong: rgba(244, 166, 54, 0.12);
+  --color-chip-bg: rgba(255, 255, 255, 0.04);
+  --color-tomorrow-bg: rgba(244, 166, 54, 0.1);
+  --color-tomorrow-border: rgba(244, 166, 54, 0.25);
+  --color-tomorrow-text: #f4a636;
+  --color-text-secondary: #b5aa98;
 }
 
 html.light {
   --color-background: #faf8f5;
   --color-foreground: #1c1814;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f7f5f1;
   --color-muted: #f3f0eb;
   --color-muted-foreground: #9c9184;
   --color-border: #e8e2d9;
@@ -72,6 +104,14 @@ html.light {
   --color-accent: #d48a1a;
   --color-accent-foreground: #ffffff;
   --color-accent-soft: rgba(212, 138, 26, 0.08);
+  --color-accent-text: #c07a10;
+  --color-glow: rgba(212, 138, 26, 0.04);
+  --color-glow-strong: rgba(212, 138, 26, 0.08);
+  --color-chip-bg: rgba(0, 0, 0, 0.03);
+  --color-tomorrow-bg: rgba(212, 138, 26, 0.08);
+  --color-tomorrow-border: rgba(212, 138, 26, 0.2);
+  --color-tomorrow-text: #b87010;
+  --color-text-secondary: #5c5347;
 }
 
 body {
@@ -80,4 +120,17 @@ body {
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page glow effect — radial gradient behind logo area */
+.page-glow::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--color-glow) 0%, transparent 55%);
+  pointer-events: none;
 }
