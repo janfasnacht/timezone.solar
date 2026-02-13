@@ -239,11 +239,12 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
   )
 }
 
-export default function handler(req: Request) {
-  const url = new URL(req.url)
-  const q = url.searchParams.get('q') ?? ''
-  const src = url.searchParams.get('src') ?? undefined
-  const use24h = url.searchParams.get('fmt') === '24h'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function handler(req: any) {
+  const url = new URL(req.url, 'http://localhost')
+  const q = (req.query?.q as string) ?? url.searchParams.get('q') ?? ''
+  const src = (req.query?.src as string) ?? url.searchParams.get('src') ?? undefined
+  const use24h = (req.query?.fmt ?? url.searchParams.get('fmt')) === '24h'
   const result = q ? runConversion(q, src) : null
 
   const element = result ? <ResultCard result={result} use24h={use24h} /> : <BrandedCard />

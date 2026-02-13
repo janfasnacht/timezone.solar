@@ -100313,10 +100313,10 @@ function ResultCard({ result, use24h }) {
   );
 }
 function handler(req) {
-  const url = new URL(req.url);
-  const q = url.searchParams.get("q") ?? "";
-  const src = url.searchParams.get("src") ?? void 0;
-  const use24h = url.searchParams.get("fmt") === "24h";
+  const url = new URL(req.url, "http://localhost");
+  const q = req.query?.q ?? url.searchParams.get("q") ?? "";
+  const src = req.query?.src ?? url.searchParams.get("src") ?? void 0;
+  const use24h = (req.query?.fmt ?? url.searchParams.get("fmt")) === "24h";
   const result = q ? runConversion(q, src) : null;
   const element = result ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResultCard, { result, use24h }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrandedCard, {});
   return new ImageResponse(element, {
