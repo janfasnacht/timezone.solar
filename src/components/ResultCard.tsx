@@ -4,15 +4,18 @@ import { DateTime } from 'luxon'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { usePreferences } from '@/hooks/usePreferences'
 import { getDstWarning } from '@/lib/dstWarning'
+import { getSvgCitiesSlug } from '@/engine/city-entities'
+import { CityIcon } from '@/components/CityIcon'
 import type { ConversionResult } from '@/engine/types'
 
 interface ResultCardProps {
   result: ConversionResult
   isUsingCurrentTime: boolean
   onSwap: () => void
+  onFlip?: () => void
 }
 
-export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardProps) {
+export function ResultCard({ result, isUsingCurrentTime, onSwap, onFlip }: ResultCardProps) {
   const { timeFormat } = usePreferences()
   const use24h = timeFormat === '24h'
   const sourceClock = useLiveClock(result.source.iana, use24h)
@@ -42,6 +45,8 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
     return { time: match[1], period: ' ' + match[2] }
   }, [targetHeroTime, use24h])
 
+  const targetIconSlug = target.entitySlug ? getSvgCitiesSlug(target.entitySlug) : null
+
   const isNotSameDay = dayBoundary !== 'same day'
 
   // Highlight style for offset chip and non-same-day chip (per mockup C)
@@ -52,6 +57,7 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
     <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
       {/* Top accent gradient line */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
+      {targetIconSlug && <CityIcon svgCitiesSlug={targetIconSlug} />}
 
       <div className="p-[2rem]">
         {/* Source row — two-column baseline */}
@@ -137,6 +143,15 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
         )}
 
       </div>
+
+      {/* Dog-ear flip trigger */}
+      {onFlip && (
+        <button
+          onClick={onFlip}
+          className="absolute right-0 bottom-0 h-6 w-6 cursor-pointer transition-colors [clip-path:polygon(100%_0,100%_100%,0_100%)] bg-border hover:bg-muted-foreground/40"
+          aria-label="Show share options"
+        />
+      )}
     </div>
   )
 }

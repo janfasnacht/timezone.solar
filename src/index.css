@@ -36,6 +36,7 @@
   --color-tomorrow-text: #b87010;
   --color-text-secondary: #5c5347;
   --color-destructive: #dc4a3a;
+  --color-city-icon: rgba(212, 138, 26, 0.75);
 
   /* Radii (unchanged) */
   --radius-sm: 0.375rem;
@@ -65,6 +66,7 @@
     --color-tomorrow-border: rgba(244, 166, 54, 0.25);
     --color-tomorrow-text: #f4a636;
     --color-text-secondary: #b5aa98;
+    --color-city-icon: rgba(244, 166, 54, 0.50);
   }
 }
 
@@ -89,6 +91,7 @@ html.dark {
   --color-tomorrow-border: rgba(244, 166, 54, 0.25);
   --color-tomorrow-text: #f4a636;
   --color-text-secondary: #b5aa98;
+  --color-city-icon: rgba(244, 166, 54, 0.50);
 }
 
 html.light {
@@ -112,6 +115,7 @@ html.light {
   --color-tomorrow-border: rgba(212, 138, 26, 0.2);
   --color-tomorrow-text: #b87010;
   --color-text-secondary: #5c5347;
+  --color-city-icon: rgba(212, 138, 26, 0.75);
 }
 
 body {

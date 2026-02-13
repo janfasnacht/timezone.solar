@@ -53,9 +53,6 @@ export function QueryInput({
   function handleFocus() {
     setIsFocused(true)
     onFocusChange?.(true)
-    if (!value && recentQueries.length > 0) {
-      setDropdownOpen(true)
-    }
   }
 
   function handleBlur() {
@@ -72,11 +69,7 @@ export function QueryInput({
     setValue(newValue)
     onValueChange?.(newValue)
     setHistoryIndex(null)
-    if (newValue) {
-      setDropdownOpen(false)
-    } else if (recentQueries.length > 0) {
-      setDropdownOpen(true)
-    }
+    setDropdownOpen(false)
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -123,11 +116,7 @@ export function QueryInput({
         setHistoryIndex(null)
         setValue(savedInput.current)
         onValueChange?.(savedInput.current)
-        if (!savedInput.current && recentQueries.length > 0) {
-          setDropdownOpen(true)
-        } else {
-          setDropdownOpen(false)
-        }
+        setDropdownOpen(false)
       }
       return
     }
@@ -187,12 +176,11 @@ export function QueryInput({
       <button
         type="button"
         onClick={handleSubmitClick}
-        className={`absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1.5 transition-all ${
-          value.trim()
-            ? 'bg-accent text-accent-foreground hover:opacity-80'
-            : 'text-muted-foreground/20'
+        className={`absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground ${
+          isFocused && value.trim() ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
         aria-label="Convert"
+        tabIndex={-1}
       >
         <ArrowRight size={18} />
       </button>

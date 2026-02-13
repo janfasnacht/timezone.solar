@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { QueryInput } from '@/components/QueryInput'
-import { ResultCard } from '@/components/ResultCard'
-import { ShareActions } from '@/components/ShareActions'
+import { FlippableCard } from '@/components/FlippableCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { HelpModal } from '@/components/HelpModal'
@@ -125,13 +124,10 @@ function App() {
       {/* Result card */}
       {result && (
         <div className="mt-8 w-full">
-          <ResultCard
+          <FlippableCard
             result={result}
             isUsingCurrentTime={isUsingCurrentTime}
             onSwap={handleSwap}
-          />
-          <ShareActions
-            result={result}
             query={currentInputValue}
             use24h={timeFormat === '24h'}
           />

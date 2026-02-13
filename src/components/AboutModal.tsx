@@ -55,6 +55,18 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
         <p>
           Supports 40,000+ cities, fuzzy matching, DST awareness, and shareable URLs.
         </p>
+        <p>
+          City icons by{' '}
+          <a
+            href="https://svgcities.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline"
+          >
+            Studio Partdirector
+          </a>
+          .
+        </p>
       </div>
     </div>
   )

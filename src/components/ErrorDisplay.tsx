@@ -7,17 +7,25 @@ interface ErrorDisplayProps {
 
 export function ErrorDisplay({ error, onOpenHelp }: ErrorDisplayProps) {
   return (
-    <div className="w-full rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-      <p className="font-medium text-destructive">{error.message}</p>
-      {error.suggestion && (
-        <p className="mt-1 text-sm text-muted-foreground">{error.suggestion}</p>
-      )}
-      <button
-        onClick={onOpenHelp}
-        className="mt-2 text-sm text-accent underline underline-offset-2 transition-colors hover:text-accent/80"
-      >
-        View supported formats
-      </button>
+    <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
+      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
+
+      <div className="p-[2rem]">
+        <p className="font-serif text-[1.1rem] italic text-muted-foreground">
+          {error.message}
+        </p>
+        {error.suggestion && (
+          <p className="mt-3 text-[0.8rem] text-muted-foreground/70">
+            {error.suggestion}
+          </p>
+        )}
+        <button
+          onClick={onOpenHelp}
+          className="mt-4 text-[0.75rem] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          View supported formats
+        </button>
+      </div>
     </div>
   )
 }
