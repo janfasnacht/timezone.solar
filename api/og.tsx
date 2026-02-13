@@ -1,18 +1,26 @@
 /** @jsxImportSource react */
 import { ImageResponse } from '@vercel/og'
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import type { VercelRequest } from '@vercel/node'
 import { parse } from '../src/engine/parser'
 import { resolveLocation } from '../src/engine/resolver'
 import { convert } from '../src/engine/converter'
 import type { ConversionResult } from '../src/engine/types'
 
-export const config = { runtime: 'nodejs', maxDuration: 10 }
+export const config = { runtime: 'edge' }
 
-const fraunces = readFileSync(join(process.cwd(), 'api/fonts/Fraunces-SemiBold.woff'))
-const instrumentSans = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-Regular.woff'))
-const instrumentSansSB = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-SemiBold.woff'))
+async function loadFont(relativePath: string): Promise<ArrayBuffer> {
+  const url = new URL(relativePath, import.meta.url)
+  try {
+    return await fetch(url).then(r => r.arrayBuffer())
+  } catch {
+    // Dev server: file:// URLs can't be fetched, use fs instead
+    const { readFileSync } = await import('node:fs')
+    return readFileSync(url).buffer.slice(0)
+  }
+}
+
+const fraunces = loadFont('./fonts/Fraunces-SemiBold.woff')
+const instrumentSans = loadFont('./fonts/InstrumentSans-Regular.woff')
+const instrumentSansSB = loadFont('./fonts/InstrumentSans-SemiBold.woff')
 
 export function runConversion(q: string, srcIana?: string): ConversionResult | null {
   const parsed = parse(q)
@@ -240,21 +248,26 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
   )
 }
 
-export default function handler(req: VercelRequest) {
-  const q = typeof req.query.q === 'string' ? req.query.q : ''
-  const src = typeof req.query.src === 'string' ? req.query.src : undefined
-  const use24h = req.query.fmt === '24h'
+export default async function handler(req: Request) {
+  const url = new URL(req.url)
+  const q = url.searchParams.get('q') ?? ''
+  const src = url.searchParams.get('src') ?? undefined
+  const use24h = url.searchParams.get('fmt') === '24h'
   const result = q ? runConversion(q, src) : null
 
   const element = result ? <ResultCard result={result} use24h={use24h} /> : <BrandedCard />
+
+  const [fraunceData, instrumentData, instrumentSBData] = await Promise.all([
+    fraunces, instrumentSans, instrumentSansSB,
+  ])
 
   return new ImageResponse(element, {
     width: 1200,
     height: 630,
     fonts: [
-      { name: 'Fraunces', data: fraunces, style: 'normal', weight: 600 },
-      { name: 'Instrument Sans', data: instrumentSans, style: 'normal', weight: 400 },
-      { name: 'Instrument Sans SB', data: instrumentSansSB, style: 'normal', weight: 600 },
+      { name: 'Fraunces', data: fraunceData, style: 'normal' as const, weight: 600 as const },
+      { name: 'Instrument Sans', data: instrumentData, style: 'normal' as const, weight: 400 as const },
+      { name: 'Instrument Sans SB', data: instrumentSBData, style: 'normal' as const, weight: 600 as const },
     ],
     headers: {
       'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',

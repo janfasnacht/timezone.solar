@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 
-// Mock fs and @vercel/og before importing the module — og.tsx reads fonts at module scope
-vi.mock('fs', () => ({
-  readFileSync: vi.fn(() => Buffer.from('mock-font-data')),
-}))
+// Mock fetch (fonts loaded at module scope) and @vercel/og before importing the module
+vi.stubGlobal('fetch', vi.fn(() =>
+  Promise.resolve({ arrayBuffer: () => Promise.resolve(new ArrayBuffer(8)) }),
+))
 
 vi.mock('@vercel/og', () => ({
   ImageResponse: class MockImageResponse {

@@ -10,12 +10,9 @@ function ogDevPlugin(): Plugin {
       server.middlewares.use('/api/og', async (req, res) => {
         try {
           const url = new URL(req.url ?? '', 'http://localhost')
-          const query: Record<string, string> = {}
-          url.searchParams.forEach((v, k) => { query[k] = v })
           const mod = await server.ssrLoadModule('./api/og.tsx')
           const handler = mod.default
-          const mockReq = { query }
-          const response: Response = handler(mockReq)
+          const response: Response = await handler(new Request(url))
           const buffer = Buffer.from(await response.arrayBuffer())
           res.setHeader('Content-Type', response.headers.get('Content-Type') ?? 'image/png')
           res.setHeader('Cache-Control', response.headers.get('Cache-Control') ?? 'no-cache')

@@ -162,37 +162,33 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
 
           <div className="h-px bg-gradient-to-r from-surface via-border to-surface" />
 
-          {/* Download */}
-          <button onClick={handleDownload} disabled={downloading} className="group flex items-center gap-3 text-left transition-colors">
-            <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-              <Download size={15} />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[0.7rem] text-muted-foreground">
-                {downloading ? 'Saving...' : 'Download'}
+          {/* Share (mobile) or Download (desktop) */}
+          {canShare ? (
+            <button onClick={handleShare} className="group flex items-center gap-3 text-left transition-colors">
+              <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
+                <Share2 size={15} />
               </span>
-              <span className="block truncate font-mono text-[0.8rem] text-foreground">
-                Card image (.png)
+              <span className="min-w-0">
+                <span className="block text-[0.7rem] text-muted-foreground">Share</span>
+                <span className="block truncate font-mono text-[0.8rem] text-foreground">
+                  Card image + link
+                </span>
               </span>
-            </span>
-          </button>
-
-          {/* Native share — mobile only */}
-          {canShare && (
-            <>
-              <div className="h-px bg-gradient-to-r from-surface via-border to-surface" />
-              <button onClick={handleShare} className="group flex items-center gap-3 text-left transition-colors">
-                <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-                  <Share2 size={15} />
+            </button>
+          ) : (
+            <button onClick={handleDownload} disabled={downloading} className="group flex items-center gap-3 text-left transition-colors">
+              <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
+                <Download size={15} />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[0.7rem] text-muted-foreground">
+                  {downloading ? 'Saving...' : 'Download'}
                 </span>
-                <span className="min-w-0">
-                  <span className="block text-[0.7rem] text-muted-foreground">Share</span>
-                  <span className="block truncate font-mono text-[0.8rem] text-foreground">
-                    Image + link
-                  </span>
+                <span className="block truncate font-mono text-[0.8rem] text-foreground">
+                  Card image (.png)
                 </span>
-              </button>
-            </>
+              </span>
+            </button>
           )}
         </div>
       </div>
