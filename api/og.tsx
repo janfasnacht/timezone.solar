@@ -1,15 +1,17 @@
 /** @jsxImportSource react */
 import { ImageResponse } from '@vercel/og'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { parse } from '../src/engine/parser'
 import { resolveLocation } from '../src/engine/resolver'
 import { convert } from '../src/engine/converter'
 import type { ConversionResult } from '../src/engine/types'
 
-export const config = { runtime: 'edge' }
+export const config = { runtime: 'nodejs', maxDuration: 10 }
 
-const fraunces = fetch(new URL('./fonts/Fraunces-SemiBold.woff', import.meta.url)).then(r => r.arrayBuffer())
-const instrumentSans = fetch(new URL('./fonts/InstrumentSans-Regular.woff', import.meta.url)).then(r => r.arrayBuffer())
-const instrumentSansSB = fetch(new URL('./fonts/InstrumentSans-SemiBold.woff', import.meta.url)).then(r => r.arrayBuffer())
+const fraunces = readFileSync(join(process.cwd(), 'api/fonts/Fraunces-SemiBold.woff'))
+const instrumentSans = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-Regular.woff'))
+const instrumentSansSB = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-SemiBold.woff'))
 
 export function runConversion(q: string, srcIana?: string): ConversionResult | null {
   const parsed = parse(q)
@@ -237,7 +239,7 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
   )
 }
 
-export default async function handler(req: Request) {
+export default function handler(req: Request) {
   const url = new URL(req.url)
   const q = url.searchParams.get('q') ?? ''
   const src = url.searchParams.get('src') ?? undefined
@@ -246,17 +248,13 @@ export default async function handler(req: Request) {
 
   const element = result ? <ResultCard result={result} use24h={use24h} /> : <BrandedCard />
 
-  const [fraunceData, instrumentData, instrumentSBData] = await Promise.all([
-    fraunces, instrumentSans, instrumentSansSB,
-  ])
-
   return new ImageResponse(element, {
     width: 1200,
     height: 630,
     fonts: [
-      { name: 'Fraunces', data: fraunceData, style: 'normal' as const, weight: 600 as const },
-      { name: 'Instrument Sans', data: instrumentData, style: 'normal' as const, weight: 400 as const },
-      { name: 'Instrument Sans SB', data: instrumentSBData, style: 'normal' as const, weight: 600 as const },
+      { name: 'Fraunces', data: fraunces, style: 'normal' as const, weight: 600 as const },
+      { name: 'Instrument Sans', data: instrumentSans, style: 'normal' as const, weight: 400 as const },
+      { name: 'Instrument Sans SB', data: instrumentSansSB, style: 'normal' as const, weight: 600 as const },
     ],
     headers: {
       'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
