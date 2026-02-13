@@ -7,20 +7,9 @@ import type { ConversionResult } from '../src/engine/types'
 
 export const config = { runtime: 'edge' }
 
-async function loadFont(relativePath: string): Promise<ArrayBuffer> {
-  const url = new URL(relativePath, import.meta.url)
-  try {
-    return await fetch(url).then(r => r.arrayBuffer())
-  } catch {
-    // Dev server: file:// URLs can't be fetched, use fs instead
-    const { readFileSync } = await import('node:fs')
-    return readFileSync(url).buffer.slice(0)
-  }
-}
-
-const fraunces = loadFont('./fonts/Fraunces-SemiBold.woff')
-const instrumentSans = loadFont('./fonts/InstrumentSans-Regular.woff')
-const instrumentSansSB = loadFont('./fonts/InstrumentSans-SemiBold.woff')
+const fraunces = fetch(new URL('./fonts/Fraunces-SemiBold.woff', import.meta.url)).then(r => r.arrayBuffer())
+const instrumentSans = fetch(new URL('./fonts/InstrumentSans-Regular.woff', import.meta.url)).then(r => r.arrayBuffer())
+const instrumentSansSB = fetch(new URL('./fonts/InstrumentSans-SemiBold.woff', import.meta.url)).then(r => r.arrayBuffer())
 
 export function runConversion(q: string, srcIana?: string): ConversionResult | null {
   const parsed = parse(q)
