@@ -84,14 +84,17 @@ function App() {
   const isLanding = !result && !error
 
   return (
-    <div className="page-glow relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col items-center px-[2rem] pt-[25vh]">
+    <div className="page-glow relative mx-auto flex h-dvh w-full max-w-[480px] flex-col items-center overflow-hidden px-[2rem]">
+      {/* Spacer — collapses when result/error shows */}
+      <div className={`flex-shrink-0 ${isLanding ? 'h-[25vh]' : 'h-[1.5rem]'}`} />
+
       {/* Logo — always visible, stable position */}
-      <div className="mb-6">
+      <div className="mb-6 flex-shrink-0">
         <SunDialLogo onClick={handleClear} />
       </div>
 
       {/* Search bar — always same position */}
-      <div className="w-full">
+      <div className="w-full flex-shrink-0">
         <QueryInput
           ref={inputRef}
           onSubmit={handleSubmit}
@@ -106,7 +109,7 @@ function App() {
 
       {/* Feeling line — only on landing */}
       {isLanding && (
-        <div className="mt-4">
+        <div className="mt-4 flex-shrink-0">
           <CityVibe
             fallbackFeelingWord={feelingWord}
             onClick={handleFeelingClick}
@@ -116,14 +119,14 @@ function App() {
 
       {/* Error */}
       {error && (
-        <div className="mt-8 w-full">
+        <div className="mt-8 w-full flex-1 min-h-0 overflow-y-auto">
           <ErrorDisplay error={error} onOpenHelp={openHelp} />
         </div>
       )}
 
       {/* Result card */}
       {result && (
-        <div className="mt-8 w-full">
+        <div className="mt-8 w-full flex-1 min-h-0 overflow-y-auto">
           <FlippableCard
             result={result}
             isUsingCurrentTime={isUsingCurrentTime}
@@ -135,7 +138,7 @@ function App() {
       )}
 
       {/* Footer — pushed to bottom */}
-      <div className="mt-auto">
+      <div className="mt-auto flex-shrink-0">
         <Footer onOpenHelp={openHelp} onOpenAbout={openAbout} onOpenSettings={toggleSettings} />
       </div>
 

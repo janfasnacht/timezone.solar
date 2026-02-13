@@ -130,11 +130,11 @@ body {
 .page-glow::before {
   content: '';
   position: absolute;
-  top: -80px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, var(--color-glow) 0%, transparent 55%);
+  background: radial-gradient(circle, var(--color-glow) 0%, transparent 60%);
   pointer-events: none;
 }

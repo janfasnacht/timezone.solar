@@ -93,17 +93,17 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
   const vibes = target.entitySlug ? getVibes(target.entitySlug) : null
 
   return (
-    <div className="relative h-full overflow-hidden rounded-2xl border border-border bg-surface">
+    <div className="relative h-full overflow-y-auto rounded-2xl border border-border bg-surface">
       {/* Top accent gradient — same as front */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
-      <div className="flex h-full flex-col items-center justify-center p-[2rem]">
+      <div className="flex h-full flex-col items-center justify-center p-[1.5rem]">
         {/* City icon + vibes header */}
         {(targetIconSlug || vibes) && (
-          <div className="mb-5 flex flex-col items-center gap-2">
+          <div className="mb-3 flex flex-col items-center gap-1.5">
             {targetIconSlug && (
               <div
-                className="h-[4rem] w-[4rem]"
+                className="h-[2.5rem] w-[2.5rem]"
                 aria-hidden="true"
                 style={{
                   maskImage: `url(/icons/${targetIconSlug}.svg)`,
@@ -119,7 +119,7 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
               />
             )}
             {vibes && (
-              <p className="font-mono text-[0.7rem] text-muted-foreground">
+              <p className="font-mono text-[0.65rem] text-muted-foreground">
                 {vibes.join(' · ')}
               </p>
             )}
@@ -127,7 +127,7 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
         )}
 
         {/* Actions */}
-        <div className="flex w-full flex-col gap-3">
+        <div className="flex w-full flex-col gap-2">
           {/* Copy Time */}
           <button onClick={handleCopyTime} className="group flex items-center gap-3 text-left transition-colors">
             <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { RecentSearches } from '@/components/RecentSearches'
 
@@ -36,10 +36,6 @@ export function QueryInput({
   const inputNode = (ref && typeof ref === 'object' && 'current' in ref)
     ? ref as React.RefObject<HTMLInputElement | null>
     : fallbackRef
-
-  useEffect(() => {
-    inputNode.current?.focus()
-  }, [inputNode])
 
   const [prevInitialValue, setPrevInitialValue] = useState(initialValue)
   if (initialValue !== prevInitialValue) {
