@@ -26,8 +26,5 @@ dist-ssr
 # Vercel
 .vercel
 
-# Bundled API function (built from api/_og.tsx)
-api/og.js
-
 # Development notes (not for public repo)
 dev/
