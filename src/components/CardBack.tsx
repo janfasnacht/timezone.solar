@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
-import { getSvgCitiesSlug, getVibes } from '@/engine/city-entities'
+import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import type { ConversionResult } from '@/engine/types'
 
@@ -90,7 +90,6 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
   }, [fetchOgImage, filename, shareUrl])
 
   const targetIconSlug = target.entitySlug ? getSvgCitiesSlug(target.entitySlug) : null
-  const vibes = target.entitySlug ? getVibes(target.entitySlug) : null
 
   return (
     <div className="relative h-full overflow-y-auto rounded-2xl border border-border bg-surface">
@@ -98,31 +97,27 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
       <div className="flex h-full flex-col items-center justify-center p-[1.5rem]">
-        {/* City icon + vibes header */}
-        {(targetIconSlug || vibes) && (
+        {/* City icon + name header */}
+        {targetIconSlug && (
           <div className="mb-3 flex flex-col items-center gap-1.5">
-            {targetIconSlug && (
-              <div
-                className="h-[2.5rem] w-[2.5rem]"
-                aria-hidden="true"
-                style={{
-                  maskImage: `url(/icons/${targetIconSlug}.svg)`,
-                  maskSize: 'contain',
-                  maskRepeat: 'no-repeat',
-                  maskPosition: 'center',
-                  WebkitMaskImage: `url(/icons/${targetIconSlug}.svg)`,
-                  WebkitMaskSize: 'contain',
-                  WebkitMaskRepeat: 'no-repeat',
-                  WebkitMaskPosition: 'center',
-                  backgroundColor: 'var(--color-city-icon)',
-                }}
-              />
-            )}
-            {vibes && (
-              <p className="font-mono text-[0.65rem] text-muted-foreground">
-                {vibes.join(' · ')}
-              </p>
-            )}
+            <div
+              className="h-[2.5rem] w-[2.5rem]"
+              aria-hidden="true"
+              style={{
+                maskImage: `url(/icons/${targetIconSlug}.svg)`,
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskImage: `url(/icons/${targetIconSlug}.svg)`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+                backgroundColor: 'var(--color-city-icon)',
+              }}
+            />
+            <p className="font-mono text-[0.65rem] text-muted-foreground">
+              {target.city}
+            </p>
           </div>
         )}
 
