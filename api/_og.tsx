@@ -240,16 +240,15 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function handler(req: any) {
-  const url = new URL(req.url, 'http://localhost')
-  const q = (req.query?.q as string) ?? url.searchParams.get('q') ?? ''
-  const src = (req.query?.src as string) ?? url.searchParams.get('src') ?? undefined
-  const use24h = (req.query?.fmt ?? url.searchParams.get('fmt')) === '24h'
+export default async function handler(req: any, res: any) {
+  const q = (req.query?.q as string) ?? ''
+  const src = (req.query?.src as string) ?? undefined
+  const use24h = req.query?.fmt === '24h'
   const result = q ? runConversion(q, src) : null
 
   const element = result ? <ResultCard result={result} use24h={use24h} /> : <BrandedCard />
 
-  return new ImageResponse(element, {
+  const imageResponse = new ImageResponse(element, {
     width: 1200,
     height: 630,
     fonts: [
@@ -257,8 +256,10 @@ export default function handler(req: any) {
       { name: 'Instrument Sans', data: instrumentSans, style: 'normal' as const, weight: 400 as const },
       { name: 'Instrument Sans SB', data: instrumentSansSB, style: 'normal' as const, weight: 600 as const },
     ],
-    headers: {
-      'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
-    },
   })
+
+  const buffer = Buffer.from(await imageResponse.arrayBuffer())
+  res.setHeader('Content-Type', 'image/png')
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800')
+  res.end(buffer)
 }

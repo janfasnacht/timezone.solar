@@ -100312,25 +100312,25 @@ function ResultCard({ result, use24h }) {
     }
   );
 }
-function handler(req) {
-  const url = new URL(req.url, "http://localhost");
-  const q = req.query?.q ?? url.searchParams.get("q") ?? "";
-  const src = req.query?.src ?? url.searchParams.get("src") ?? void 0;
-  const use24h = (req.query?.fmt ?? url.searchParams.get("fmt")) === "24h";
+async function handler(req, res) {
+  const q = req.query?.q ?? "";
+  const src = req.query?.src ?? void 0;
+  const use24h = req.query?.fmt === "24h";
   const result = q ? runConversion(q, src) : null;
   const element = result ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResultCard, { result, use24h }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrandedCard, {});
-  return new ImageResponse(element, {
+  const imageResponse = new ImageResponse(element, {
     width: 1200,
     height: 630,
     fonts: [
       { name: "Fraunces", data: fraunces, style: "normal", weight: 600 },
       { name: "Instrument Sans", data: instrumentSans, style: "normal", weight: 400 },
       { name: "Instrument Sans SB", data: instrumentSansSB, style: "normal", weight: 600 }
-    ],
-    headers: {
-      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800"
-    }
+    ]
   });
+  const buffer = Buffer.from(await imageResponse.arrayBuffer());
+  res.setHeader("Content-Type", "image/png");
+  res.setHeader("Cache-Control", "public, s-maxage=86400, stale-while-revalidate=604800");
+  res.end(buffer);
 }
 export {
   config,
