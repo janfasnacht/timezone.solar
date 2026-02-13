@@ -14,7 +14,7 @@ const fraunces = readFileSync(join(process.cwd(), 'api/fonts/Fraunces-SemiBold.w
 const instrumentSans = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-Regular.woff'))
 const instrumentSansSB = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-SemiBold.woff'))
 
-function runConversion(q: string, srcIana?: string): ConversionResult | null {
+export function runConversion(q: string, srcIana?: string): ConversionResult | null {
   const parsed = parse(q)
   if (!parsed) return null
 
