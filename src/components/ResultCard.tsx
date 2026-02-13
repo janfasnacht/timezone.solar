@@ -4,7 +4,6 @@ import { DateTime } from 'luxon'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { usePreferences } from '@/hooks/usePreferences'
 import { getDstWarning } from '@/lib/dstWarning'
-import { CopyButton } from '@/components/CopyButton'
 import type { ConversionResult } from '@/engine/types'
 
 interface ResultCardProps {
@@ -43,8 +42,6 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
     return { time: match[1], period: ' ' + match[2] }
   }, [targetHeroTime, use24h])
 
-  const copyText = `${targetHeroTime} ${target.abbreviation} (${sourceHeroTime} ${source.abbreviation})`
-
   const isNotSameDay = dayBoundary !== 'same day'
 
   // Highlight style for offset chip and non-same-day chip (per mockup C)
@@ -54,7 +51,7 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
   return (
     <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
       {/* Top accent gradient line */}
-      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-accent-soft to-transparent" />
+      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
       <div className="p-[2rem]">
         {/* Source row — two-column baseline */}
@@ -76,7 +73,7 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
 
         {/* Divider + Swap — gradient lines per mockup C */}
         <div className="my-[1.2rem] flex items-center gap-4">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-r from-surface via-border to-surface" />
           <button
             onClick={onSwap}
             className="text-muted-foreground transition-colors hover:text-accent"
@@ -84,7 +81,7 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
           >
             <ArrowUpDown size={15} />
           </button>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-r from-surface via-border to-surface" />
         </div>
 
         {/* Target */}
@@ -99,7 +96,6 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap }: ResultCardPro
                 <span className="text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
               )}
             </span>
-            <CopyButton text={copyText} />
           </div>
           <div className="mt-1 text-[0.75rem] font-mono text-muted-foreground">
             {target.abbreviation} · UTC{target.offsetFromUTC}
