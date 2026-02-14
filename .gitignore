@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.env.local
 
 # Editor directories and files
 .vscode/*
@@ -28,3 +29,6 @@ dist-ssr
 
 # Development notes (not for public repo)
 dev/
+
+# Generated eval data (intermediate output)
+scripts/_generated/

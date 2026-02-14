@@ -1,0 +1,6058 @@
+[
+  {
+    "id": 1,
+    "input": "NYC to London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 2,
+    "input": "3pm Chicago to Tokyo",
+    "expectedSource": "Chicago",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 3,
+    "input": "singapore time",
+    "expectedSource": null,
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 4,
+    "input": "what time is it in mumbai",
+    "expectedSource": null,
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 5,
+    "input": "LDN to NYC 9am",
+    "expectedSource": "LDN",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 6,
+    "input": "tokyo",
+    "expectedSource": null,
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 7,
+    "input": "5:30pm new york to dubai",
+    "expectedSource": "new york",
+    "expectedTarget": "dubai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 8,
+    "input": "HK to Frankfurt",
+    "expectedSource": "HK",
+    "expectedTarget": "Frankfurt",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 9,
+    "input": "sao paulo to singapore",
+    "expectedSource": "sao paulo",
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 10,
+    "input": "noon chicago to mumbai",
+    "expectedSource": "chicago",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 11,
+    "input": "dubai 8am to NYC",
+    "expectedSource": "dubai",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 12,
+    "input": "tokyo to london 2pm",
+    "expectedSource": "tokyo",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 13,
+    "input": "mumbai",
+    "expectedSource": null,
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 14,
+    "input": "frankfurt to hong kong 4pm",
+    "expectedSource": "frankfurt",
+    "expectedTarget": "hong kong",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 16,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 15,
+    "input": "SG to Chicago",
+    "expectedSource": "SG",
+    "expectedTarget": "Chicago",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 16,
+    "input": "london 10am to tokyo",
+    "expectedSource": "london",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 17,
+    "input": "NYC 3:30pm to singapore",
+    "expectedSource": "NYC",
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 18,
+    "input": "in 2 hours tokyo",
+    "expectedSource": null,
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 120
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 19,
+    "input": "chicago to sao paulo",
+    "expectedSource": "chicago",
+    "expectedTarget": "sao paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 20,
+    "input": "hong kong time",
+    "expectedSource": null,
+    "expectedTarget": "hong kong",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 21,
+    "input": "dubai to mumbai 6pm",
+    "expectedSource": "dubai",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 18,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 22,
+    "input": "london",
+    "expectedSource": null,
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 23,
+    "input": "NYC to HK 8am",
+    "expectedSource": "NYC",
+    "expectedTarget": "HK",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 24,
+    "input": "singapore to frankfurt 9:30am",
+    "expectedSource": "singapore",
+    "expectedTarget": "frankfurt",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 25,
+    "input": "tokyo 7am to chicago",
+    "expectedSource": "tokyo",
+    "expectedTarget": "chicago",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 7,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 26,
+    "input": "mumbai to london 11am",
+    "expectedSource": "mumbai",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 11,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 27,
+    "input": "sao paulo",
+    "expectedSource": null,
+    "expectedTarget": "sao paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 28,
+    "input": "frankfurt 2pm to NYC",
+    "expectedSource": "frankfurt",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 29,
+    "input": "chicago noon to tokyo",
+    "expectedSource": "chicago",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 30,
+    "input": "dubai to singapore",
+    "expectedSource": "dubai",
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 31,
+    "input": "hong kong to mumbai 4:30pm",
+    "expectedSource": "hong kong",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 16,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 32,
+    "input": "london to sao paulo 3pm",
+    "expectedSource": "london",
+    "expectedTarget": "sao paulo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 33,
+    "input": "NYC",
+    "expectedSource": null,
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 34,
+    "input": "tokyo to dubai 5pm",
+    "expectedSource": "tokyo",
+    "expectedTarget": "dubai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 35,
+    "input": "singapore",
+    "expectedSource": null,
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 36,
+    "input": "mumbai to chicago 10am",
+    "expectedSource": "mumbai",
+    "expectedTarget": "chicago",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 37,
+    "input": "frankfurt to tokyo",
+    "expectedSource": "frankfurt",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 38,
+    "input": "HK 9am to london",
+    "expectedSource": "HK",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 39,
+    "input": "chicago",
+    "expectedSource": null,
+    "expectedTarget": "chicago",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 40,
+    "input": "sao paulo to dubai 1pm",
+    "expectedSource": "sao paulo",
+    "expectedTarget": "dubai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 13,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 41,
+    "input": "NYC to mumbai 7:30am",
+    "expectedSource": "NYC",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 7,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 42,
+    "input": "tokyo to singapore",
+    "expectedSource": "tokyo",
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 43,
+    "input": "london 4pm to chicago",
+    "expectedSource": "london",
+    "expectedTarget": "chicago",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 16,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 44,
+    "input": "dubai",
+    "expectedSource": null,
+    "expectedTarget": "dubai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 45,
+    "input": "singapore 8:30am to NYC",
+    "expectedSource": "singapore",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 46,
+    "input": "in 30 min singapore",
+    "expectedSource": null,
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 47,
+    "input": "hong kong to sao paulo",
+    "expectedSource": "hong kong",
+    "expectedTarget": "sao paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 48,
+    "input": "mumbai 9am to frankfurt",
+    "expectedSource": "mumbai",
+    "expectedTarget": "frankfurt",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 49,
+    "input": "tokyo to NYC 6pm",
+    "expectedSource": "tokyo",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 18,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 50,
+    "input": "london to dubai",
+    "expectedSource": "london",
+    "expectedTarget": "dubai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 51,
+    "input": "chicago 11am to HK",
+    "expectedSource": "chicago",
+    "expectedTarget": "HK",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 11,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 52,
+    "input": "tmrw 9am NYC to tokyo",
+    "expectedSource": "NYC",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 53,
+    "input": "frankfurt",
+    "expectedSource": null,
+    "expectedTarget": "frankfurt",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 54,
+    "input": "sao paulo to london 2:30pm",
+    "expectedSource": "sao paulo",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 55,
+    "input": "singapore to mumbai 5pm",
+    "expectedSource": "singapore",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 56,
+    "input": "dubai 7am to chicago",
+    "expectedSource": "dubai",
+    "expectedTarget": "chicago",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 7,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 57,
+    "input": "HK to NYC",
+    "expectedSource": "HK",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 58,
+    "input": "mumbai to singapore",
+    "expectedSource": "mumbai",
+    "expectedTarget": "singapore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 59,
+    "input": "tomorrow noon london to tokyo",
+    "expectedSource": "london",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "eval"
+  },
+  {
+    "id": 60,
+    "input": "NYC to frankfurt 10:30am",
+    "expectedSource": "NYC",
+    "expectedTarget": "frankfurt",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "business-traveler",
+    "split": "dev"
+  },
+  {
+    "id": 61,
+    "input": "berlin",
+    "expectedSource": null,
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 62,
+    "input": "SF",
+    "expectedSource": null,
+    "expectedTarget": "SF",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 63,
+    "input": "bangalore",
+    "expectedSource": null,
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 64,
+    "input": "sydney 10am in toronto",
+    "expectedSource": "sydney",
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 65,
+    "input": "amsterdam",
+    "expectedSource": null,
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 66,
+    "input": "seoul",
+    "expectedSource": null,
+    "expectedTarget": "seoul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 67,
+    "input": "são paulo",
+    "expectedSource": null,
+    "expectedTarget": "são paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 68,
+    "input": "Berlin 9am in San Francisco",
+    "expectedSource": "Berlin",
+    "expectedTarget": "San Francisco",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 69,
+    "input": "toronto to bangalore",
+    "expectedSource": "toronto",
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 70,
+    "input": "in 1 hour",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 71,
+    "input": "sydney",
+    "expectedSource": null,
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 72,
+    "input": "what time is it in berlin",
+    "expectedSource": null,
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 73,
+    "input": "SF 3pm to amsterdam",
+    "expectedSource": "SF",
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 74,
+    "input": "bangalore to sydney",
+    "expectedSource": "bangalore",
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 75,
+    "input": "in 30 mins",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 76,
+    "input": "toronto",
+    "expectedSource": null,
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 77,
+    "input": "seoul 8am in berlin",
+    "expectedSource": "seoul",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 78,
+    "input": "são paulo to sf",
+    "expectedSource": "são paulo",
+    "expectedTarget": "sf",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 79,
+    "input": "amsterdam 5pm in bangalore",
+    "expectedSource": "amsterdam",
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 80,
+    "input": "sydney to toronto",
+    "expectedSource": "sydney",
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 81,
+    "input": "in 2h",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 82,
+    "input": "berlin to seoul",
+    "expectedSource": "berlin",
+    "expectedTarget": "seoul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 83,
+    "input": "san francisco",
+    "expectedSource": null,
+    "expectedTarget": "san francisco",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 84,
+    "input": "bangalore 9am in amsterdam",
+    "expectedSource": "bangalore",
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 85,
+    "input": "toronto 2pm to berlin",
+    "expectedSource": "toronto",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 86,
+    "input": "sydney 4pm in sf",
+    "expectedSource": "sydney",
+    "expectedTarget": "sf",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 16,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 87,
+    "input": "amsterdam to são paulo",
+    "expectedSource": "amsterdam",
+    "expectedTarget": "são paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 88,
+    "input": "in 45 mins",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 89,
+    "input": "berlin 6pm in sydney",
+    "expectedSource": "berlin",
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 18,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 90,
+    "input": "toronto to seoul",
+    "expectedSource": "toronto",
+    "expectedTarget": "seoul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 91,
+    "input": "sf to bangalore",
+    "expectedSource": "sf",
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 92,
+    "input": "são paulo 10am in amsterdam",
+    "expectedSource": "são paulo",
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 93,
+    "input": "sydney to berlin",
+    "expectedSource": "sydney",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 94,
+    "input": "seoul 7am in toronto",
+    "expectedSource": "seoul",
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 7,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 95,
+    "input": "bangalore to sf",
+    "expectedSource": "bangalore",
+    "expectedTarget": "sf",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 96,
+    "input": "tomorrow 9am berlin in sydney",
+    "expectedSource": "berlin",
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 97,
+    "input": "seoul to amsterdam",
+    "expectedSource": "seoul",
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 98,
+    "input": "berlin 3pm to bangalore",
+    "expectedSource": "berlin",
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 99,
+    "input": "sf 10am in seoul",
+    "expectedSource": "sf",
+    "expectedTarget": "seoul",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 100,
+    "input": "são paulo to toronto",
+    "expectedSource": "são paulo",
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 101,
+    "input": "in 90 mins",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 102,
+    "input": "amsterdam 8am in sf",
+    "expectedSource": "amsterdam",
+    "expectedTarget": "sf",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 103,
+    "input": "bangalore to berlin",
+    "expectedSource": "bangalore",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 104,
+    "input": "toronto 5pm in sydney",
+    "expectedSource": "toronto",
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 105,
+    "input": "seoul to são paulo",
+    "expectedSource": "seoul",
+    "expectedTarget": "são paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "eval"
+  },
+  {
+    "id": 106,
+    "input": "sydney 2pm in amsterdam",
+    "expectedSource": "sydney",
+    "expectedTarget": "amsterdam",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 107,
+    "input": "bengaluru",
+    "expectedSource": null,
+    "expectedTarget": "bengaluru",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 108,
+    "input": "berlin to sf",
+    "expectedSource": "berlin",
+    "expectedTarget": "sf",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 109,
+    "input": "toronto 11am to bangalore",
+    "expectedSource": "toronto",
+    "expectedTarget": "bangalore",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 11,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 110,
+    "input": "in 1h",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 111,
+    "input": "amsterdam to seoul",
+    "expectedSource": "amsterdam",
+    "expectedTarget": "seoul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 112,
+    "input": "sf 9am to sydney",
+    "expectedSource": "sf",
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 113,
+    "input": "bangalore 6pm in toronto",
+    "expectedSource": "bangalore",
+    "expectedTarget": "toronto",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 18,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "remote-worker",
+    "split": "dev"
+  },
+  {
+    "id": 114,
+    "input": "Delhi India time",
+    "expectedSource": null,
+    "expectedTarget": "Delhi India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 115,
+    "input": "what time is it in Manila Philippines",
+    "expectedSource": null,
+    "expectedTarget": "Manila Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 116,
+    "input": "London time right now",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 117,
+    "input": "time in Mumbai India",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 118,
+    "input": "Lagos Nigeria current time",
+    "expectedSource": null,
+    "expectedTarget": "Lagos Nigeria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 119,
+    "input": "Chennai India",
+    "expectedSource": null,
+    "expectedTarget": "Chennai India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 120,
+    "input": "what time in Manchester UK",
+    "expectedSource": null,
+    "expectedTarget": "Manchester UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 121,
+    "input": "Philippines time",
+    "expectedSource": null,
+    "expectedTarget": "Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 122,
+    "input": "time in Delhi right now",
+    "expectedSource": null,
+    "expectedTarget": "Delhi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 123,
+    "input": "London UK time",
+    "expectedSource": null,
+    "expectedTarget": "London UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 124,
+    "input": "what time is it in Lagos",
+    "expectedSource": null,
+    "expectedTarget": "Lagos",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 125,
+    "input": "Mumbai time right now",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 126,
+    "input": "Manila time",
+    "expectedSource": null,
+    "expectedTarget": "Manila",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 127,
+    "input": "India time",
+    "expectedSource": null,
+    "expectedTarget": "India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 128,
+    "input": "UK time",
+    "expectedSource": null,
+    "expectedTarget": "UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 129,
+    "input": "time difference Delhi to London",
+    "expectedSource": "Delhi",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 130,
+    "input": "what time Manila Philippines",
+    "expectedSource": null,
+    "expectedTarget": "Manila Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 131,
+    "input": "Nigeria time",
+    "expectedSource": null,
+    "expectedTarget": "Nigeria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 132,
+    "input": "Chennai time right now",
+    "expectedSource": null,
+    "expectedTarget": "Chennai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 133,
+    "input": "Manchester time",
+    "expectedSource": null,
+    "expectedTarget": "Manchester",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 134,
+    "input": "time in Philippines",
+    "expectedSource": null,
+    "expectedTarget": "Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 135,
+    "input": "Delhi time now",
+    "expectedSource": null,
+    "expectedTarget": "Delhi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 136,
+    "input": "what time in Mumbai right now",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 137,
+    "input": "Lagos time",
+    "expectedSource": null,
+    "expectedTarget": "Lagos",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 138,
+    "input": "London right now",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 139,
+    "input": "time in Chennai India",
+    "expectedSource": null,
+    "expectedTarget": "Chennai India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 140,
+    "input": "Manila Philippines current time",
+    "expectedSource": null,
+    "expectedTarget": "Manila Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 141,
+    "input": "what time is it in Manchester UK",
+    "expectedSource": null,
+    "expectedTarget": "Manchester UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 142,
+    "input": "Mumbai India time",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 143,
+    "input": "time in UK",
+    "expectedSource": null,
+    "expectedTarget": "UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 144,
+    "input": "Delhi India right now",
+    "expectedSource": null,
+    "expectedTarget": "Delhi India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 145,
+    "input": "Philippines current time",
+    "expectedSource": null,
+    "expectedTarget": "Philippines",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 146,
+    "input": "what time Lagos Nigeria",
+    "expectedSource": null,
+    "expectedTarget": "Lagos Nigeria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 147,
+    "input": "Manchester UK time now",
+    "expectedSource": null,
+    "expectedTarget": "Manchester UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 148,
+    "input": "time in London UK",
+    "expectedSource": null,
+    "expectedTarget": "London UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 149,
+    "input": "what time in India",
+    "expectedSource": null,
+    "expectedTarget": "India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 150,
+    "input": "Chennai current time",
+    "expectedSource": null,
+    "expectedTarget": "Chennai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 151,
+    "input": "Manila right now",
+    "expectedSource": null,
+    "expectedTarget": "Manila",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "eval"
+  },
+  {
+    "id": 152,
+    "input": "time difference India and UK",
+    "expectedSource": "India",
+    "expectedTarget": "UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"time difference\" as noise, \"and\" as connector",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 153,
+    "input": "Lagos Nigeria time now",
+    "expectedSource": null,
+    "expectedTarget": "Lagos Nigeria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 154,
+    "input": "what time is it in Delhi India",
+    "expectedSource": null,
+    "expectedTarget": "Delhi India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 155,
+    "input": "Mumbai right now",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 156,
+    "input": "time in Manila right now",
+    "expectedSource": null,
+    "expectedTarget": "Manila",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 157,
+    "input": "London time now",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 158,
+    "input": "what time in Chennai",
+    "expectedSource": null,
+    "expectedTarget": "Chennai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 159,
+    "input": "Nigeria current time",
+    "expectedSource": null,
+    "expectedTarget": "Nigeria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 160,
+    "input": "8pm in Delhi what time in London",
+    "expectedSource": "Delhi",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 20,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"what time\" as noise between locations",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 161,
+    "input": "evening time Manila",
+    "expectedSource": null,
+    "expectedTarget": "Manila",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"evening time\" as vague noise — no precise time extractable",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 162,
+    "input": "Machester UK time",
+    "expectedSource": null,
+    "expectedTarget": "Machester UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 163,
+    "input": "time in Mumabi India",
+    "expectedSource": null,
+    "expectedTarget": "Mumabi India",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "family-caller",
+    "split": "dev"
+  },
+  {
+    "id": 164,
+    "input": "Reykjavik",
+    "expectedSource": null,
+    "expectedTarget": "Reykjavik",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 165,
+    "input": "accra ghana",
+    "expectedSource": null,
+    "expectedTarget": "accra ghana",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 166,
+    "input": "time in Kathmandu",
+    "expectedSource": null,
+    "expectedTarget": "Kathmandu",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 167,
+    "input": "Montevideo Uruguay",
+    "expectedSource": null,
+    "expectedTarget": "Montevideo Uruguay",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 168,
+    "input": "what time is it in Tbilisi",
+    "expectedSource": null,
+    "expectedTarget": "Tbilisi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 169,
+    "input": "Marrakech",
+    "expectedSource": null,
+    "expectedTarget": "Marrakech",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 170,
+    "input": "hanoi vietnam",
+    "expectedSource": null,
+    "expectedTarget": "hanoi vietnam",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 171,
+    "input": "Auckland New Zealand",
+    "expectedSource": null,
+    "expectedTarget": "Auckland New Zealand",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 172,
+    "input": "cape town",
+    "expectedSource": null,
+    "expectedTarget": "cape town",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 173,
+    "input": "Lisbon Portugal",
+    "expectedSource": null,
+    "expectedTarget": "Lisbon Portugal",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 174,
+    "input": "prague",
+    "expectedSource": null,
+    "expectedTarget": "prague",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 175,
+    "input": "Athens Greece",
+    "expectedSource": null,
+    "expectedTarget": "Athens Greece",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 176,
+    "input": "lima peru",
+    "expectedSource": null,
+    "expectedTarget": "lima peru",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 177,
+    "input": "Almaty Kazakhstan",
+    "expectedSource": null,
+    "expectedTarget": "Almaty Kazakhstan",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 178,
+    "input": "nairobi time",
+    "expectedSource": null,
+    "expectedTarget": "nairobi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 179,
+    "input": "Casablanca Morocco",
+    "expectedSource": null,
+    "expectedTarget": "Casablanca Morocco",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 180,
+    "input": "Iceland",
+    "expectedSource": null,
+    "expectedTarget": "Iceland",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 181,
+    "input": "current time in Ghana",
+    "expectedSource": null,
+    "expectedTarget": "Ghana",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 182,
+    "input": "Nepal time",
+    "expectedSource": null,
+    "expectedTarget": "Nepal",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 183,
+    "input": "Ho Chi Minh City",
+    "expectedSource": null,
+    "expectedTarget": "Ho Chi Minh City",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 184,
+    "input": "Buenos Aires",
+    "expectedSource": null,
+    "expectedTarget": "Buenos Aires",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 185,
+    "input": "kuala lumpur malaysia",
+    "expectedSource": null,
+    "expectedTarget": "kuala lumpur malaysia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 186,
+    "input": "Salt Lake City",
+    "expectedSource": null,
+    "expectedTarget": "Salt Lake City",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 187,
+    "input": "ulaanbaatar",
+    "expectedSource": null,
+    "expectedTarget": "ulaanbaatar",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 188,
+    "input": "Zanzibar",
+    "expectedSource": null,
+    "expectedTarget": "Zanzibar",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 189,
+    "input": "bogota colombia",
+    "expectedSource": null,
+    "expectedTarget": "bogota colombia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 190,
+    "input": "current time Tbilisi",
+    "expectedSource": null,
+    "expectedTarget": "Tbilisi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 191,
+    "input": "time in reykjavik now",
+    "expectedSource": null,
+    "expectedTarget": "reykjavik",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 192,
+    "input": "Accra",
+    "expectedSource": null,
+    "expectedTarget": "Accra",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 193,
+    "input": "KATHMANDU",
+    "expectedSource": null,
+    "expectedTarget": "KATHMANDU",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 194,
+    "input": "montevideo time zone",
+    "expectedSource": null,
+    "expectedTarget": "montevideo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 195,
+    "input": "Marrakech Morocco time",
+    "expectedSource": null,
+    "expectedTarget": "Marrakech Morocco",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 196,
+    "input": "hanoi",
+    "expectedSource": null,
+    "expectedTarget": "hanoi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 197,
+    "input": "what time is it in Auckland",
+    "expectedSource": null,
+    "expectedTarget": "Auckland",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 198,
+    "input": "Cape Town South Africa",
+    "expectedSource": null,
+    "expectedTarget": "Cape Town South Africa",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 199,
+    "input": "lisbon",
+    "expectedSource": null,
+    "expectedTarget": "lisbon",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 200,
+    "input": "Prague Czech Republic",
+    "expectedSource": null,
+    "expectedTarget": "Prague Czech Republic",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 201,
+    "input": "athens",
+    "expectedSource": null,
+    "expectedTarget": "athens",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 202,
+    "input": "Lima",
+    "expectedSource": null,
+    "expectedTarget": "Lima",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "dev"
+  },
+  {
+    "id": 203,
+    "input": "almaty time",
+    "expectedSource": null,
+    "expectedTarget": "almaty",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 204,
+    "input": "Nairobi Kenya",
+    "expectedSource": null,
+    "expectedTarget": "Nairobi Kenya",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "tourist",
+    "split": "eval"
+  },
+  {
+    "id": 205,
+    "input": "what time is it in Tokyo?",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 206,
+    "input": "3pm to to London",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 207,
+    "input": "time time NYC",
+    "expectedSource": null,
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 208,
+    "input": "EST London",
+    "expectedSource": null,
+    "expectedTarget": "EST London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 209,
+    "input": "3pm",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 210,
+    "input": "noon",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 211,
+    "input": "hi there",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 212,
+    "input": "🌍⏰",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "emoji/non-ASCII garbage — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 213,
+    "input": "please tell me the time in Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 214,
+    "input": "how many hours ahead is London?",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "natural language question — extract London",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 215,
+    "input": "ny",
+    "expectedSource": null,
+    "expectedTarget": "ny",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 216,
+    "input": "p",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 217,
+    "input": "3.30pm",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 218,
+    "input": "new    york    to    london",
+    "expectedSource": "new york",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 219,
+    "input": "NewYork",
+    "expectedSource": null,
+    "expectedTarget": "NewYork",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 220,
+    "input": "time in",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 221,
+    "input": "midnight",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 222,
+    "input": "Tokyo to 3pm PST",
+    "expectedSource": "Tokyo",
+    "expectedTarget": "PST",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 223,
+    "input": "5pm est to tokyo",
+    "expectedSource": "est",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 224,
+    "input": "whats the time",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 225,
+    "input": "london time please",
+    "expectedSource": null,
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 226,
+    "input": "help",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 227,
+    "input": "LA vs NYC time difference",
+    "expectedSource": "LA",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"vs\" as connector, \"time difference\" as noise",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 228,
+    "input": "12:00",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 229,
+    "input": "t",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 230,
+    "input": "fr",
+    "expectedSource": null,
+    "expectedTarget": "fr",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 231,
+    "input": "time now",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 232,
+    "input": "3pm PST to Tokyo time",
+    "expectedSource": "PST",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 233,
+    "input": "London EST",
+    "expectedSource": null,
+    "expectedTarget": "London EST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 234,
+    "input": "convert 3pm",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [],
+    "notes": "no location after noise stripping",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "eval"
+  },
+  {
+    "id": 235,
+    "input": "Tokyo?",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 236,
+    "input": "timezone converter",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 237,
+    "input": "3pm to london to nyc",
+    "expectedSource": "london",
+    "expectedTarget": "nyc",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 238,
+    "input": "TiMe In pArIs",
+    "expectedSource": null,
+    "expectedTarget": "pArIs",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 239,
+    "input": "9.45am Sydney",
+    "expectedSource": null,
+    "expectedTarget": "Sydney",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 45
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 240,
+    "input": "eastern time",
+    "expectedSource": null,
+    "expectedTarget": "eastern",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 241,
+    "input": "3pm to to to chicago",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "parse-failure"
+    ],
+    "notes": "parser returned null — needs review",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 242,
+    "input": "current time tokyo pls",
+    "expectedSource": null,
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 243,
+    "input": "london 3pm",
+    "expectedSource": null,
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 244,
+    "input": "UTC",
+    "expectedSource": null,
+    "expectedTarget": "UTC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [],
+    "notes": "",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "id": 245,
+    "input": "random search query",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "garbage"
+    ],
+    "notes": "garbage input — not a timezone query",
+    "set": "realistic",
+    "persona": "chaos",
+    "split": "dev"
+  },
+  {
+    "input": "Portland",
+    "expectedSource": null,
+    "expectedTarget": "Portland",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Portland OR vs Portland ME — ambiguous without context",
+    "set": "edge",
+    "id": 246
+  },
+  {
+    "input": "Georgia",
+    "expectedSource": null,
+    "expectedTarget": "Georgia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Georgia state vs Georgia country",
+    "set": "edge",
+    "id": 247
+  },
+  {
+    "input": "Birmingham",
+    "expectedSource": null,
+    "expectedTarget": "Birmingham",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Birmingham UK vs Birmingham AL",
+    "set": "edge",
+    "id": 248
+  },
+  {
+    "input": "Victoria",
+    "expectedSource": null,
+    "expectedTarget": "Victoria",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Victoria BC vs Victoria AU vs Victoria Seychelles",
+    "set": "edge",
+    "id": 249
+  },
+  {
+    "input": "Cambridge",
+    "expectedSource": null,
+    "expectedTarget": "Cambridge",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Cambridge UK vs Cambridge MA",
+    "set": "edge",
+    "id": 250
+  },
+  {
+    "input": "Richmond",
+    "expectedSource": null,
+    "expectedTarget": "Richmond",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Richmond VA vs Richmond BC vs Richmond UK",
+    "set": "edge",
+    "id": 251
+  },
+  {
+    "input": "Springfield",
+    "expectedSource": null,
+    "expectedTarget": "Springfield",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Springfield — many US cities with this name",
+    "set": "edge",
+    "id": 252
+  },
+  {
+    "input": "Santiago",
+    "expectedSource": null,
+    "expectedTarget": "Santiago",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Santiago Chile vs Santiago de Compostela Spain",
+    "set": "edge",
+    "id": 253
+  },
+  {
+    "input": "Hamilton",
+    "expectedSource": null,
+    "expectedTarget": "Hamilton",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Hamilton NZ vs Hamilton ON vs Hamilton Bermuda",
+    "set": "edge",
+    "id": 254
+  },
+  {
+    "input": "London to Portland",
+    "expectedSource": "London",
+    "expectedTarget": "Portland",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Portland ambiguity in two-city query",
+    "set": "edge",
+    "id": 255
+  },
+  {
+    "input": "3pm Portland to Birmingham",
+    "expectedSource": "Portland",
+    "expectedTarget": "Birmingham",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Both cities are ambiguous",
+    "set": "edge",
+    "id": 256
+  },
+  {
+    "input": "Perth",
+    "expectedSource": null,
+    "expectedTarget": "Perth",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Perth AU vs Perth Scotland",
+    "set": "edge",
+    "id": 257
+  },
+  {
+    "input": "Newcastle",
+    "expectedSource": null,
+    "expectedTarget": "Newcastle",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Newcastle UK vs Newcastle AU",
+    "set": "edge",
+    "id": 258
+  },
+  {
+    "input": "Valencia",
+    "expectedSource": null,
+    "expectedTarget": "Valencia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Valencia Spain vs Valencia Venezuela",
+    "set": "edge",
+    "id": 259
+  },
+  {
+    "input": "Panama",
+    "expectedSource": null,
+    "expectedTarget": "Panama",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Panama City vs Panama country",
+    "set": "edge",
+    "id": 260
+  },
+  {
+    "input": "Jan Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Jan Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Jan\" could be a name, abbreviation, or month — parser sees as location",
+    "set": "edge",
+    "id": 261
+  },
+  {
+    "input": "March London",
+    "expectedSource": null,
+    "expectedTarget": "March London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"March\" could be month or part of location name",
+    "set": "edge",
+    "id": 262
+  },
+  {
+    "input": "noon Australia",
+    "expectedSource": null,
+    "expectedTarget": "Australia",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"noon\" is a named time — should parse correctly",
+    "set": "edge",
+    "id": 263
+  },
+  {
+    "input": "midnight Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 0,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"midnight\" is a named time — should parse correctly",
+    "set": "edge",
+    "id": 264
+  },
+  {
+    "input": "EST to PST",
+    "expectedSource": "EST",
+    "expectedTarget": "PST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "TZ abbreviations as locations — both source and target",
+    "set": "edge",
+    "id": 265
+  },
+  {
+    "input": "IST to London",
+    "expectedSource": "IST",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "IST is ambiguous: India, Israel, or Ireland Standard Time",
+    "set": "edge",
+    "id": 266
+  },
+  {
+    "input": "Jordan time",
+    "expectedSource": null,
+    "expectedTarget": "Jordan time",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Jordan\" could be country or person name; \"time\" as noise",
+    "set": "edge",
+    "id": 267
+  },
+  {
+    "input": "Turkey to Greece",
+    "expectedSource": "Turkey",
+    "expectedTarget": "Greece",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "Country names that could be other things (turkey the bird)",
+    "set": "edge",
+    "id": 268
+  },
+  {
+    "input": "Nice to Paris",
+    "expectedSource": "Nice",
+    "expectedTarget": "Paris",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Nice\" is a city in France but also an English adjective",
+    "set": "edge",
+    "id": 269
+  },
+  {
+    "input": "Mobile to Dallas",
+    "expectedSource": "Mobile",
+    "expectedTarget": "Dallas",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Mobile\" is a city in Alabama but also a common English word",
+    "set": "edge",
+    "id": 270
+  },
+  {
+    "input": "Lima to Quito",
+    "expectedSource": "Lima",
+    "expectedTarget": "Quito",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Lima\" — city name that looks like it could be something else",
+    "set": "edge",
+    "id": 271
+  },
+  {
+    "input": "Reading to London",
+    "expectedSource": "Reading",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "token-ambiguity"
+    ],
+    "notes": "\"Reading\" is a city but also a common English word",
+    "set": "edge",
+    "id": 272
+  },
+  {
+    "input": "what time is it in Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Natural language question — noise words should be stripped",
+    "set": "edge",
+    "id": 273
+  },
+  {
+    "input": "what time is 3pm NYC in London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Question with embedded valid query",
+    "set": "edge",
+    "id": 274
+  },
+  {
+    "input": "can you tell me 3pm NYC to London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Polite request wrapping valid query",
+    "set": "edge",
+    "id": 275
+  },
+  {
+    "input": "please convert 5pm London to Tokyo",
+    "expectedSource": "London",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Polite request with \"convert\"",
+    "set": "edge",
+    "id": 276
+  },
+  {
+    "input": "time in Berlin right now",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"time in\" prefix and \"right now\" suffix as noise",
+    "set": "edge",
+    "id": 277
+  },
+  {
+    "input": "current time Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"current\" as noise word",
+    "set": "edge",
+    "id": 278
+  },
+  {
+    "input": "3pm meeting time Berlin London",
+    "expectedSource": "Berlin",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"meeting time\" as noise between locations — hard to parse",
+    "set": "edge",
+    "id": 279
+  },
+  {
+    "input": "I need to know what 4pm in NYC is in London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 16,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Long natural language with valid query embedded",
+    "set": "edge",
+    "id": 280
+  },
+  {
+    "input": "convert Tokyo time to EST",
+    "expectedSource": "Tokyo",
+    "expectedTarget": "EST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"convert\" and \"time\" as noise",
+    "set": "edge",
+    "id": 281
+  },
+  {
+    "input": "tell me the time difference between NYC and London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Natural language with \"difference between\"",
+    "set": "edge",
+    "id": 282
+  },
+  {
+    "input": "when its 3pm in NYC what time is it in London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Full sentence query",
+    "set": "edge",
+    "id": 283
+  },
+  {
+    "input": "if its 9am in London what time in Tokyo",
+    "expectedSource": "London",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Conditional phrasing",
+    "set": "edge",
+    "id": 284
+  },
+  {
+    "input": "Berlin time now please",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Noise at end: \"time now please\"",
+    "set": "edge",
+    "id": 285
+  },
+  {
+    "input": "whats the time in sydney",
+    "expectedSource": null,
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Contraction and noise words",
+    "set": "edge",
+    "id": 286
+  },
+  {
+    "input": "ok google time in Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Voice assistant prefix as noise",
+    "set": "edge",
+    "id": 287
+  },
+  {
+    "input": "hey what is 2pm est in tokyo",
+    "expectedSource": "est",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"hey what is\" as noise prefix",
+    "set": "edge",
+    "id": 288
+  },
+  {
+    "input": "i want to schedule a call at 3pm london time for my colleague in mumbai",
+    "expectedSource": "london",
+    "expectedTarget": "mumbai",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "Very long sentence with lots of noise",
+    "set": "edge",
+    "id": 289
+  },
+  {
+    "input": "time zone difference London NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"time zone difference\" as noise prefix",
+    "set": "edge",
+    "id": 290
+  },
+  {
+    "input": "check time for Dubai",
+    "expectedSource": null,
+    "expectedTarget": "Dubai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"check time for\" as noise",
+    "set": "edge",
+    "id": 291
+  },
+  {
+    "input": "show me 6pm Tokyo in Berlin time",
+    "expectedSource": "Tokyo",
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 18,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "noise-tolerance"
+    ],
+    "notes": "\"show me\" prefix and \"time\" suffix noise",
+    "set": "edge",
+    "id": 292
+  },
+  {
+    "input": "Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Single city — valid minimal query",
+    "set": "edge",
+    "id": 293
+  },
+  {
+    "input": "6pm",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Time only, no location — should fail or return null",
+    "set": "edge",
+    "id": 294
+  },
+  {
+    "input": "",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Empty string",
+    "set": "edge",
+    "id": 295
+  },
+  {
+    "input": "   ",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Whitespace only",
+    "set": "edge",
+    "id": 296
+  },
+  {
+    "input": "hi",
+    "expectedSource": null,
+    "expectedTarget": "hi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Greeting, not a timezone query",
+    "set": "edge",
+    "id": 297
+  },
+  {
+    "input": "asdf",
+    "expectedSource": null,
+    "expectedTarget": "asdf",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Random characters",
+    "set": "edge",
+    "id": 298
+  },
+  {
+    "input": "help",
+    "expectedSource": null,
+    "expectedTarget": "help",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Help request, not a timezone query",
+    "set": "edge",
+    "id": 299
+  },
+  {
+    "input": "to",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Connector only — should return null",
+    "set": "edge",
+    "id": 300
+  },
+  {
+    "input": "3pm to",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Time + connector, no location",
+    "set": "edge",
+    "id": 301
+  },
+  {
+    "input": "to London",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Leading connector + city — connector stripped, city valid",
+    "set": "edge",
+    "id": 302
+  },
+  {
+    "input": "London to",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "City + trailing connector — partial query",
+    "set": "edge",
+    "id": 303
+  },
+  {
+    "input": "tomorrow",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Date modifier only, no location",
+    "set": "edge",
+    "id": 304
+  },
+  {
+    "input": "now",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "\"now\" alone — stripped in preprocessing, returns null",
+    "set": "edge",
+    "id": 305
+  },
+  {
+    "input": "12345",
+    "expectedSource": null,
+    "expectedTarget": "12345",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Number string, not a valid query",
+    "set": "edge",
+    "id": 306
+  },
+  {
+    "input": "the",
+    "expectedSource": null,
+    "expectedTarget": "the",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "completeness"
+    ],
+    "notes": "Common word, not a location",
+    "set": "edge",
+    "id": 307
+  },
+  {
+    "input": "Londno",
+    "expectedSource": null,
+    "expectedTarget": "Londno",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for London — resolver should fuzzy match",
+    "set": "edge",
+    "id": 308
+  },
+  {
+    "input": "Zuric",
+    "expectedSource": null,
+    "expectedTarget": "Zuric",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Zurich",
+    "set": "edge",
+    "id": 309
+  },
+  {
+    "input": "Tokyp",
+    "expectedSource": null,
+    "expectedTarget": "Tokyp",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Tokyo",
+    "set": "edge",
+    "id": 310
+  },
+  {
+    "input": "Sydeny",
+    "expectedSource": null,
+    "expectedTarget": "Sydeny",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Sydney",
+    "set": "edge",
+    "id": 311
+  },
+  {
+    "input": "Berln",
+    "expectedSource": null,
+    "expectedTarget": "Berln",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Berlin",
+    "set": "edge",
+    "id": 312
+  },
+  {
+    "input": "Singaproe",
+    "expectedSource": null,
+    "expectedTarget": "Singaproe",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Singapore",
+    "set": "edge",
+    "id": 313
+  },
+  {
+    "input": "Melborne",
+    "expectedSource": null,
+    "expectedTarget": "Melborne",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Melbourne",
+    "set": "edge",
+    "id": 314
+  },
+  {
+    "input": "Bangkoc",
+    "expectedSource": null,
+    "expectedTarget": "Bangkoc",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Bangkok",
+    "set": "edge",
+    "id": 315
+  },
+  {
+    "input": "Mumabi",
+    "expectedSource": null,
+    "expectedTarget": "Mumabi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Mumbai",
+    "set": "edge",
+    "id": 316
+  },
+  {
+    "input": "Mosocw",
+    "expectedSource": null,
+    "expectedTarget": "Mosocw",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Moscow",
+    "set": "edge",
+    "id": 317
+  },
+  {
+    "input": "Beuons Aires",
+    "expectedSource": null,
+    "expectedTarget": "Beuons Aires",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Buenos Aires",
+    "set": "edge",
+    "id": 318
+  },
+  {
+    "input": "Tornoto",
+    "expectedSource": null,
+    "expectedTarget": "Tornoto",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Toronto",
+    "set": "edge",
+    "id": 319
+  },
+  {
+    "input": "Londno to Tokyp",
+    "expectedSource": "Londno",
+    "expectedTarget": "Tokyp",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Both cities have typos",
+    "set": "edge",
+    "id": 320
+  },
+  {
+    "input": "3pm Sydeny to Melborne",
+    "expectedSource": "Sydeny",
+    "expectedTarget": "Melborne",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Time + two typo cities",
+    "set": "edge",
+    "id": 321
+  },
+  {
+    "input": "Delhii",
+    "expectedSource": null,
+    "expectedTarget": "Delhii",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "typo"
+    ],
+    "notes": "Typo for Delhi",
+    "set": "edge",
+    "id": 322
+  },
+  {
+    "input": "3pm EST to London",
+    "expectedSource": "EST",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "TZ abbreviation as source + city as target",
+    "set": "edge",
+    "id": 323
+  },
+  {
+    "input": "CET to JST",
+    "expectedSource": "CET",
+    "expectedTarget": "JST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Two TZ abbreviations",
+    "set": "edge",
+    "id": 324
+  },
+  {
+    "input": "15:00 NYC to GMT",
+    "expectedSource": "NYC",
+    "expectedTarget": "GMT",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "24h time + city + TZ abbreviation",
+    "set": "edge",
+    "id": 325
+  },
+  {
+    "input": "PST to IST",
+    "expectedSource": "PST",
+    "expectedTarget": "IST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "IST is ambiguous — India? Israel? Ireland?",
+    "set": "edge",
+    "id": 326
+  },
+  {
+    "input": "noon EST to London",
+    "expectedSource": "EST",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Named time + TZ abbreviation + city",
+    "set": "edge",
+    "id": 327
+  },
+  {
+    "input": "Tokyo to PT",
+    "expectedSource": "Tokyo",
+    "expectedTarget": "PT",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "City + informal TZ abbreviation (Pacific Time)",
+    "set": "edge",
+    "id": 328
+  },
+  {
+    "input": "3.30pm London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Dot-separated time format",
+    "set": "edge",
+    "id": 329
+  },
+  {
+    "input": "AEST to Berlin",
+    "expectedSource": "AEST",
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Australian TZ abbreviation + European city",
+    "set": "edge",
+    "id": 330
+  },
+  {
+    "input": "UTC to Tokyo",
+    "expectedSource": "UTC",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "UTC as source",
+    "set": "edge",
+    "id": 331
+  },
+  {
+    "input": "midnight GMT to New York",
+    "expectedSource": "GMT",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 0,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Named time + TZ abbreviation + multi-word city",
+    "set": "edge",
+    "id": 332
+  },
+  {
+    "input": "9am pacific to eastern",
+    "expectedSource": "pacific",
+    "expectedTarget": "eastern",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Informal timezone names without \"time\"",
+    "set": "edge",
+    "id": 333
+  },
+  {
+    "input": "3pm London GMT to Tokyo JST",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Redundant TZ info — confusing format",
+    "set": "edge",
+    "id": 334
+  },
+  {
+    "input": "BST to CEST",
+    "expectedSource": "BST",
+    "expectedTarget": "CEST",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Summer time abbreviations",
+    "set": "edge",
+    "id": 335
+  },
+  {
+    "input": "ET to CT",
+    "expectedSource": "ET",
+    "expectedTarget": "CT",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Short US timezone abbreviations",
+    "set": "edge",
+    "id": 336
+  },
+  {
+    "input": "3pm US Eastern to Japan",
+    "expectedSource": "US Eastern",
+    "expectedTarget": "Japan",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Verbose timezone name + country name",
+    "set": "edge",
+    "id": 337
+  },
+  {
+    "input": "New York to London",
+    "expectedSource": "New York",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two-word city as source",
+    "set": "edge",
+    "id": 338
+  },
+  {
+    "input": "London to New York",
+    "expectedSource": "London",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two-word city as target",
+    "set": "edge",
+    "id": 339
+  },
+  {
+    "input": "Ho Chi Minh City to Bangkok",
+    "expectedSource": "Ho Chi Minh City",
+    "expectedTarget": "Bangkok",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Four-word city as source",
+    "set": "edge",
+    "id": 340
+  },
+  {
+    "input": "Salt Lake City to Denver",
+    "expectedSource": "Salt Lake City",
+    "expectedTarget": "Denver",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Three-word city as source",
+    "set": "edge",
+    "id": 341
+  },
+  {
+    "input": "3pm New York to Los Angeles",
+    "expectedSource": "New York",
+    "expectedTarget": "Los Angeles",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Time + two multi-word cities",
+    "set": "edge",
+    "id": 342
+  },
+  {
+    "input": "Buenos Aires to São Paulo",
+    "expectedSource": "Buenos Aires",
+    "expectedTarget": "São Paulo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Diacritical marks in city name",
+    "set": "edge",
+    "id": 343
+  },
+  {
+    "input": "Kuala Lumpur",
+    "expectedSource": null,
+    "expectedTarget": "Kuala Lumpur",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two-word city alone",
+    "set": "edge",
+    "id": 344
+  },
+  {
+    "input": "Rio de Janeiro to Mexico City",
+    "expectedSource": "Rio de Janeiro",
+    "expectedTarget": "Mexico City",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Three-word city to two-word city",
+    "set": "edge",
+    "id": 345
+  },
+  {
+    "input": "San Francisco to New York",
+    "expectedSource": "San Francisco",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two multi-word US cities",
+    "set": "edge",
+    "id": 346
+  },
+  {
+    "input": "Tel Aviv to Istanbul",
+    "expectedSource": "Tel Aviv",
+    "expectedTarget": "Istanbul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two-word Middle Eastern city",
+    "set": "edge",
+    "id": 347
+  },
+  {
+    "input": "3pm Hong Kong to Los Angeles",
+    "expectedSource": "Hong Kong",
+    "expectedTarget": "Los Angeles",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Time + two-word city + two-word city",
+    "set": "edge",
+    "id": 348
+  },
+  {
+    "input": "Addis Ababa",
+    "expectedSource": null,
+    "expectedTarget": "Addis Ababa",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two-word African city",
+    "set": "edge",
+    "id": 349
+  },
+  {
+    "input": "Dar es Salaam to Nairobi",
+    "expectedSource": "Dar es Salaam",
+    "expectedTarget": "Nairobi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Three-word city with lowercase preposition",
+    "set": "edge",
+    "id": 350
+  },
+  {
+    "input": "Phnom Penh to Ho Chi Minh City",
+    "expectedSource": "Phnom Penh",
+    "expectedTarget": "Ho Chi Minh City",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Two multi-word Asian cities",
+    "set": "edge",
+    "id": 351
+  },
+  {
+    "input": "noon San José to Guatemala City",
+    "expectedSource": "San José",
+    "expectedTarget": "Guatemala City",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "multi-word-city"
+    ],
+    "notes": "Named time + diacritical city + multi-word city",
+    "set": "edge",
+    "id": 352
+  },
+  {
+    "input": "LA",
+    "expectedSource": null,
+    "expectedTarget": "LA",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Common abbreviation for Los Angeles",
+    "set": "edge",
+    "id": 353
+  },
+  {
+    "input": "SF",
+    "expectedSource": null,
+    "expectedTarget": "SF",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Common abbreviation for San Francisco",
+    "set": "edge",
+    "id": 354
+  },
+  {
+    "input": "UK",
+    "expectedSource": null,
+    "expectedTarget": "UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Country abbreviation",
+    "set": "edge",
+    "id": 355
+  },
+  {
+    "input": "NZ",
+    "expectedSource": null,
+    "expectedTarget": "NZ",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Country abbreviation for New Zealand",
+    "set": "edge",
+    "id": 356
+  },
+  {
+    "input": "DC",
+    "expectedSource": null,
+    "expectedTarget": "DC",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Abbreviation for Washington DC",
+    "set": "edge",
+    "id": 357
+  },
+  {
+    "input": "HK",
+    "expectedSource": null,
+    "expectedTarget": "HK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Abbreviation for Hong Kong",
+    "set": "edge",
+    "id": 358
+  },
+  {
+    "input": "SG",
+    "expectedSource": null,
+    "expectedTarget": "SG",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Abbreviation for Singapore",
+    "set": "edge",
+    "id": 359
+  },
+  {
+    "input": "LA to NY",
+    "expectedSource": "LA",
+    "expectedTarget": "NY",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Two abbreviations with connector",
+    "set": "edge",
+    "id": 360
+  },
+  {
+    "input": "3pm LA to SF",
+    "expectedSource": "LA",
+    "expectedTarget": "SF",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "Time + two abbreviations",
+    "set": "edge",
+    "id": 361
+  },
+  {
+    "input": "JP",
+    "expectedSource": null,
+    "expectedTarget": "JP",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "JP — not a common abbreviation, could be Japan",
+    "set": "edge",
+    "id": 362
+  },
+  {
+    "input": "AZ",
+    "expectedSource": null,
+    "expectedTarget": "AZ",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "AZ — Arizona or Azerbaijan?",
+    "set": "edge",
+    "id": 363
+  },
+  {
+    "input": "KL",
+    "expectedSource": null,
+    "expectedTarget": "KL",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "short-input"
+    ],
+    "notes": "KL — Kuala Lumpur abbreviation, less common",
+    "set": "edge",
+    "id": 364
+  }
+]
