@@ -6,32 +6,46 @@ export interface Token {
   raw: string
 }
 
-export interface TimeValue {
-  hour: number
-  minute: number
+// --- TimeRef: discriminated union replacing TimeValue + relativeMinutes ---
+
+export type TimeRef =
+  | { type: 'now' }
+  | { type: 'absolute'; hour: number; minute: number }
+  | { type: 'relative'; minutes: number }
+
+// --- LocationRef: replaces ResolvedTimezone ---
+
+export type LocationKind = 'city' | 'country' | 'region' | 'timezone'
+
+export interface LocationRef {
+  iana: string
+  displayName: string
+  kind: LocationKind
+  country?: string
+  entitySlug?: string
+  resolveMethod: 'entity' | 'alias' | 'state' | 'abbreviation' | 'city-db' | 'fuzzy'
+  interpretedAs?: string
 }
+
+// --- ParsedQuery ---
+
+export type DateModifier = 'tomorrow' | 'yesterday' | 'today' | null
 
 export interface ParsedQuery {
   sourceLocation: string | null
   targetLocation: string
-  time: TimeValue | null
-  dateModifier: 'tomorrow' | 'yesterday' | 'today' | null
-  relativeMinutes: number | null
+  time: TimeRef
+  dateModifier: DateModifier
 }
 
-export interface ResolvedTimezone {
-  iana: string
-  city: string
-  country?: string
-  method: 'entity' | 'alias' | 'state' | 'abbreviation' | 'city-db' | 'fuzzy'
-  entitySlug?: string
-  interpretedAs?: string
-}
+// --- ResolveResult ---
 
 export interface ResolveResult {
-  primary: ResolvedTimezone
-  alternatives: ResolvedTimezone[]
+  primary: LocationRef
+  alternatives: LocationRef[]
 }
+
+// --- TimezoneInfo (display type, unchanged for components) ---
 
 export interface TimezoneInfo {
   formattedTime12: string
@@ -45,7 +59,19 @@ export interface TimezoneInfo {
   entitySlug?: string
 }
 
+// --- ConversionIntent ---
+
+export interface ConversionIntent {
+  source: LocationRef
+  target: LocationRef
+  time: TimeRef
+  dateModifier: DateModifier
+}
+
+// --- ConversionResult ---
+
 export interface ConversionResult {
+  intent: ConversionIntent
   source: TimezoneInfo
   target: TimezoneInfo
   offsetDifference: string

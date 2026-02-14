@@ -3,7 +3,7 @@ import { Settings } from 'luxon'
 import { parse } from './parser'
 import { resolveLocation } from './resolver'
 import { convert } from './converter'
-import type { ConversionResult } from './types'
+import type { ConversionResult, ConversionIntent } from './types'
 
 // Full pipeline helper
 function pipeline(input: string): ConversionResult | null {
@@ -20,13 +20,13 @@ function pipeline(input: string): ConversionResult | null {
   }
   if (!source) return null
 
-  return convert(
-    source.primary,
-    target.primary,
-    parsed.time,
-    parsed.dateModifier,
-    parsed.relativeMinutes,
-  )
+  const intent: ConversionIntent = {
+    source: source.primary,
+    target: target.primary,
+    time: parsed.time,
+    dateModifier: parsed.dateModifier,
+  }
+  return convert(intent)
 }
 
 describe('integration', () => {

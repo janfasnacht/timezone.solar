@@ -1,10 +1,15 @@
-import type { Token, TokenType, TimeValue, ParsedQuery } from './types'
+import type { Token, TokenType, TimeRef, ParsedQuery } from './types'
 import { CONNECTORS, NAMED_TIMES, DATE_MODIFIERS } from './constants'
 
 const TIME_REGEX = /^(\d{1,2})([:.](\d{2}))?\s*(am|pm)?$/i
 const TIME_24H_REGEX = /^([01]?\d|2[0-3]):([0-5]\d)$/
 
-function parseTimeToken(value: string): TimeValue | null {
+interface TimeValueInternal {
+  hour: number
+  minute: number
+}
+
+function parseTimeToken(value: string): TimeValueInternal | null {
   const lower = value.toLowerCase()
 
   // Named times
@@ -195,7 +200,7 @@ export function parse(input: string): ParsedQuery | null {
 
   let sourceLocation: string | null = null
   let targetLocation = ''
-  let time: TimeValue | null = null
+  let time: TimeValueInternal | null = null
 
   // === Two-location patterns (existing 8) ===
 
@@ -284,5 +289,15 @@ export function parse(input: string): ParsedQuery | null {
     return null
   }
 
-  return { sourceLocation, targetLocation, time, dateModifier, relativeMinutes }
+  // Build TimeRef from extracted values
+  let timeRef: TimeRef
+  if (relativeMinutes !== null) {
+    timeRef = { type: 'relative', minutes: relativeMinutes }
+  } else if (time !== null) {
+    timeRef = { type: 'absolute', hour: time.hour, minute: time.minute }
+  } else {
+    timeRef = { type: 'now' }
+  }
+
+  return { sourceLocation, targetLocation, time: timeRef, dateModifier }
 }

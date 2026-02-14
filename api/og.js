@@ -90832,7 +90832,15 @@ function parse(input) {
   } else {
     return null;
   }
-  return { sourceLocation, targetLocation, time, dateModifier, relativeMinutes };
+  let timeRef;
+  if (relativeMinutes !== null) {
+    timeRef = { type: "relative", minutes: relativeMinutes };
+  } else if (time !== null) {
+    timeRef = { type: "absolute", hour: time.hour, minute: time.minute };
+  } else {
+    timeRef = { type: "now" };
+  }
+  return { sourceLocation, targetLocation, time: timeRef, dateModifier };
 }
 
 // src/engine/resolver.ts
@@ -93353,18 +93361,19 @@ function normalizeCountry(country) {
   if (country === "United States of America" || country === "United States") return "USA";
   return country;
 }
-function cityEntryToResolved(entry, method) {
+function cityEntryToLocationRef(entry, resolveMethod, kind = "city") {
   return {
     iana: entry.timezone,
-    city: entry.city,
+    displayName: entry.city,
+    kind,
     country: normalizeCountry(entry.country),
-    method
+    resolveMethod
   };
 }
-function cityEntriesToResolveResult(entries, method) {
+function cityEntriesToResolveResult(entries, resolveMethod, kind = "city") {
   return {
-    primary: cityEntryToResolved(entries[0], method),
-    alternatives: entries.slice(1).map((e) => cityEntryToResolved(e, method))
+    primary: cityEntryToLocationRef(entries[0], resolveMethod, kind),
+    alternatives: entries.slice(1).map((e) => cityEntryToLocationRef(e, resolveMethod, kind))
   };
 }
 function resolveLocation(input) {
@@ -93391,9 +93400,10 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
     return {
       primary: {
         iana: entity.iana,
-        city: entity.displayName,
+        displayName: entity.displayName,
+        kind: "city",
         country: entity.country,
-        method: "entity",
+        resolveMethod: "entity",
         entitySlug: entity.slug
       },
       alternatives: []
@@ -93410,7 +93420,7 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   const stateIana = US_STATE_TIMEZONES[normalized];
   if (stateIana) {
     return {
-      primary: { iana: stateIana, city: originalTrimmed, country: "USA", method: "state" },
+      primary: { iana: stateIana, displayName: originalTrimmed, kind: "region", country: "USA", resolveMethod: "state" },
       alternatives: []
     };
   }
@@ -93420,8 +93430,9 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
     return {
       primary: {
         iana: tzAbbr,
-        city: normalized.toUpperCase(),
-        method: "abbreviation",
+        displayName: normalized.toUpperCase(),
+        kind: "timezone",
+        resolveMethod: "abbreviation",
         interpretedAs: label
       },
       alternatives: []
@@ -93436,7 +93447,7 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== void 0 && fuzzyResults[0].score < 0.3) {
     const match2 = fuzzyResults[0].item;
     return {
-      primary: cityEntryToResolved(match2, "fuzzy"),
+      primary: cityEntryToLocationRef(match2, "fuzzy"),
       alternatives: []
     };
   }
@@ -99950,17 +99961,17 @@ function friendlyDateTime(dateTimeish) {
 }
 
 // src/engine/converter.ts
-function buildTimezoneInfo(dt, resolved) {
+function buildTimezoneInfo(dt, loc) {
   return {
     formattedTime12: dt.toFormat("h:mm a"),
     formattedTime24: dt.toFormat("HH:mm"),
     abbreviation: dt.toFormat("ZZZZ"),
-    iana: resolved.iana,
-    city: resolved.city,
-    country: resolved.country,
+    iana: loc.iana,
+    city: loc.displayName,
+    country: loc.country,
     isDST: dt.isInDST,
     offsetFromUTC: dt.toFormat("ZZ"),
-    entitySlug: resolved.entitySlug
+    entitySlug: loc.entitySlug
   };
 }
 function formatOffsetDifference(sourceOffset, targetOffset) {
@@ -99992,14 +100003,15 @@ function getDstNote(sourceDt, targetDt) {
   if (targetInDst) return "DST active in target location";
   return null;
 }
-function convert(source, target, time, dateModifier = null, relativeMinutes = null) {
+function convert(intent) {
+  const { source, target, time, dateModifier } = intent;
   const now2 = DateTime.now();
   let anchoredToTomorrow = false;
   let anchorNote = null;
   let sourceDt;
-  if (relativeMinutes !== null) {
-    sourceDt = now2.plus({ minutes: relativeMinutes }).setZone(source.iana);
-  } else if (time) {
+  if (time.type === "relative") {
+    sourceDt = now2.plus({ minutes: time.minutes }).setZone(source.iana);
+  } else if (time.type === "absolute") {
     sourceDt = DateTime.fromObject(
       { hour: time.hour, minute: time.minute },
       { zone: source.iana }
@@ -100023,7 +100035,7 @@ function convert(source, target, time, dateModifier = null, relativeMinutes = nu
         const h12 = time.hour === 0 ? 12 : time.hour > 12 ? time.hour - 12 : time.hour;
         const ampm = time.hour >= 12 ? "pm" : "am";
         const minStr = time.minute ? ":" + String(time.minute).padStart(2, "0") : "";
-        anchorNote = `Showing tomorrow \u2014 ${h12}${minStr}${ampm} has passed in ${source.city}`;
+        anchorNote = `Showing tomorrow \u2014 ${h12}${minStr}${ampm} has passed in ${source.displayName}`;
       }
     }
   } else {
@@ -100044,6 +100056,7 @@ function convert(source, target, time, dateModifier = null, relativeMinutes = nu
     relativeTime = targetDt.toRelative() ?? null;
   }
   return {
+    intent,
     source: buildTimezoneInfo(sourceDt, source),
     target: buildTimezoneInfo(targetDt, target),
     offsetDifference: offsetDiff,
@@ -100075,13 +100088,19 @@ function runConversion(q, srcIana) {
     if (resolved && resolved.primary.iana === srcIana) {
       source = resolved;
     } else {
-      source = { primary: { iana: srcIana, city, method: "alias" }, alternatives: [] };
+      source = { primary: { iana: srcIana, displayName: city, kind: "city", resolveMethod: "alias" }, alternatives: [] };
     }
   }
   if (!source) {
-    source = { primary: { iana: "UTC", city: "UTC", method: "abbreviation" }, alternatives: [] };
+    source = { primary: { iana: "UTC", displayName: "UTC", kind: "timezone", resolveMethod: "abbreviation" }, alternatives: [] };
   }
-  return convert(source.primary, target.primary, parsed.time, parsed.dateModifier, parsed.relativeMinutes);
+  const intent = {
+    source: source.primary,
+    target: target.primary,
+    time: parsed.time,
+    dateModifier: parsed.dateModifier
+  };
+  return convert(intent);
 }
 function BrandedCard() {
   return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(

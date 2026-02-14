@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { parse } from '../src/engine/parser'
 import { resolveLocation } from '../src/engine/resolver'
 import { convert } from '../src/engine/converter'
-import type { ConversionResult } from '../src/engine/types'
+import type { ConversionResult, ConversionIntent } from '../src/engine/types'
 
 export const config = { runtime: 'nodejs', maxDuration: 10 }
 
@@ -29,14 +29,20 @@ export function runConversion(q: string, srcIana?: string): ConversionResult | n
     if (resolved && resolved.primary.iana === srcIana) {
       source = resolved
     } else {
-      source = { primary: { iana: srcIana, city, method: 'alias' as const }, alternatives: [] }
+      source = { primary: { iana: srcIana, displayName: city, kind: 'city', resolveMethod: 'alias' as const }, alternatives: [] }
     }
   }
   if (!source) {
-    source = { primary: { iana: 'UTC', city: 'UTC', method: 'abbreviation' as const }, alternatives: [] }
+    source = { primary: { iana: 'UTC', displayName: 'UTC', kind: 'timezone', resolveMethod: 'abbreviation' as const }, alternatives: [] }
   }
 
-  return convert(source.primary, target.primary, parsed.time, parsed.dateModifier, parsed.relativeMinutes)
+  const intent: ConversionIntent = {
+    source: source.primary,
+    target: target.primary,
+    time: parsed.time,
+    dateModifier: parsed.dateModifier,
+  }
+  return convert(intent)
 }
 
 function BrandedCard() {

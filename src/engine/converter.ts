@@ -1,17 +1,17 @@
 import { DateTime } from 'luxon'
-import type { TimeValue, TimezoneInfo, ConversionResult, ResolvedTimezone } from './types'
+import type { TimezoneInfo, ConversionResult, ConversionIntent, LocationRef } from './types'
 
-function buildTimezoneInfo(dt: DateTime, resolved: ResolvedTimezone): TimezoneInfo {
+function buildTimezoneInfo(dt: DateTime, loc: LocationRef): TimezoneInfo {
   return {
     formattedTime12: dt.toFormat('h:mm a'),
     formattedTime24: dt.toFormat('HH:mm'),
     abbreviation: dt.toFormat('ZZZZ'),
-    iana: resolved.iana,
-    city: resolved.city,
-    country: resolved.country,
+    iana: loc.iana,
+    city: loc.displayName,
+    country: loc.country,
     isDST: dt.isInDST,
     offsetFromUTC: dt.toFormat('ZZ'),
-    entitySlug: resolved.entitySlug,
+    entitySlug: loc.entitySlug,
   }
 }
 
@@ -70,7 +70,16 @@ export function swapResult(original: ConversionResult): ConversionResult {
     relativeTime = targetDt.toRelative() ?? null
   }
 
+  // Build swapped intent: swap source/target, reset time to now
+  const swappedIntent: ConversionIntent = {
+    source: original.intent.target,
+    target: original.intent.source,
+    time: { type: 'now' },
+    dateModifier: null,
+  }
+
   return {
+    intent: swappedIntent,
     source: {
       ...original.target,
       // Recalculate from the swapped perspective
@@ -99,24 +108,19 @@ export function swapResult(original: ConversionResult): ConversionResult {
   }
 }
 
-export function convert(
-  source: ResolvedTimezone,
-  target: ResolvedTimezone,
-  time: TimeValue | null,
-  dateModifier: 'tomorrow' | 'yesterday' | 'today' | null = null,
-  relativeMinutes: number | null = null,
-): ConversionResult {
+export function convert(intent: ConversionIntent): ConversionResult {
+  const { source, target, time, dateModifier } = intent
   const now = DateTime.now()
 
   let anchoredToTomorrow = false
   let anchorNote: string | null = null
 
-  // Build source datetime
+  // Build source datetime based on TimeRef type
   let sourceDt: DateTime
-  if (relativeMinutes !== null) {
+  if (time.type === 'relative') {
     // Relative time: now + offset in source zone (no anchoring, no date modifier)
-    sourceDt = now.plus({ minutes: relativeMinutes }).setZone(source.iana)
-  } else if (time) {
+    sourceDt = now.plus({ minutes: time.minutes }).setZone(source.iana)
+  } else if (time.type === 'absolute') {
     sourceDt = DateTime.fromObject(
       { hour: time.hour, minute: time.minute },
       { zone: source.iana }
@@ -145,11 +149,11 @@ export function convert(
         const h12 = time.hour === 0 ? 12 : time.hour > 12 ? time.hour - 12 : time.hour
         const ampm = time.hour >= 12 ? 'pm' : 'am'
         const minStr = time.minute ? ':' + String(time.minute).padStart(2, '0') : ''
-        anchorNote = `Showing tomorrow — ${h12}${minStr}${ampm} has passed in ${source.city}`
+        anchorNote = `Showing tomorrow — ${h12}${minStr}${ampm} has passed in ${source.displayName}`
       }
     }
   } else {
-    // No time specified — use current time in source timezone
+    // type === 'now' — use current time in source timezone
     sourceDt = now.setZone(source.iana)
 
     // Apply date modifier even without explicit time
@@ -180,6 +184,7 @@ export function convert(
   }
 
   return {
+    intent,
     source: buildTimezoneInfo(sourceDt, source),
     target: buildTimezoneInfo(targetDt, target),
     offsetDifference: offsetDiff,

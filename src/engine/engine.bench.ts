@@ -2,14 +2,14 @@ import { describe, bench } from 'vitest'
 import { parse } from './parser'
 import { resolveLocation } from './resolver'
 import { convert } from './converter'
-import type { ResolvedTimezone } from './types'
+import type { LocationRef, ConversionIntent } from './types'
 
-function tz(iana: string, city: string): ResolvedTimezone {
-  return { iana, city, method: 'city-db' }
+function loc(iana: string, displayName: string): LocationRef {
+  return { iana, displayName, kind: 'city', resolveMethod: 'city-db' }
 }
 
-const NYC = tz('America/New_York', 'New York')
-const LONDON = tz('Europe/London', 'London')
+const NYC = loc('America/New_York', 'New York')
+const LONDON = loc('Europe/London', 'London')
 
 describe('parser benchmarks', () => {
   bench('parse simple query', () => {
@@ -45,7 +45,7 @@ describe('resolver benchmarks', () => {
 
 describe('converter benchmarks', () => {
   bench('basic conversion', () => {
-    convert(NYC, LONDON, { hour: 10, minute: 0 })
+    convert({ source: NYC, target: LONDON, time: { type: 'absolute', hour: 10, minute: 0 }, dateModifier: null })
   })
 })
 
@@ -56,7 +56,13 @@ describe('full pipeline benchmarks', () => {
     const source = resolveLocation(parsed.sourceLocation!)
     const target = resolveLocation(parsed.targetLocation)
     if (!source || !target) return
-    convert(source.primary, target.primary, parsed.time, parsed.dateModifier, parsed.relativeMinutes)
+    const intent: ConversionIntent = {
+      source: source.primary,
+      target: target.primary,
+      time: parsed.time,
+      dateModifier: parsed.dateModifier,
+    }
+    convert(intent)
   })
 
   bench('batch: 100 resolver inputs', () => {

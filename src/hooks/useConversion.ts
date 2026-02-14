@@ -3,21 +3,21 @@ import { parse } from '@/engine/parser'
 import { resolveLocation, getSuggestion } from '@/engine/resolver'
 import { convert, swapResult } from '@/engine/converter'
 import { getSnapshot } from '@/lib/preferences'
-import type { ConversionResult, ConversionError, ResolvedTimezone } from '@/engine/types'
+import type { ConversionResult, ConversionError, LocationRef, ConversionIntent } from '@/engine/types'
 
 interface UseConversionReturn {
   result: ConversionResult | null
   error: ConversionError | null
   isUsingCurrentTime: boolean
   isImplicitLocal: boolean
-  sourceAlternatives: ResolvedTimezone[]
-  targetAlternatives: ResolvedTimezone[]
+  sourceAlternatives: LocationRef[]
+  targetAlternatives: LocationRef[]
   runConversion: (query: string) => void
   swapConversion: () => void
   clear: () => void
 }
 
-function getLocalTimezone(): ResolvedTimezone {
+function getLocalTimezone(): LocationRef {
   // Check if user has a home city preference
   const { homeCity } = getSnapshot()
   if (homeCity) {
@@ -25,7 +25,7 @@ function getLocalTimezone(): ResolvedTimezone {
     if (resolved && resolved.primary.iana === homeCity.iana) {
       return resolved.primary
     }
-    return { iana: homeCity.iana, city: homeCity.city, country: homeCity.country, method: 'alias' }
+    return { iana: homeCity.iana, displayName: homeCity.city, kind: 'city', country: homeCity.country, resolveMethod: 'alias' }
   }
 
   const iana = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -39,7 +39,7 @@ function getLocalTimezone(): ResolvedTimezone {
     return resolved.primary
   }
 
-  return { iana, city, method: 'alias' }
+  return { iana, displayName: city, kind: 'city', resolveMethod: 'alias' }
 }
 
 export function useConversion(): UseConversionReturn {
@@ -47,8 +47,8 @@ export function useConversion(): UseConversionReturn {
   const [error, setError] = useState<ConversionError | null>(null)
   const [isUsingCurrentTime, setIsUsingCurrentTime] = useState(false)
   const [isImplicitLocal, setIsImplicitLocal] = useState(false)
-  const [sourceAlternatives, setSourceAlternatives] = useState<ResolvedTimezone[]>([])
-  const [targetAlternatives, setTargetAlternatives] = useState<ResolvedTimezone[]>([])
+  const [sourceAlternatives, setSourceAlternatives] = useState<LocationRef[]>([])
+  const [targetAlternatives, setTargetAlternatives] = useState<LocationRef[]>([])
 
   const swapConversion = useCallback(() => {
     if (!result) return
@@ -85,8 +85,8 @@ export function useConversion(): UseConversionReturn {
     }
 
     // Resolve source
-    let source: ResolvedTimezone
-    let srcAlternatives: ResolvedTimezone[] = []
+    let source: LocationRef
+    let srcAlternatives: LocationRef[] = []
     const implicitLocal = parsed.sourceLocation === null
 
     if (parsed.sourceLocation === null) {
@@ -121,10 +121,16 @@ export function useConversion(): UseConversionReturn {
     const target = targetResult.primary
     const tgtAlternatives = targetResult.alternatives
 
-    // Convert
-    const conversionResult = convert(source, target, parsed.time, parsed.dateModifier, parsed.relativeMinutes)
+    // Build intent and convert
+    const intent: ConversionIntent = {
+      source,
+      target,
+      time: parsed.time,
+      dateModifier: parsed.dateModifier,
+    }
+    const conversionResult = convert(intent)
     setResult(conversionResult)
-    setIsUsingCurrentTime(parsed.time === null)
+    setIsUsingCurrentTime(parsed.time.type === 'now')
     setIsImplicitLocal(implicitLocal)
     setSourceAlternatives(srcAlternatives)
     setTargetAlternatives(tgtAlternatives)

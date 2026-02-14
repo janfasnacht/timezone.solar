@@ -7,52 +7,52 @@ describe('parser', () => {
   describe('time parsing', () => {
     it('parses 12h pm time', () => {
       const result = parse('NYC 3pm London')
-      expect(result?.time).toEqual({ hour: 15, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 15, minute: 0 })
     })
 
     it('parses 12h am time', () => {
       const result = parse('NYC 3am London')
-      expect(result?.time).toEqual({ hour: 3, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 3, minute: 0 })
     })
 
     it('parses 12h time with minutes', () => {
       const result = parse('NYC 3:30pm London')
-      expect(result?.time).toEqual({ hour: 15, minute: 30 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 15, minute: 30 })
     })
 
     it('parses 24h time', () => {
       const result = parse('NYC 18:00 London')
-      expect(result?.time).toEqual({ hour: 18, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 18, minute: 0 })
     })
 
     it('parses 24h time with leading zero', () => {
       const result = parse('NYC 09:30 London')
-      expect(result?.time).toEqual({ hour: 9, minute: 30 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 9, minute: 30 })
     })
 
     it('parses noon as named time', () => {
       const result = parse('NYC noon London')
-      expect(result?.time).toEqual({ hour: 12, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
     })
 
     it('parses midnight as named time', () => {
       const result = parse('NYC midnight London')
-      expect(result?.time).toEqual({ hour: 0, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 0, minute: 0 })
     })
 
     it('parses midday as named time', () => {
       const result = parse('NYC midday London')
-      expect(result?.time).toEqual({ hour: 12, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
     })
 
     it('handles 12pm edge case (noon)', () => {
       const result = parse('NYC 12pm London')
-      expect(result?.time).toEqual({ hour: 12, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
     })
 
     it('handles 12am edge case (midnight)', () => {
       const result = parse('NYC 12am London')
-      expect(result?.time).toEqual({ hour: 0, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 0, minute: 0 })
     })
   })
 
@@ -64,9 +64,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'California',
-        time: { hour: 18, minute: 0 },
+        time: { type: 'absolute', hour: 18, minute: 0 },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
 
@@ -75,9 +74,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'California',
-        time: { hour: 18, minute: 0 },
+        time: { type: 'absolute', hour: 18, minute: 0 },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
 
@@ -86,9 +84,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'California',
-        time: { hour: 18, minute: 0 },
+        time: { type: 'absolute', hour: 18, minute: 0 },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
 
@@ -97,9 +94,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'California',
-        time: { hour: 18, minute: 0 },
+        time: { type: 'absolute', hour: 18, minute: 0 },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
 
@@ -108,9 +104,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'California',
-        time: null,
+        time: { type: 'now' },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
 
@@ -120,21 +115,21 @@ describe('parser', () => {
       const result = parse('6pm Boston California')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('Boston California')
-      expect(result?.time).toEqual({ hour: 18, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 18, minute: 0 })
     })
 
     it('pattern 7: LOC LOC TIME — adjacent locations merge', () => {
       const result = parse('Boston California 6pm')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('Boston California')
-      expect(result?.time).toEqual({ hour: 18, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 18, minute: 0 })
     })
 
     it('pattern 8: LOC LOC — adjacent locations merge', () => {
       const result = parse('Boston California')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('Boston California')
-      expect(result?.time).toBeNull()
+      expect(result?.time).toEqual({ type: 'now' })
     })
 
     it('pattern 9: TIME CONN LOC CONN LOC (double connector)', () => {
@@ -142,9 +137,8 @@ describe('parser', () => {
       expect(result).toEqual({
         sourceLocation: 'Boston',
         targetLocation: 'LA',
-        time: { hour: 18, minute: 0 },
+        time: { type: 'absolute', hour: 18, minute: 0 },
         dateModifier: null,
-        relativeMinutes: null,
       })
     })
   })
@@ -190,28 +184,28 @@ describe('parser', () => {
       const result = parse('6pm in California')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('California')
-      expect(result?.time).toEqual({ hour: 18, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 18, minute: 0 })
     })
 
     it('pattern 11: LOC TIME (implicit source)', () => {
       const result = parse('London 5pm')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('London')
-      expect(result?.time).toEqual({ hour: 17, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 17, minute: 0 })
     })
 
     it('pattern 12: TIME LOC (implicit source)', () => {
       const result = parse('5pm London')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('London')
-      expect(result?.time).toEqual({ hour: 17, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 17, minute: 0 })
     })
 
     it('pattern 13: LOC (bare location)', () => {
       const result = parse('Tokyo')
       expect(result?.sourceLocation).toBeNull()
       expect(result?.targetLocation).toBe('Tokyo')
-      expect(result?.time).toBeNull()
+      expect(result?.time).toEqual({ type: 'now' })
     })
   })
 
@@ -250,7 +244,7 @@ describe('parser', () => {
       const result = parse('Boston to LA at 3:30pm')
       expect(result?.sourceLocation).toBe('Boston')
       expect(result?.targetLocation).toBe('LA')
-      expect(result?.time).toEqual({ hour: 15, minute: 30 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 15, minute: 30 })
     })
 
     it('strips leading "from" connector', () => {
@@ -265,44 +259,44 @@ describe('parser', () => {
   describe('relative time', () => {
     it('parses "in 2 hours"', () => {
       const result = parse('in 2 hours London')
-      expect(result?.relativeMinutes).toBe(120)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 120 })
       expect(result?.targetLocation).toBe('London')
     })
 
     it('parses "in 30 minutes"', () => {
       const result = parse('in 30 minutes London')
-      expect(result?.relativeMinutes).toBe(30)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 30 })
       expect(result?.targetLocation).toBe('London')
     })
 
     it('parses "in 30 mins"', () => {
       const result = parse('in 30 mins London')
-      expect(result?.relativeMinutes).toBe(30)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 30 })
     })
 
     it('parses compound "in 1h30m"', () => {
       const result = parse('in 1h30m London')
-      expect(result?.relativeMinutes).toBe(90)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 90 })
     })
 
     it('parses "in 2h 15m"', () => {
       const result = parse('in 2h 15m London')
-      expect(result?.relativeMinutes).toBe(135)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 135 })
     })
 
     it('parses "in half an hour"', () => {
       const result = parse('in half an hour London')
-      expect(result?.relativeMinutes).toBe(30)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 30 })
     })
 
     it('parses "in an hour"', () => {
       const result = parse('in an hour London')
-      expect(result?.relativeMinutes).toBe(60)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 60 })
     })
 
     it('parses decimal hours "in 1.5 hours"', () => {
       const result = parse('in 1.5 hours London')
-      expect(result?.relativeMinutes).toBe(90)
+      expect(result?.time).toEqual({ type: 'relative', minutes: 90 })
     })
   })
 
@@ -355,7 +349,7 @@ describe('parser', () => {
       const result = parse('now NYC to London')
       expect(result?.sourceLocation).toBe('NYC')
       expect(result?.targetLocation).toBe('London')
-      expect(result?.time).toBeNull()
+      expect(result?.time).toEqual({ type: 'now' })
     })
 
     it('handles "now" alone as a stripped no-op → null', () => {
@@ -392,9 +386,9 @@ describe('parser', () => {
       expect(parse('6pm 3am')).toBeNull()
     })
 
-    it('no time produces null time field', () => {
+    it('no time produces now TimeRef', () => {
       const result = parse('Tokyo')
-      expect(result?.time).toBeNull()
+      expect(result?.time).toEqual({ type: 'now' })
     })
   })
 
@@ -408,12 +402,12 @@ describe('parser', () => {
 
     it('handles mixed case time', () => {
       const result = parse('NYC 3PM London')
-      expect(result?.time).toEqual({ hour: 15, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 15, minute: 0 })
     })
 
     it('handles uppercase named time', () => {
       const result = parse('NYC NOON London')
-      expect(result?.time).toEqual({ hour: 12, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
     })
 
     it('handles uppercase date modifier', () => {
@@ -433,14 +427,14 @@ describe('parser', () => {
   describe('connector before time removal', () => {
     it('removes "at" before time in two-location pattern', () => {
       const result = parse('NYC to London at 3:30pm')
-      expect(result?.time).toEqual({ hour: 15, minute: 30 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 15, minute: 30 })
       expect(result?.sourceLocation).toBe('NYC')
       expect(result?.targetLocation).toBe('London')
     })
 
     it('removes leading "at" before time in single-location', () => {
       const result = parse('at 6pm London')
-      expect(result?.time).toEqual({ hour: 18, minute: 0 })
+      expect(result?.time).toEqual({ type: 'absolute', hour: 18, minute: 0 })
       expect(result?.targetLocation).toBe('London')
     })
   })

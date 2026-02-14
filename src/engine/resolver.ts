@@ -1,6 +1,6 @@
 import cityTimezones from 'city-timezones'
 import Fuse from 'fuse.js'
-import type { ResolvedTimezone, ResolveResult } from './types'
+import type { LocationRef, LocationKind, ResolveResult } from './types'
 import { CITY_ALIASES, US_STATE_TIMEZONES } from './aliases'
 import { TZ_ABBREVIATIONS, TZ_ABBREVIATION_LABELS } from './constants'
 import { lookupEntity } from './city-entities'
@@ -92,19 +92,20 @@ function normalizeCountry(country: string): string {
   return country
 }
 
-function cityEntryToResolved(entry: CityEntry, method: ResolvedTimezone['method']): ResolvedTimezone {
+function cityEntryToLocationRef(entry: CityEntry, resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): LocationRef {
   return {
     iana: entry.timezone,
-    city: entry.city,
+    displayName: entry.city,
+    kind,
     country: normalizeCountry(entry.country),
-    method,
+    resolveMethod,
   }
 }
 
-function cityEntriesToResolveResult(entries: CityEntry[], method: ResolvedTimezone['method']): ResolveResult {
+function cityEntriesToResolveResult(entries: CityEntry[], resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): ResolveResult {
   return {
-    primary: cityEntryToResolved(entries[0], method),
-    alternatives: entries.slice(1).map((e) => cityEntryToResolved(e, method)),
+    primary: cityEntryToLocationRef(entries[0], resolveMethod, kind),
+    alternatives: entries.slice(1).map((e) => cityEntryToLocationRef(e, resolveMethod, kind)),
   }
 }
 
@@ -145,9 +146,10 @@ function resolveLocationUncached(
     return {
       primary: {
         iana: entity.iana,
-        city: entity.displayName,
+        displayName: entity.displayName,
+        kind: 'city',
         country: entity.country,
-        method: 'entity',
+        resolveMethod: 'entity',
         entitySlug: entity.slug,
       },
       alternatives: [],
@@ -168,7 +170,7 @@ function resolveLocationUncached(
   const stateIana = US_STATE_TIMEZONES[normalized]
   if (stateIana) {
     return {
-      primary: { iana: stateIana, city: originalTrimmed, country: 'USA', method: 'state' },
+      primary: { iana: stateIana, displayName: originalTrimmed, kind: 'region', country: 'USA', resolveMethod: 'state' },
       alternatives: [],
     }
   }
@@ -180,8 +182,9 @@ function resolveLocationUncached(
     return {
       primary: {
         iana: tzAbbr,
-        city: normalized.toUpperCase(),
-        method: 'abbreviation',
+        displayName: normalized.toUpperCase(),
+        kind: 'timezone',
+        resolveMethod: 'abbreviation',
         interpretedAs: label,
       },
       alternatives: [],
@@ -200,7 +203,7 @@ function resolveLocationUncached(
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== undefined && fuzzyResults[0].score < 0.3) {
     const match = fuzzyResults[0].item
     return {
-      primary: cityEntryToResolved(match, 'fuzzy'),
+      primary: cityEntryToLocationRef(match, 'fuzzy'),
       alternatives: [],
     }
   }
