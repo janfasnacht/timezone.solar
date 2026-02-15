@@ -104,6 +104,24 @@ export function extractRelativeTime(input: string): PreprocessResult {
   return { cleaned: input, relativeMinutes: null }
 }
 
+// Day-of-week names — full names always stripped, short names stripped standalone
+// "sun" only stripped when preceded by a day prefix to avoid colliding with location "Sun City"
+const FULL_DAYS = /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi
+const SHORT_DAYS_NO_SUN = /\b(mon|tue|tues|wed|thu|thur|thurs|fri|sat)\b/gi
+// Prefixes only stripped when followed by a day name (full or short including sun)
+const PREFIX_DAY = /\b(next|this|last)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b/gi
+
+export function stripDayOfWeek(input: string): string {
+  let cleaned = input
+  // First strip "prefix + day" combos (including "next sun", "this sun", "last sun")
+  cleaned = cleaned.replace(PREFIX_DAY, ' ')
+  // Then strip remaining full day names
+  cleaned = cleaned.replace(FULL_DAYS, ' ')
+  // Then strip remaining short day names (except "sun")
+  cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, ' ')
+  return cleaned.replace(/\s+/g, ' ').trim()
+}
+
 export function preprocess(input: string): PreprocessResult {
   let cleaned = input
 
@@ -113,6 +131,9 @@ export function preprocess(input: string): PreprocessResult {
   // Extract relative time expressions (before tokenization so "in" isn't eaten as connector)
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned)
   cleaned = afterRelative
+
+  // Strip day-of-week tokens (before tokenization so they don't become locations)
+  cleaned = stripDayOfWeek(cleaned)
 
   // Strip standalone "now" (no-op — equivalent to no time specified)
   cleaned = cleaned.replace(/\bnow\b/gi, ' ').replace(/\s+/g, ' ').trim()

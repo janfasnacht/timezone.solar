@@ -438,4 +438,100 @@ describe('parser', () => {
       expect(parsed?.targetLocation).toBe('London')
     })
   })
+
+  // --- Day-of-week stripping ---
+
+  describe('day-of-week stripping', () => {
+    it('strips "next Tuesday" prefix', () => {
+      const { parsed } = parse('next Tuesday 3pm NYC to London')
+      expect(parsed?.sourceLocation).toBe('NYC')
+      expect(parsed?.targetLocation).toBe('London')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 15, minute: 0 })
+      expect(parsed?.dateModifier).toBeNull()
+    })
+
+    it('strips bare full day name', () => {
+      const { parsed } = parse('Monday 9am Berlin to Tokyo')
+      expect(parsed?.sourceLocation).toBe('Berlin')
+      expect(parsed?.targetLocation).toBe('Tokyo')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 9, minute: 0 })
+    })
+
+    it('strips "this Friday"', () => {
+      const { parsed } = parse('this Friday noon London')
+      expect(parsed?.sourceLocation).toBeNull()
+      expect(parsed?.targetLocation).toBe('London')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
+    })
+
+    it('strips "next Wednesday"', () => {
+      const { parsed } = parse('next Wednesday Tokyo')
+      expect(parsed?.sourceLocation).toBeNull()
+      expect(parsed?.targetLocation).toBe('Tokyo')
+    })
+
+    it('strips "last Saturday"', () => {
+      const { parsed } = parse('last Saturday 8pm Sydney to London')
+      expect(parsed?.sourceLocation).toBe('Sydney')
+      expect(parsed?.targetLocation).toBe('London')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 20, minute: 0 })
+    })
+
+    it('strips abbreviated day "Mon"', () => {
+      const { parsed } = parse('next Mon 10am EST to PST')
+      expect(parsed?.sourceLocation).toBe('EST')
+      expect(parsed?.targetLocation).toBe('PST')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 10, minute: 0 })
+    })
+
+    it('strips abbreviated day "Thu"', () => {
+      const { parsed } = parse('Thu 2pm Chicago to London')
+      expect(parsed?.sourceLocation).toBe('Chicago')
+      expect(parsed?.targetLocation).toBe('London')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 14, minute: 0 })
+    })
+
+    it('strips "next Sunday" with named time', () => {
+      const { parsed } = parse('next Sunday midnight NYC')
+      expect(parsed?.sourceLocation).toBeNull()
+      expect(parsed?.targetLocation).toBe('NYC')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 0, minute: 0 })
+    })
+
+    it('does not strip standalone "sun" (possible location)', () => {
+      const { parsed } = parse('sun to London')
+      // "sun" without prefix should not be stripped
+      expect(parsed?.sourceLocation).toBe('sun')
+      expect(parsed?.targetLocation).toBe('London')
+    })
+  })
+
+  // --- UTC offset parsing ---
+
+  describe('UTC offset parsing', () => {
+    it('parses UTC+N as location', () => {
+      const { parsed } = parse('UTC+8 to London')
+      expect(parsed?.sourceLocation).toBe('UTC+8')
+      expect(parsed?.targetLocation).toBe('London')
+    })
+
+    it('parses GMT-N as location', () => {
+      const { parsed } = parse('GMT-5 to Tokyo')
+      expect(parsed?.sourceLocation).toBe('GMT-5')
+      expect(parsed?.targetLocation).toBe('Tokyo')
+    })
+
+    it('parses UTC+5:30 as bare location', () => {
+      const { parsed } = parse('UTC+5:30')
+      expect(parsed?.sourceLocation).toBeNull()
+      expect(parsed?.targetLocation).toBe('UTC+5:30')
+    })
+
+    it('parses two UTC offsets', () => {
+      const { parsed } = parse('noon UTC+9 to UTC-5')
+      expect(parsed?.sourceLocation).toBe('UTC+9')
+      expect(parsed?.targetLocation).toBe('UTC-5')
+      expect(parsed?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
+    })
+  })
 })
