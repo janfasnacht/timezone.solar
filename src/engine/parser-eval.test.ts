@@ -9,11 +9,9 @@
  * Filter: npx vitest run src/engine/parser-eval.test.ts --grep "edge:typo"
  */
 
-import { resolve } from 'node:path'
 import { describe, it, expect } from 'vitest'
-import { parse } from './parser'
 import { v2 } from './v2/adapter'
-import type { ParserAdapter, TestCase } from '@/engine/eval'
+import type { TestCase } from '@/engine/eval'
 import {
   loadFixture,
   filterBySet,
@@ -22,16 +20,7 @@ import {
   assertParseResult,
   runEvaluation,
   printScorecard,
-  printComparisonTable,
 } from '@/engine/eval'
-
-// --- v1 adapter ---
-
-const v1: ParserAdapter = {
-  name: 'v1-pattern',
-  parse: (input) => ({ parsed: parse(input) }),
-  sourceFiles: [resolve(__dirname, 'parser.ts')],
-}
 
 // --- Load fixture ---
 
@@ -46,13 +35,13 @@ const edgeByTag = groupByTag(edgeCases)
 // --- Per-case test helper ---
 
 function runCaseTest(tc: TestCase) {
-  const r = assertParseResult(v1, tc)
+  const r = assertParseResult(v2, tc)
   if (!r.passed) {
-    const result = parse(tc.input)
-    expect.soft(r.sourceMatch, `source: got "${result?.sourceLocation}" expected "${tc.expectedSource}"`).toBe(true)
-    expect.soft(r.targetMatch, `target: got "${result?.targetLocation}" expected "${tc.expectedTarget}"`).toBe(true)
-    expect.soft(r.timeMatch, `time: got ${JSON.stringify(result?.time)} expected ${JSON.stringify(tc.expectedTime)}`).toBe(true)
-    expect.soft(r.dateModifierMatch, `dateModifier: got "${result?.dateModifier}" expected "${tc.expectedDateModifier}"`).toBe(true)
+    const { parsed } = v2.parse(tc.input)
+    expect.soft(r.sourceMatch, `source: got "${parsed?.sourceLocation}" expected "${tc.expectedSource}"`).toBe(true)
+    expect.soft(r.targetMatch, `target: got "${parsed?.targetLocation}" expected "${tc.expectedTarget}"`).toBe(true)
+    expect.soft(r.timeMatch, `time: got ${JSON.stringify(parsed?.time)} expected ${JSON.stringify(tc.expectedTime)}`).toBe(true)
+    expect.soft(r.dateModifierMatch, `dateModifier: got "${parsed?.dateModifier}" expected "${tc.expectedDateModifier}"`).toBe(true)
   }
   expect(r.passed).toBe(true)
 }
@@ -100,26 +89,9 @@ if (regressionCases.length > 0) {
 // --- Scorecard ---
 
 describe('scorecard', () => {
-  it('reports full eval scorecard for v1', () => {
-    const scorecard = runEvaluation(v1, cases)
-    printScorecard(scorecard)
-    expect(scorecard.totalCases).toBe(cases.length)
-  })
-
-  it('reports full eval scorecard for v2', () => {
+  it('reports full eval scorecard', () => {
     const scorecard = runEvaluation(v2, cases)
     printScorecard(scorecard)
     expect(scorecard.totalCases).toBe(cases.length)
-  })
-})
-
-// --- Comparison ---
-
-describe('comparison', () => {
-  it('prints comparison table', () => {
-    const adapters: ParserAdapter[] = [v1, v2]
-    const scorecards = adapters.map((a) => runEvaluation(a, cases))
-    printComparisonTable(scorecards)
-    expect(scorecards.length).toBeGreaterThan(0)
   })
 })

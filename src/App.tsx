@@ -16,7 +16,7 @@ import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
 
 function App() {
-  const { result, error, isUsingCurrentTime, runConversion, swapConversion, clear } = useConversion()
+  const { result, error, isUsingCurrentTime, matchType, runConversion, swapConversion, clear } = useConversion()
   const { queries: recentQueries, addQuery, removeQuery } = useRecentQueries()
   const { query: urlQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery } = useUrlState()
   const { timeFormat } = usePreferences()
@@ -130,6 +130,7 @@ function App() {
           <FlippableCard
             result={result}
             isUsingCurrentTime={isUsingCurrentTime}
+            matchType={matchType}
             onSwap={handleSwap}
             query={currentInputValue}
             use24h={timeFormat === '24h'}

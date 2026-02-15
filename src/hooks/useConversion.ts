@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
-import { parse } from '@/engine/parser'
+import { parseV2 } from '@/engine/v2/parser-v2'
+import type { MatchType } from '@/engine/v2/confidence'
 import { resolveLocation, getSuggestion } from '@/engine/resolver'
 import { convert, swapResult } from '@/engine/converter'
 import { getSnapshot } from '@/lib/preferences'
@@ -10,6 +11,7 @@ interface UseConversionReturn {
   error: ConversionError | null
   isUsingCurrentTime: boolean
   isImplicitLocal: boolean
+  matchType: MatchType
   sourceAlternatives: LocationRef[]
   targetAlternatives: LocationRef[]
   runConversion: (query: string) => void
@@ -47,6 +49,7 @@ export function useConversion(): UseConversionReturn {
   const [error, setError] = useState<ConversionError | null>(null)
   const [isUsingCurrentTime, setIsUsingCurrentTime] = useState(false)
   const [isImplicitLocal, setIsImplicitLocal] = useState(false)
+  const [matchType, setMatchType] = useState<MatchType>('none')
   const [sourceAlternatives, setSourceAlternatives] = useState<LocationRef[]>([])
   const [targetAlternatives, setTargetAlternatives] = useState<LocationRef[]>([])
 
@@ -62,6 +65,7 @@ export function useConversion(): UseConversionReturn {
     setError(null)
     setIsUsingCurrentTime(false)
     setIsImplicitLocal(false)
+    setMatchType('none')
     setSourceAlternatives([])
     setTargetAlternatives([])
   }, [])
@@ -71,11 +75,13 @@ export function useConversion(): UseConversionReturn {
     setResult(null)
     setIsUsingCurrentTime(false)
     setIsImplicitLocal(false)
+    setMatchType('none')
     setSourceAlternatives([])
     setTargetAlternatives([])
 
     // Parse
-    const parsed = parse(query)
+    const { parsed, matchType: mt } = parseV2(query)
+    setMatchType(mt)
     if (!parsed) {
       setError({
         type: 'parse',
@@ -141,6 +147,7 @@ export function useConversion(): UseConversionReturn {
     error,
     isUsingCurrentTime,
     isImplicitLocal,
+    matchType,
     sourceAlternatives,
     targetAlternatives,
     runConversion,
