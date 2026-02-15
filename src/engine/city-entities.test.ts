@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { lookupEntity, getEntityBySlug, getAllEntities } from './city-entities'
 
 describe('city-entities', () => {
@@ -62,9 +64,9 @@ describe('city-entities', () => {
   })
 
   describe('getAllEntities', () => {
-    it('returns all entities', () => {
+    it('returns at least 300 entities', () => {
       const entities = getAllEntities()
-      expect(entities.length).toBeGreaterThanOrEqual(80)
+      expect(entities.length).toBeGreaterThanOrEqual(300)
     })
   })
 
@@ -98,6 +100,67 @@ describe('city-entities', () => {
       for (const e of entities) {
         expect(e.countryCode).toMatch(/^[A-Z]{2}$/)
       }
+    })
+
+    it('every entity has exactly 3 vibes or null', () => {
+      const entities = getAllEntities()
+      for (const e of entities) {
+        if (e.vibes !== null) {
+          expect(e.vibes).toHaveLength(3)
+        }
+      }
+    })
+
+    it('no duplicate display names within same country', () => {
+      const entities = getAllEntities()
+      const seen = new Set<string>()
+      for (const e of entities) {
+        const key = `${e.displayName}|${e.country}`
+        expect(seen.has(key), `Duplicate: ${key}`).toBe(false)
+        seen.add(key)
+      }
+    })
+
+    it('every svgCitiesSlug matches expected pattern', () => {
+      const entities = getAllEntities()
+      for (const e of entities) {
+        if (e.svgCitiesSlug !== null) {
+          expect(
+            e.svgCitiesSlug,
+            `Bad slug format: ${e.svgCitiesSlug}`,
+          ).toMatch(/^[a-z]{2}-[a-z0-9-]+$/)
+        }
+      }
+    })
+
+    it('every svgCitiesSlug has a corresponding SVG file', () => {
+      const entities = getAllEntities()
+      const iconsDir = join(import.meta.dirname, '../../public/icons')
+      for (const e of entities) {
+        if (e.svgCitiesSlug !== null) {
+          const filePath = join(iconsDir, `${e.svgCitiesSlug}.svg`)
+          expect(
+            existsSync(filePath),
+            `Missing icon: ${e.svgCitiesSlug}.svg for ${e.slug}`,
+          ).toBe(true)
+        }
+      }
+    })
+
+    it('original entities preserved unchanged', () => {
+      const ny = getEntityBySlug('new-york')
+      expect(ny?.vibes).toEqual(['electric', 'hustling', 'bold'])
+      expect(ny?.aliases).toEqual(['nyc', 'ny'])
+      expect(ny?.svgCitiesSlug).toBe('us-new-york')
+
+      const tokyo = getEntityBySlug('tokyo')
+      expect(tokyo?.vibes).toEqual(['zen', 'precise', 'futuristic'])
+      expect(tokyo?.aliases).toEqual(['japan'])
+      expect(tokyo?.svgCitiesSlug).toBe('jp-tokyo')
+
+      const london = getEntityBySlug('london')
+      expect(london?.vibes).toEqual(['posh', 'cozy', 'literary'])
+      expect(london?.aliases).toEqual(['uk', 'england'])
     })
   })
 })

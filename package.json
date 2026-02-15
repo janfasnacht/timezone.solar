@@ -27,7 +27,8 @@
     "bench": "vitest bench",
     "eval:generate": "tsx --env-file=.env.local scripts/generate-eval-queries.ts",
     "eval:compile": "tsx scripts/compile-eval-fixture.ts",
-    "eval": "vitest run src/engine/parser-eval.test.ts"
+    "eval": "vitest run src/engine/parser-eval.test.ts",
+    "icons:download": "npx tsx scripts/download-icons.ts"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
