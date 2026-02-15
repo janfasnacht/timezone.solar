@@ -29,5 +29,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.bench.ts", "src/engine/eval", "src/engine/v2"]
+  "exclude": ["src/**/*.test.ts", "src/**/*.bench.ts", "src/engine/eval", "src/engine/adapter.ts"]
 }

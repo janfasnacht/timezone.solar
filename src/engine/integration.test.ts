@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { Settings } from 'luxon'
-import { parseV2 } from './v2/parser-v2'
+import { parse } from './parser'
 import { resolveLocation } from './resolver'
 import { convert } from './converter'
 import type { ConversionResult, ConversionIntent } from './types'
 
 // Full pipeline helper
 function pipeline(input: string): ConversionResult | null {
-  const { parsed } = parseV2(input)
+  const { parsed } = parse(input)
   if (!parsed) return null
 
   const target = resolveLocation(parsed.targetLocation)

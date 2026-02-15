@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { ResultCard } from '@/components/ResultCard'
 import { CardBack } from '@/components/CardBack'
 import type { ConversionResult } from '@/engine/types'
-import type { MatchType } from '@/engine/v2/confidence'
+import type { MatchType } from '@/engine/confidence'
 
 interface FlippableCardProps {
   result: ConversionResult

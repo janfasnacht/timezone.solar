@@ -7,7 +7,7 @@ import { getDstWarning } from '@/lib/dstWarning'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { CityIcon } from '@/components/CityIcon'
 import type { ConversionResult } from '@/engine/types'
-import type { MatchType } from '@/engine/v2/confidence'
+import type { MatchType } from '@/engine/confidence'
 
 interface ResultCardProps {
   result: ConversionResult

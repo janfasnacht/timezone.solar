@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { v2 } from './v2/adapter'
+import { parserAdapter } from './adapter'
 import type { TestCase } from '@/engine/eval'
 import {
   loadFixture,
@@ -35,9 +35,9 @@ const edgeByTag = groupByTag(edgeCases)
 // --- Per-case test helper ---
 
 function runCaseTest(tc: TestCase) {
-  const r = assertParseResult(v2, tc)
+  const r = assertParseResult(parserAdapter, tc)
   if (!r.passed) {
-    const { parsed } = v2.parse(tc.input)
+    const { parsed } = parserAdapter.parse(tc.input)
     expect.soft(r.sourceMatch, `source: got "${parsed?.sourceLocation}" expected "${tc.expectedSource}"`).toBe(true)
     expect.soft(r.targetMatch, `target: got "${parsed?.targetLocation}" expected "${tc.expectedTarget}"`).toBe(true)
     expect.soft(r.timeMatch, `time: got ${JSON.stringify(parsed?.time)} expected ${JSON.stringify(tc.expectedTime)}`).toBe(true)
@@ -90,7 +90,7 @@ if (regressionCases.length > 0) {
 
 describe('scorecard', () => {
   it('reports full eval scorecard', () => {
-    const scorecard = runEvaluation(v2, cases)
+    const scorecard = runEvaluation(parserAdapter, cases)
     printScorecard(scorecard)
     expect(scorecard.totalCases).toBe(cases.length)
   })

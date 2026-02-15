@@ -1,4 +1,4 @@
-import type { LocationRef } from '../types'
+import type { LocationRef } from './types'
 
 export type MatchType = 'exact' | 'exact-noisy' | 'greedy' | 'promoted' | 'none'
 

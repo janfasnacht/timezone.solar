@@ -1,5 +1,5 @@
 import { describe, bench } from 'vitest'
-import { parseV2 } from './v2/parser-v2'
+import { parse } from './parser'
 import { resolveLocation } from './resolver'
 import { convert } from './converter'
 import type { LocationRef, ConversionIntent } from './types'
@@ -16,19 +16,19 @@ const fixtureCases = loadFixture()
 
 describe('parser benchmarks', () => {
   bench('parse simple query', () => {
-    parseV2('NYC to London')
+    parse('NYC to London')
   })
 
   bench('parse relative time', () => {
-    parseV2('in 2 hours London')
+    parse('in 2 hours London')
   })
 
   bench('parse multi-word city', () => {
-    parseV2('New York to San Francisco')
+    parse('New York to San Francisco')
   })
 
   bench(`parse eval fixture (${fixtureCases.length} cases)`, () => {
-    for (const tc of fixtureCases) parseV2(tc.input)
+    for (const tc of fixtureCases) parse(tc.input)
   })
 })
 
@@ -58,7 +58,7 @@ describe('converter benchmarks', () => {
 
 describe('full pipeline benchmarks', () => {
   bench('full pipeline', () => {
-    const { parsed } = parseV2('3pm NYC to London')
+    const { parsed } = parse('3pm NYC to London')
     if (!parsed) return
     const source = resolveLocation(parsed.sourceLocation!)
     const target = resolveLocation(parsed.targetLocation)

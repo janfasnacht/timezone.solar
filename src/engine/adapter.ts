@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import type { ParserAdapter, ParserResult } from '@/engine/eval'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-import { parseV2 } from './parser-v2'
+import { parse } from './parser'
 import {
   parseConfidence,
   combinedConfidence,
@@ -11,10 +11,10 @@ import {
 } from './confidence'
 import { resolveWithConfidence } from './resolver-wrapper'
 
-export const v2: ParserAdapter = {
+export const parserAdapter: ParserAdapter = {
   name: 'v2-noise-tolerant',
   parse(input: string): ParserResult {
-    const { parsed, matchType, noiseCount } = parseV2(input)
+    const { parsed, matchType, noiseCount } = parse(input)
 
     if (!parsed) {
       return { parsed: null, tier: 3, confidence: 0 }
@@ -52,7 +52,7 @@ export const v2: ParserAdapter = {
     return { parsed, tier, confidence: combined }
   },
   sourceFiles: [
-    resolve(__dirname, 'parser-v2.ts'),
+    resolve(__dirname, 'parser.ts'),
     resolve(__dirname, 'noise-words.ts'),
     resolve(__dirname, 'confidence.ts'),
     resolve(__dirname, 'resolver-wrapper.ts'),

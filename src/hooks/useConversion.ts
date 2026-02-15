@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { parseV2 } from '@/engine/v2/parser-v2'
-import type { MatchType } from '@/engine/v2/confidence'
+import { parse } from '@/engine/parser'
+import type { MatchType } from '@/engine/confidence'
 import { resolveLocation, getSuggestion } from '@/engine/resolver'
 import { convert, swapResult } from '@/engine/converter'
 import { getSnapshot } from '@/lib/preferences'
@@ -80,7 +80,7 @@ export function useConversion(): UseConversionReturn {
     setTargetAlternatives([])
 
     // Parse
-    const { parsed, matchType: mt } = parseV2(query)
+    const { parsed, matchType: mt } = parse(query)
     setMatchType(mt)
     if (!parsed) {
       setError({
