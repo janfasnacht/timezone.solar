@@ -3,6 +3,7 @@ import { parse } from './parser'
 import { resolveLocation } from './resolver'
 import { convert } from './converter'
 import type { LocationRef, ConversionIntent } from './types'
+import { loadFixture } from '@/engine/eval/fixture'
 
 function loc(iana: string, displayName: string): LocationRef {
   return { iana, displayName, kind: 'city', resolveMethod: 'city-db' }
@@ -10,6 +11,8 @@ function loc(iana: string, displayName: string): LocationRef {
 
 const NYC = loc('America/New_York', 'New York')
 const LONDON = loc('Europe/London', 'London')
+
+const fixtureCases = loadFixture()
 
 describe('parser benchmarks', () => {
   bench('parse simple query', () => {
@@ -22,6 +25,10 @@ describe('parser benchmarks', () => {
 
   bench('parse multi-word city', () => {
     parse('New York to San Francisco')
+  })
+
+  bench(`parse eval fixture (${fixtureCases.length} cases)`, () => {
+    for (const tc of fixtureCases) parse(tc.input)
   })
 })
 
