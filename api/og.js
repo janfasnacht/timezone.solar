@@ -90718,11 +90718,22 @@ function extractRelativeTime(input) {
   }
   return { cleaned: input, relativeMinutes: null };
 }
+var FULL_DAYS = /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi;
+var SHORT_DAYS_NO_SUN = /\b(mon|tue|tues|wed|thu|thur|thurs|fri|sat)\b/gi;
+var PREFIX_DAY = /\b(next|this|last)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b/gi;
+function stripDayOfWeek(input) {
+  let cleaned = input;
+  cleaned = cleaned.replace(PREFIX_DAY, " ");
+  cleaned = cleaned.replace(FULL_DAYS, " ");
+  cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, " ");
+  return cleaned.replace(/\s+/g, " ").trim();
+}
 function preprocess(input) {
   let cleaned = input;
   cleaned = cleaned.replace(/\?+$/, "").trim();
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned);
   cleaned = afterRelative;
+  cleaned = stripDayOfWeek(cleaned);
   cleaned = cleaned.replace(/\bnow\b/gi, " ").replace(/\s+/g, " ").trim();
   return { cleaned, relativeMinutes };
 }
