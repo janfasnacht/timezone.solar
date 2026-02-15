@@ -1,7 +1,7 @@
-import type { ResolveResult } from '../types'
-import { resolveLocation } from '../resolver'
-import { lookupEntity } from '../city-entities'
-import { US_STATE_TIMEZONES } from '../aliases'
+import type { ResolveResult } from './types'
+import { resolveLocation } from './resolver'
+import { lookupEntity } from './city-entities'
+import { US_STATE_TIMEZONES } from './aliases'
 import { resolveConfidence } from './confidence'
 
 export interface ResolveResultWithConfidence {

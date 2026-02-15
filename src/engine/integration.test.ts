@@ -7,7 +7,7 @@ import type { ConversionResult, ConversionIntent } from './types'
 
 // Full pipeline helper
 function pipeline(input: string): ConversionResult | null {
-  const parsed = parse(input)
+  const { parsed } = parse(input)
   if (!parsed) return null
 
   const target = resolveLocation(parsed.targetLocation)

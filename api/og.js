@@ -90655,7 +90655,7 @@ var TZ_ABBREVIATION_LABELS = {
   "nzdt": "New Zealand Time"
 };
 
-// src/engine/parser.ts
+// src/engine/parser-utils.ts
 var TIME_REGEX = /^(\d{1,2})([:.](\d{2}))?\s*(am|pm)?$/i;
 var TIME_24H_REGEX = /^([01]?\d|2[0-3]):([0-5]\d)$/;
 function parseTimeToken(value) {
@@ -90679,24 +90679,6 @@ function parseTimeToken(value) {
     }
   }
   return null;
-}
-function classifyToken(raw) {
-  const lower = raw.toLowerCase();
-  if (CONNECTORS.has(lower)) return "CONNECTOR";
-  if (NAMED_TIMES[lower]) return "TIME";
-  if (parseTimeToken(raw) !== null) return "TIME";
-  if (DATE_MODIFIERS[lower]) return "DATE_MODIFIER";
-  return "LOCATION";
-}
-function tokenize(input) {
-  const parts = input.trim().split(/\s+/);
-  const tokens = [];
-  for (const part of parts) {
-    if (!part) continue;
-    const type = classifyToken(part);
-    tokens.push({ type, value: part, raw: part });
-  }
-  return tokens;
 }
 function mergeLocationTokens(tokens) {
   const merged = [];
@@ -90736,11 +90718,22 @@ function extractRelativeTime(input) {
   }
   return { cleaned: input, relativeMinutes: null };
 }
+var FULL_DAYS = /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi;
+var SHORT_DAYS_NO_SUN = /\b(mon|tue|tues|wed|thu|thur|thurs|fri|sat)\b/gi;
+var PREFIX_DAY = /\b(next|this|last)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b/gi;
+function stripDayOfWeek(input) {
+  let cleaned = input;
+  cleaned = cleaned.replace(PREFIX_DAY, " ");
+  cleaned = cleaned.replace(FULL_DAYS, " ");
+  cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, " ");
+  return cleaned.replace(/\s+/g, " ").trim();
+}
 function preprocess(input) {
   let cleaned = input;
   cleaned = cleaned.replace(/\?+$/, "").trim();
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned);
   cleaned = afterRelative;
+  cleaned = stripDayOfWeek(cleaned);
   cleaned = cleaned.replace(/\bnow\b/gi, " ").replace(/\s+/g, " ").trim();
   return { cleaned, relativeMinutes };
 }
@@ -90761,86 +90754,235 @@ function stripLeadingConnectors(tokens) {
   }
   return start > 0 ? tokens.slice(start) : tokens;
 }
+
+// src/engine/noise-words.ts
+var NOISE_WORDS = /* @__PURE__ */ new Set([
+  // Question/filler words
+  "what",
+  "whats",
+  "is",
+  "the",
+  "it",
+  "can",
+  "you",
+  "tell",
+  "me",
+  "please",
+  "show",
+  "check",
+  "find",
+  "get",
+  "time",
+  "clock",
+  "current",
+  "right",
+  "how",
+  "when",
+  "where",
+  "would",
+  "could",
+  "will",
+  "do",
+  "does",
+  "difference",
+  // Pronouns/articles
+  "i",
+  "a",
+  "an",
+  "my",
+  "your",
+  "its",
+  "their",
+  // Verbs
+  "need",
+  "know",
+  "want",
+  "convert",
+  "schedule",
+  "have",
+  // Nouns (non-location context)
+  "meeting",
+  "call",
+  "colleague",
+  "zone",
+  // Interjections / voice assistant prefixes
+  "ok",
+  "okay",
+  "hey",
+  "hi",
+  "hello",
+  "google",
+  "siri",
+  "alexa",
+  // Conjunctions
+  "if",
+  "so",
+  "then",
+  "that"
+]);
+var CONNECTORS_EXTENDED = /* @__PURE__ */ new Set([
+  ...CONNECTORS,
+  "and",
+  "between",
+  "vs",
+  "versus",
+  "for"
+]);
+function classifyToken(raw) {
+  const lower = raw.toLowerCase();
+  if (CONNECTORS_EXTENDED.has(lower)) return "CONNECTOR";
+  if (NAMED_TIMES[lower]) return "TIME";
+  if (parseTimeToken(raw) !== null) return "TIME";
+  if (DATE_MODIFIERS[lower]) return "DATE_MODIFIER";
+  if (NOISE_WORDS.has(lower)) return "NOISE";
+  return "LOCATION";
+}
+
+// src/engine/parser.ts
+function tokenize(input) {
+  const parts = input.trim().split(/\s+/);
+  const tokens = [];
+  for (const part of parts) {
+    if (!part) continue;
+    tokens.push({ type: classifyToken(part), value: part, raw: part });
+  }
+  return tokens;
+}
+function toBaseTokens(tokens) {
+  return tokens.map((t) => ({
+    type: t.type,
+    value: t.value,
+    raw: t.raw
+  }));
+}
+function tryPatternMatch(tokens) {
+  const types = tokens.map((t) => t.type).join(" ");
+  if (types === "LOCATION TIME CONNECTOR LOCATION") {
+    return { sourceLocation: tokens[0].value, time: parseTimeToken(tokens[1].value), targetLocation: tokens[3].value };
+  }
+  if (types === "TIME LOCATION CONNECTOR LOCATION") {
+    return { time: parseTimeToken(tokens[0].value), sourceLocation: tokens[1].value, targetLocation: tokens[3].value };
+  }
+  if (types === "LOCATION CONNECTOR LOCATION TIME") {
+    return { sourceLocation: tokens[0].value, targetLocation: tokens[2].value, time: parseTimeToken(tokens[3].value) };
+  }
+  if (types === "LOCATION TIME LOCATION") {
+    return { sourceLocation: tokens[0].value, time: parseTimeToken(tokens[1].value), targetLocation: tokens[2].value };
+  }
+  if (types === "LOCATION CONNECTOR LOCATION") {
+    return { sourceLocation: tokens[0].value, targetLocation: tokens[2].value, time: null };
+  }
+  if (types === "TIME LOCATION LOCATION") {
+    return { time: parseTimeToken(tokens[0].value), sourceLocation: tokens[1].value, targetLocation: tokens[2].value };
+  }
+  if (types === "LOCATION LOCATION TIME") {
+    return { sourceLocation: tokens[0].value, targetLocation: tokens[1].value, time: parseTimeToken(tokens[2].value) };
+  }
+  if (types === "LOCATION LOCATION") {
+    return { sourceLocation: tokens[0].value, targetLocation: tokens[1].value, time: null };
+  }
+  if (types === "TIME CONNECTOR LOCATION CONNECTOR LOCATION") {
+    return { time: parseTimeToken(tokens[0].value), sourceLocation: tokens[2].value, targetLocation: tokens[4].value };
+  }
+  if (types === "TIME CONNECTOR LOCATION") {
+    return { time: parseTimeToken(tokens[0].value), sourceLocation: null, targetLocation: tokens[2].value };
+  }
+  if (types === "LOCATION TIME") {
+    return { time: parseTimeToken(tokens[1].value), sourceLocation: null, targetLocation: tokens[0].value };
+  }
+  if (types === "TIME LOCATION") {
+    return { time: parseTimeToken(tokens[0].value), sourceLocation: null, targetLocation: tokens[1].value };
+  }
+  if (types === "LOCATION") {
+    return { sourceLocation: null, targetLocation: tokens[0].value, time: null };
+  }
+  return null;
+}
+function greedyExtract(tokens) {
+  const timeTokens = tokens.filter((t) => t.type === "TIME");
+  const locationTokens = tokens.filter((t) => t.type === "LOCATION");
+  if (locationTokens.length === 0) return null;
+  const time = timeTokens.length > 0 ? parseTimeToken(timeTokens[0].value) : null;
+  if (locationTokens.length === 1) {
+    return { sourceLocation: null, targetLocation: locationTokens[0].value, time };
+  }
+  return {
+    sourceLocation: locationTokens[0].value,
+    targetLocation: locationTokens[locationTokens.length - 1].value,
+    time
+  };
+}
 function parse(input) {
   const raw = input.trim();
-  if (!raw) return null;
+  if (!raw) return { parsed: null, matchType: "none", noiseCount: 0 };
   const { cleaned, relativeMinutes } = preprocess(raw);
-  if (!cleaned) return null;
-  const rawTokens = mergeLocationTokens(tokenize(cleaned));
+  if (!cleaned) return { parsed: null, matchType: "none", noiseCount: 0 };
+  const allTokens = tokenize(cleaned);
   let dateModifier = null;
-  const afterDateMod = rawTokens.filter((t) => {
+  const afterDateMod = allTokens.filter((t) => {
     if (t.type === "DATE_MODIFIER") {
       dateModifier = DATE_MODIFIERS[t.value.toLowerCase()] ?? null;
       return false;
     }
     return true;
   });
-  const tokens = stripLeadingConnectors(removeConnectorBeforeTime(afterDateMod));
-  const types = tokens.map((t) => t.type).join(" ");
-  let sourceLocation = null;
-  let targetLocation = "";
-  let time = null;
-  if (types === "LOCATION TIME CONNECTOR LOCATION") {
-    sourceLocation = tokens[0].value;
-    time = parseTimeToken(tokens[1].value);
-    targetLocation = tokens[3].value;
-  } else if (types === "TIME LOCATION CONNECTOR LOCATION") {
-    time = parseTimeToken(tokens[0].value);
-    sourceLocation = tokens[1].value;
-    targetLocation = tokens[3].value;
-  } else if (types === "LOCATION CONNECTOR LOCATION TIME") {
-    sourceLocation = tokens[0].value;
-    targetLocation = tokens[2].value;
-    time = parseTimeToken(tokens[3].value);
-  } else if (types === "LOCATION TIME LOCATION") {
-    sourceLocation = tokens[0].value;
-    time = parseTimeToken(tokens[1].value);
-    targetLocation = tokens[2].value;
-  } else if (types === "LOCATION CONNECTOR LOCATION") {
-    sourceLocation = tokens[0].value;
-    targetLocation = tokens[2].value;
-  } else if (types === "TIME LOCATION LOCATION") {
-    time = parseTimeToken(tokens[0].value);
-    sourceLocation = tokens[1].value;
-    targetLocation = tokens[2].value;
-  } else if (types === "LOCATION LOCATION TIME") {
-    sourceLocation = tokens[0].value;
-    targetLocation = tokens[1].value;
-    time = parseTimeToken(tokens[2].value);
-  } else if (types === "LOCATION LOCATION") {
-    sourceLocation = tokens[0].value;
-    targetLocation = tokens[1].value;
-  } else if (types === "TIME CONNECTOR LOCATION CONNECTOR LOCATION") {
-    time = parseTimeToken(tokens[0].value);
-    sourceLocation = tokens[2].value;
-    targetLocation = tokens[4].value;
-  } else if (types === "TIME CONNECTOR LOCATION") {
-    time = parseTimeToken(tokens[0].value);
-    sourceLocation = null;
-    targetLocation = tokens[2].value;
-  } else if (types === "LOCATION TIME") {
-    time = parseTimeToken(tokens[1].value);
-    sourceLocation = null;
-    targetLocation = tokens[0].value;
-  } else if (types === "TIME LOCATION") {
-    time = parseTimeToken(tokens[0].value);
-    sourceLocation = null;
-    targetLocation = tokens[1].value;
-  } else if (types === "LOCATION") {
-    sourceLocation = null;
-    targetLocation = tokens[0].value;
-  } else {
-    return null;
+  const noiseTokens = afterDateMod.filter((t) => t.type === "NOISE");
+  const signalTokens = afterDateMod.filter((t) => t.type !== "NOISE");
+  const noiseCount = noiseTokens.length;
+  const baseTokens = toBaseTokens(signalTokens);
+  const merged = mergeLocationTokens(baseTokens);
+  const cleanedTokens = stripLeadingConnectors(removeConnectorBeforeTime(merged));
+  const patternResult = tryPatternMatch(cleanedTokens);
+  if (patternResult) {
+    const matchType = noiseCount === 0 ? "exact" : "exact-noisy";
+    return {
+      parsed: buildParsedQuery(patternResult, relativeMinutes, dateModifier),
+      matchType,
+      noiseCount
+    };
   }
+  const greedyResult = greedyExtract(signalTokens);
+  if (greedyResult) {
+    return {
+      parsed: buildParsedQuery(greedyResult, relativeMinutes, dateModifier),
+      matchType: "greedy",
+      noiseCount
+    };
+  }
+  if (noiseTokens.length > 0 && signalTokens.every((t) => t.type !== "LOCATION")) {
+    const promoted = afterDateMod.map(
+      (t) => t.type === "NOISE" ? { ...t, type: "LOCATION" } : t
+    );
+    const promotedSignal = promoted.filter((t) => t.type !== "NOISE");
+    const promotedBase = toBaseTokens(promotedSignal);
+    const promotedMerged = mergeLocationTokens(promotedBase);
+    const promotedCleaned = stripLeadingConnectors(removeConnectorBeforeTime(promotedMerged));
+    const promotedPattern = tryPatternMatch(promotedCleaned);
+    if (promotedPattern) {
+      return {
+        parsed: buildParsedQuery(promotedPattern, relativeMinutes, dateModifier),
+        matchType: "promoted",
+        noiseCount
+      };
+    }
+  }
+  return { parsed: null, matchType: "none", noiseCount };
+}
+function buildParsedQuery(extracted, relativeMinutes, dateModifier) {
   let timeRef;
   if (relativeMinutes !== null) {
     timeRef = { type: "relative", minutes: relativeMinutes };
-  } else if (time !== null) {
-    timeRef = { type: "absolute", hour: time.hour, minute: time.minute };
+  } else if (extracted.time !== null) {
+    timeRef = { type: "absolute", hour: extracted.time.hour, minute: extracted.time.minute };
   } else {
     timeRef = { type: "now" };
   }
-  return { sourceLocation, targetLocation, time: timeRef, dateModifier };
+  return {
+    sourceLocation: extracted.sourceLocation,
+    targetLocation: extracted.targetLocation,
+    time: timeRef,
+    dateModifier
+  };
 }
 
 // src/engine/resolver.ts
@@ -100077,7 +100219,7 @@ var fraunces = readFileSync(join(process.cwd(), "api/fonts/Fraunces-SemiBold.wof
 var instrumentSans = readFileSync(join(process.cwd(), "api/fonts/InstrumentSans-Regular.woff"));
 var instrumentSansSB = readFileSync(join(process.cwd(), "api/fonts/InstrumentSans-SemiBold.woff"));
 function runConversion(q, srcIana) {
-  const parsed = parse(q);
+  const { parsed } = parse(q);
   if (!parsed) return null;
   const target = resolveLocation(parsed.targetLocation);
   if (!target) return null;

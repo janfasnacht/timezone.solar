@@ -2,16 +2,18 @@ import { useState, useEffect, useCallback } from 'react'
 import { ResultCard } from '@/components/ResultCard'
 import { CardBack } from '@/components/CardBack'
 import type { ConversionResult } from '@/engine/types'
+import type { MatchType } from '@/engine/confidence'
 
 interface FlippableCardProps {
   result: ConversionResult
   isUsingCurrentTime: boolean
+  matchType: MatchType
   onSwap: () => void
   query: string
   use24h: boolean
 }
 
-export function FlippableCard({ result, isUsingCurrentTime, onSwap, query, use24h }: FlippableCardProps) {
+export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h }: FlippableCardProps) {
   const [flipped, setFlipped] = useState(false)
 
   // Reset to front when result changes (new query)
@@ -33,6 +35,7 @@ export function FlippableCard({ result, isUsingCurrentTime, onSwap, query, use24
           <ResultCard
             result={result}
             isUsingCurrentTime={isUsingCurrentTime}
+            matchType={matchType}
             onSwap={onSwap}
             onFlip={flipToBack}
           />

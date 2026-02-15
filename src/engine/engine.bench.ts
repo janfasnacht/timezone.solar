@@ -58,7 +58,7 @@ describe('converter benchmarks', () => {
 
 describe('full pipeline benchmarks', () => {
   bench('full pipeline', () => {
-    const parsed = parse('3pm NYC to London')
+    const { parsed } = parse('3pm NYC to London')
     if (!parsed) return
     const source = resolveLocation(parsed.sourceLocation!)
     const target = resolveLocation(parsed.targetLocation)

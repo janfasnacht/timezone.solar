@@ -1,8 +1,8 @@
-import type { TokenType } from '../types'
-import { CONNECTORS, NAMED_TIMES, DATE_MODIFIERS } from '../constants'
-import { parseTimeToken } from '../parser'
+import type { TokenType } from './types'
+import { CONNECTORS, NAMED_TIMES, DATE_MODIFIERS } from './constants'
+import { parseTimeToken } from './parser-utils'
 
-export type TokenTypeV2 = TokenType | 'NOISE'
+export type TokenTypeExtended = TokenType | 'NOISE'
 
 export const NOISE_WORDS = new Set([
   // Question/filler words
@@ -22,14 +22,14 @@ export const NOISE_WORDS = new Set([
   'if', 'so', 'then', 'that',
 ])
 
-export const CONNECTORS_V2 = new Set([
+export const CONNECTORS_EXTENDED = new Set([
   ...CONNECTORS,
   'and', 'between', 'vs', 'versus', 'for',
 ])
 
-export function classifyTokenV2(raw: string): TokenTypeV2 {
+export function classifyToken(raw: string): TokenTypeExtended {
   const lower = raw.toLowerCase()
-  if (CONNECTORS_V2.has(lower)) return 'CONNECTOR'
+  if (CONNECTORS_EXTENDED.has(lower)) return 'CONNECTOR'
   if (NAMED_TIMES[lower]) return 'TIME'
   if (parseTimeToken(raw) !== null) return 'TIME'
   if (DATE_MODIFIERS[lower]) return 'DATE_MODIFIER'

@@ -7,15 +7,17 @@ import { getDstWarning } from '@/lib/dstWarning'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { CityIcon } from '@/components/CityIcon'
 import type { ConversionResult } from '@/engine/types'
+import type { MatchType } from '@/engine/confidence'
 
 interface ResultCardProps {
   result: ConversionResult
   isUsingCurrentTime: boolean
+  matchType?: MatchType
   onSwap: () => void
   onFlip?: () => void
 }
 
-export function ResultCard({ result, isUsingCurrentTime, onSwap, onFlip }: ResultCardProps) {
+export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, onFlip }: ResultCardProps) {
   const { timeFormat } = usePreferences()
   const use24h = timeFormat === '24h'
   const sourceClock = useLiveClock(result.source.iana, use24h)
@@ -120,6 +122,11 @@ export function ResultCard({ result, isUsingCurrentTime, onSwap, onFlip }: Resul
             {targetDate && (
               <span className={normalChip}>
                 {targetDate}
+              </span>
+            )}
+            {matchType && matchType !== 'exact' && matchType !== 'none' && (
+              <span className={normalChip} title={`Parser match: ${matchType}`}>
+                best guess
               </span>
             )}
           </div>
