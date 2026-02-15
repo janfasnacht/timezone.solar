@@ -12,6 +12,7 @@
 import { resolve } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { parse } from './parser'
+import { v2 } from './v2/adapter'
 import type { ParserAdapter, TestCase } from '@/engine/eval'
 import {
   loadFixture,
@@ -102,16 +103,21 @@ describe('scorecard', () => {
   it('reports full eval scorecard for v1', () => {
     const scorecard = runEvaluation(v1, cases)
     printScorecard(scorecard)
-    // Reporting test — always passes
+    expect(scorecard.totalCases).toBe(cases.length)
+  })
+
+  it('reports full eval scorecard for v2', () => {
+    const scorecard = runEvaluation(v2, cases)
+    printScorecard(scorecard)
     expect(scorecard.totalCases).toBe(cases.length)
   })
 })
 
-// --- Comparison (extend with v2 adapters when available) ---
+// --- Comparison ---
 
 describe('comparison', () => {
   it('prints comparison table', () => {
-    const adapters: ParserAdapter[] = [v1]
+    const adapters: ParserAdapter[] = [v1, v2]
     const scorecards = adapters.map((a) => runEvaluation(a, cases))
     printComparisonTable(scorecards)
     expect(scorecards.length).toBeGreaterThan(0)

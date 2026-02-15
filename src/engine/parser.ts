@@ -9,7 +9,7 @@ interface TimeValueInternal {
   minute: number
 }
 
-function parseTimeToken(value: string): TimeValueInternal | null {
+export function parseTimeToken(value: string): TimeValueInternal | null {
   const lower = value.toLowerCase()
 
   // Named times
@@ -63,7 +63,7 @@ function tokenize(input: string): Token[] {
   return tokens
 }
 
-function mergeLocationTokens(tokens: Token[]): Token[] {
+export function mergeLocationTokens(tokens: Token[]): Token[] {
   const merged: Token[] = []
 
   for (const token of tokens) {
@@ -90,7 +90,7 @@ interface PreprocessResult {
   relativeMinutes: number | null
 }
 
-function extractRelativeTime(input: string): PreprocessResult {
+export function extractRelativeTime(input: string): PreprocessResult {
   // Compound: "in 1h30m", "in 2h 15m", "in 1h30"
   const compoundMatch = input.match(/\bin\s+(\d+)\s*h\s*(\d+)\s*m?\b/i)
   if (compoundMatch) {
@@ -126,7 +126,7 @@ function extractRelativeTime(input: string): PreprocessResult {
   return { cleaned: input, relativeMinutes: null }
 }
 
-function preprocess(input: string): PreprocessResult {
+export function preprocess(input: string): PreprocessResult {
   let cleaned = input
 
   // Strip trailing question mark
@@ -145,7 +145,7 @@ function preprocess(input: string): PreprocessResult {
 // --- Post-tokenize cleanup ---
 
 /** Remove CONNECTOR tokens immediately before TIME tokens (handles "at 6pm", "Boston to LA at 6pm") */
-function removeConnectorBeforeTime(tokens: Token[]): Token[] {
+export function removeConnectorBeforeTime(tokens: Token[]): Token[] {
   const result: Token[] = []
   for (let i = 0; i < tokens.length; i++) {
     if (
@@ -162,7 +162,7 @@ function removeConnectorBeforeTime(tokens: Token[]): Token[] {
 }
 
 /** Strip leading CONNECTOR tokens (handles "from Boston to LA", "in Tokyo" after relative time extraction) */
-function stripLeadingConnectors(tokens: Token[]): Token[] {
+export function stripLeadingConnectors(tokens: Token[]): Token[] {
   let start = 0
   while (start < tokens.length && tokens[start].type === 'CONNECTOR') {
     start++
