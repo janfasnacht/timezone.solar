@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { ResultCard } from '@/components/ResultCard'
 import { CardBack } from '@/components/CardBack'
 import type { ConversionResult } from '@/engine/types'
@@ -15,11 +15,13 @@ interface FlippableCardProps {
 
 export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h }: FlippableCardProps) {
   const [flipped, setFlipped] = useState(false)
+  const [prevResult, setPrevResult] = useState(result)
 
   // Reset to front when result changes (new query)
-  useEffect(() => {
+  if (prevResult !== result) {
+    setPrevResult(result)
     setFlipped(false)
-  }, [result])
+  }
 
   const flipToBack = useCallback(() => setFlipped(true), [])
   const flipToFront = useCallback(() => setFlipped(false), [])
