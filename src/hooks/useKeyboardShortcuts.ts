@@ -2,7 +2,9 @@ import { useEffect, type RefObject } from 'react'
 
 export function useKeyboardShortcuts(
   inputRef: RefObject<HTMLInputElement | null>,
-  toggleHelp: () => void,
+  showSettings: boolean,
+  setShowSettings: (v: boolean) => void,
+  showExamples: () => void,
   onClear: () => void,
 ) {
   useEffect(() => {
@@ -10,20 +12,27 @@ export function useKeyboardShortcuts(
       // Cmd+K → focus + select input
       if (e.metaKey && e.key === 'k') {
         e.preventDefault()
+        setShowSettings(false)
         inputRef.current?.focus()
         inputRef.current?.select()
       }
 
-      // Cmd+/ → toggle help modal
+      // Cmd+/ → switch to convert, clear, focus input
       if (e.metaKey && e.key === '/') {
         e.preventDefault()
-        toggleHelp()
+        showExamples()
+      }
+
+      // Escape on settings → flip back to convert
+      if (e.key === 'Escape' && showSettings) {
+        e.preventDefault()
+        setShowSettings(false)
+        inputRef.current?.focus()
+        return
       }
 
       // Global Escape → clear results and focus input
       if (e.key === 'Escape' && document.activeElement !== inputRef.current) {
-        // Skip if a modal is open (modals handle their own Escape)
-        if (document.querySelector('[role="dialog"]')) return
         e.preventDefault()
         onClear()
         inputRef.current?.focus()
@@ -32,5 +41,5 @@ export function useKeyboardShortcuts(
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [inputRef, toggleHelp, onClear])
+  }, [inputRef, showSettings, setShowSettings, showExamples, onClear])
 }
