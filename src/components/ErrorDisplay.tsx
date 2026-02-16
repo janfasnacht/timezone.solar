@@ -2,10 +2,10 @@ import type { ConversionError } from '@/engine/types'
 
 interface ErrorDisplayProps {
   error: ConversionError
-  onOpenHelp: () => void
+  onClear: () => void
 }
 
-export function ErrorDisplay({ error, onOpenHelp }: ErrorDisplayProps) {
+export function ErrorDisplay({ error, onClear }: ErrorDisplayProps) {
   return (
     <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
@@ -20,7 +20,7 @@ export function ErrorDisplay({ error, onOpenHelp }: ErrorDisplayProps) {
           </p>
         )}
         <button
-          onClick={onOpenHelp}
+          onClick={onClear}
           className="mt-4 text-[0.75rem] text-muted-foreground transition-colors hover:text-foreground"
         >
           View supported formats
