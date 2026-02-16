@@ -139,13 +139,13 @@ export function parse(input: string): ParseResult {
   if (!raw) return { parsed: null, matchType: 'none', noiseCount: 0 }
 
   // Pre-process
-  const { cleaned, relativeMinutes } = preprocess(raw)
+  const { cleaned, relativeMinutes, dayOfWeek } = preprocess(raw)
   if (!cleaned) return { parsed: null, matchType: 'none', noiseCount: 0 }
 
   // Tokenize with extended classifier
   const allTokens = tokenize(cleaned)
 
-  // Extract date modifiers
+  // Extract date modifiers — token-based (tomorrow/yesterday/today) takes priority over day-of-week
   let dateModifier: ParsedQuery['dateModifier'] = null
   const afterDateMod = allTokens.filter((t) => {
     if (t.type === 'DATE_MODIFIER') {
@@ -154,6 +154,9 @@ export function parse(input: string): ParseResult {
     }
     return true
   })
+  if (!dateModifier && dayOfWeek) {
+    dateModifier = dayOfWeek
+  }
 
   // Separate noise from signal
   const noiseTokens = afterDateMod.filter((t) => t.type === 'NOISE')

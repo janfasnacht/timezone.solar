@@ -413,6 +413,65 @@ describe('converter', () => {
     })
   })
 
+  // --- Day-of-week date modifiers ---
+
+  describe('day-of-week date modifiers', () => {
+    // Pinned to 2026-03-01 which is a Sunday (weekday 7 in Luxon)
+
+    it('next Tuesday resolves to 2026-03-03', () => {
+      const mod = { type: 'day-of-week' as const, day: 'tuesday' as const, anchor: 'next' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 15, minute: 0 }, mod))
+      expect(result.sourceDateTime).toContain('2026-03-03')
+      expect(result.source.formattedTime24).toBe('15:00')
+    })
+
+    it('this Friday from Sunday resolves to past Friday 2026-02-27', () => {
+      const mod = { type: 'day-of-week' as const, day: 'friday' as const, anchor: 'this' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 12, minute: 0 }, mod))
+      // Sunday weekday=7, Friday weekday=5, diff = 5-7 = -2 → this week's Friday (past)
+      expect(result.sourceDateTime).toContain('2026-02-27')
+    })
+
+    it('last Saturday resolves to 2026-02-28', () => {
+      const mod = { type: 'day-of-week' as const, day: 'saturday' as const, anchor: 'last' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 20, minute: 0 }, mod))
+      expect(result.sourceDateTime).toContain('2026-02-28')
+    })
+
+    it('bare Monday resolves to next Monday 2026-03-02', () => {
+      const mod = { type: 'day-of-week' as const, day: 'monday' as const, anchor: 'bare' as const }
+      const result = convert(intent(NYC, TOKYO, { type: 'absolute', hour: 9, minute: 0 }, mod))
+      expect(result.sourceDateTime).toContain('2026-03-02')
+    })
+
+    it('day-of-week prevents temporal anchoring', () => {
+      // 8am is in the past (pinned at 10am), but day-of-week should not auto-anchor
+      const mod = { type: 'day-of-week' as const, day: 'tuesday' as const, anchor: 'next' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 8, minute: 0 }, mod))
+      expect(result.anchoredToTomorrow).toBe(false)
+      expect(result.sourceDateTime).toContain('2026-03-03')
+    })
+
+    it('day-of-week with time.type === now works', () => {
+      const mod = { type: 'day-of-week' as const, day: 'wednesday' as const, anchor: 'next' as const }
+      const result = convert(intent(NYC, TOKYO, { type: 'now' }, mod))
+      // Sunday + next Wednesday = +3 days = 2026-03-04
+      expect(result.sourceDateTime).toContain('2026-03-04')
+    })
+
+    it('this Sunday on a Sunday resolves to current day (diff = 0)', () => {
+      const mod = { type: 'day-of-week' as const, day: 'sunday' as const, anchor: 'this' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 15, minute: 0 }, mod))
+      expect(result.sourceDateTime).toContain('2026-03-01')
+    })
+
+    it('next Sunday skips current day', () => {
+      const mod = { type: 'day-of-week' as const, day: 'sunday' as const, anchor: 'next' as const }
+      const result = convert(intent(NYC, LONDON, { type: 'absolute', hour: 15, minute: 0 }, mod))
+      expect(result.sourceDateTime).toContain('2026-03-08')
+    })
+  })
+
   // --- intent field ---
 
   describe('intent field', () => {

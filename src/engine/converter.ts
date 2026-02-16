@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import type { TimezoneInfo, ConversionResult, ConversionIntent, LocationRef } from './types'
+import type { TimezoneInfo, ConversionResult, ConversionIntent, LocationRef, DayOfWeekModifier, DayOfWeek } from './types'
 
 function buildTimezoneInfo(dt: DateTime, loc: LocationRef): TimezoneInfo {
   return {
@@ -108,6 +108,29 @@ export function swapResult(original: ConversionResult): ConversionResult {
   }
 }
 
+const WEEKDAY_MAP: Record<DayOfWeek, number> = {
+  monday: 1, tuesday: 2, wednesday: 3, thursday: 4,
+  friday: 5, saturday: 6, sunday: 7,
+}
+
+function dayOfWeekOffset(mod: DayOfWeekModifier, currentWeekday: number): number {
+  const target = WEEKDAY_MAP[mod.day]
+  const diff = target - currentWeekday
+
+  switch (mod.anchor) {
+    case 'next':
+    case 'bare':
+      // Next occurrence, skip today
+      return diff <= 0 ? diff + 7 : diff
+    case 'this':
+      // This week's occurrence (can be past)
+      return diff
+    case 'last':
+      // Most recent past occurrence
+      return diff >= 0 ? diff - 7 : diff
+  }
+}
+
 export function convert(intent: ConversionIntent): ConversionResult {
   const { source, target, time, dateModifier } = intent
   const now = DateTime.now()
@@ -140,6 +163,10 @@ export function convert(intent: ConversionIntent): ConversionResult {
       sourceDt = sourceDt.minus({ days: 1 })
     } else if (dateModifier === 'today') {
       // Explicit "today" — no-op, but prevents auto-anchoring
+    } else if (typeof dateModifier === 'object' && dateModifier?.type === 'day-of-week') {
+      // Day-of-week modifier — resolve to concrete date offset
+      const offset = dayOfWeekOffset(dateModifier, sourceDt.weekday)
+      sourceDt = sourceDt.plus({ days: offset })
     } else {
       // No explicit modifier — temporal anchoring
       const nowInSource = now.setZone(source.iana)
@@ -161,6 +188,9 @@ export function convert(intent: ConversionIntent): ConversionResult {
       sourceDt = sourceDt.plus({ days: 1 })
     } else if (dateModifier === 'yesterday') {
       sourceDt = sourceDt.minus({ days: 1 })
+    } else if (typeof dateModifier === 'object' && dateModifier?.type === 'day-of-week') {
+      const offset = dayOfWeekOffset(dateModifier, sourceDt.weekday)
+      sourceDt = sourceDt.plus({ days: offset })
     }
   }
 

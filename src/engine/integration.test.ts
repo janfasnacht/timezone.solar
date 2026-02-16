@@ -257,6 +257,57 @@ describe('integration', () => {
 
   // --- "now" stripping E2E ---
 
+  // --- Day-of-week E2E ---
+
+  describe('day-of-week E2E', () => {
+    // Pinned to 2026-03-01 (Sunday) 10:00 EST
+
+    it('next Tuesday 3pm NYC to London resolves to correct date', () => {
+      const result = pipeline('next Tuesday 3pm NYC to London')
+      expect(result).not.toBeNull()
+      expect(result!.source.formattedTime24).toBe('15:00')
+      // Sunday → next Tuesday = 2026-03-03
+      expect(result!.sourceDateTime).toContain('2026-03-03')
+    })
+
+    it('Monday 9am Berlin to Tokyo (bare) resolves to next Monday', () => {
+      const result = pipeline('Monday 9am Berlin to Tokyo')
+      expect(result).not.toBeNull()
+      expect(result!.source.formattedTime24).toBe('09:00')
+      // Sunday → next Monday = 2026-03-02
+      expect(result!.sourceDateTime).toContain('2026-03-02')
+    })
+
+    it('next Wednesday Tokyo without time uses current time', () => {
+      const result = pipeline('next Wednesday Tokyo')
+      expect(result).not.toBeNull()
+      // Sunday → next Wednesday = 2026-03-04
+      expect(result!.sourceDateTime).toContain('2026-03-04')
+    })
+
+    it('last Saturday 8pm Sydney to London resolves to past date', () => {
+      const result = pipeline('last Saturday 8pm Sydney to London')
+      expect(result).not.toBeNull()
+      expect(result!.source.formattedTime24).toBe('20:00')
+      // Sunday → last Saturday = 2026-02-28
+      expect(result!.sourceDateTime).toContain('2026-02-28')
+    })
+
+    it('day-of-week uses correct DST rules for target date', () => {
+      // Pin to 2026-03-06 (Friday) before US spring-forward on Mar 8
+      const fridayPin = new Date('2026-03-06T15:00:00Z').getTime()
+      Settings.now = () => fridayPin
+
+      // "next Tuesday" from Friday Mar 6 = Mar 10, which is AFTER spring-forward
+      const result = pipeline('next Tuesday 10am NYC to London')
+      expect(result).not.toBeNull()
+      expect(result!.sourceDateTime).toContain('2026-03-10')
+      // After spring-forward: NYC is EDT (-4), London is GMT (+0), offset = +4h
+      expect(result!.target.formattedTime24).toBe('14:00')
+      expect(result!.offsetDifference).toBe('+4h')
+    })
+  })
+
   describe('"now" stripping E2E', () => {
     it('now NYC to London', () => {
       const result = pipeline('now NYC to London')
