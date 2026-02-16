@@ -9,6 +9,7 @@ export interface Preferences {
   theme: ThemePreference
   timeFormat: TimeFormat
   homeCity: HomeCity | null
+  telemetryOptOut: boolean
 }
 
 const STORAGE_KEY = 'tz-preferences'
@@ -17,6 +18,7 @@ const DEFAULTS: Preferences = {
   theme: 'system',
   timeFormat: '12h',
   homeCity: null,
+  telemetryOptOut: false,
 }
 
 let state: Preferences = load()
@@ -31,6 +33,7 @@ function load(): Preferences {
       theme: ['system', 'light', 'dark'].includes(parsed.theme) ? parsed.theme : DEFAULTS.theme,
       timeFormat: ['12h', '24h'].includes(parsed.timeFormat) ? parsed.timeFormat : DEFAULTS.timeFormat,
       homeCity: parsed.homeCity && parsed.homeCity.iana ? parsed.homeCity : DEFAULTS.homeCity,
+      telemetryOptOut: parsed.telemetryOptOut === true,
     }
   } catch {
     return { ...DEFAULTS }
@@ -71,6 +74,12 @@ export function setTimeFormat(timeFormat: TimeFormat) {
 
 export function setHomeCity(homeCity: HomeCity | null) {
   state = { ...state, homeCity }
+  save()
+  notify()
+}
+
+export function setTelemetryOptOut(telemetryOptOut: boolean) {
+  state = { ...state, telemetryOptOut }
   save()
   notify()
 }

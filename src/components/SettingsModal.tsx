@@ -39,7 +39,7 @@ function SegmentedControl<T extends string>({
 
 export function SettingsModal({ open, onClose }: SettingsModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
-  const { theme, timeFormat, homeCity, setTheme, setTimeFormat, setHomeCity } = usePreferences()
+  const { theme, timeFormat, homeCity, telemetryOptOut, setTheme, setTimeFormat, setHomeCity, setTelemetryOptOut } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
   const [suggestions, setSuggestions] = useState<{ city: string; country: string; iana: string }[]>([])
@@ -205,6 +205,25 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
             {homeCity.city}{homeCity.country ? `, ${homeCity.country}` : ''} ({homeCity.iana})
           </p>
         )}
+      </div>
+
+      {/* Anonymous usage data */}
+      <div className="mt-3 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">Anonymous usage data</span>
+        <button
+          role="switch"
+          aria-checked={!telemetryOptOut}
+          onClick={() => setTelemetryOptOut(!telemetryOptOut)}
+          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+            !telemetryOptOut ? 'bg-accent' : 'bg-border'
+          }`}
+        >
+          <span
+            className={`inline-block h-3.5 w-3.5 rounded-full bg-background transition-transform ${
+              !telemetryOptOut ? 'translate-x-[18px]' : 'translate-x-[3px]'
+            }`}
+          />
+        </button>
       </div>
     </div>
   )
