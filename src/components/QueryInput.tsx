@@ -12,6 +12,7 @@ interface QueryInputProps {
   initialValue?: string
   placeholder?: string
   recentQueries?: string[]
+  isProcessing?: boolean
 }
 
 export function QueryInput({
@@ -24,6 +25,7 @@ export function QueryInput({
   initialValue,
   placeholder,
   recentQueries = [],
+  isProcessing = false,
 }: QueryInputProps) {
   const [value, setValue] = useState(initialValue ?? '')
   const [historyIndex, setHistoryIndex] = useState<number | null>(null)
@@ -178,7 +180,13 @@ export function QueryInput({
         aria-label="Convert"
         tabIndex={-1}
       >
-        <ArrowRight size={18} />
+        {isProcessing && value.trim() ? (
+          <span className="flex h-[18px] w-[18px] items-center justify-center">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
+          </span>
+        ) : (
+          <ArrowRight size={18} />
+        )}
       </button>
       {dropdownOpen && recentQueries.length > 0 && (
         <RecentSearches
