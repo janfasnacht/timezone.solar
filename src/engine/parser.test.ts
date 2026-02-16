@@ -439,63 +439,70 @@ describe('parser', () => {
     })
   })
 
-  // --- Day-of-week stripping ---
+  // --- Day-of-week parsing ---
 
-  describe('day-of-week stripping', () => {
-    it('strips "next Tuesday" prefix', () => {
+  describe('day-of-week parsing', () => {
+    it('parses "next Tuesday" as day-of-week modifier', () => {
       const { parsed } = parse('next Tuesday 3pm NYC to London')
       expect(parsed?.sourceLocation).toBe('NYC')
       expect(parsed?.targetLocation).toBe('London')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 15, minute: 0 })
-      expect(parsed?.dateModifier).toBeNull()
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'tuesday', anchor: 'next' })
     })
 
-    it('strips bare full day name', () => {
+    it('parses bare full day name as bare anchor', () => {
       const { parsed } = parse('Monday 9am Berlin to Tokyo')
       expect(parsed?.sourceLocation).toBe('Berlin')
       expect(parsed?.targetLocation).toBe('Tokyo')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 9, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'monday', anchor: 'bare' })
     })
 
-    it('strips "this Friday"', () => {
+    it('parses "this Friday"', () => {
       const { parsed } = parse('this Friday noon London')
       expect(parsed?.sourceLocation).toBeNull()
       expect(parsed?.targetLocation).toBe('London')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 12, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'friday', anchor: 'this' })
     })
 
-    it('strips "next Wednesday"', () => {
+    it('parses "next Wednesday" without time', () => {
       const { parsed } = parse('next Wednesday Tokyo')
       expect(parsed?.sourceLocation).toBeNull()
       expect(parsed?.targetLocation).toBe('Tokyo')
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'wednesday', anchor: 'next' })
     })
 
-    it('strips "last Saturday"', () => {
+    it('parses "last Saturday"', () => {
       const { parsed } = parse('last Saturday 8pm Sydney to London')
       expect(parsed?.sourceLocation).toBe('Sydney')
       expect(parsed?.targetLocation).toBe('London')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 20, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'saturday', anchor: 'last' })
     })
 
-    it('strips abbreviated day "Mon"', () => {
+    it('parses abbreviated day "Mon"', () => {
       const { parsed } = parse('next Mon 10am EST to PST')
       expect(parsed?.sourceLocation).toBe('EST')
       expect(parsed?.targetLocation).toBe('PST')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 10, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'monday', anchor: 'next' })
     })
 
-    it('strips abbreviated day "Thu"', () => {
+    it('parses abbreviated day "Thu" as bare', () => {
       const { parsed } = parse('Thu 2pm Chicago to London')
       expect(parsed?.sourceLocation).toBe('Chicago')
       expect(parsed?.targetLocation).toBe('London')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 14, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'thursday', anchor: 'bare' })
     })
 
-    it('strips "next Sunday" with named time', () => {
+    it('parses "next Sunday" with named time', () => {
       const { parsed } = parse('next Sunday midnight NYC')
       expect(parsed?.sourceLocation).toBeNull()
       expect(parsed?.targetLocation).toBe('NYC')
       expect(parsed?.time).toEqual({ type: 'absolute', hour: 0, minute: 0 })
+      expect(parsed?.dateModifier).toEqual({ type: 'day-of-week', day: 'sunday', anchor: 'next' })
     })
 
     it('does not strip standalone "sun" (possible location)', () => {

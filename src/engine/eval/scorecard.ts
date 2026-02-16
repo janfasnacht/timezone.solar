@@ -1,4 +1,4 @@
-import type { TimeRef } from '../types'
+import type { TimeRef, DateModifier } from '../types'
 import type {
   TestCase,
   ParserAdapter,
@@ -20,6 +20,13 @@ function timeRefEqual(a: TimeRef, b: TimeRef): boolean {
     return a.minutes === b.minutes
   }
   return false
+}
+
+function dateModifierEqual(a: DateModifier, b: DateModifier): boolean {
+  if (a === b) return true
+  if (a === null || b === null) return false
+  if (typeof a === 'string' || typeof b === 'string') return a === b
+  return a.type === b.type && a.day === b.day && a.anchor === b.anchor
 }
 
 export function assertParseResult(adapter: ParserAdapter, tc: TestCase): ParseAssertionResult {
@@ -51,7 +58,7 @@ export function assertParseResult(adapter: ParserAdapter, tc: TestCase): ParseAs
   const sourceMatch = parsed.sourceLocation === tc.expectedSource
   const targetMatch = parsed.targetLocation === tc.expectedTarget
   const timeMatch = timeRefEqual(parsed.time, tc.expectedTime)
-  const dateModifierMatch = parsed.dateModifier === tc.expectedDateModifier
+  const dateModifierMatch = dateModifierEqual(parsed.dateModifier, tc.expectedDateModifier)
 
   return {
     passed: sourceMatch && targetMatch && timeMatch && dateModifierMatch,

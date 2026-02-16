@@ -29,7 +29,15 @@ export interface LocationRef {
 
 // --- ParsedQuery ---
 
-export type DateModifier = 'tomorrow' | 'yesterday' | 'today' | null
+export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+
+export type DayOfWeekModifier = {
+  type: 'day-of-week'
+  day: DayOfWeek
+  anchor: 'next' | 'this' | 'last' | 'bare'
+}
+
+export type DateModifier = 'tomorrow' | 'yesterday' | 'today' | DayOfWeekModifier | null
 
 export interface ParsedQuery {
   sourceLocation: string | null

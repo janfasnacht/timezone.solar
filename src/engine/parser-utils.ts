@@ -1,4 +1,4 @@
-import type { Token } from './types'
+import type { Token, DayOfWeek, DayOfWeekModifier } from './types'
 import { NAMED_TIMES } from './constants'
 
 const TIME_REGEX = /^(\d{1,2})([:.](\d{2}))?\s*(am|pm)?$/i
@@ -63,12 +63,18 @@ export function mergeLocationTokens(tokens: Token[]): Token[] {
 
 // --- Pre-processing: extract relative time and strip noise from raw input ---
 
-interface PreprocessResult {
+interface RelativeTimeResult {
   cleaned: string
   relativeMinutes: number | null
 }
 
-export function extractRelativeTime(input: string): PreprocessResult {
+interface PreprocessResult {
+  cleaned: string
+  relativeMinutes: number | null
+  dayOfWeek: DayOfWeekModifier | null
+}
+
+export function extractRelativeTime(input: string): RelativeTimeResult {
   // Compound: "in 1h30m", "in 2h 15m", "in 1h30"
   const compoundMatch = input.match(/\bin\s+(\d+)\s*h\s*(\d+)\s*m?\b/i)
   if (compoundMatch) {
@@ -111,15 +117,57 @@ const SHORT_DAYS_NO_SUN = /\b(mon|tue|tues|wed|thu|thur|thurs|fri|sat)\b/gi
 // Prefixes only stripped when followed by a day name (full or short including sun)
 const PREFIX_DAY = /\b(next|this|last)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b/gi
 
-export function stripDayOfWeek(input: string): string {
+const DAY_NAME_MAP: Record<string, DayOfWeek> = {
+  monday: 'monday', mon: 'monday',
+  tuesday: 'tuesday', tue: 'tuesday', tues: 'tuesday',
+  wednesday: 'wednesday', wed: 'wednesday',
+  thursday: 'thursday', thu: 'thursday', thur: 'thursday', thurs: 'thursday',
+  friday: 'friday', fri: 'friday',
+  saturday: 'saturday', sat: 'saturday',
+  sunday: 'sunday', sun: 'sunday',
+}
+
+export function extractDayOfWeek(input: string): { cleaned: string; dayOfWeek: DayOfWeekModifier | null } {
   let cleaned = input
-  // First strip "prefix + day" combos (including "next sun", "this sun", "last sun")
-  cleaned = cleaned.replace(PREFIX_DAY, ' ')
-  // Then strip remaining full day names
+  let dayOfWeek: DayOfWeekModifier | null = null
+
+  // First try "prefix + day" combos (including "next sun", "this sun", "last sun")
+  const prefixMatch = cleaned.match(PREFIX_DAY)
+  if (prefixMatch) {
+    const parts = prefixMatch[0].trim().toLowerCase().split(/\s+/)
+    const anchor = parts[0] as 'next' | 'this' | 'last'
+    const day = DAY_NAME_MAP[parts[1]]
+    if (day) {
+      dayOfWeek = { type: 'day-of-week', day, anchor }
+    }
+    cleaned = cleaned.replace(PREFIX_DAY, ' ')
+  }
+
+  // Then strip remaining full day names (extract if not already captured)
+  if (!dayOfWeek) {
+    const fullMatch = cleaned.match(FULL_DAYS)
+    if (fullMatch) {
+      const day = DAY_NAME_MAP[fullMatch[0].toLowerCase()]
+      if (day) {
+        dayOfWeek = { type: 'day-of-week', day, anchor: 'bare' }
+      }
+    }
+  }
   cleaned = cleaned.replace(FULL_DAYS, ' ')
-  // Then strip remaining short day names (except "sun")
+
+  // Then strip remaining short day names (except "sun"), extract if not already captured
+  if (!dayOfWeek) {
+    const shortMatch = cleaned.match(SHORT_DAYS_NO_SUN)
+    if (shortMatch) {
+      const day = DAY_NAME_MAP[shortMatch[0].toLowerCase()]
+      if (day) {
+        dayOfWeek = { type: 'day-of-week', day, anchor: 'bare' }
+      }
+    }
+  }
   cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, ' ')
-  return cleaned.replace(/\s+/g, ' ').trim()
+
+  return { cleaned: cleaned.replace(/\s+/g, ' ').trim(), dayOfWeek }
 }
 
 export function preprocess(input: string): PreprocessResult {
@@ -132,13 +180,14 @@ export function preprocess(input: string): PreprocessResult {
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned)
   cleaned = afterRelative
 
-  // Strip day-of-week tokens (before tokenization so they don't become locations)
-  cleaned = stripDayOfWeek(cleaned)
+  // Extract day-of-week tokens (before tokenization so they don't become locations)
+  const { cleaned: afterDayOfWeek, dayOfWeek } = extractDayOfWeek(cleaned)
+  cleaned = afterDayOfWeek
 
   // Strip standalone "now" (no-op — equivalent to no time specified)
   cleaned = cleaned.replace(/\bnow\b/gi, ' ').replace(/\s+/g, ' ').trim()
 
-  return { cleaned, relativeMinutes }
+  return { cleaned, relativeMinutes, dayOfWeek }
 }
 
 // --- Post-tokenize cleanup ---
