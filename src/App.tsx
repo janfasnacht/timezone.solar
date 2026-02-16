@@ -14,6 +14,7 @@ import { useUrlState } from '@/hooks/useUrlState'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
+import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
 
 function App() {
@@ -26,14 +27,25 @@ function App() {
   const [helpOpen, setHelpOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const liveQueryRef = useRef('')
 
   const toggleHelp = useCallback(() => setHelpOpen((v) => !v), [])
   const openHelp = useCallback(() => setHelpOpen(true), [])
   const openAbout = useCallback(() => setAboutOpen(true), [])
   const toggleSettings = useCallback(() => setSettingsOpen((v) => !v), [])
 
+  const debouncedRef = useRef(createDebouncedCallback(() => {
+    const q = liveQueryRef.current
+    if (q.length >= 2) runConversion(q)
+    setIsDebouncing(false)
+  }, 350))
+  useEffect(() => () => debouncedRef.current.cancel(), [])
+
   const handleClear = useCallback(() => {
+    debouncedRef.current.cancel()
+    setIsDebouncing(false)
     clear()
     setInputValue('')
     setCurrentInputValue('')
@@ -55,6 +67,8 @@ function App() {
   }, [urlQuery])
 
   const handleSubmit = useCallback((query: string) => {
+    debouncedRef.current.cancel()
+    setIsDebouncing(false)
     setUrlQuery(query)
     setCurrentInputValue(query)
     const outcome = runConversion(query)
@@ -75,7 +89,19 @@ function App() {
 
   const handleValueChange = useCallback((value: string) => {
     setCurrentInputValue(value)
-  }, [])
+    liveQueryRef.current = value
+    if (!value.trim()) {
+      debouncedRef.current.cancel()
+      setIsDebouncing(false)
+      clear()
+    } else if (value.trim().length >= 2) {
+      setIsDebouncing(true)
+      debouncedRef.current.call()
+    } else {
+      debouncedRef.current.cancel()
+      setIsDebouncing(false)
+    }
+  }, [clear])
 
   const handleFeelingClick = useCallback(() => {
     const example = getCurrentExample()
@@ -107,6 +133,7 @@ function App() {
           initialValue={inputValue}
           placeholder={placeholder}
           recentQueries={recentQueries}
+          isProcessing={isDebouncing}
         />
       </div>
 

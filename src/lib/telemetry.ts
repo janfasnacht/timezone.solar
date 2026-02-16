@@ -9,12 +9,26 @@ export interface TelemetryEvent {
   error_type: string | null
 }
 
-let lastSentQuery = ''
+const THROTTLE_WINDOW = 5000
 
-export function sendTelemetry(event: TelemetryEvent) {
-  if (getSnapshot().telemetryOptOut) return
-  if (event.query === lastSentQuery) return
+let lastSentQuery = ''
+let lastSentTime = 0
+let pendingEvent: TelemetryEvent | null = null
+let pendingTimer: ReturnType<typeof setTimeout> | null = null
+
+export function _resetTelemetryState() {
+  lastSentQuery = ''
+  lastSentTime = 0
+  pendingEvent = null
+  if (pendingTimer !== null) {
+    clearTimeout(pendingTimer)
+    pendingTimer = null
+  }
+}
+
+function dispatchEvent(event: TelemetryEvent) {
   lastSentQuery = event.query
+  lastSentTime = Date.now()
 
   if (import.meta.env.DEV) {
     console.debug('[telemetry]', event)
@@ -27,4 +41,34 @@ export function sendTelemetry(event: TelemetryEvent) {
     body: JSON.stringify(event),
     keepalive: true,
   }).catch(() => {})
+}
+
+export function sendTelemetry(event: TelemetryEvent) {
+  if (getSnapshot().telemetryOptOut) return
+  if (event.query === lastSentQuery) return
+
+  const elapsed = Date.now() - lastSentTime
+
+  if (elapsed >= THROTTLE_WINDOW) {
+    // Clear any pending trailing send
+    if (pendingTimer !== null) {
+      clearTimeout(pendingTimer)
+      pendingTimer = null
+    }
+    pendingEvent = null
+    dispatchEvent(event)
+  } else {
+    // Queue as pending, schedule trailing send
+    pendingEvent = event
+    if (pendingTimer === null) {
+      const remaining = THROTTLE_WINDOW - elapsed
+      pendingTimer = setTimeout(() => {
+        pendingTimer = null
+        if (pendingEvent) {
+          dispatchEvent(pendingEvent)
+          pendingEvent = null
+        }
+      }, remaining)
+    }
+  }
 }
