@@ -14,6 +14,7 @@ import { useUrlState } from '@/hooks/useUrlState'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
+import { sendTelemetry } from '@/lib/telemetry'
 
 function App() {
   const { result, error, isUsingCurrentTime, matchType, runConversion, swapConversion, clear } = useConversion()
@@ -46,7 +47,8 @@ function App() {
     if (urlQuery) {
       setInputValue(urlQuery)
       setCurrentInputValue(urlQuery)
-      runConversion(urlQuery)
+      const outcome = runConversion(urlQuery)
+      sendTelemetry({ query: urlQuery, ...outcome })
       addQuery(urlQuery)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +57,8 @@ function App() {
   const handleSubmit = useCallback((query: string) => {
     setUrlQuery(query)
     setCurrentInputValue(query)
-    runConversion(query)
+    const outcome = runConversion(query)
+    sendTelemetry({ query, ...outcome })
     addQuery(query)
   }, [setUrlQuery, runConversion, addQuery])
 

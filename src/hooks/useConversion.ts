@@ -6,6 +6,14 @@ import { convert, swapResult } from '@/engine/converter'
 import { getSnapshot } from '@/lib/preferences'
 import type { ConversionResult, ConversionError, LocationRef, ConversionIntent } from '@/engine/types'
 
+export interface ConversionOutcome {
+  source_iana: string | null
+  target_iana: string | null
+  source_method: string | null
+  target_method: string | null
+  error_type: string | null
+}
+
 interface UseConversionReturn {
   result: ConversionResult | null
   error: ConversionError | null
@@ -14,7 +22,7 @@ interface UseConversionReturn {
   matchType: MatchType
   sourceAlternatives: LocationRef[]
   targetAlternatives: LocationRef[]
-  runConversion: (query: string) => void
+  runConversion: (query: string) => ConversionOutcome
   swapConversion: () => void
   clear: () => void
 }
@@ -70,7 +78,7 @@ export function useConversion(): UseConversionReturn {
     setTargetAlternatives([])
   }, [])
 
-  const runConversion = useCallback((query: string) => {
+  const runConversion = useCallback((query: string): ConversionOutcome => {
     setError(null)
     setResult(null)
     setIsUsingCurrentTime(false)
@@ -87,7 +95,7 @@ export function useConversion(): UseConversionReturn {
         type: 'parse',
         message: "I didn't understand that query.",
       })
-      return
+      return { source_iana: null, target_iana: null, source_method: null, target_method: null, error_type: 'parse' }
     }
 
     // Resolve source
@@ -107,7 +115,7 @@ export function useConversion(): UseConversionReturn {
           message: `Couldn't find "${parsed.sourceLocation}"`,
           suggestion: suggestion ? `Did you mean ${suggestion}?` : 'Try a city name, state, or timezone abbreviation',
         })
-        return
+        return { source_iana: null, target_iana: null, source_method: null, target_method: null, error_type: 'resolve-source' }
       }
       source = sourceResult.primary
       srcAlternatives = sourceResult.alternatives
@@ -122,7 +130,7 @@ export function useConversion(): UseConversionReturn {
         message: `Couldn't find "${parsed.targetLocation}"`,
         suggestion: suggestion ? `Did you mean ${suggestion}?` : 'Try a city name, state, or timezone abbreviation',
       })
-      return
+      return { source_iana: source.iana, target_iana: null, source_method: source.resolveMethod, target_method: null, error_type: 'resolve-target' }
     }
     const target = targetResult.primary
     const tgtAlternatives = targetResult.alternatives
@@ -140,6 +148,8 @@ export function useConversion(): UseConversionReturn {
     setIsImplicitLocal(implicitLocal)
     setSourceAlternatives(srcAlternatives)
     setTargetAlternatives(tgtAlternatives)
+
+    return { source_iana: source.iana, target_iana: target.iana, source_method: source.resolveMethod, target_method: target.resolveMethod, error_type: null }
   }, [])
 
   return {
