@@ -254,7 +254,7 @@ export default function MapView({
       />
 
       {/* Top nav */}
-      <nav className="absolute top-3 left-3 right-3 z-40 flex items-center gap-2">
+      <nav className={`absolute z-40 flex items-center gap-2 ${isMobile ? 'top-0 left-0 right-0 px-3 pt-4 pb-3 bg-gradient-to-b from-background/60 to-transparent' : 'top-3 left-3 right-3'}`}>
         {/* Logo — hidden on mobile (tab bar handles navigation) */}
         {!isMobile && (
           <button
@@ -299,7 +299,7 @@ export default function MapView({
 
       {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
       {isMobile ? (
-        <div className="absolute bottom-2 left-2 right-2 z-40 flex items-center gap-2">
+        <div className="absolute bottom-0 left-0 right-0 z-40 flex items-center gap-2 px-3 pb-2 pt-5 bg-gradient-to-t from-background/60 to-transparent">
           {/* Layers button */}
           <div ref={layersRef} className="relative">
             {layersOpen && (

@@ -45,6 +45,20 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const [hoveredCity, setHoveredCity] = useState<CityEntity | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
 
+  // Pan/zoom state for touch gestures
+  const [mapTransform, setMapTransform] = useState({ x: 0, y: 0, scale: 1 })
+  const transformRef = useRef({ x: 0, y: 0, scale: 1 })
+  const gestureRef = useRef<{
+    type: 'none' | 'pan' | 'pinch'
+    moved: boolean
+    startX: number
+    startY: number
+    startTx: number
+    startTy: number
+    startDist: number
+    startScale: number
+  }>({ type: 'none', moved: false, startX: 0, startY: 0, startTx: 0, startTy: 0, startDist: 0, startScale: 1 })
+
   const projection = useMemo(
     () =>
       geoNaturalEarth1()
@@ -216,6 +230,88 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Touch gesture handlers for pan/zoom
+  const updateTransform = useCallback((t: { x: number; y: number; scale: number }) => {
+    transformRef.current = t
+    setMapTransform(t)
+  }, [])
+
+  const handleMapTouchStart = useCallback((e: React.TouchEvent) => {
+    const t = transformRef.current
+    if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+      )
+      gestureRef.current = {
+        type: 'pinch', moved: false,
+        startX: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        startY: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        startTx: t.x, startTy: t.y,
+        startDist: dist, startScale: t.scale,
+      }
+    } else if (e.touches.length === 1) {
+      gestureRef.current = {
+        type: 'pan', moved: false,
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        startTx: t.x, startTy: t.y,
+        startDist: 0, startScale: t.scale,
+      }
+    }
+  }, [])
+
+  const handleMapTouchMove = useCallback((e: React.TouchEvent) => {
+    const g = gestureRef.current
+    if (g.type === 'pan' && e.touches.length === 1) {
+      const dx = e.touches[0].clientX - g.startX
+      const dy = e.touches[0].clientY - g.startY
+      if (!g.moved && Math.abs(dx) < 8 && Math.abs(dy) < 8) return
+      g.moved = true
+      updateTransform({ x: g.startTx + dx, y: g.startTy + dy, scale: g.startScale })
+    } else if (g.type === 'pinch' && e.touches.length === 2) {
+      g.moved = true
+      const dist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+      )
+      const newScale = Math.max(1, Math.min(5, g.startScale * (dist / g.startDist)))
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2
+      const rect = containerRef.current?.getBoundingClientRect()
+      if (!rect) return
+      const cx = g.startX - rect.left
+      const cy = g.startY - rect.top
+      const scaleRatio = newScale / g.startScale
+      const panDx = midX - g.startX
+      const panDy = midY - g.startY
+      updateTransform({
+        scale: newScale,
+        x: cx - (cx - g.startTx) * scaleRatio + panDx,
+        y: cy - (cy - g.startTy) * scaleRatio + panDy,
+      })
+    }
+  }, [updateTransform])
+
+  const handleMapTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 0) {
+      const t = transformRef.current
+      if (t.scale <= 1.05) {
+        updateTransform({ x: 0, y: 0, scale: 1 })
+      }
+      gestureRef.current = { ...gestureRef.current, type: 'none', moved: false }
+    } else if (e.touches.length === 1 && gestureRef.current.type === 'pinch') {
+      const t = transformRef.current
+      gestureRef.current = {
+        type: 'pan', moved: false,
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        startTx: t.x, startTy: t.y,
+        startDist: 0, startScale: t.scale,
+      }
+    }
+  }, [updateTransform])
+
   const handleClick = useCallback(
     (city: CityEntity) => {
       if (onCityClick) {
@@ -246,17 +342,19 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   // Compute screen positions for pinned city labels
   const pinnedLabels = useMemo(() => {
-    if (!effectiveConversion || !svgRef.current || !containerRef.current) return null
-    const svgRect = svgRef.current.getBoundingClientRect()
-    const cRect = containerRef.current.getBoundingClientRect()
-    const scaleX = svgRect.width / WIDTH
-    const scaleY = svgRect.height / HEIGHT
-    const offsetX = (cRect.width - svgRect.width) / 2
-    const offsetY = (cRect.height - svgRect.height) / 2
+    if (!effectiveConversion || !containerRef.current) return null
+    // Use layout dimensions (unaffected by CSS transform) with slice-aware mapping
+    const vpW = containerRef.current.offsetWidth
+    const vpH = containerRef.current.offsetHeight
+    const sx = vpW / WIDTH
+    const sy = vpH / HEIGHT
+    const mapScale = Math.max(sx, sy) // preserveAspectRatio="xMidYMid slice"
+    const offsetX = (vpW - WIDTH * mapScale) / 2
+    const offsetY = (vpH - HEIGHT * mapScale) / 2
 
     const toScreen = (projected: { x: number; y: number }) => ({
-      x: projected.x * scaleX + offsetX,
-      y: projected.y * scaleY + offsetY,
+      x: projected.x * mapScale + offsetX,
+      y: projected.y * mapScale + offsetY,
     })
 
     const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.city } : null
@@ -279,7 +377,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       }
     }
 
-    return { src, tgt, srcPlacement, tgtPlacement, containerWidth: cRect.width, containerHeight: cRect.height }
+    return { src, tgt, srcPlacement, tgtPlacement, containerWidth: vpW, containerHeight: vpH }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectiveConversion, sourceProjected, targetProjected, containerRect])
 
@@ -292,7 +390,20 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     : false
 
   return (
-    <div ref={containerRef} className="relative w-full h-full">
+    <div ref={containerRef} className="relative w-full h-full overflow-hidden">
+      <div
+        className="relative w-full h-full"
+        style={{
+          transform: mapTransform.scale === 1 && mapTransform.x === 0 && mapTransform.y === 0
+            ? undefined
+            : `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
+          transformOrigin: '0 0',
+          touchAction: 'none',
+        }}
+        onTouchStart={handleMapTouchStart}
+        onTouchMove={handleMapTouchMove}
+        onTouchEnd={handleMapTouchEnd}
+      >
       <svg
         ref={svgRef}
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
@@ -416,6 +527,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           homeCity={homeCity}
         />
       )}
+      </div>
 
       {/* Hover card for non-pinned cities only */}
       {hoveredCity && screenPos && !hoveredIsPinned && (
