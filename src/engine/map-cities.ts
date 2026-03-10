@@ -124,11 +124,52 @@ const MAP_CITY_SLUGS = new Set([
 ])
 
 let cached: CityEntity[] | null = null
+let allCached: CityEntity[] | null = null
 
 export function getMapCities(): CityEntity[] {
   if (cached) return cached
   cached = getAllEntities().filter((e) => MAP_CITY_SLUGS.has(e.slug))
   return cached
+}
+
+/**
+ * All cities from city-timezones DB (~7K), merged with curated entities.
+ * Curated entities take priority for matching city names.
+ */
+export function getAllMapCities(): CityEntity[] {
+  if (allCached) return allCached
+  const curated = getAllEntities()
+  const curatedSlugs = new Set(curated.map((c) => c.slug))
+  const extras: CityEntity[] = []
+  const mapping = cityTimezones.cityMapping as Array<{
+    city: string
+    lat: number
+    lng: number
+    timezone: string
+    iso2: string
+    country: string
+  }>
+  const seenSlugs = new Set<string>()
+  for (const entry of mapping) {
+    const slug = entry.city.toLowerCase().replace(/\s+/g, '-')
+    if (curatedSlugs.has(slug) || seenSlugs.has(slug)) continue
+    seenSlugs.add(slug)
+    extras.push({
+      slug,
+      displayName: entry.city,
+      country: entry.country,
+      countryCode: entry.iso2,
+      iana: entry.timezone,
+      lat: entry.lat,
+      lng: entry.lng,
+      aliases: [],
+      wikidataId: null,
+      vibes: null,
+      svgCitiesSlug: null,
+    })
+  }
+  allCached = [...curated, ...extras]
+  return allCached
 }
 
 /**

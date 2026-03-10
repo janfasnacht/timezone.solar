@@ -7,6 +7,7 @@ interface CityDotProps {
   x: number
   y: number
   role: CityRole
+  minor?: boolean
   onHover: (city: CityEntity | null) => void
   onClick: (city: CityEntity) => void
 }
@@ -16,13 +17,13 @@ export function CityDot({
   x,
   y,
   role,
+  minor = false,
   onHover,
   onClick,
 }: CityDotProps) {
-  // Two sizes only: active (source/target) vs context (everything else)
   const isActive = role !== 'none'
-  const r = isActive ? 4.5 : 2.5
-  const opacity = isActive ? 1 : 0.5
+  const r = isActive ? 4.5 : minor ? 1 : 2.5
+  const opacity = isActive ? 1 : minor ? 0.25 : 0.5
 
   return (
     <circle

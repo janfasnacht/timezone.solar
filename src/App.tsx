@@ -40,7 +40,10 @@ function App() {
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [viewMode, setViewMode] = useState<ViewMode>('card')
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('view') === 'map' ? 'map' : 'card'
+  })
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')

@@ -3,13 +3,16 @@ import { geoNaturalEarth1, geoPath, geoGraticule10 } from 'd3-geo'
 import { feature } from 'topojson-client'
 import type { Topology, GeometryCollection } from 'topojson-specification'
 import land110m from 'world-atlas/land-110m.json'
+import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
-import { getMapCities, findCityForMap } from '@/engine/map-cities'
+import { getMapCities, getAllMapCities, findCityForMap } from '@/engine/map-cities'
 import type { CityEntity } from '@/engine/city-entities'
 import type { HomeCity } from '@/lib/preferences'
 import { CityDot, type CityRole } from './CityDot'
 import { CityHoverCard } from './CityHoverCard'
 import { PinnedCityLabel } from './PinnedCityLabel'
+import { TimezoneOverlay } from './TimezoneOverlay'
+import { useTimezoneData } from '@/hooks/useTimezoneData'
 
 const WIDTH = 960
 const HEIGHT = 500
@@ -23,15 +26,21 @@ export interface MapConversion {
   isPreview?: boolean
 }
 
+export type CityDensity = 'none' | 'main' | 'all'
+
 interface WorldMapProps {
   now: Date
   use24h: boolean
   homeCity: HomeCity | null
   conversion?: MapConversion | null
   onCityClick?: (cityName: string) => void
+  showTimezones?: boolean
+  showBorders?: boolean
+  showGrid?: boolean
+  cityDensity?: CityDensity
 }
 
-export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: WorldMapProps) {
+export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showTimezones = false, showBorders = false, showGrid = true, cityDensity = 'main' }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredCity, setHoveredCity] = useState<CityEntity | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
@@ -58,6 +67,18 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
     [pathGenerator, landGeoJson]
   )
 
+  const countriesGeoJson = useMemo(() => {
+    const topo = countries110m as unknown as Topology<{
+      countries: GeometryCollection
+    }>
+    return feature(topo, topo.objects.countries)
+  }, [])
+
+  const countriesPath = useMemo(
+    () => pathGenerator(countriesGeoJson) || '',
+    [pathGenerator, countriesGeoJson]
+  )
+
   const graticulePath = useMemo(
     () => pathGenerator(geoGraticule10()) || '',
     [pathGenerator]
@@ -68,7 +89,11 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
     return pathGenerator(terminator) || ''
   }, [pathGenerator, now])
 
-  const baseCities = useMemo(() => getMapCities(), [])
+  const { data: tzData } = useTimezoneData(showTimezones)
+
+  const mapCities = useMemo(() => getMapCities(), [])
+  const allCities = useMemo(() => getAllMapCities(), [])
+  const mapSlugs = useMemo(() => new Set(mapCities.map((c) => c.slug)), [mapCities])
 
   // Same-city guard
   const isSameCity = conversion
@@ -79,6 +104,19 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
 
   // Merge dynamic cities into the base set
   const cities = useMemo(() => {
+    if (cityDensity === 'none') {
+      // Still show source/target cities even in 'none' mode
+      if (!effectiveConversion) return []
+      const extras: CityEntity[] = []
+      for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
+        if (!name) continue
+        const entity = findCityForMap(name)
+        if (entity) extras.push(entity)
+      }
+      return extras
+    }
+
+    const baseCities = cityDensity === 'all' ? allCities : mapCities
     if (!effectiveConversion) return baseCities
     const slugs = new Set(baseCities.map((c) => c.slug))
     const extras: CityEntity[] = []
@@ -91,7 +129,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
       }
     }
     return extras.length > 0 ? [...baseCities, ...extras] : baseCities
-  }, [baseCities, effectiveConversion])
+  }, [cityDensity, mapCities, allCities, effectiveConversion])
 
   const projectedCities = useMemo(
     () =>
@@ -197,9 +235,14 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
     return 'none'
   }
 
-  const isPreview = effectiveConversion?.isPreview ?? false
-  const arcOpacity = isPreview ? 0.2 : 0.45
-  const labelOpacity = isPreview ? 0.35 : 0.75
+  const arcOpacity = 0.45
+  const labelOpacity = 0.75
+
+  // Check if hovered city is a pinned city (source or target)
+  const hoveredIsPinned = hoveredCity && effectiveConversion
+    ? hoveredCity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase() ||
+      hoveredCity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
+    : false
 
   // Compute screen positions for pinned city labels
   const pinnedLabels = useMemo(() => {
@@ -216,8 +259,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
       y: projected.y * scaleY + offsetY,
     })
 
-    const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime } : null
-    const tgt = targetProjected ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime } : null
+    const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.city } : null
+    const tgt = targetProjected ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.city } : null
 
     // Smart placement: if both exist, place them on opposite sides to avoid overlap
     let srcPlacement: 'above' | 'below' = 'above'
@@ -240,6 +283,14 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectiveConversion, sourceProjected, targetProjected, containerRect])
 
+  // Determine variant for each pinned label
+  const srcIsHovered = hoveredCity && pinnedLabels?.src?.entity
+    ? hoveredCity.slug === pinnedLabels.src.entity.slug
+    : false
+  const tgtIsHovered = hoveredCity && pinnedLabels?.tgt?.entity
+    ? hoveredCity.slug === pinnedLabels.tgt.entity.slug
+    : false
+
   return (
     <div ref={containerRef} className="relative w-full h-full">
       <svg
@@ -250,20 +301,41 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
       >
         <rect width={WIDTH} height={HEIGHT} fill="var(--color-background)" />
 
-        <path
-          d={graticulePath}
-          fill="none"
-          stroke="var(--color-border)"
-          strokeWidth={0.4}
-          strokeOpacity={0.7}
-        />
+        {showGrid && (
+          <path
+            d={graticulePath}
+            fill="none"
+            stroke="var(--color-border)"
+            strokeWidth={0.4}
+            strokeOpacity={0.7}
+          />
+        )}
 
         <path d={landPath} fill="var(--color-muted)" stroke="var(--color-border)" strokeWidth={0.5} />
+
+        {showBorders && (
+          <path
+            d={countriesPath}
+            fill="none"
+            stroke="var(--color-muted-foreground)"
+            strokeWidth={0.3}
+            strokeOpacity={0.5}
+            style={{ pointerEvents: 'none' }}
+          />
+        )}
+
+        {tzData && (
+          <TimezoneOverlay
+            data={tzData}
+            pathGenerator={pathGenerator}
+          />
+        )}
 
         <path
           d={terminatorPath}
           fill="rgba(0, 0, 0, 0.25)"
           className="dark:fill-[rgba(0,0,0,0.4)]"
+          style={{ pointerEvents: 'none' }}
         />
 
         {/* Connection arc */}
@@ -302,13 +374,14 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
             x={x}
             y={y}
             role={getCityRole(city)}
+            minor={cityDensity === 'all' && !mapSlugs.has(city.slug)}
             onHover={handleHover}
             onClick={handleClick}
           />
         ))}
       </svg>
 
-      {/* Pinned city labels for source/target */}
+      {/* Pinned city labels for source/target — expand on hover */}
       {pinnedLabels?.src && pinnedLabels.src.city && pinnedLabels.src.time && (
         <PinnedCityLabel
           cityName={pinnedLabels.src.city}
@@ -318,6 +391,12 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
+          variant={srcIsHovered ? 'expanded' : 'active'}
+          iana={pinnedLabels.src.entity.iana}
+          country={pinnedLabels.src.entity.country}
+          now={now}
+          use24h={use24h}
+          homeCity={homeCity}
         />
       )}
       {pinnedLabels?.tgt && pinnedLabels.tgt.city && pinnedLabels.tgt.time && (
@@ -329,10 +408,17 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick }: Wor
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
+          variant={tgtIsHovered ? 'expanded' : 'active'}
+          iana={pinnedLabels.tgt.entity.iana}
+          country={pinnedLabels.tgt.entity.country}
+          now={now}
+          use24h={use24h}
+          homeCity={homeCity}
         />
       )}
 
-      {hoveredCity && screenPos && (
+      {/* Hover card for non-pinned cities only */}
+      {hoveredCity && screenPos && !hoveredIsPinned && (
         <CityHoverCard
           city={hoveredCity}
           x={screenPos.x}

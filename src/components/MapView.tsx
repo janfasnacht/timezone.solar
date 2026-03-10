@@ -1,7 +1,8 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useRef, useEffect, type RefObject } from 'react'
 import {
   ChevronLeft,
   ChevronRight,
+  Layers,
   RotateCcw,
   X,
 } from 'lucide-react'
@@ -9,7 +10,7 @@ import { DateTime } from 'luxon'
 import { useMinuteTick } from '@/hooks/useMinuteTick'
 import { parse } from '@/engine/parser'
 import { lookupEntity } from '@/engine/city-entities'
-import { WorldMap, type MapConversion } from '@/components/map/WorldMap'
+import { WorldMap, type MapConversion, type CityDensity } from '@/components/map/WorldMap'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'
 import type { PreviewCities } from '@/hooks/useRotatingPlaceholder'
@@ -27,6 +28,7 @@ interface MapViewProps {
   placeholder: string
   previewCities: PreviewCities
   isProcessing?: boolean
+  queryInputRef?: RefObject<HTMLInputElement | null>
 }
 
 export default function MapView({
@@ -42,10 +44,31 @@ export default function MapView({
   placeholder,
   previewCities,
   isProcessing = false,
+  queryInputRef: externalRef,
 }: MapViewProps) {
   const liveTick = useMinuteTick()
+  const [showGrid, setShowGrid] = useState(true)
+  const [showBorders, setShowBorders] = useState(false)
+  const [showTimezones, setShowTimezones] = useState(false)
+  const [cityDensity, setCityDensity] = useState<CityDensity>('main')
+  const [layersOpen, setLayersOpen] = useState(false)
+  const layersRef = useRef<HTMLDivElement>(null)
   const [offsetMinutes, setOffsetMinutes] = useState(0)
   const [timeInput, setTimeInput] = useState('')
+  const internalRef = useRef<HTMLInputElement>(null)
+  const inputRef = externalRef ?? internalRef
+
+  // Close layers panel on click outside
+  useEffect(() => {
+    if (!layersOpen) return
+    const handleClick = (e: MouseEvent) => {
+      if (layersRef.current && !layersRef.current.contains(e.target as Node)) {
+        setLayersOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [layersOpen])
 
   // Reset offset when result changes
   const [prevResult, setPrevResult] = useState(result)
@@ -222,6 +245,10 @@ export default function MapView({
         homeCity={homeCity}
         conversion={conversion ?? previewConversion}
         onCityClick={onCityClick}
+        showTimezones={showTimezones}
+        showBorders={showBorders}
+        showGrid={showGrid}
+        cityDensity={cityDensity}
       />
 
       {/* Top nav */}
@@ -237,8 +264,109 @@ export default function MapView({
           </span>
         </button>
 
-        {/* Time nudge */}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 flex-shrink-0 ${isOffset ? 'border-accent/40' : ''}`}>
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Query input */}
+        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-4 gap-2 w-[300px] max-w-[40vw]`}>
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            onKeyDown={handleQueryKeyDown}
+            placeholder={placeholder}
+            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground min-w-0"
+          />
+          {isProcessing && query.trim() && (
+            <span className="h-2 w-2 rounded-full bg-accent animate-pulse flex-shrink-0" />
+          )}
+          {query.trim() && (
+            <button
+              onClick={onClear}
+              className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+              title="Clear"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </nav>
+
+      {/* Layers panel — bottom left */}
+      <div ref={layersRef} className="absolute bottom-4 left-4 z-40">
+        {layersOpen && (
+          <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2 text-sm`}>
+            <label className="flex items-center gap-2 cursor-pointer text-foreground">
+              <input
+                type="checkbox"
+                checked={showGrid}
+                onChange={() => setShowGrid((v) => !v)}
+                className="accent-accent"
+              />
+              Grid
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer text-foreground">
+              <input
+                type="checkbox"
+                checked={showBorders}
+                onChange={() => setShowBorders((v) => !v)}
+                className="accent-accent"
+              />
+              Borders
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer text-foreground">
+              <input
+                type="checkbox"
+                checked={showTimezones}
+                onChange={() => setShowTimezones((v) => !v)}
+                className="accent-accent"
+              />
+              Timezones
+            </label>
+            <div className="border-t border-border my-0.5" />
+            <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
+            {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
+              <label key={level} className="flex items-center gap-2 cursor-pointer text-foreground">
+                <input
+                  type="radio"
+                  name="cityDensity"
+                  checked={cityDensity === level}
+                  onChange={() => setCityDensity(level)}
+                  className="accent-accent"
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        )}
+        <button
+          onClick={() => setLayersOpen((v) => !v)}
+          className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
+          title="Map layers"
+        >
+          <Layers className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Time nudge — bottom right */}
+      <div className="absolute bottom-4 right-4 z-40 flex items-center gap-2">
+        {isOffset && (
+          <button
+            onClick={resetOffset}
+            className="p-1 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
+            title="Reset to now"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        )}
+        {isOffset && (
+          <span className="text-accent text-xs font-mono font-medium">
+            {offsetMinutes > 0 ? '+' : ''}
+            {Math.round(offsetMinutes / 60)}h
+          </span>
+        )}
+        <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
           <button
             onClick={() => nudge(-60)}
             className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover"
@@ -268,52 +396,8 @@ export default function MapView({
           >
             <ChevronRight className="w-4 h-4" />
           </button>
-
-          {isOffset && (
-            <button
-              onClick={resetOffset}
-              className="p-1 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
-              title="Reset to now"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
-
-        {isOffset && (
-          <span className="text-accent text-xs font-mono font-medium flex-shrink-0">
-            {offsetMinutes > 0 ? '+' : ''}
-            {Math.round(offsetMinutes / 60)}h
-          </span>
-        )}
-
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Query input */}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-4 gap-2 w-[300px] max-w-[40vw]`}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-            onKeyDown={handleQueryKeyDown}
-            placeholder={placeholder}
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground min-w-0"
-          />
-          {isProcessing && query.trim() && (
-            <span className="h-2 w-2 rounded-full bg-accent animate-pulse flex-shrink-0" />
-          )}
-          {query.trim() && (
-            <button
-              onClick={onClear}
-              className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
-              title="Clear"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-      </nav>
+      </div>
     </div>
   )
 }

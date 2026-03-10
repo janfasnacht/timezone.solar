@@ -2,12 +2,15 @@ import { useState, useRef, useCallback } from 'react'
 import { usePreferences } from '@/hooks/usePreferences'
 import { searchCities } from '@/engine/resolver'
 import type { ThemePreference, TimeFormat } from '@/lib/preferences'
+import type { ViewMode } from '@/App'
 
 interface SidebarProps {
   open: boolean
   onToggle: () => void
   onClose: () => void
   isMobile: boolean
+  viewMode: ViewMode
+  onViewChange: (mode: ViewMode) => void
 }
 
 const RAIL_WIDTH = 44
@@ -72,6 +75,23 @@ function GearIcon() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6.86 1.45a1.2 1.2 0 0 1 2.28 0l.2.6a1.2 1.2 0 0 0 1.55.7l.58-.23a1.2 1.2 0 0 1 1.61 1.14l-.02.62a1.2 1.2 0 0 0 1.02 1.22l.61.1a1.2 1.2 0 0 1 .8 2.03l-.44.44a1.2 1.2 0 0 0-.15 1.58l.35.52a1.2 1.2 0 0 1-.57 1.84l-.58.2a1.2 1.2 0 0 0-.78 1.38l.12.61a1.2 1.2 0 0 1-1.72 1.22l-.52-.33a1.2 1.2 0 0 0-1.53.24l-.38.49a1.2 1.2 0 0 1-2.14-.43l-.13-.61a1.2 1.2 0 0 0-1.28-.95l-.62.05a1.2 1.2 0 0 1-1.18-1.58l.22-.58a1.2 1.2 0 0 0-.65-1.52l-.56-.26a1.2 1.2 0 0 1-.24-2.1l.5-.37a1.2 1.2 0 0 0 .43-1.5l-.28-.56a1.2 1.2 0 0 1 1.1-1.72h.62a1.2 1.2 0 0 0 1.17-.88l.14-.61Z" />
       <circle cx="8" cy="8" r="2.5" />
+    </svg>
+  )
+}
+
+function CardIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="3" width="12" height="10" rx="1.5" />
+      <path d="M5 6.5h6M5 9h4" />
+    </svg>
+  )
+}
+
+function MapIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1.5 3.5l4-1.5v10.5l-4 1.5V3.5zM5.5 2l5 2v10.5l-5-2V2zM10.5 4l4-1.5v10.5l-4 1.5V4z" />
     </svg>
   )
 }
@@ -273,7 +293,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
   )
 }
 
-export function Sidebar({ open, onToggle, onClose, isMobile }: SidebarProps) {
+export function Sidebar({ open, onToggle, onClose, isMobile, viewMode, onViewChange }: SidebarProps) {
   const touchStart = useRef({ x: 0, y: 0 })
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -295,7 +315,7 @@ export function Sidebar({ open, onToggle, onClose, isMobile }: SidebarProps) {
         <button
           onClick={onToggle}
           className="fixed top-4 left-4 z-50 flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-background/80 text-muted-foreground/50 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
-          aria-label={open ? 'Close settings' : 'Open settings'}
+          aria-label={open ? 'Close menu' : 'Open menu'}
         >
           <GearIcon />
         </button>
@@ -317,12 +337,32 @@ export function Sidebar({ open, onToggle, onClose, isMobile }: SidebarProps) {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Close button — aligned with floating gear (top-4 left-4, h-9) */}
-          <div className="flex flex-shrink-0 justify-end px-4 pt-4">
+          {/* Header: view switcher + close */}
+          <div className="flex flex-shrink-0 items-center justify-between px-4 pt-4">
+            <div className="flex gap-1">
+              <button
+                onClick={() => { onViewChange('card'); onClose() }}
+                className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
+                  viewMode === 'card' ? 'text-foreground bg-muted' : 'text-muted-foreground/50'
+                }`}
+                aria-label="Card view"
+              >
+                <CardIcon />
+              </button>
+              <button
+                onClick={() => { onViewChange('map'); onClose() }}
+                className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
+                  viewMode === 'map' ? 'text-foreground bg-muted' : 'text-muted-foreground/50'
+                }`}
+                aria-label="Map view"
+              >
+                <MapIcon />
+              </button>
+            </div>
             <button
               onClick={onClose}
               className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted hover:text-foreground"
-              aria-label="Close settings"
+              aria-label="Close menu"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" />
@@ -345,13 +385,41 @@ export function Sidebar({ open, onToggle, onClose, isMobile }: SidebarProps) {
     >
       {/* Collapsed rail */}
       <div
-        className="flex h-full flex-shrink-0 flex-col items-center border-r border-border bg-background pt-4"
+        className="flex h-full flex-shrink-0 flex-col items-center justify-between border-r border-border bg-background py-4"
         style={{ width: RAIL_WIDTH }}
       >
+        {/* View switcher icons */}
+        <div className="flex flex-col items-center gap-1">
+          <button
+            onClick={() => { onViewChange('card'); if (open) onToggle() }}
+            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
+              viewMode === 'card' && !open ? 'text-foreground' : 'text-muted-foreground/50'
+            }`}
+            aria-label="Card view"
+            title="Card view"
+          >
+            <CardIcon />
+          </button>
+          <button
+            onClick={() => { onViewChange('map'); if (open) onToggle() }}
+            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
+              viewMode === 'map' && !open ? 'text-foreground' : 'text-muted-foreground/50'
+            }`}
+            aria-label="Map view"
+            title="Map view"
+          >
+            <MapIcon />
+          </button>
+        </div>
+
+        {/* Settings gear at bottom */}
         <button
           onClick={onToggle}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted hover:text-foreground"
-          aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
+          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
+            open ? 'text-foreground' : 'text-muted-foreground/50'
+          }`}
+          aria-label={open ? 'Collapse settings' : 'Expand settings'}
+          title="Settings"
         >
           <GearIcon />
         </button>
