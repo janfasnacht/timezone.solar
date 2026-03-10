@@ -1,4 +1,5 @@
-import { getAllEntities, type CityEntity } from './city-entities'
+import cityTimezones from 'city-timezones'
+import { getAllEntities, lookupEntity, type CityEntity } from './city-entities'
 
 /**
  * Curated set of ~90 city slugs for the world map display.
@@ -128,4 +129,38 @@ export function getMapCities(): CityEntity[] {
   if (cached) return cached
   cached = getAllEntities().filter((e) => MAP_CITY_SLUGS.has(e.slug))
   return cached
+}
+
+/**
+ * Look up a city by name, first from curated entities, then from city-timezones.
+ * Returns a CityEntity-compatible object with at least slug, displayName, lat, lng, iana.
+ */
+export function findCityForMap(name: string): CityEntity | null {
+  const entity = lookupEntity(name)
+  if (entity) return entity
+
+  // Fallback: city-timezones database
+  const results = cityTimezones.lookupViaCity(name) as Array<{
+    city: string
+    lat: number
+    lng: number
+    timezone: string
+    iso2: string
+    country: string
+  }>
+  if (results.length === 0) return null
+  const best = results[0]
+  return {
+    slug: best.city.toLowerCase().replace(/\s+/g, '-'),
+    displayName: best.city,
+    country: best.country,
+    countryCode: best.iso2,
+    iana: best.timezone,
+    lat: best.lat,
+    lng: best.lng,
+    aliases: [],
+    wikidataId: null,
+    vibes: null,
+    svgCitiesSlug: null,
+  }
 }
