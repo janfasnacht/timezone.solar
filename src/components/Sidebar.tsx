@@ -27,12 +27,12 @@ function SegmentedControl<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="inline-flex rounded-md border border-border">
+    <div className="inline-flex rounded-lg border border-border">
       {options.map((opt) => (
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
-          className={`px-3 py-1 text-xs font-medium transition-colors first:rounded-l-md last:rounded-r-md ${
+          className={`px-4 py-2 text-[0.8rem] font-medium transition-colors first:rounded-l-lg last:rounded-r-lg ${
             value === opt.value
               ? 'bg-accent text-accent-foreground'
               : 'text-muted-foreground hover:text-foreground'
@@ -98,7 +98,7 @@ function MapIcon() {
 
 export { RAIL_WIDTH, EXPANDED_WIDTH }
 
-function SidebarContent({ onClose }: { onClose: () => void }) {
+function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
   const { theme, timeFormat, homeCity, telemetryOptOut, setTheme, setTimeFormat, setHomeCity, setTelemetryOptOut } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
@@ -147,7 +147,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="flex h-full flex-col" style={{ width: PANEL_WIDTH }}>
+    <div className="flex h-full flex-col" style={{ width: isMobile ? '100%' : PANEL_WIDTH }}>
       {/* Main settings */}
       <div className="flex-1 overflow-y-auto px-5 pt-5 pb-4">
         <div className="space-y-5">
@@ -201,7 +201,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
                 }}
                 onBlur={handleCityBlur}
                 placeholder="Search for a city..."
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-[0.8rem] outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-[0.85rem] outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20"
               />
               {showSuggestions && suggestions.length > 0 && (
                 <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
@@ -209,7 +209,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
                     <button
                       key={`${s.city}-${s.iana}`}
                       type="button"
-                      className="flex w-full items-center justify-between px-3 py-2 text-left text-[0.8rem] transition-colors hover:bg-muted"
+                      className="flex w-full items-center justify-between px-3 py-3 text-left text-[0.85rem] transition-colors hover:bg-muted"
                       onMouseDown={(e) => {
                         e.preventDefault()
                         handleSelectCity(s)
@@ -234,36 +234,38 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
           {/* Divider */}
           <div className="border-t border-border" />
 
-          {/* Keyboard shortcuts */}
-          <div>
-            <p className="mb-3 text-[0.7rem] font-medium tracking-wide text-muted-foreground/40 uppercase">Shortcuts</p>
-            <div className="space-y-2.5 text-[0.75rem]">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Submit</span>
-                <Kbd>Enter</Kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Clear</span>
-                <Kbd>Esc</Kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Focus</span>
-                <Kbd>&#8984;K</Kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Examples</span>
-                <Kbd>&#8984;/</Kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Card / Map</span>
-                <Kbd>&#8984;M</Kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">History</span>
-                <Kbd>&uarr; &darr;</Kbd>
+          {/* Keyboard shortcuts — hide on mobile where they're irrelevant */}
+          {!isMobile && (
+            <div>
+              <p className="mb-3 text-[0.7rem] font-medium tracking-wide text-muted-foreground/40 uppercase">Shortcuts</p>
+              <div className="space-y-2.5 text-[0.75rem]">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Submit</span>
+                  <Kbd>Enter</Kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Clear</span>
+                  <Kbd>Esc</Kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Focus</span>
+                  <Kbd>&#8984;K</Kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Examples</span>
+                  <Kbd>&#8984;/</Kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Card / Map</span>
+                  <Kbd>&#8984;M</Kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">History</span>
+                  <Kbd>&uarr; &darr;</Kbd>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -281,13 +283,13 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
             role="switch"
             aria-checked={!telemetryOptOut}
             onClick={() => setTelemetryOptOut(!telemetryOptOut)}
-            className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${
+            className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors ${
               !telemetryOptOut ? 'bg-accent' : 'bg-border'
             }`}
           >
             <span
-              className={`inline-block h-2.5 w-2.5 rounded-full bg-background transition-transform ${
-                !telemetryOptOut ? 'translate-x-[14px]' : 'translate-x-[3px]'
+              className={`inline-block h-4 w-4 rounded-full bg-background transition-transform ${
+                !telemetryOptOut ? 'translate-x-[22px]' : 'translate-x-[3px]'
               }`}
             />
           </button>
@@ -318,7 +320,7 @@ export function Sidebar({ open, onToggle, onClose, isMobile, viewMode, onViewCha
         {/* Floating gear button */}
         <button
           onClick={onToggle}
-          className="fixed top-4 left-4 z-50 flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-background/80 text-muted-foreground/50 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
+          className="fixed top-3 left-3 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl bg-background/80 text-muted-foreground/50 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
           aria-label={open ? 'Close menu' : 'Open menu'}
         >
           <GearIcon />
@@ -334,10 +336,9 @@ export function Sidebar({ open, onToggle, onClose, isMobile, viewMode, onViewCha
 
         {/* Overlay panel */}
         <div
-          className={`fixed top-0 left-0 z-40 flex h-full flex-col border-r border-border bg-background transition-transform duration-200 ease-out ${
+          className={`fixed top-0 left-0 z-40 flex h-full w-[85vw] max-w-[300px] flex-col border-r border-border bg-background transition-transform duration-200 ease-out ${
             open ? 'translate-x-0' : '-translate-x-full'
           }`}
-          style={{ width: PANEL_WIDTH }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -374,7 +375,7 @@ export function Sidebar({ open, onToggle, onClose, isMobile, viewMode, onViewCha
             </button>
           </div>
           <div className="min-h-0 flex-1">
-            <SidebarContent onClose={onClose} />
+            <SidebarContent onClose={onClose} isMobile />
           </div>
         </div>
       </>

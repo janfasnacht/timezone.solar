@@ -47,8 +47,8 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
   const isNotSameDay = dayBoundary !== 'same day'
 
   // Highlight style for offset chip and non-same-day chip (per mockup C)
-  const highlightChip = 'rounded-[6px] border border-tomorrow-border bg-glow-strong px-[0.6rem] py-[0.25rem] font-mono text-[0.7rem] text-accent'
-  const normalChip = 'rounded-[6px] border border-border bg-surface px-[0.6rem] py-[0.25rem] font-mono text-[0.7rem] text-muted-foreground'
+  const highlightChip = 'rounded-[6px] border border-tomorrow-border bg-glow-strong px-[0.6rem] py-[0.3rem] font-mono text-[0.75rem] text-accent'
+  const normalChip = 'rounded-[6px] border border-border bg-surface px-[0.6rem] py-[0.3rem] font-mono text-[0.75rem] text-muted-foreground'
 
   return (
     <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
@@ -92,10 +92,10 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
             {target.city}{target.country ? `, ${target.country}` : ''}
           </div>
           <div className="flex items-baseline gap-[0.6rem]">
-            <span className="font-serif text-[2.75rem] md:text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">
+            <span className="font-serif text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">
               {targetTimeParts.time}
               {targetTimeParts.period && (
-                <span className="text-[1rem] md:text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
+                <span className="text-[0.9rem] sm:text-[1rem] md:text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
               )}
             </span>
           </div>

@@ -17,12 +17,12 @@ export function HelpExamples({ onRunQuery }: HelpExamplesProps) {
           <p className="mb-1.5 font-serif text-[0.75rem] italic text-muted-foreground/70">
             {cat.hint}
           </p>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2">
             {cat.examples.map((ex) => (
               <button
                 key={ex}
                 onClick={() => onRunQuery(ex)}
-                className="rounded-[6px] border border-border bg-surface px-[0.6rem] py-[0.3rem] font-mono text-[0.7rem] text-muted-foreground transition-colors hover:border-accent/30 hover:text-foreground"
+                className="rounded-lg border border-border bg-surface px-3 py-2 font-mono text-[0.75rem] text-muted-foreground transition-colors hover:border-accent/30 hover:text-foreground"
               >
                 {ex}
               </button>

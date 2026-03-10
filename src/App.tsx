@@ -255,11 +255,11 @@ function App() {
         ) : (
           <div className="h-full bg-background">
             <div className="page-glow relative mx-auto flex h-full max-w-[520px] flex-col items-center px-4 md:px-[2rem]">
-              {/* Spacer */}
-              <div className="h-[10vh] md:h-[25vh] flex-shrink-0" />
+              {/* Spacer — compact on mobile to keep results above fold */}
+              <div className="h-[5vh] md:h-[25vh] flex-shrink-0" />
 
               {/* Logo */}
-              <div className="mb-3 md:mb-6 flex-shrink-0">
+              <div className="mb-2 md:mb-6 flex-shrink-0">
                 <SunDialLogo onClick={handleClear} />
               </div>
 

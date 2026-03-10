@@ -155,7 +155,7 @@ export function QueryInput({
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className="w-full rounded-full border border-border bg-surface px-4 md:px-6 py-3 md:py-3.5 pr-10 md:pr-12 text-base md:text-[1.05rem] text-foreground transition-colors focus:border-accent focus:outline-none"
+        className="w-full rounded-full border border-border bg-surface px-4 md:px-6 py-3 md:py-3.5 pr-12 md:pr-14 text-base md:text-[1.05rem] text-foreground transition-colors focus:border-accent focus:outline-none"
         onFocusCapture={(e) => {
           e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-glow-strong)'
         }}
@@ -174,7 +174,7 @@ export function QueryInput({
       <button
         type="button"
         onClick={handleSubmitClick}
-        className={`absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground ${
+        className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2.5 text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground ${
           isFocused && value.trim() ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
         aria-label="Convert"
