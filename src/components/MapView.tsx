@@ -29,6 +29,7 @@ interface MapViewProps {
   previewCities: PreviewCities
   isProcessing?: boolean
   queryInputRef?: RefObject<HTMLInputElement | null>
+  isMobile?: boolean
 }
 
 export default function MapView({
@@ -45,6 +46,7 @@ export default function MapView({
   previewCities,
   isProcessing = false,
   queryInputRef: externalRef,
+  isMobile = false,
 }: MapViewProps) {
   const liveTick = useMinuteTick()
   const [showGrid, setShowGrid] = useState(true)
@@ -253,22 +255,24 @@ export default function MapView({
 
       {/* Top nav */}
       <nav className="absolute top-3 left-3 right-3 z-40 flex items-center gap-2">
-        {/* Logo — transparent, no pill */}
-        <button
-          onClick={onGoHome}
-          className="flex items-center gap-2 px-1 h-10 text-foreground/70 hover:text-foreground transition-colors flex-shrink-0"
-        >
-          <div className="h-4 w-4 rounded-full bg-accent flex-shrink-0" />
-          <span className="hidden sm:inline font-serif text-sm">
-            <span className="not-italic font-semibold">timezone</span><span className="italic font-light text-muted-foreground">.solar</span>
-          </span>
-        </button>
+        {/* Logo — hidden on mobile (tab bar handles navigation) */}
+        {!isMobile && (
+          <button
+            onClick={onGoHome}
+            className="flex items-center gap-2 px-1 h-10 text-foreground/70 hover:text-foreground transition-colors flex-shrink-0"
+          >
+            <div className="h-4 w-4 rounded-full bg-accent flex-shrink-0" />
+            <span className="hidden sm:inline font-serif text-sm">
+              <span className="not-italic font-semibold">timezone</span><span className="italic font-light text-muted-foreground">.solar</span>
+            </span>
+          </button>
+        )}
 
-        {/* Spacer — collapses on mobile so query input gets full space */}
-        <div className="hidden sm:block sm:flex-1" />
+        {/* Spacer — desktop only */}
+        {!isMobile && <div className="flex-1" />}
 
-        {/* Query input */}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-3 sm:px-4 gap-2 flex-1 sm:flex-none sm:w-[300px] sm:max-w-[40vw]`}>
+        {/* Query input — full width on mobile */}
+        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-3 sm:px-4 gap-2 ${isMobile ? 'flex-1' : 'w-[300px] max-w-[40vw]'}`}>
           <input
             ref={inputRef}
             type="text"
@@ -284,7 +288,7 @@ export default function MapView({
           {query.trim() && (
             <button
               onClick={onClear}
-              className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+              className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1"
               title="Clear"
             >
               <X className="w-3.5 h-3.5" />
@@ -293,111 +297,153 @@ export default function MapView({
         </div>
       </nav>
 
-      {/* Layers panel — bottom left */}
-      <div ref={layersRef} className="absolute bottom-4 left-4 z-40">
-        {layersOpen && (
-          <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2 text-sm`}>
-            <label className="flex items-center gap-2 cursor-pointer text-foreground">
-              <input
-                type="checkbox"
-                checked={showGrid}
-                onChange={() => setShowGrid((v) => !v)}
-                className="accent-accent"
-              />
-              Grid
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer text-foreground">
-              <input
-                type="checkbox"
-                checked={showBorders}
-                onChange={() => setShowBorders((v) => !v)}
-                className="accent-accent"
-              />
-              Borders
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer text-foreground">
-              <input
-                type="checkbox"
-                checked={showTimezones}
-                onChange={() => setShowTimezones((v) => !v)}
-                className="accent-accent"
-              />
-              Timezones
-            </label>
-            <div className="border-t border-border my-0.5" />
-            <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
-            {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
-              <label key={level} className="flex items-center gap-2 cursor-pointer text-foreground">
-                <input
-                  type="radio"
-                  name="cityDensity"
-                  checked={cityDensity === level}
-                  onChange={() => setCityDensity(level)}
-                  className="accent-accent"
-                />
-                {label}
-              </label>
-            ))}
+      {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
+      {isMobile ? (
+        <div className="absolute bottom-2 left-2 right-2 z-40 flex items-center gap-2">
+          {/* Layers button */}
+          <div ref={layersRef} className="relative">
+            {layersOpen && (
+              <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2.5 text-sm`}>
+                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((v) => !v)} className="accent-accent h-4 w-4" />
+                  Grid
+                </label>
+                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showBorders} onChange={() => setShowBorders((v) => !v)} className="accent-accent h-4 w-4" />
+                  Borders
+                </label>
+                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showTimezones} onChange={() => setShowTimezones((v) => !v)} className="accent-accent h-4 w-4" />
+                  Timezones
+                </label>
+                <div className="border-t border-border my-0.5" />
+                <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
+                {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
+                  <label key={level} className="flex items-center gap-2.5 cursor-pointer text-foreground">
+                    <input type="radio" name="cityDensity" checked={cityDensity === level} onChange={() => setCityDensity(level)} className="accent-accent h-4 w-4" />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            )}
+            <button
+              onClick={() => setLayersOpen((v) => !v)}
+              className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
+              title="Map layers"
+            >
+              <Layers className="w-4 h-4" />
+            </button>
           </div>
-        )}
-        <button
-          onClick={() => setLayersOpen((v) => !v)}
-          className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
-          title="Map layers"
-        >
-          <Layers className="w-4 h-4" />
-        </button>
-      </div>
 
-      {/* Time nudge — bottom right */}
-      <div className="absolute bottom-4 right-4 z-40 flex items-center gap-2">
-        {isOffset && (
-          <button
-            onClick={resetOffset}
-            className="p-1 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
-            title="Reset to now"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-          </button>
-        )}
-        {isOffset && (
-          <span className="text-accent text-xs font-mono font-medium">
-            {offsetMinutes > 0 ? '+' : ''}
-            {Math.round(offsetMinutes / 60)}h
-          </span>
-        )}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
-          <button
-            onClick={() => nudge(-60)}
-            className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover"
-            title="-1 hour"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
+          {/* Spacer */}
+          <div className="flex-1" />
 
-          <input
-            type="text"
-            value={timeInput}
-            onChange={(e) => setTimeInput(e.target.value)}
-            onKeyDown={handleTimeKeyDown}
-            onBlur={() => {
-              if (timeInput.trim() && timeInput !== clockLabel) {
-                handleTimeSubmit(timeInput)
-              }
-            }}
-            placeholder={clockLabel}
-            className="w-[60px] sm:w-[70px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
-          />
-
-          <button
-            onClick={() => nudge(60)}
-            className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover"
-            title="+1 hour"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+          {/* Time nudge */}
+          {isOffset && (
+            <button
+              onClick={resetOffset}
+              className="p-2 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
+              title="Reset to now"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+          )}
+          {isOffset && (
+            <span className="text-accent text-xs font-mono font-medium">
+              {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h
+            </span>
+          )}
+          <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
+            <button onClick={() => nudge(-60)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full" title="-1 hour">
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <input
+              type="text"
+              value={timeInput}
+              onChange={(e) => setTimeInput(e.target.value)}
+              onKeyDown={handleTimeKeyDown}
+              onBlur={() => { if (timeInput.trim() && timeInput !== clockLabel) handleTimeSubmit(timeInput) }}
+              placeholder={clockLabel}
+              className="w-[60px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
+            />
+            <button onClick={() => nudge(60)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full" title="+1 hour">
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Layers panel — bottom left (desktop) */}
+          <div ref={layersRef} className="absolute bottom-4 left-4 z-40">
+            {layersOpen && (
+              <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2 text-sm`}>
+                <label className="flex items-center gap-2 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((v) => !v)} className="accent-accent" />
+                  Grid
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showBorders} onChange={() => setShowBorders((v) => !v)} className="accent-accent" />
+                  Borders
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-foreground">
+                  <input type="checkbox" checked={showTimezones} onChange={() => setShowTimezones((v) => !v)} className="accent-accent" />
+                  Timezones
+                </label>
+                <div className="border-t border-border my-0.5" />
+                <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
+                {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
+                  <label key={level} className="flex items-center gap-2 cursor-pointer text-foreground">
+                    <input type="radio" name="cityDensity" checked={cityDensity === level} onChange={() => setCityDensity(level)} className="accent-accent" />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            )}
+            <button
+              onClick={() => setLayersOpen((v) => !v)}
+              className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
+              title="Map layers"
+            >
+              <Layers className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Time nudge — bottom right (desktop) */}
+          <div className="absolute bottom-4 right-4 z-40 flex items-center gap-2">
+            {isOffset && (
+              <button
+                onClick={resetOffset}
+                className="p-1 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
+                title="Reset to now"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            )}
+            {isOffset && (
+              <span className="text-accent text-xs font-mono font-medium">
+                {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h
+              </span>
+            )}
+            <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
+              <button onClick={() => nudge(-60)} className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover" title="-1 hour">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <input
+                type="text"
+                value={timeInput}
+                onChange={(e) => setTimeInput(e.target.value)}
+                onKeyDown={handleTimeKeyDown}
+                onBlur={() => { if (timeInput.trim() && timeInput !== clockLabel) handleTimeSubmit(timeInput) }}
+                placeholder={clockLabel}
+                className="w-[70px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
+              />
+              <button onClick={() => nudge(60)} className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover" title="+1 hour">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -29,7 +29,7 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
 
   return (
     <div>
-      <div style={{ perspective: '1200px' }}>
+      <div className="overflow-hidden" style={{ perspective: '1200px' }}>
         <div
           className="relative transition-transform duration-500 [transform-style:preserve-3d]"
           style={flipped ? { transform: 'rotateY(180deg)' } : undefined}
@@ -56,12 +56,12 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
       </div>
 
       {/* Action links below card */}
-      <div className="mt-2 md:mt-3 flex items-center justify-center gap-3 text-[0.75rem] text-muted-foreground/50">
+      <div className="mt-3 md:mt-3 flex items-center justify-center gap-4 text-[0.8rem] text-muted-foreground/50">
         {onViewOnMap && (
           <>
             <button
               onClick={onViewOnMap}
-              className="flex items-center gap-1.5 py-2 transition-colors hover:text-foreground"
+              className="flex items-center gap-1.5 px-2 py-3 transition-colors hover:text-foreground"
             >
               View on map
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -73,7 +73,7 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
         )}
         <button
           onClick={flipped ? flipToFront : flipToBack}
-          className="flex items-center gap-1.5 py-2 transition-colors hover:text-foreground"
+          className="flex items-center gap-1.5 px-2 py-3 transition-colors hover:text-foreground"
         >
           {flipped ? 'Back to result' : 'Share'}
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

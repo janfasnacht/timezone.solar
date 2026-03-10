@@ -15,7 +15,7 @@ export function RecentSearches({ queries, onSelect, onRemove, activeIndex }: Rec
       {queries.slice(0, 10).map((query, index) => (
         <div
           key={query}
-          className={`flex items-center gap-2.5 px-4 py-2 ${
+          className={`flex items-center gap-2.5 px-4 py-3 ${
             index === activeIndex ? 'bg-muted' : 'hover:bg-muted'
           }`}
         >
@@ -32,7 +32,7 @@ export function RecentSearches({ queries, onSelect, onRemove, activeIndex }: Rec
           </button>
           <button
             type="button"
-            className="flex-shrink-0 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+            className="flex-shrink-0 rounded p-1.5 text-muted-foreground transition-colors hover:text-foreground"
             onMouseDown={(e) => {
               e.preventDefault()
               onRemove(query)
