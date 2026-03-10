@@ -78,7 +78,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
           <div className="h-px flex-1 bg-gradient-to-r from-surface via-border to-surface" />
           <button
             onClick={onSwap}
-            className="text-muted-foreground transition-colors hover:text-accent"
+            className="flex items-center justify-center h-10 w-10 -m-2 text-muted-foreground transition-colors hover:text-accent"
             aria-label="Swap source and target"
           >
             <ArrowUpDown size={15} />

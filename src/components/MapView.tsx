@@ -264,8 +264,8 @@ export default function MapView({
           </span>
         </button>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+        {/* Spacer — collapses on mobile so query input gets full space */}
+        <div className="hidden sm:block sm:flex-1" />
 
         {/* Query input */}
         <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-3 sm:px-4 gap-2 flex-1 sm:flex-none sm:w-[300px] sm:max-w-[40vw]`}>
