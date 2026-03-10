@@ -1,7 +1,8 @@
 {
   "buildCommand": "npm run build",
   "rewrites": [
-    { "source": "/about", "destination": "/index.html" }
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/map", "destination": "/index.html" }
   ],
   "headers": [
     {

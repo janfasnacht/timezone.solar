@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
 import { QueryInput } from '@/components/QueryInput'
 import { FlippableCard } from '@/components/FlippableCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
@@ -17,6 +17,8 @@ import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
 import { Analytics } from '@vercel/analytics/react'
 
+const MapView = lazy(() => import('@/components/MapView'))
+
 function usePath() {
   const [path, setPath] = useState(window.location.pathname)
   useEffect(() => {
@@ -27,15 +29,21 @@ function usePath() {
   return path
 }
 
+export type ViewMode = 'card' | 'map'
+
 function App() {
   const path = usePath()
   const { result, error, isUsingCurrentTime, matchType, runConversion, swapConversion, clear } = useConversion()
   const { queries: recentQueries, addQuery, removeQuery } = useRecentQueries()
   const { query: urlQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery } = useUrlState()
-  const { timeFormat } = usePreferences()
+  const { timeFormat, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('view') === 'map' ? 'map' : 'card'
+  })
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
@@ -64,8 +72,12 @@ function App() {
     inputRef.current?.focus()
   }, [handleClear])
 
-  useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear)
-  const { placeholder, feelingWord, getCurrentExample } = useRotatingPlaceholder(currentInputValue.length > 0)
+  const toggleView = useCallback(() => {
+    setViewMode(v => v === 'card' ? 'map' : 'card')
+  }, [])
+
+  useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
+  const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   const isLanding = !result && !error
 
@@ -85,6 +97,7 @@ function App() {
     setIsDebouncing(false)
     setSidebarOpen(false)
     setUrlQuery(query)
+    setInputValue(query)
     setCurrentInputValue(query)
     const outcome = runConversion(query)
     sendTelemetry({ query, ...outcome })
@@ -125,6 +138,21 @@ function App() {
     handleSubmit(example)
   }, [getCurrentExample, handleSubmit])
 
+  const handleCityClick = useCallback((cityName: string) => {
+    handleSubmit(cityName)
+  }, [handleSubmit])
+
+  const handleGoHome = useCallback(() => {
+    setViewMode('card')
+    handleClear()
+  }, [handleClear])
+
+  // Map mode query change handler
+  const handleMapQueryChange = useCallback((value: string) => {
+    setCurrentInputValue(value)
+    handleValueChange(value)
+  }, [handleValueChange])
+
   // Swipe gestures
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
@@ -148,7 +176,14 @@ function App() {
       onTouchEnd={handleTouchEnd}
     >
       <Analytics />
-      <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} onClose={() => setSidebarOpen(false)} isMobile={isMobile} />
+      <Sidebar
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onClose={() => setSidebarOpen(false)}
+        isMobile={isMobile}
+        viewMode={viewMode}
+        onViewChange={setViewMode}
+      />
 
       {/* Main content — always offset by rail, shifts further when expanded */}
       <div
@@ -158,6 +193,26 @@ function App() {
         {path === '/about' ? (
           <div className="h-full overflow-y-auto bg-background">
             <AboutPage onRunQuery={handleSubmit} />
+          </div>
+        ) : viewMode === 'map' ? (
+          <div className="h-full bg-background">
+            <Suspense fallback={<div className="h-full bg-background" />}>
+              <MapView
+                result={result}
+                homeCity={homeCity}
+                use24h={timeFormat === '24h'}
+                query={currentInputValue}
+                onQueryChange={handleMapQueryChange}
+                onSubmit={handleSubmit}
+                onClear={handleClear}
+                onCityClick={handleCityClick}
+                onGoHome={handleGoHome}
+                placeholder={placeholder}
+                previewCities={previewCities}
+                isProcessing={isDebouncing}
+                queryInputRef={inputRef}
+              />
+            </Suspense>
           </div>
         ) : (
           <div className="h-full bg-background">
@@ -212,6 +267,7 @@ function App() {
                     onSwap={handleSwap}
                     query={currentInputValue}
                     use24h={timeFormat === '24h'}
+                    onViewOnMap={() => setViewMode('map')}
                   />
                 </div>
               )}

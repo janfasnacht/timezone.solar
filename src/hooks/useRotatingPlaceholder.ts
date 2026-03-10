@@ -24,9 +24,15 @@ function pick<T>(arr: T[]): T {
 
 type CityWithVibes = CityEntity & { vibes: string[] }
 
+export interface PreviewCities {
+  source: string | null
+  target: string | null
+}
+
 interface GeneratedExample {
   text: string
   targetVibes: string[]
+  previewCities: PreviewCities
 }
 
 // Build examples from city entities that have vibes
@@ -54,6 +60,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${src.displayName} ${time} in ${tgt.displayName}`,
         targetVibes: tgt.vibes,
+        previewCities: { source: src.displayName, target: tgt.displayName },
       })
       i += 2
     } else if (roll < 0.65 && i + 1 < shuffled.length) {
@@ -64,6 +71,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${time} ${src.displayName} to ${tgt.displayName}`,
         targetVibes: tgt.vibes,
+        previewCities: { source: src.displayName, target: tgt.displayName },
       })
       i += 2
     } else if (roll < 0.85) {
@@ -73,6 +81,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${time} in ${city.displayName}`,
         targetVibes: city.vibes,
+        previewCities: { source: null, target: city.displayName },
       })
       i += 1
     } else {
@@ -81,6 +90,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: city.displayName,
         targetVibes: city.vibes,
+        previewCities: { source: null, target: city.displayName },
       })
       i += 1
     }
@@ -92,6 +102,7 @@ function generateExamples(): GeneratedExample[] {
 interface RotatingPlaceholder {
   placeholder: string
   feelingWord: string
+  previewCities: PreviewCities
   /** Returns the plain-text query currently displayed in the placeholder */
   getCurrentExample: () => string
 }
@@ -124,6 +135,7 @@ export function useRotatingPlaceholder(hasUserInput: boolean): RotatingPlacehold
   return {
     placeholder: pool[index].text,
     feelingWord,
+    previewCities: pool[index].previewCities,
     getCurrentExample,
   }
 }

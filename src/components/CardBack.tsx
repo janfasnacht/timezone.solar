@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
-import { DogEar } from '@/components/DogEar'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import type { ConversionResult } from '@/engine/types'
@@ -9,10 +8,31 @@ interface CardBackProps {
   result: ConversionResult
   query: string
   use24h: boolean
-  onFlip: () => void
 }
 
-export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
+function CityIcon({ slug, size = '1.2rem' }: { slug: string; size?: string }) {
+  return (
+    <div
+      className="flex-shrink-0"
+      aria-hidden="true"
+      style={{
+        width: size,
+        height: size,
+        maskImage: `url(/icons/${slug}.svg)`,
+        maskSize: 'contain',
+        maskRepeat: 'no-repeat',
+        maskPosition: 'center',
+        WebkitMaskImage: `url(/icons/${slug}.svg)`,
+        WebkitMaskSize: 'contain',
+        WebkitMaskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center',
+        backgroundColor: 'var(--color-city-icon)',
+      }}
+    />
+  )
+}
+
+export function CardBack({ result, query, use24h }: CardBackProps) {
   const [timeCopied, setTimeCopied] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -90,50 +110,43 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
     }
   }, [fetchOgImage, filename, shareUrl])
 
+  const sourceIconSlug = source.entitySlug ? getSvgCitiesSlug(source.entitySlug) : null
   const targetIconSlug = target.entitySlug ? getSvgCitiesSlug(target.entitySlug) : null
 
   return (
-    <div className="relative h-full overflow-y-auto rounded-2xl border border-border bg-surface">
-      {/* Top accent gradient — same as front */}
+    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface">
+      {/* Top accent gradient — matches front card */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
-      <div className="flex h-full flex-col items-center justify-center p-[1.5rem]">
-        {/* City icon + name header */}
-        {targetIconSlug && (
-          <div className="mb-3 flex flex-col items-center gap-1.5">
-            <div
-              className="h-[2.5rem] w-[2.5rem]"
-              aria-hidden="true"
-              style={{
-                maskImage: `url(/icons/${targetIconSlug}.svg)`,
-                maskSize: 'contain',
-                maskRepeat: 'no-repeat',
-                maskPosition: 'center',
-                WebkitMaskImage: `url(/icons/${targetIconSlug}.svg)`,
-                WebkitMaskSize: 'contain',
-                WebkitMaskRepeat: 'no-repeat',
-                WebkitMaskPosition: 'center',
-                backgroundColor: 'var(--color-city-icon)',
-              }}
-            />
-            <p className="font-mono text-[0.65rem] text-muted-foreground">
-              {target.city}
-            </p>
-          </div>
-        )}
+      <div className="flex flex-1 flex-col justify-center px-[1.5rem]">
+        {/* Conversion summary — single compact row */}
+        <div className="flex items-center justify-center gap-2">
+          {sourceIconSlug && <CityIcon slug={sourceIconSlug} />}
+          <span className="font-mono text-[0.75rem] text-foreground">{source.city}</span>
+          <span className="font-mono text-[0.65rem] text-muted-foreground">{source[timeKey]}</span>
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 text-muted-foreground">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+          {targetIconSlug && <CityIcon slug={targetIconSlug} />}
+          <span className="font-mono text-[0.75rem] text-foreground">{target.city}</span>
+          <span className="font-mono text-[0.65rem] text-muted-foreground">{target[timeKey]}</span>
+        </div>
+
+        {/* Divider */}
+        <div className="my-[1rem] h-px bg-gradient-to-r from-surface via-border to-surface" />
 
         {/* Actions */}
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex flex-col gap-2">
           {/* Copy Time */}
           <button onClick={handleCopyTime} className="group flex items-center gap-3 text-left transition-colors">
             <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-              {timeCopied ? <Check size={15} /> : <Copy size={15} />}
+              {timeCopied ? <Check size={14} /> : <Copy size={14} />}
             </span>
             <span className="min-w-0">
-              <span className="block text-[0.7rem] text-muted-foreground">
-                {timeCopied ? 'Copied!' : `Copy time (${target.city})`}
+              <span className="block text-[0.65rem] text-muted-foreground">
+                {timeCopied ? 'Copied!' : 'Copy time'}
               </span>
-              <span className="block truncate font-mono text-[0.8rem] text-foreground">
+              <span className="block truncate font-mono text-[0.75rem] text-foreground">
                 {copyTimeText}
               </span>
             </span>
@@ -144,14 +157,14 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
           {/* Copy Link */}
           <button onClick={handleCopyLink} className="group flex items-center gap-3 text-left transition-colors">
             <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-              {linkCopied ? <Check size={15} /> : <Link size={15} />}
+              {linkCopied ? <Check size={14} /> : <Link size={14} />}
             </span>
             <span className="min-w-0">
-              <span className="block text-[0.7rem] text-muted-foreground">
+              <span className="block text-[0.65rem] text-muted-foreground">
                 {linkCopied ? 'Copied!' : 'Copy link'}
               </span>
-              <span className="block truncate font-mono text-[0.8rem] text-foreground">
-                ?q={query}
+              <span className="block truncate font-mono text-[0.75rem] text-foreground">
+                timezone.solar?q={query}
               </span>
             </span>
           </button>
@@ -162,11 +175,11 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
           {canShare ? (
             <button onClick={handleShare} className="group flex items-center gap-3 text-left transition-colors">
               <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-                <Share2 size={15} />
+                <Share2 size={14} />
               </span>
               <span className="min-w-0">
-                <span className="block text-[0.7rem] text-muted-foreground">Share</span>
-                <span className="block truncate font-mono text-[0.8rem] text-foreground">
+                <span className="block text-[0.65rem] text-muted-foreground">Share</span>
+                <span className="block truncate font-mono text-[0.75rem] text-foreground">
                   Card image + link
                 </span>
               </span>
@@ -174,13 +187,13 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
           ) : (
             <button onClick={handleDownload} disabled={downloading} className="group flex items-center gap-3 text-left transition-colors">
               <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
-                <Download size={15} />
+                <Download size={14} />
               </span>
               <span className="min-w-0">
-                <span className="block text-[0.7rem] text-muted-foreground">
+                <span className="block text-[0.65rem] text-muted-foreground">
                   {downloading ? 'Saving...' : 'Download'}
                 </span>
-                <span className="block truncate font-mono text-[0.8rem] text-foreground">
+                <span className="block truncate font-mono text-[0.75rem] text-foreground">
                   Card image (.png)
                 </span>
               </span>
@@ -188,9 +201,6 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
           )}
         </div>
       </div>
-
-      {/* Dog-ear flip trigger — back to front */}
-      <DogEar onClick={onFlip} label="Back to result" tooltip="Back to result" />
     </div>
   )
 }
