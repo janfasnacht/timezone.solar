@@ -4,7 +4,6 @@ import { DateTime } from 'luxon'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { usePreferences } from '@/hooks/usePreferences'
 import { getDstWarning } from '@/lib/dstWarning'
-import { DogEar } from '@/components/DogEar'
 import type { ConversionResult } from '@/engine/types'
 import type { MatchType } from '@/engine/confidence'
 
@@ -13,10 +12,9 @@ interface ResultCardProps {
   isUsingCurrentTime: boolean
   matchType?: MatchType
   onSwap: () => void
-  onFlip?: () => void
 }
 
-export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, onFlip }: ResultCardProps) {
+export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: ResultCardProps) {
   const { timeFormat } = usePreferences()
   const use24h = timeFormat === '24h'
   const sourceClock = useLiveClock(result.source.iana, use24h)
@@ -147,10 +145,8 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, onFl
 
       </div>
 
-      {/* Dog-ear flip trigger */}
-      {onFlip && (
-        <DogEar onClick={onFlip} label="Show share options" tooltip="Share & copy" />
-      )}
+
+
     </div>
   )
 }

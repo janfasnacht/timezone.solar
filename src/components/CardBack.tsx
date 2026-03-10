@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
-import { DogEar } from '@/components/DogEar'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import type { ConversionResult } from '@/engine/types'
@@ -9,10 +8,9 @@ interface CardBackProps {
   result: ConversionResult
   query: string
   use24h: boolean
-  onFlip: () => void
 }
 
-export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
+export function CardBack({ result, query, use24h }: CardBackProps) {
   const [timeCopied, setTimeCopied] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -189,8 +187,6 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
         </div>
       </div>
 
-      {/* Dog-ear flip trigger — back to front */}
-      <DogEar onClick={onFlip} label="Back to result" tooltip="Back to result" />
     </div>
   )
 }
