@@ -103,11 +103,15 @@ describe('buildCanonicalParams', () => {
     expect(params!.get('d')).toBe('tomorrow')
   })
 
-  it('returns null for now time', () => {
+  it('returns params without t for now time', () => {
     const result = makeResult({
       intent: { ...makeResult().intent, time: { type: 'now' } },
     })
-    expect(buildCanonicalParams(result)).toBeNull()
+    const params = buildCanonicalParams(result)
+    expect(params).not.toBeNull()
+    expect(params!.get('from')).toBe('America/New_York')
+    expect(params!.get('to')).toBe('Europe/London')
+    expect(params!.has('t')).toBe(false)
   })
 
   it('returns null for relative time', () => {
@@ -145,8 +149,19 @@ describe('parseCanonicalParams', () => {
     expect(result!.dateModifier).toBe('tomorrow')
   })
 
-  it('returns null when params are missing', () => {
-    expect(parseCanonicalParams(new URLSearchParams('from=A&to=B'))).toBeNull()
+  it('parses without t param as now time', () => {
+    const params = new URLSearchParams('from=America/New_York&to=Europe/London')
+    const result = parseCanonicalParams(params)
+    expect(result).toEqual({
+      fromIana: 'America/New_York',
+      toIana: 'Europe/London',
+      hour: null,
+      minute: null,
+      dateModifier: null,
+    })
+  })
+
+  it('returns null when from or to are missing', () => {
     expect(parseCanonicalParams(new URLSearchParams('from=A&t=15:00'))).toBeNull()
     expect(parseCanonicalParams(new URLSearchParams('to=B&t=15:00'))).toBeNull()
   })
@@ -175,13 +190,15 @@ describe('buildCanonicalUrl', () => {
     expect(url).not.toContain('q=')
   })
 
-  it('falls back to q= for now time', () => {
+  it('builds canonical URL without t for now time', () => {
     const result = makeResult({
       intent: { ...makeResult().intent, time: { type: 'now' } },
     })
     const url = buildCanonicalUrl(result, 'london')
-    expect(url).toContain('q=london')
-    expect(url).not.toContain('from=')
+    expect(url).toContain('from=America%2FNew_York')
+    expect(url).toContain('to=Europe%2FLondon')
+    expect(url).not.toContain('t=')
+    expect(url).not.toContain('q=')
   })
 
   it('preserves view=map', () => {
@@ -201,11 +218,14 @@ describe('formatCanonicalDisplay', () => {
     expect(display).toContain('t=15')
   })
 
-  it('falls back to q= display for now time', () => {
+  it('returns canonical display for now time', () => {
     const result = makeResult({
       intent: { ...makeResult().intent, time: { type: 'now' } },
     })
     const display = formatCanonicalDisplay(result, 'london')
-    expect(display).toBe('timezone.solar?q=london')
+    expect(display).toContain('timezone.solar?')
+    expect(display).toContain('from=America')
+    expect(display).toContain('to=Europe')
+    expect(display).not.toContain('q=')
   })
 })

@@ -121,14 +121,20 @@ function App() {
       const { fromIana, toIana, hour, minute, dateModifier } = canonicalQuery
       const outcome = runCanonicalConversion(fromIana, toIana, hour, minute, dateModifier)
       if (!outcome.error_type) {
-        const timeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
         const fromCity = fromIana.split('/').pop()?.replace(/_/g, ' ') ?? fromIana
         const toCity = toIana.split('/').pop()?.replace(/_/g, ' ') ?? toIana
-        const display = `${timeStr} ${fromCity} to ${toCity}`
-        setInputValue(display)
-        setCurrentInputValue(display)
+        if (hour !== null && minute !== null) {
+          const timeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+          const display = `${timeStr} ${fromCity} to ${toCity}`
+          setInputValue(display)
+          setCurrentInputValue(display)
+        } else {
+          const display = `${fromCity} to ${toCity}`
+          setInputValue(display)
+          setCurrentInputValue(display)
+        }
       }
-      sendTelemetry({ query: `canonical:${fromIana}>${toIana}@${hour}:${minute}`, ...outcome })
+      sendTelemetry({ query: `canonical:${fromIana}>${toIana}@${hour ?? 'now'}:${minute ?? '00'}`, ...outcome })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canonicalQuery])

@@ -3,8 +3,8 @@ import type { ConversionResult, DateModifier, DayOfWeek } from '@/engine/types'
 export interface CanonicalQuery {
   fromIana: string
   toIana: string
-  hour: number
-  minute: number
+  hour: number | null
+  minute: number | null
   dateModifier: DateModifier
 }
 
@@ -58,15 +58,19 @@ export function parseDateModifier(s: string): DateModifier {
 
 /**
  * Build canonical URL search params from a conversion result.
- * Returns null if the result is not canonicalizable (now/relative time).
+ * Returns null only for relative time queries (e.g., "in 2 hours").
+ * For "now" queries, omits the `t` param (receiver sees current time).
  */
 export function buildCanonicalParams(result: ConversionResult): URLSearchParams | null {
-  if (result.intent.time.type !== 'absolute') return null
+  if (result.intent.time.type === 'relative') return null
 
   const params = new URLSearchParams()
   params.set('from', result.source.iana)
   params.set('to', result.target.iana)
-  params.set('t', `${String(result.intent.time.hour).padStart(2, '0')}:${String(result.intent.time.minute).padStart(2, '0')}`)
+
+  if (result.intent.time.type === 'absolute') {
+    params.set('t', `${String(result.intent.time.hour).padStart(2, '0')}:${String(result.intent.time.minute).padStart(2, '0')}`)
+  }
 
   const d = serializeDateModifier(result.intent.dateModifier)
   if (d) params.set('d', d)
@@ -77,21 +81,25 @@ export function buildCanonicalParams(result: ConversionResult): URLSearchParams 
 /**
  * Parse canonical params from URL search params.
  * Returns null if required params are missing or invalid.
+ * When `t` is omitted, hour/minute are null (meaning "now").
  */
 export function parseCanonicalParams(params: URLSearchParams): CanonicalQuery | null {
   const from = params.get('from')
   const to = params.get('to')
+
+  if (!from || !to) return null
+
   const t = params.get('t')
+  let hour: number | null = null
+  let minute: number | null = null
 
-  if (!from || !to || !t) return null
-
-  // Validate time format HH:mm
-  const timeMatch = t.match(/^(\d{1,2}):(\d{2})$/)
-  if (!timeMatch) return null
-
-  const hour = parseInt(timeMatch[1], 10)
-  const minute = parseInt(timeMatch[2], 10)
-  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
+  if (t) {
+    const timeMatch = t.match(/^(\d{1,2}):(\d{2})$/)
+    if (!timeMatch) return null
+    hour = parseInt(timeMatch[1], 10)
+    minute = parseInt(timeMatch[2], 10)
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
+  }
 
   const d = params.get('d')
   const dateModifier = d ? parseDateModifier(d) : null

@@ -23,7 +23,7 @@ interface UseConversionReturn {
   sourceAlternatives: LocationRef[]
   targetAlternatives: LocationRef[]
   runConversion: (query: string) => ConversionOutcome
-  runCanonicalConversion: (fromIana: string, toIana: string, hour: number, minute: number, dateModifier: DateModifier) => ConversionOutcome
+  runCanonicalConversion: (fromIana: string, toIana: string, hour: number | null, minute: number | null, dateModifier: DateModifier) => ConversionOutcome
   swapConversion: () => void
   clear: () => void
 }
@@ -163,10 +163,10 @@ export function useConversion(): UseConversionReturn {
     return { source_iana: source.iana, target_iana: target.iana, source_method: source.resolveMethod, target_method: target.resolveMethod, error_type: null }
   }, [])
 
-  const runCanonicalConversion = useCallback((fromIana: string, toIana: string, hour: number, minute: number, dateModifier: DateModifier): ConversionOutcome => {
+  const runCanonicalConversion = useCallback((fromIana: string, toIana: string, hour: number | null, minute: number | null, dateModifier: DateModifier): ConversionOutcome => {
     setError(null)
     setResult(null)
-    setIsUsingCurrentTime(false)
+    setIsUsingCurrentTime(hour === null)
     setIsImplicitLocal(false)
     setMatchType('exact')
     setSourceAlternatives([])
@@ -178,7 +178,9 @@ export function useConversion(): UseConversionReturn {
     const intent: ConversionIntent = {
       source,
       target,
-      time: { type: 'absolute', hour, minute },
+      time: hour !== null && minute !== null
+        ? { type: 'absolute', hour, minute }
+        : { type: 'now' },
       dateModifier,
     }
 
