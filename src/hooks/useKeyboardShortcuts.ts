@@ -6,6 +6,7 @@ export function useKeyboardShortcuts(
   setShowSettings: (v: boolean) => void,
   showExamples: () => void,
   onClear: () => void,
+  onToggleView?: () => void,
 ) {
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -15,6 +16,12 @@ export function useKeyboardShortcuts(
         setShowSettings(false)
         inputRef.current?.focus()
         inputRef.current?.select()
+      }
+
+      // Cmd+M → toggle card/map view
+      if (e.metaKey && e.key === 'm') {
+        e.preventDefault()
+        onToggleView?.()
       }
 
       // Cmd+/ → switch to convert, clear, focus input
@@ -41,5 +48,5 @@ export function useKeyboardShortcuts(
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [inputRef, showSettings, setShowSettings, showExamples, onClear])
+  }, [inputRef, showSettings, setShowSettings, showExamples, onClear, onToggleView])
 }

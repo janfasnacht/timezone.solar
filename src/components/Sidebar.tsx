@@ -255,6 +255,10 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
                 <Kbd>&#8984;/</Kbd>
               </div>
               <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Card / Map</span>
+                <Kbd>&#8984;M</Kbd>
+              </div>
+              <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">History</span>
                 <Kbd>&uarr; &darr;</Kbd>
               </div>

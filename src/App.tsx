@@ -72,7 +72,11 @@ function App() {
     inputRef.current?.focus()
   }, [handleClear])
 
-  useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear)
+  const toggleView = useCallback(() => {
+    setViewMode(v => v === 'card' ? 'map' : 'card')
+  }, [])
+
+  useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
   const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   const isLanding = !result && !error
@@ -264,6 +268,15 @@ function App() {
                     query={currentInputValue}
                     use24h={timeFormat === '24h'}
                   />
+                  <button
+                    onClick={() => setViewMode('map')}
+                    className="mt-3 flex w-full items-center justify-center gap-1.5 text-[0.75rem] text-muted-foreground/50 transition-colors hover:text-foreground"
+                  >
+                    View on map
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1.5 3.5l4-1.5v10.5l-4 1.5V3.5zM5.5 2l5 2v10.5l-5-2V2zM10.5 4l4-1.5v10.5l-4 1.5V4z" />
+                    </svg>
+                  </button>
                 </div>
               )}
             </div>
