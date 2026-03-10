@@ -16,6 +16,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
+import { buildCanonicalParams } from '@/lib/canonicalUrl'
 import { Analytics } from '@vercel/analytics/react'
 
 const MapView = lazy(() => import('@/components/MapView'))
@@ -34,9 +35,9 @@ export type ViewMode = 'card' | 'map'
 
 function App() {
   const path = usePath()
-  const { result, error, isUsingCurrentTime, matchType, runConversion, swapConversion, clear } = useConversion()
+  const { result, error, isUsingCurrentTime, matchType, runConversion, runCanonicalConversion, swapConversion, clear } = useConversion()
   const { queries: recentQueries, addQuery, removeQuery } = useRecentQueries()
-  const { query: urlQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery } = useUrlState()
+  const { query: urlQuery, canonicalQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery, replaceWithCanonical } = useUrlState()
   const { timeFormat, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
@@ -48,6 +49,7 @@ function App() {
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
+  const shouldCanonicalizeRef = useRef(false)
   const touchStart = useRef({ x: 0, y: 0 })
   const isMobile = useMediaQuery('(max-width: 767px)')
   useDocumentTitle(result, currentInputValue)
@@ -87,12 +89,42 @@ function App() {
     if (urlQuery) {
       setInputValue(urlQuery)
       setCurrentInputValue(urlQuery)
+      shouldCanonicalizeRef.current = true
       const outcome = runConversion(urlQuery)
       sendTelemetry({ query: urlQuery, ...outcome })
       addQuery(urlQuery)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlQuery])
+
+  // Load from canonical URL params (?from=&to=&t=)
+  useEffect(() => {
+    if (canonicalQuery) {
+      const { fromIana, toIana, hour, minute, dateModifier } = canonicalQuery
+      const outcome = runCanonicalConversion(fromIana, toIana, hour, minute, dateModifier)
+      if (!outcome.error_type) {
+        const timeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+        const fromCity = fromIana.split('/').pop()?.replace(/_/g, ' ') ?? fromIana
+        const toCity = toIana.split('/').pop()?.replace(/_/g, ' ') ?? toIana
+        const display = `${timeStr} ${fromCity} to ${toCity}`
+        setInputValue(display)
+        setCurrentInputValue(display)
+      }
+      sendTelemetry({ query: `canonical:${fromIana}>${toIana}@${hour}:${minute}`, ...outcome })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canonicalQuery])
+
+  // After a submitted/swapped conversion, replace URL with canonical form if possible
+  useEffect(() => {
+    if (!result || !shouldCanonicalizeRef.current) return
+    shouldCanonicalizeRef.current = false
+    const canonical = buildCanonicalParams(result)
+    if (canonical) {
+      replaceWithCanonical(canonical)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result])
 
   const handleSubmit = useCallback((query: string) => {
     debouncedRef.current.cancel()
@@ -101,6 +133,7 @@ function App() {
     setUrlQuery(query)
     setInputValue(query)
     setCurrentInputValue(query)
+    shouldCanonicalizeRef.current = true
     const outcome = runConversion(query)
     sendTelemetry({ query, ...outcome })
     addQuery(query)
@@ -112,10 +145,13 @@ function App() {
     const sourceCity = result.source.city
     const timeKey = timeFormat === '24h' ? 'formattedTime24' : 'formattedTime12'
     const targetTime = result.target[timeKey].toLowerCase().replace(/\s/g, '')
-    const swappedQuery = `${targetCity} ${targetTime} in ${sourceCity}`
-    replaceUrlQuery(swappedQuery)
+    const display = `${targetCity} ${targetTime} in ${sourceCity}`
+    setInputValue(display)
+    setCurrentInputValue(display)
+    shouldCanonicalizeRef.current = true
     swapConversion()
-  }, [result, timeFormat, swapConversion, replaceUrlQuery])
+    // URL update is handled by the result effect above
+  }, [result, timeFormat, swapConversion])
 
   const handleValueChange = useCallback((value: string) => {
     setCurrentInputValue(value)

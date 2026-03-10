@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
+import { buildCanonicalUrl, buildOgImageUrl, formatCanonicalDisplay } from '@/lib/canonicalUrl'
 import type { ConversionResult } from '@/engine/types'
 
 interface CardBackProps {
@@ -41,8 +42,9 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
   const { source, target, dayBoundary } = result
 
   const copyTimeText = `${target[timeKey]} ${target.abbreviation}`
-  const shareUrl = `https://timezone.solar?q=${encodeURIComponent(query)}`
-  const ogImageUrl = `/api/og?q=${encodeURIComponent(query)}&src=${encodeURIComponent(source.iana)}${use24h ? '&fmt=24h' : ''}`
+  const shareUrl = buildCanonicalUrl(result, query)
+  const ogImageUrl = buildOgImageUrl(result, query, use24h)
+  const linkDisplay = formatCanonicalDisplay(result, query)
 
   const canShare = typeof navigator !== 'undefined'
     && 'share' in navigator
@@ -164,7 +166,7 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
                 {linkCopied ? 'Copied!' : 'Copy link'}
               </span>
               <span className="block truncate font-mono text-[0.75rem] text-foreground">
-                timezone.solar?q={query}
+                {linkDisplay}
               </span>
             </span>
           </button>

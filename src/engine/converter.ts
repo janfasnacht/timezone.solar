@@ -70,11 +70,11 @@ export function swapResult(original: ConversionResult): ConversionResult {
     relativeTime = targetDt.toRelative() ?? null
   }
 
-  // Build swapped intent: swap source/target, reset time to now
+  // Build swapped intent: swap source/target, preserve the known time
   const swappedIntent: ConversionIntent = {
     source: original.intent.target,
     target: original.intent.source,
-    time: { type: 'now' },
+    time: { type: 'absolute', hour: sourceDt.hour, minute: sourceDt.minute },
     dateModifier: null,
   }
 
