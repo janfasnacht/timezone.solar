@@ -214,7 +214,7 @@ export function SettingsPage({ onRunQuery }: SettingsPageProps) {
 
           {/* Telemetry */}
           <div className="px-[1.5rem] py-[1rem]">
-            <SettingRow label="Anonymous usage data">
+            <SettingRow label="Help improve timezone.solar">
               <button
                 role="switch"
                 aria-checked={!telemetryOptOut}
@@ -230,6 +230,9 @@ export function SettingsPage({ onRunQuery }: SettingsPageProps) {
                 />
               </button>
             </SettingRow>
+            <p className="mt-1 text-xs text-muted-foreground/60">
+              Sends anonymous conversion data (timezones used, errors). No queries or personal data.
+            </p>
           </div>
         </div>
       </div>

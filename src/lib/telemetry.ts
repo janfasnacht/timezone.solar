@@ -10,6 +10,7 @@ export interface TelemetryEvent {
 }
 
 const THROTTLE_WINDOW = 5000
+const sessionId = crypto.randomUUID()
 
 let lastSentQuery = ''
 let lastSentTime = 0
@@ -31,14 +32,14 @@ function dispatchEvent(event: TelemetryEvent) {
   lastSentTime = Date.now()
 
   if (import.meta.env.DEV) {
-    console.debug('[telemetry]', event)
+    console.debug('[telemetry]', { ...event, session_id: sessionId })
     return
   }
 
   fetch('/api/telemetry', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(event),
+    body: JSON.stringify({ ...event, session_id: sessionId }),
     keepalive: true,
   }).catch(() => {})
 }

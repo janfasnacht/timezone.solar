@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres'
+import { createClient } from '@libsql/client'
 
 export const config = { runtime: 'nodejs', maxDuration: 5 }
 
@@ -12,6 +12,11 @@ function validateMethod(v: unknown): string | null {
 function validateError(v: unknown): string | null {
   return typeof v === 'string' && VALID_ERRORS.has(v) ? v : null
 }
+
+const db = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+})
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
@@ -32,12 +37,14 @@ export default async function handler(req: any, res: any) {
   const source_method = validateMethod(body.source_method)
   const target_method = validateMethod(body.target_method)
   const error_type = validateError(body.error_type)
+  const session_id = typeof body.session_id === 'string' ? body.session_id.slice(0, 36) : null
 
   try {
-    await sql`
-      INSERT INTO telemetry_events (query, source_iana, target_iana, source_method, target_method, error_type)
-      VALUES (${query}, ${source_iana}, ${target_iana}, ${source_method}, ${target_method}, ${error_type})
-    `
+    await db.execute({
+      sql: `INSERT INTO telemetry_events (query, source_iana, target_iana, source_method, target_method, error_type, session_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      args: [query, source_iana, target_iana, source_method, target_method, error_type, session_id],
+    })
   } catch {
     // Telemetry must never fail visibly
   }

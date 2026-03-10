@@ -34,11 +34,16 @@ describe('sendTelemetry', () => {
     })
   })
 
-  it('logs to console.debug in dev mode', () => {
+  it('logs to console.debug in dev mode with session_id', () => {
     const spy = vi.spyOn(console, 'debug').mockImplementation(() => {})
     const event = makeEvent('dev-test')
     sendTelemetry(event)
-    expect(spy).toHaveBeenCalledWith('[telemetry]', event)
+    expect(spy).toHaveBeenCalledOnce()
+    const [prefix, payload] = spy.mock.calls[0]
+    expect(prefix).toBe('[telemetry]')
+    expect(payload).toMatchObject(event)
+    expect(payload).toHaveProperty('session_id')
+    expect(typeof payload.session_id).toBe('string')
   })
 
   it('skips duplicate query (dedup)', () => {
@@ -95,7 +100,7 @@ describe('sendTelemetry', () => {
     // Advance past the remaining throttle window
     vi.advanceTimersByTime(4000)
     expect(spy).toHaveBeenCalledTimes(2)
-    expect(spy).toHaveBeenLastCalledWith('[telemetry]', makeEvent('third'))
+    expect(spy.mock.calls[1][1]).toMatchObject(makeEvent('third'))
   })
 
   it('sends immediately after throttle window has passed', () => {
@@ -106,6 +111,6 @@ describe('sendTelemetry', () => {
     vi.advanceTimersByTime(6000)
     sendTelemetry(makeEvent('after-window'))
     expect(spy).toHaveBeenCalledTimes(2)
-    expect(spy).toHaveBeenLastCalledWith('[telemetry]', makeEvent('after-window'))
+    expect(spy.mock.calls[1][1]).toMatchObject(makeEvent('after-window'))
   })
 })

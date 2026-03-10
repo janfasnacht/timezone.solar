@@ -15,6 +15,7 @@ import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
+import { Analytics } from '@vercel/analytics/react'
 
 function usePath() {
   const [path, setPath] = useState(window.location.pathname)
@@ -146,6 +147,7 @@ function App() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <Analytics />
       <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} onClose={() => setSidebarOpen(false)} isMobile={isMobile} />
 
       {/* Main content — always offset by rail, shifts further when expanded */}

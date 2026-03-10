@@ -20,7 +20,7 @@ await build({
   platform: 'node',
   format: 'esm',
   outfile: 'api/telemetry.js',
-  external: ['@vercel/postgres'],
+  external: ['@libsql/client'],
   banner: { js: '/** Bundled from api/_telemetry.ts — do not edit directly */' },
 })
 

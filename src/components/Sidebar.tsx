@@ -252,7 +252,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
         >
           About & usage
         </a>
-        <SettingRow label="Usage statistics" inline>
+        <SettingRow label="Help improve timezone.solar" inline>
           <button
             role="switch"
             aria-checked={!telemetryOptOut}
