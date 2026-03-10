@@ -254,12 +254,12 @@ function App() {
           </div>
         ) : (
           <div className="h-full bg-background">
-            <div className="page-glow relative mx-auto flex h-full max-w-[520px] flex-col items-center px-[2rem]">
+            <div className="page-glow relative mx-auto flex h-full max-w-[520px] flex-col items-center px-4 md:px-[2rem]">
               {/* Spacer */}
-              <div className="h-[25vh] flex-shrink-0" />
+              <div className="h-[10vh] md:h-[25vh] flex-shrink-0" />
 
               {/* Logo */}
-              <div className="mb-6 flex-shrink-0">
+              <div className="mb-3 md:mb-6 flex-shrink-0">
                 <SunDialLogo onClick={handleClear} />
               </div>
 
@@ -290,14 +290,14 @@ function App() {
 
               {/* Error */}
               {error && (
-                <div className="mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
+                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
                   <ErrorDisplay error={error} onClear={handleClear} />
                 </div>
               )}
 
               {/* Result card */}
               {result && (
-                <div className="mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
+                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
                   <FlippableCard
                     result={result}
                     isUsingCurrentTime={isUsingCurrentTime}

@@ -259,16 +259,16 @@ export default function MapView({
           className="flex items-center gap-2 px-1 h-10 text-foreground/70 hover:text-foreground transition-colors flex-shrink-0"
         >
           <div className="h-4 w-4 rounded-full bg-accent flex-shrink-0" />
-          <span className="font-serif text-sm">
+          <span className="hidden sm:inline font-serif text-sm">
             <span className="not-italic font-semibold">timezone</span><span className="italic font-light text-muted-foreground">.solar</span>
           </span>
         </button>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+        {/* Spacer — collapses on mobile so query input gets full space */}
+        <div className="hidden sm:block sm:flex-1" />
 
         {/* Query input */}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-4 gap-2 w-[300px] max-w-[40vw]`}>
+        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-3 sm:px-4 gap-2 flex-1 sm:flex-none sm:w-[300px] sm:max-w-[40vw]`}>
           <input
             ref={inputRef}
             type="text"
@@ -386,7 +386,7 @@ export default function MapView({
               }
             }}
             placeholder={clockLabel}
-            className="w-[70px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
+            className="w-[60px] sm:w-[70px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
           />
 
           <button

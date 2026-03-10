@@ -18,11 +18,11 @@ export function AboutPage({ onRunQuery }: AboutPageProps) {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[520px] flex-col items-center px-[2rem]">
-      <div className="h-[12vh] flex-shrink-0" />
+    <div className="mx-auto flex min-h-dvh max-w-[520px] flex-col items-center px-4 md:px-[2rem]">
+      <div className="h-[6vh] md:h-[12vh] flex-shrink-0" />
 
       {/* Logo */}
-      <div className="mb-8 flex-shrink-0">
+      <div className="mb-4 md:mb-8 flex-shrink-0">
         <SunDialLogo onClick={handleNavigateHome} />
       </div>
 

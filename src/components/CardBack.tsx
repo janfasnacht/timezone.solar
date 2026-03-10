@@ -120,9 +120,9 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
       {/* Top accent gradient — matches front card */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
-      <div className="flex flex-1 flex-col justify-center px-[1.5rem]">
+      <div className="flex flex-1 flex-col justify-center px-4 md:px-[1.5rem]">
         {/* Conversion summary — single compact row */}
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap">
           {sourceIconSlug && <CityIcon slug={sourceIconSlug} />}
           <span className="font-mono text-[0.75rem] text-foreground">{source.city}</span>
           <span className="font-mono text-[0.65rem] text-muted-foreground">{source[timeKey]}</span>
