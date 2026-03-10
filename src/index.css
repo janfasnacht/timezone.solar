@@ -134,6 +134,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 400px;
+  max-width: 100vw;
   height: 400px;
   background: radial-gradient(circle, var(--color-glow) 0%, transparent 60%);
   pointer-events: none;

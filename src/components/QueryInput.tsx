@@ -155,7 +155,7 @@ export function QueryInput({
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className="w-full rounded-full border border-border bg-surface px-6 py-3.5 pr-12 text-[1.05rem] text-foreground transition-colors focus:border-accent focus:outline-none"
+        className="w-full rounded-full border border-border bg-surface px-4 md:px-6 py-3 md:py-3.5 pr-10 md:pr-12 text-base md:text-[1.05rem] text-foreground transition-colors focus:border-accent focus:outline-none"
         onFocusCapture={(e) => {
           e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-glow-strong)'
         }}
@@ -165,7 +165,7 @@ export function QueryInput({
       />
       {showPlaceholder && (
         <span
-          className="pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 text-[1.05rem] text-muted-foreground transition-opacity duration-300"
+          className="pointer-events-none absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-base md:text-[1.05rem] text-muted-foreground transition-opacity duration-300"
           aria-hidden="true"
         >
           {placeholder}

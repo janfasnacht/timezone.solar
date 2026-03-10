@@ -55,7 +55,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
       {/* Top accent gradient line */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
-      <div className="p-[2rem]">
+      <div className="p-5 md:p-[2rem]">
         {/* Source row — two-column baseline */}
         <div className="flex items-baseline justify-between">
           <div>
@@ -64,7 +64,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
             </div>
           </div>
           <div className="text-right">
-            <span className="text-[1.3rem] font-semibold">
+            <span className="text-[1.1rem] md:text-[1.3rem] font-semibold">
               {sourceHeroTime}
             </span>
             <span className="ml-1 text-[0.7rem] font-mono font-normal text-muted-foreground">
@@ -74,7 +74,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
         </div>
 
         {/* Divider + Swap — gradient lines per mockup C */}
-        <div className="my-[1.2rem] flex items-center gap-4">
+        <div className="my-3 md:my-[1.2rem] flex items-center gap-4">
           <div className="h-px flex-1 bg-gradient-to-r from-surface via-border to-surface" />
           <button
             onClick={onSwap}
@@ -92,10 +92,10 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
             {target.city}{target.country ? `, ${target.country}` : ''}
           </div>
           <div className="flex items-baseline gap-[0.6rem]">
-            <span className="font-serif text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">
+            <span className="font-serif text-[2.75rem] md:text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">
               {targetTimeParts.time}
               {targetTimeParts.period && (
-                <span className="text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
+                <span className="text-[1rem] md:text-[1.4rem] font-light opacity-70">{targetTimeParts.period}</span>
               )}
             </span>
           </div>

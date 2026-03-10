@@ -10,7 +10,7 @@ export function ErrorDisplay({ error, onClear }: ErrorDisplayProps) {
     <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
-      <div className="p-[2rem]">
+      <div className="p-5 md:p-[2rem]">
         <p className="font-serif text-[1.1rem] italic text-muted-foreground">
           {error.message}
         </p>
