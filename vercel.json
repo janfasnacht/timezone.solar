@@ -1,5 +1,8 @@
 {
   "buildCommand": "npm run build",
+  "rewrites": [
+    { "source": "/about", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
