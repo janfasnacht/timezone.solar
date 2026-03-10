@@ -13,6 +13,7 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
 import { Analytics } from '@vercel/analytics/react'
@@ -49,6 +50,7 @@ function App() {
   const liveQueryRef = useRef('')
   const touchStart = useRef({ x: 0, y: 0 })
   const isMobile = useMediaQuery('(max-width: 767px)')
+  useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
     const q = liveQueryRef.current

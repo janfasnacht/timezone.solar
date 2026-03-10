@@ -13,7 +13,11 @@
       })();
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://timezone.solar/" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#f97316" />
     <title>timezone.solar — Timezone Converter</title>
+    <meta name="description" content="Convert times between cities instantly. Type natural language queries like '3pm NYC to London' for instant timezone conversions." />
     <meta property="og:title" content="timezone.solar — Timezone Converter" />
     <meta property="og:description" content="Convert times between cities instantly." />
     <meta property="og:type" content="website" />
@@ -23,8 +27,27 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="timezone.solar — Timezone Converter" />
     <meta name="twitter:image" content="https://timezone.solar/api/og" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "timezone.solar",
+      "url": "https://timezone.solar",
+      "description": "Convert times between cities instantly with natural language queries.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
   </head>
   <body>
+    <noscript>
+      <p>timezone.solar — Convert times between cities instantly. Type natural language queries like "3pm NYC to London" for instant timezone conversions.</p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

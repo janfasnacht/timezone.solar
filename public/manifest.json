@@ -1,0 +1,16 @@
+{
+  "name": "timezone.solar",
+  "short_name": "timezone",
+  "description": "Convert times between cities instantly",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
