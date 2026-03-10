@@ -4,6 +4,8 @@ import { FlippableCard } from '@/components/FlippableCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { Sidebar, RAIL_WIDTH, EXPANDED_WIDTH } from '@/components/Sidebar'
+import { MobileTabBar, type MobileTab } from '@/components/MobileTabBar'
+import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { useConversion } from '@/hooks/useConversion'
@@ -52,6 +54,10 @@ function App() {
   const shouldCanonicalizeRef = useRef(false)
   const touchStart = useRef({ x: 0, y: 0 })
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const [mobileTab, setMobileTab] = useState<MobileTab>(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('view') === 'map' ? 'map' : 'card'
+  })
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -78,6 +84,13 @@ function App() {
 
   const toggleView = useCallback(() => {
     setViewMode(v => v === 'card' ? 'map' : 'card')
+  }, [])
+
+  const handleMobileTabChange = useCallback((tab: MobileTab) => {
+    setMobileTab(tab)
+    if (tab === 'card' || tab === 'map') {
+      setViewMode(tab)
+    }
   }, [])
 
   useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
@@ -207,31 +220,40 @@ function App() {
 
   const mainOffset = isMobile ? 0 : sidebarOpen ? EXPANDED_WIDTH : RAIL_WIDTH
 
+  // On mobile, determine which screen to show based on tab
+  const mobileScreen = isMobile ? mobileTab : null
+
   return (
     <div
-      className="h-dvh overflow-hidden"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      className="h-dvh flex flex-col overflow-hidden"
+      onTouchStart={!isMobile ? handleTouchStart : undefined}
+      onTouchEnd={!isMobile ? handleTouchEnd : undefined}
     >
       <Analytics />
-      <Sidebar
-        open={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
-        onClose={() => setSidebarOpen(false)}
-        isMobile={isMobile}
-        viewMode={viewMode}
-        onViewChange={setViewMode}
-      />
 
-      {/* Main content — always offset by rail, shifts further when expanded */}
+      {/* Desktop: sidebar (hidden on mobile — tabs replace it) */}
+      {!isMobile && (
+        <Sidebar
+          open={sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          onClose={() => setSidebarOpen(false)}
+          isMobile={false}
+          viewMode={viewMode}
+          onViewChange={setViewMode}
+        />
+      )}
+
+      {/* Main content */}
       <div
-        className="h-full transition-[margin-left] duration-200 ease-out"
+        className="flex-1 min-h-0 transition-[margin-left] duration-200 ease-out"
         style={{ marginLeft: mainOffset }}
       >
         {path === '/about' ? (
           <div className="h-full overflow-y-auto bg-background">
             <AboutPage onRunQuery={handleSubmit} />
           </div>
+        ) : mobileScreen === 'settings' ? (
+          <MobileSettings />
         ) : viewMode === 'map' ? (
           <div className="h-full bg-background">
             <Suspense fallback={<div className="h-full bg-background" />}>
@@ -249,6 +271,7 @@ function App() {
                 previewCities={previewCities}
                 isProcessing={isDebouncing}
                 queryInputRef={inputRef}
+                isMobile={isMobile}
               />
             </Suspense>
           </div>
@@ -290,14 +313,14 @@ function App() {
 
               {/* Error */}
               {error && (
-                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
+                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-4">
                   <ErrorDisplay error={error} onClear={handleClear} />
                 </div>
               )}
 
               {/* Result card */}
               {result && (
-                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-10">
+                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-4">
                   <FlippableCard
                     result={result}
                     isUsingCurrentTime={isUsingCurrentTime}
@@ -305,7 +328,10 @@ function App() {
                     onSwap={handleSwap}
                     query={currentInputValue}
                     use24h={timeFormat === '24h'}
-                    onViewOnMap={() => setViewMode('map')}
+                    onViewOnMap={() => {
+                      setViewMode('map')
+                      if (isMobile) setMobileTab('map')
+                    }}
                   />
                 </div>
               )}
@@ -313,6 +339,11 @@ function App() {
           </div>
         )}
       </div>
+
+      {/* Mobile: bottom tab bar */}
+      {isMobile && (
+        <MobileTabBar activeTab={mobileTab} onTabChange={handleMobileTabChange} />
+      )}
     </div>
   )
 }
