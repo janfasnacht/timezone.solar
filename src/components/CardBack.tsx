@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
+import { DogEar } from '@/components/DogEar'
 import { getSvgCitiesSlug } from '@/engine/city-entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import type { ConversionResult } from '@/engine/types'
@@ -189,11 +190,7 @@ export function CardBack({ result, query, use24h, onFlip }: CardBackProps) {
       </div>
 
       {/* Dog-ear flip trigger — back to front */}
-      <button
-        onClick={onFlip}
-        className="absolute right-0 bottom-0 h-6 w-6 cursor-pointer transition-colors [clip-path:polygon(100%_0,100%_100%,0_100%)] bg-border hover:bg-muted-foreground/40"
-        aria-label="Back to result"
-      />
+      <DogEar onClick={onFlip} label="Back to result" tooltip="Back to result" />
     </div>
   )
 }
