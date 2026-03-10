@@ -12,6 +12,7 @@ import { useUrlState } from '@/hooks/useUrlState'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { sendTelemetry } from '@/lib/telemetry'
 
@@ -38,6 +39,7 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
   const touchStart = useRef({ x: 0, y: 0 })
+  const isMobile = useMediaQuery('(max-width: 767px)')
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
     const q = liveQueryRef.current
@@ -136,7 +138,7 @@ function App() {
     }
   }, [sidebarOpen])
 
-  const mainOffset = sidebarOpen ? EXPANDED_WIDTH : RAIL_WIDTH
+  const mainOffset = isMobile ? 0 : sidebarOpen ? EXPANDED_WIDTH : RAIL_WIDTH
 
   return (
     <div
@@ -144,7 +146,7 @@ function App() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+      <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} onClose={() => setSidebarOpen(false)} isMobile={isMobile} />
 
       {/* Main content — always offset by rail, shifts further when expanded */}
       <div
