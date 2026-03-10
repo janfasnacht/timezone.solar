@@ -29,7 +29,7 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
 
   return (
     <div>
-      <div style={{ perspective: '1200px' }}>
+      <div className="overflow-hidden" style={{ perspective: '1200px' }}>
         <div
           className="relative transition-transform duration-500 [transform-style:preserve-3d]"
           style={flipped ? { transform: 'rotateY(180deg)' } : undefined}

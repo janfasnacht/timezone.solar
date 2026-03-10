@@ -91,6 +91,11 @@ function App() {
     if (tab === 'card' || tab === 'map') {
       setViewMode(tab)
     }
+    // Navigate away from /about when switching tabs
+    if (window.location.pathname === '/about') {
+      history.pushState(null, '', '/')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
   }, [])
 
   useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
