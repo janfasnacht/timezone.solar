@@ -103470,6 +103470,51 @@ var config = { runtime: "nodejs", maxDuration: 10 };
 var fraunces = readFileSync(join(process.cwd(), "api/fonts/Fraunces-SemiBold.woff"));
 var instrumentSans = readFileSync(join(process.cwd(), "api/fonts/InstrumentSans-Regular.woff"));
 var instrumentSansSB = readFileSync(join(process.cwd(), "api/fonts/InstrumentSans-SemiBold.woff"));
+var VALID_DAYS = {
+  monday: "monday",
+  tuesday: "tuesday",
+  wednesday: "wednesday",
+  thursday: "thursday",
+  friday: "friday",
+  saturday: "saturday",
+  sunday: "sunday"
+};
+function parseDateModifierParam(s2) {
+  if (s2 === "tomorrow" || s2 === "yesterday" || s2 === "today") return s2;
+  const dashIdx = s2.indexOf("-");
+  if (dashIdx > 0) {
+    const anchor = s2.slice(0, dashIdx);
+    const day = s2.slice(dashIdx + 1);
+    if (["next", "this", "last"].includes(anchor) && day in VALID_DAYS) {
+      return { type: "day-of-week", anchor, day: VALID_DAYS[day] };
+    }
+  }
+  if (s2 in VALID_DAYS) return { type: "day-of-week", anchor: "bare", day: VALID_DAYS[s2] };
+  return null;
+}
+function resolveFromIana(iana) {
+  const city = iana.split("/").pop()?.replace(/_/g, " ") ?? iana;
+  const resolved = resolveLocation(city);
+  if (resolved && resolved.primary.iana === iana) return resolved.primary;
+  return { iana, displayName: city, kind: "city", resolveMethod: "alias" };
+}
+function runCanonicalConversion(fromIana, toIana, t, d) {
+  const timeMatch = t.match(/^(\d{1,2}):(\d{2})$/);
+  if (!timeMatch) return null;
+  const hour = parseInt(timeMatch[1], 10);
+  const minute = parseInt(timeMatch[2], 10);
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+  const source = resolveFromIana(fromIana);
+  const target = resolveFromIana(toIana);
+  const dateModifier = d ? parseDateModifierParam(d) : null;
+  const intent = {
+    source,
+    target,
+    time: { type: "absolute", hour, minute },
+    dateModifier
+  };
+  return convert(intent);
+}
 function runConversion(q, srcIana) {
   const { parsed } = parse(q);
   if (!parsed) return null;
@@ -103726,10 +103771,19 @@ function ResultCard({ result, use24h }) {
   );
 }
 async function handler(req, res) {
+  const from = req.query?.from;
+  const to = req.query?.to;
+  const t = req.query?.t;
+  const d = req.query?.d;
   const q = req.query?.q ?? "";
   const src = req.query?.src ?? void 0;
   const use24h = req.query?.fmt === "24h";
-  const result = q ? runConversion(q, src) : null;
+  let result = null;
+  if (from && to && t) {
+    result = runCanonicalConversion(from, to, t, d);
+  } else if (q) {
+    result = runConversion(q, src);
+  }
   const element = result ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResultCard, { result, use24h }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrandedCard, {});
   const imageResponse = new ImageResponse(element, {
     width: 1200,
@@ -103748,6 +103802,7 @@ async function handler(req, res) {
 export {
   config,
   handler as default,
+  runCanonicalConversion,
   runConversion
 };
 /*! Bundled license information:

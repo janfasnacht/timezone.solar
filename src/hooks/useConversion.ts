@@ -4,7 +4,7 @@ import type { MatchType } from '@/engine/confidence'
 import { resolveLocation, getSuggestion } from '@/engine/resolver'
 import { convert, swapResult } from '@/engine/converter'
 import { getSnapshot } from '@/lib/preferences'
-import type { ConversionResult, ConversionError, LocationRef, ConversionIntent } from '@/engine/types'
+import type { ConversionResult, ConversionError, LocationRef, ConversionIntent, DateModifier } from '@/engine/types'
 
 export interface ConversionOutcome {
   source_iana: string | null
@@ -23,6 +23,7 @@ interface UseConversionReturn {
   sourceAlternatives: LocationRef[]
   targetAlternatives: LocationRef[]
   runConversion: (query: string) => ConversionOutcome
+  runCanonicalConversion: (fromIana: string, toIana: string, hour: number, minute: number, dateModifier: DateModifier) => ConversionOutcome
   swapConversion: () => void
   clear: () => void
 }
@@ -49,6 +50,16 @@ function getLocalTimezone(): LocationRef {
     return resolved.primary
   }
 
+  return { iana, displayName: city, kind: 'city', resolveMethod: 'alias' }
+}
+
+function resolveLocationFromIana(iana: string): LocationRef {
+  const parts = iana.split('/')
+  const city = (parts[parts.length - 1] ?? iana).replace(/_/g, ' ')
+  const resolved = resolveLocation(city)
+  if (resolved && resolved.primary.iana === iana) {
+    return resolved.primary
+  }
   return { iana, displayName: city, kind: 'city', resolveMethod: 'alias' }
 }
 
@@ -152,6 +163,35 @@ export function useConversion(): UseConversionReturn {
     return { source_iana: source.iana, target_iana: target.iana, source_method: source.resolveMethod, target_method: target.resolveMethod, error_type: null }
   }, [])
 
+  const runCanonicalConversion = useCallback((fromIana: string, toIana: string, hour: number, minute: number, dateModifier: DateModifier): ConversionOutcome => {
+    setError(null)
+    setResult(null)
+    setIsUsingCurrentTime(false)
+    setIsImplicitLocal(false)
+    setMatchType('exact')
+    setSourceAlternatives([])
+    setTargetAlternatives([])
+
+    const source = resolveLocationFromIana(fromIana)
+    const target = resolveLocationFromIana(toIana)
+
+    const intent: ConversionIntent = {
+      source,
+      target,
+      time: { type: 'absolute', hour, minute },
+      dateModifier,
+    }
+
+    try {
+      const conversionResult = convert(intent)
+      setResult(conversionResult)
+      return { source_iana: source.iana, target_iana: target.iana, source_method: source.resolveMethod, target_method: target.resolveMethod, error_type: null }
+    } catch {
+      setError({ type: 'conversion', message: 'Failed to convert between these timezones.' })
+      return { source_iana: source.iana, target_iana: target.iana, source_method: source.resolveMethod, target_method: target.resolveMethod, error_type: 'conversion' }
+    }
+  }, [])
+
   return {
     result,
     error,
@@ -161,6 +201,7 @@ export function useConversion(): UseConversionReturn {
     sourceAlternatives,
     targetAlternatives,
     runConversion,
+    runCanonicalConversion,
     swapConversion,
     clear,
   }

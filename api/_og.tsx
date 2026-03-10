@@ -5,13 +5,59 @@ import { join } from 'node:path'
 import { parse } from '../src/engine/parser'
 import { resolveLocation } from '../src/engine/resolver'
 import { convert } from '../src/engine/converter'
-import type { ConversionResult, ConversionIntent } from '../src/engine/types'
+import type { ConversionResult, ConversionIntent, DateModifier, DayOfWeek } from '../src/engine/types'
 
 export const config = { runtime: 'nodejs', maxDuration: 10 }
 
 const fraunces = readFileSync(join(process.cwd(), 'api/fonts/Fraunces-SemiBold.woff'))
 const instrumentSans = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-Regular.woff'))
 const instrumentSansSB = readFileSync(join(process.cwd(), 'api/fonts/InstrumentSans-SemiBold.woff'))
+
+const VALID_DAYS: Record<string, DayOfWeek> = {
+  monday: 'monday', tuesday: 'tuesday', wednesday: 'wednesday', thursday: 'thursday',
+  friday: 'friday', saturday: 'saturday', sunday: 'sunday',
+}
+
+function parseDateModifierParam(s: string): DateModifier {
+  if (s === 'tomorrow' || s === 'yesterday' || s === 'today') return s
+  const dashIdx = s.indexOf('-')
+  if (dashIdx > 0) {
+    const anchor = s.slice(0, dashIdx)
+    const day = s.slice(dashIdx + 1)
+    if (['next', 'this', 'last'].includes(anchor) && day in VALID_DAYS) {
+      return { type: 'day-of-week', anchor: anchor as 'next' | 'this' | 'last', day: VALID_DAYS[day] }
+    }
+  }
+  if (s in VALID_DAYS) return { type: 'day-of-week', anchor: 'bare', day: VALID_DAYS[s] }
+  return null
+}
+
+function resolveFromIana(iana: string) {
+  const city = iana.split('/').pop()?.replace(/_/g, ' ') ?? iana
+  const resolved = resolveLocation(city)
+  if (resolved && resolved.primary.iana === iana) return resolved.primary
+  return { iana, displayName: city, kind: 'city' as const, resolveMethod: 'alias' as const }
+}
+
+export function runCanonicalConversion(fromIana: string, toIana: string, t: string, d?: string): ConversionResult | null {
+  const timeMatch = t.match(/^(\d{1,2}):(\d{2})$/)
+  if (!timeMatch) return null
+  const hour = parseInt(timeMatch[1], 10)
+  const minute = parseInt(timeMatch[2], 10)
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
+
+  const source = resolveFromIana(fromIana)
+  const target = resolveFromIana(toIana)
+  const dateModifier = d ? parseDateModifierParam(d) : null
+
+  const intent: ConversionIntent = {
+    source,
+    target,
+    time: { type: 'absolute', hour, minute },
+    dateModifier,
+  }
+  return convert(intent)
+}
 
 export function runConversion(q: string, srcIana?: string): ConversionResult | null {
   const { parsed } = parse(q)
@@ -247,10 +293,20 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
+  const from = req.query?.from as string | undefined
+  const to = req.query?.to as string | undefined
+  const t = req.query?.t as string | undefined
+  const d = req.query?.d as string | undefined
   const q = (req.query?.q as string) ?? ''
   const src = (req.query?.src as string) ?? undefined
   const use24h = req.query?.fmt === '24h'
-  const result = q ? runConversion(q, src) : null
+
+  let result: ConversionResult | null = null
+  if (from && to && t) {
+    result = runCanonicalConversion(from, to, t, d)
+  } else if (q) {
+    result = runConversion(q, src)
+  }
 
   const element = result ? <ResultCard result={result} use24h={use24h} /> : <BrandedCard />
 

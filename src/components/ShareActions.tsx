@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
 import type { ConversionResult } from '@/engine/types'
 import { compactTime, formatDate } from '@/lib/shareUtils'
+import { buildCanonicalUrl, buildOgImageUrl } from '@/lib/canonicalUrl'
 
 interface ShareActionsProps {
   result: ConversionResult
@@ -19,9 +20,8 @@ export function ShareActions({ result, query, use24h }: ShareActionsProps) {
 
   const copyTimeText = `${target[timeKey]} ${target.abbreviation}`
 
-  const shareUrl = `https://timezone.solar?q=${encodeURIComponent(query)}`
-  // Pass source tz + time format so the OG image matches what the user sees
-  const ogImageUrl = `/api/og?q=${encodeURIComponent(query)}&src=${encodeURIComponent(source.iana)}${use24h ? '&fmt=24h' : ''}`
+  const shareUrl = buildCanonicalUrl(result, query)
+  const ogImageUrl = buildOgImageUrl(result, query, use24h)
 
   // Only show native share on touch devices (mobile) — desktop share dialogs are awkward
   const canShare = typeof navigator !== 'undefined'
