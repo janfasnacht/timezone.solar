@@ -1,16 +1,18 @@
 # timezone.solar
 
-Natural language timezone converter. Type queries like `3pm NYC to London` or `tomorrow noon in Tokyo` and get instant results.
+Natural language timezone converter — results appear in shareable cards and a pretty live map.
 
 **Live at [timezone.solar](https://timezone.solar)**
 
 ## Features
 
-- Natural language queries with 13 supported patterns
+- Natural language queries with noise-tolerant parser (`3pm NYC to London`, `tomorrow noon in Tokyo`)
 - 86,000+ cities with fuzzy search and disambiguation
-- DST-aware conversions with temporal anchoring
-- Dark/light theme with system preference detection
-- Keyboard-first: Cmd+/, arrow history, instant focus
+- Interactive world map with timezone overlays
+- Mobile-responsive with bottom tab navigation
+- Live-as-you-type conversion
+- DST-aware with temporal anchoring
+- Dark/light theme
 
 ## Quick Start
 
@@ -29,11 +31,7 @@ Hooks (src/hooks/)            →  React integration (state, effects, localStora
 Engine (src/engine/)          →  Pure logic, zero React dependencies
 ```
 
-The engine processes queries through a three-stage pipeline:
-
-1. **Parser** — tokenizes natural language into structured queries
-2. **Resolver** — maps locations to IANA timezones (aliases, city DB, fuzzy search)
-3. **Converter** — Luxon-based time math with DST and day boundary handling
+The engine processes queries through a three-stage pipeline: **Parser** (natural language → structured query) → **Resolver** (location → IANA timezone) → **Converter** (Luxon time math with DST handling).
 
 ## Development
 
