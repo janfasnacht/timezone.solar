@@ -47,7 +47,7 @@ export function AboutPage({ onRunQuery }: AboutPageProps) {
         </div>
 
         {/* Attribution */}
-        <div className="border-t border-border pt-4 pb-8">
+        <div className="border-t border-border pt-4 pb-8 space-y-1">
           <p className="text-[0.7rem] text-foreground/30">
             City icons by{' '}
             <a
@@ -57,6 +57,17 @@ export function AboutPage({ onRunQuery }: AboutPageProps) {
               className="text-accent/50 hover:text-accent hover:underline"
             >
               Studio Partdirector
+            </a>
+          </p>
+          <p className="text-[0.7rem] text-foreground/30">
+            Open source on{' '}
+            <a
+              href="https://github.com/janfasnacht/timezone.solar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent/50 hover:text-accent hover:underline"
+            >
+              GitHub
             </a>
           </p>
         </div>
