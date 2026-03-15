@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import middleware, { escapeHtml, escapeAttr } from './middleware'
+import middleware, { escapeHtml, escapeAttr, escapeJson } from './middleware'
 
 function makeRequest(url: string, ua?: string): Request {
   return new Request(url, {
@@ -104,6 +104,64 @@ describe('middleware — XSS sanitization', () => {
   })
 })
 
+describe('middleware — landing page paths', () => {
+  it('returns OG HTML for crawler on valid landing path', async () => {
+    const res = middleware(makeRequest('https://timezone.solar/new-york-to-london', 'Twitterbot'))
+    expect(res).toBeInstanceOf(Response)
+    const html = await res!.text()
+    expect(html).toContain('New York to London')
+    expect(html).toContain('og:title')
+    expect(html).toContain('og:image')
+    expect(html).toContain('canonical')
+    expect(html).toContain('timezone.solar/new-york-to-london')
+  })
+
+  it('includes JSON-LD schema for landing page', async () => {
+    const res = middleware(makeRequest('https://timezone.solar/tokyo-to-paris', 'Slackbot'))
+    const html = await res!.text()
+    expect(html).toContain('application/ld+json')
+    expect(html).toContain('"@type": "WebPage"')
+  })
+
+  it('returns undefined for browser on landing path', () => {
+    const res = middleware(makeRequest(
+      'https://timezone.solar/new-york-to-london',
+      'Mozilla/5.0 Chrome/120.0.0.0',
+    ))
+    expect(res).toBeUndefined()
+  })
+
+  it('returns undefined for crawler on invalid landing path', () => {
+    const res = middleware(makeRequest('https://timezone.solar/foo-to-bar', 'Slackbot'))
+    expect(res).toBeUndefined()
+  })
+
+  it('returns undefined for crawler on /about', () => {
+    const res = middleware(makeRequest('https://timezone.solar/about', 'Slackbot'))
+    expect(res).toBeUndefined()
+  })
+
+  it('description mentions both cities', async () => {
+    const res = middleware(makeRequest('https://timezone.solar/tokyo-to-sydney', 'Slackbot'))
+    const html = await res!.text()
+    expect(html).toContain('Tokyo')
+    expect(html).toContain('Sydney')
+    expect(html).toMatch(/meta name="description"/)
+  })
+
+  it('title includes "Time" suffix', async () => {
+    const res = middleware(makeRequest('https://timezone.solar/new-york-to-london', 'Twitterbot'))
+    const html = await res!.text()
+    expect(html).toContain('New York to London Time')
+  })
+
+  it('og:image uses IANA timezone params', async () => {
+    const res = middleware(makeRequest('https://timezone.solar/new-york-to-london', 'Twitterbot'))
+    const html = await res!.text()
+    expect(html).toContain('/api/og?from=America%2FNew_York&amp;to=Europe%2FLondon')
+  })
+})
+
 describe('escapeHtml', () => {
   it('escapes &, <, >', () => {
     expect(escapeHtml('a & b < c > d')).toBe('a &amp; b &lt; c &gt; d')
@@ -121,5 +179,19 @@ describe('escapeAttr', () => {
 
   it('passes through clean strings', () => {
     expect(escapeAttr('hello world')).toBe('hello world')
+  })
+})
+
+describe('escapeJson', () => {
+  it('escapes backslashes and quotes', () => {
+    expect(escapeJson('a \\ "b"')).toBe('a \\\\ \\"b\\"')
+  })
+
+  it('escapes < and > for script context', () => {
+    expect(escapeJson('a<b>c')).toBe('a\\u003cb\\u003ec')
+  })
+
+  it('passes through clean strings', () => {
+    expect(escapeJson('hello world')).toBe('hello world')
   })
 })
