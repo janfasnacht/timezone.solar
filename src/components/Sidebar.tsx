@@ -99,7 +99,7 @@ function MapIcon() {
 export { RAIL_WIDTH, EXPANDED_WIDTH }
 
 function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
-  const { theme, timeFormat, homeCity, telemetryOptOut, setTheme, setTimeFormat, setHomeCity, setTelemetryOptOut } = usePreferences()
+  const { theme, timeFormat, homeCity, setTheme, setTimeFormat, setHomeCity } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
   const [suggestions, setSuggestions] = useState<{ city: string; country: string; iana: string }[]>([])
@@ -278,22 +278,6 @@ function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?:
         >
           About & usage
         </a>
-        <SettingRow label="Help improve timezone.solar" inline>
-          <button
-            role="switch"
-            aria-checked={!telemetryOptOut}
-            onClick={() => setTelemetryOptOut(!telemetryOptOut)}
-            className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors ${
-              !telemetryOptOut ? 'bg-accent' : 'bg-border'
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 rounded-full bg-background transition-transform ${
-                !telemetryOptOut ? 'translate-x-[22px]' : 'translate-x-[3px]'
-              }`}
-            />
-          </button>
-        </SettingRow>
       </div>
     </div>
   )

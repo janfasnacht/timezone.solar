@@ -32,7 +32,7 @@ function SegmentedControl<T extends string>({
 }
 
 export function MobileSettings() {
-  const { theme, timeFormat, homeCity, telemetryOptOut, setTheme, setTimeFormat, setHomeCity, setTelemetryOptOut } = usePreferences()
+  const { theme, timeFormat, homeCity, setTheme, setTimeFormat, setHomeCity } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
   const [suggestions, setSuggestions] = useState<{ city: string; country: string; iana: string }[]>([])
@@ -168,25 +168,6 @@ export function MobileSettings() {
 
           {/* Divider */}
           <div className="border-t border-border" />
-
-          {/* Telemetry */}
-          <div className="flex items-center justify-between">
-            <span className="text-[0.85rem] text-muted-foreground">Help improve timezone.solar</span>
-            <button
-              role="switch"
-              aria-checked={!telemetryOptOut}
-              onClick={() => setTelemetryOptOut(!telemetryOptOut)}
-              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                !telemetryOptOut ? 'bg-accent' : 'bg-border'
-              }`}
-            >
-              <span
-                className={`inline-block h-5 w-5 rounded-full bg-background transition-transform ${
-                  !telemetryOptOut ? 'translate-x-[26px]' : 'translate-x-[3px]'
-                }`}
-              />
-            </button>
-          </div>
 
           {/* About link */}
           <a

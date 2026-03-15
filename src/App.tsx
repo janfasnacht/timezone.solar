@@ -17,9 +17,7 @@ import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { createDebouncedCallback } from '@/lib/debounce'
-import { sendTelemetry } from '@/lib/telemetry'
 import { buildCanonicalParams } from '@/lib/canonicalUrl'
-import { Analytics } from '@vercel/analytics/react'
 
 const MapView = lazy(() => import('@/components/MapView'))
 
@@ -108,8 +106,7 @@ function App() {
       setInputValue(urlQuery)
       setCurrentInputValue(urlQuery)
       shouldCanonicalizeRef.current = true
-      const outcome = runConversion(urlQuery)
-      sendTelemetry({ query: urlQuery, ...outcome })
+      runConversion(urlQuery)
       addQuery(urlQuery)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,7 +131,6 @@ function App() {
           setCurrentInputValue(display)
         }
       }
-      sendTelemetry({ query: `canonical:${fromIana}>${toIana}@${hour ?? 'now'}:${minute ?? '00'}`, ...outcome })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canonicalQuery])
@@ -158,8 +154,7 @@ function App() {
     setInputValue(query)
     setCurrentInputValue(query)
     shouldCanonicalizeRef.current = true
-    const outcome = runConversion(query)
-    sendTelemetry({ query, ...outcome })
+    runConversion(query)
     addQuery(query)
   }, [setUrlQuery, runConversion, addQuery])
 
@@ -240,8 +235,6 @@ function App() {
       onTouchStart={!isMobile ? handleTouchStart : undefined}
       onTouchEnd={!isMobile ? handleTouchEnd : undefined}
     >
-      <Analytics />
-
       {/* Desktop: sidebar (hidden on mobile — tabs replace it) */}
       {!isMobile && (
         <Sidebar
