@@ -1,8 +1,10 @@
 {
   "buildCommand": "npm run build",
+  "redirects": [
+    { "source": "/map", "destination": "/?view=map", "statusCode": 301 }
+  ],
   "rewrites": [
     { "source": "/about", "destination": "/index.html" },
-    { "source": "/map", "destination": "/index.html" },
     { "source": "/:path((?!api|assets|icons|favicon|manifest|robots|sitemap).*)", "destination": "/index.html" }
   ],
   "headers": [

@@ -1,7 +1,7 @@
 import { parseLandingPath } from './src/engine/landing-routes'
 import { getEntityBySlug } from './src/engine/city-entities'
 
-const CRAWLERS = /Slackbot|Twitterbot|facebookexternalhit|LinkedInBot|WhatsApp|Discordbot|TelegramBot|Applebot/i
+const CRAWLERS = /Googlebot|Slackbot|Twitterbot|facebookexternalhit|LinkedInBot|WhatsApp|Discordbot|TelegramBot|Applebot/i
 
 export default function middleware(request: Request) {
   const url = new URL(request.url)
