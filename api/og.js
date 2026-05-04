@@ -92423,8 +92423,852 @@ var US_STATE_TIMEZONES = {
   "central time": "America/Chicago"
 };
 
-// src/engine/city-entities.ts
-var CITY_ENTITIES = [
+// src/engine/airport-data.generated.ts
+var AIRPORT_DATA = [
+  { slug: "aah", displayName: "AAH", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.8231, lng: 6.1864, aliases: ["aah"], wikidataId: null, iata: "AAH", airportName: "Aachen-Merzbr\xFCck", parentCitySlug: "aachen" },
+  { slug: "aap", displayName: "AAP", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.7225, lng: -95.5883, aliases: ["aap"], wikidataId: null, iata: "AAP", airportName: "Andrau Airpark", parentCitySlug: "houston" },
+  { slug: "abf", displayName: "ABF", country: "Kiribati", countryCode: "KI", iana: "Pacific/Tarawa", lat: 1.7986, lng: 173.041, aliases: ["abf"], wikidataId: null, iata: "ABF", airportName: "Abaiang", parentCitySlug: "tarawa" },
+  { slug: "abj", displayName: "ABJ", country: "Ivory Coast", countryCode: "CI", iana: "Africa/Abidjan", lat: 5.2614, lng: -3.9263, aliases: ["abj"], wikidataId: null, iata: "ABJ", airportName: "Port Bouet", parentCitySlug: "abidjan" },
+  { slug: "abq", displayName: "ABQ", country: "USA", countryCode: "US", iana: "America/Denver", lat: 35.0402, lng: -106.609, aliases: ["abq"], wikidataId: null, iata: "ABQ", airportName: "Albuquerque International Sunport", parentCitySlug: "albuquerque" },
+  { slug: "acc", displayName: "ACC", country: "Ghana", countryCode: "GH", iana: "Africa/Accra", lat: 5.6052, lng: -0.1668, aliases: ["acc"], wikidataId: null, iata: "ACC", airportName: "Kotoka International", parentCitySlug: "accra" },
+  { slug: "ach", displayName: "ACH", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 47.485, lng: 9.5608, aliases: ["ach"], wikidataId: null, iata: "ACH", airportName: "St Gallen Altenrhein", parentCitySlug: "vaduz" },
+  { slug: "add", displayName: "ADD", country: "Ethiopia", countryCode: "ET", iana: "Africa/Addis_Ababa", lat: 8.9779, lng: 38.7993, aliases: ["add"], wikidataId: null, iata: "ADD", airportName: "Addis Ababa Bole International", parentCitySlug: "addis-ababa" },
+  { slug: "adj", displayName: "ADJ", country: "Jordan", countryCode: "JO", iana: "Asia/Amman", lat: 31.9727, lng: 35.9916, aliases: ["adj"], wikidataId: null, iata: "ADJ", airportName: "Amman-Marka International", parentCitySlug: "amman" },
+  { slug: "ads", displayName: "ADS", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.9686, lng: -96.8364, aliases: ["ads"], wikidataId: null, iata: "ADS", airportName: "Addison", parentCitySlug: "dallas" },
+  { slug: "adw", displayName: "ADW", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.8108, lng: -76.867, aliases: ["adw"], wikidataId: null, iata: "ADW", airportName: "Joint Base Andrews", parentCitySlug: "washington-dc" },
+  { slug: "adx", displayName: "ADX", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 56.3729, lng: -2.8684, aliases: ["adx"], wikidataId: null, iata: "ADX", airportName: "RAF Leuchars", parentCitySlug: "edinburgh" },
+  { slug: "aep", displayName: "AEP", country: "Argentina", countryCode: "AR", iana: "America/Buenos_Aires", lat: -34.5592, lng: -58.4156, aliases: ["aep"], wikidataId: null, iata: "AEP", airportName: "Jorge Newbery Airpark", parentCitySlug: "buenos-aires" },
+  { slug: "aey", displayName: "AEY", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 65.66, lng: -18.0727, aliases: ["aey"], wikidataId: null, iata: "AEY", airportName: "Akureyri", parentCitySlug: "akureyri" },
+  { slug: "afw", displayName: "AFW", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.9876, lng: -97.3188, aliases: ["afw"], wikidataId: null, iata: "AFW", airportName: "Fort Worth Alliance", parentCitySlug: "dallas" },
+  { slug: "agb", displayName: "AGB", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.4253, lng: 10.9317, aliases: ["agb"], wikidataId: null, iata: "AGB", airportName: "Augsburg", parentCitySlug: "munich" },
+  { slug: "agc", displayName: "AGC", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.3544, lng: -79.9302, aliases: ["agc"], wikidataId: null, iata: "AGC", airportName: "Allegheny County", parentCitySlug: "pittsburgh" },
+  { slug: "agh", displayName: "AGH", country: "Sweden", countryCode: "SE", iana: "Europe/Stockholm", lat: 56.2961, lng: 12.8471, aliases: ["agh"], wikidataId: null, iata: "AGH", airportName: "\xC4ngelholm-Helsingborg", parentCitySlug: "copenhagen" },
+  { slug: "agp", displayName: "AGP", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 36.6749, lng: -4.4991, aliases: ["agp"], wikidataId: null, iata: "AGP", airportName: "M\xE1laga", parentCitySlug: "malaga" },
+  { slug: "agr", displayName: "AGR", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 27.1558, lng: 77.9609, aliases: ["agr"], wikidataId: null, iata: "AGR", airportName: "Agra", parentCitySlug: "agra" },
+  { slug: "akl", displayName: "AKL", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -37.0081, lng: 174.792, aliases: ["akl"], wikidataId: null, iata: "AKL", airportName: "Auckland International", parentCitySlug: "auckland" },
+  { slug: "akt", displayName: "AKT", country: "Cyprus", countryCode: "CY", iana: "Europe/London", lat: 34.5904, lng: 32.9879, aliases: ["akt"], wikidataId: null, iata: "AKT", airportName: "RAF Akrotiri", parentCitySlug: "limassol" },
+  { slug: "ala", displayName: "ALA", country: "Kazakhstan", countryCode: "KZ", iana: "Asia/Qyzylorda", lat: 43.3521, lng: 77.0405, aliases: ["ala"], wikidataId: null, iata: "ALA", airportName: "Almaty", parentCitySlug: "almaty" },
+  { slug: "alg", displayName: "ALG", country: "Algeria", countryCode: "DZ", iana: "Africa/Algiers", lat: 36.691, lng: 3.2154, aliases: ["alg"], wikidataId: null, iata: "ALG", airportName: "Houari Boumediene", parentCitySlug: "algiers" },
+  { slug: "all", displayName: "ALL", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 44.0506, lng: 8.1274, aliases: ["all"], wikidataId: null, iata: "ALL", airportName: "Villanova D'Albenga International", parentCitySlug: "monaco" },
+  { slug: "aln", displayName: "ALN", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 38.8903, lng: -90.046, aliases: ["aln"], wikidataId: null, iata: "ALN", airportName: "St Louis Regional", parentCitySlug: "st-louis" },
+  { slug: "amm", displayName: "AMM", country: "Jordan", countryCode: "JO", iana: "Asia/Amman", lat: 31.7226, lng: 35.9932, aliases: ["amm"], wikidataId: null, iata: "AMM", airportName: "Queen Alia International", parentCitySlug: "amman" },
+  { slug: "ams", displayName: "AMS", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 52.3086, lng: 4.7639, aliases: ["ams"], wikidataId: null, iata: "AMS", airportName: "Amsterdam Airport Schiphol", parentCitySlug: "amsterdam" },
+  { slug: "amz", displayName: "AMZ", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -37.0297, lng: 174.973, aliases: ["amz"], wikidataId: null, iata: "AMZ", airportName: "Ardmore", parentCitySlug: "auckland" },
+  { slug: "anc", displayName: "ANC", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.1744, lng: -149.996, aliases: ["anc"], wikidataId: null, iata: "ANC", airportName: "Ted Stevens Anchorage International", parentCitySlug: "anchorage" },
+  { slug: "anp", displayName: "ANP", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.9429, lng: -76.5684, aliases: ["anp"], wikidataId: null, iata: "ANP", airportName: "Lee", parentCitySlug: "washington-dc" },
+  { slug: "anr", displayName: "ANR", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 51.1894, lng: 4.4603, aliases: ["anr"], wikidataId: null, iata: "ANR", airportName: "Antwerp International Airport (Deurne)", parentCitySlug: "brussels" },
+  { slug: "anu", displayName: "ANU", country: "Antigua and Barbuda", countryCode: "AG", iana: "America/Antigua", lat: 17.1367, lng: -61.7927, aliases: ["anu"], wikidataId: null, iata: "ANU", airportName: "V.C. Bird International", parentCitySlug: "saint-johns" },
+  { slug: "aoc", displayName: "AOC", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.9819, lng: 12.5064, aliases: ["aoc"], wikidataId: null, iata: "AOC", airportName: "Altenburg-Nobitz", parentCitySlug: "leipzig" },
+  { slug: "apa", displayName: "APA", country: "USA", countryCode: "US", iana: "America/Denver", lat: 39.5701, lng: -104.849, aliases: ["apa"], wikidataId: null, iata: "APA", airportName: "Centennial", parentCitySlug: "denver" },
+  { slug: "apc", displayName: "APC", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.2132, lng: -122.281, aliases: ["apc"], wikidataId: null, iata: "APC", airportName: "Napa County", parentCitySlug: "san-francisco" },
+  { slug: "apw", displayName: "APW", country: "Samoa", countryCode: "WS", iana: "Pacific/Apia", lat: -13.83, lng: -172.008, aliases: ["apw"], wikidataId: null, iata: "APW", airportName: "Faleolo International", parentCitySlug: "apia" },
+  { slug: "aqb", displayName: "AQB", country: "Guatemala", countryCode: "GT", iana: "America/Guatemala", lat: 15.0122, lng: -91.1506, aliases: ["aqb"], wikidataId: null, iata: "AQB", airportName: "Santa Cruz del Quiche", parentCitySlug: "antigua-guatemala" },
+  { slug: "arb", displayName: "ARB", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.223, lng: -83.7456, aliases: ["arb"], wikidataId: null, iata: "ARB", airportName: "Ann Arbor Municipal", parentCitySlug: "detroit" },
+  { slug: "are", displayName: "ARE", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.45, lng: -66.6753, aliases: ["are"], wikidataId: null, iata: "ARE", airportName: "Antonio Nery Juarbe Pol", parentCitySlug: "san-juan" },
+  { slug: "arn", displayName: "ARN", country: "Sweden", countryCode: "SE", iana: "Europe/Stockholm", lat: 59.6519, lng: 17.9186, aliases: ["arn"], wikidataId: null, iata: "ARN", airportName: "Stockholm-Arlanda", parentCitySlug: "stockholm" },
+  { slug: "asb", displayName: "ASB", country: "Turkmenistan", countryCode: "TM", iana: "Asia/Ashgabat", lat: 37.9868, lng: 58.361, aliases: ["asb"], wikidataId: null, iata: "ASB", airportName: "Ashgabat International", parentCitySlug: "ashgabat" },
+  { slug: "asd", displayName: "ASD", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 24.6979, lng: -77.7956, aliases: ["asd"], wikidataId: null, iata: "ASD", airportName: "Andros Town", parentCitySlug: "nassau" },
+  { slug: "ash", displayName: "ASH", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.7817, lng: -71.5148, aliases: ["ash"], wikidataId: null, iata: "ASH", airportName: "Boire Field", parentCitySlug: "boston" },
+  { slug: "atg", displayName: "ATG", country: "Pakistan", countryCode: "PK", iana: "Asia/Karachi", lat: 33.8691, lng: 72.4009, aliases: ["atg"], wikidataId: null, iata: "ATG", airportName: "Minhas Air Base", parentCitySlug: "islamabad" },
+  { slug: "ath", displayName: "ATH", country: "Greece", countryCode: "GR", iana: "Europe/Athens", lat: 37.9364, lng: 23.9445, aliases: ["ath"], wikidataId: null, iata: "ATH", airportName: "Eleftherios Venizelos International", parentCitySlug: "athens" },
+  { slug: "atl", displayName: "ATL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.6367, lng: -84.4281, aliases: [], wikidataId: null, iata: "ATL", airportName: "Hartsfield Jackson Atlanta International", parentCitySlug: "atlanta" },
+  { slug: "atq", displayName: "ATQ", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 31.7096, lng: 74.7973, aliases: ["atq"], wikidataId: null, iata: "ATQ", airportName: "Sri Guru Ram Dass Jee International", parentCitySlug: "lahore" },
+  { slug: "auh", displayName: "AUH", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 24.433, lng: 54.6511, aliases: ["auh"], wikidataId: null, iata: "AUH", airportName: "Abu Dhabi International", parentCitySlug: "abu-dhabi" },
+  { slug: "aus", displayName: "AUS", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 30.1945, lng: -97.6699, aliases: [], wikidataId: null, iata: "AUS", airportName: "Austin Bergstrom International", parentCitySlug: "austin" },
+  { slug: "avb", displayName: "AVB", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 46.0319, lng: 12.5965, aliases: ["avb"], wikidataId: null, iata: "AVB", airportName: "Aviano Air Base", parentCitySlug: "venice" },
+  { slug: "avr", displayName: "AVR", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 38.8833, lng: -9.0301, aliases: ["avr"], wikidataId: null, iata: "AVR", airportName: "Alverca Air Base", parentCitySlug: "lisbon" },
+  { slug: "avv", displayName: "AVV", country: "Australia", countryCode: "AU", iana: "Australia/Hobart", lat: -38.0394, lng: 144.469, aliases: ["avv"], wikidataId: null, iata: "AVV", airportName: "Avalon", parentCitySlug: "melbourne" },
+  { slug: "avx", displayName: "AVX", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.4049, lng: -118.416, aliases: ["avx"], wikidataId: null, iata: "AVX", airportName: "Catalina", parentCitySlug: "irvine" },
+  { slug: "aza", displayName: "AZA", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.3078, lng: -111.655, aliases: ["aza"], wikidataId: null, iata: "AZA", airportName: "Phoenix-Mesa-Gateway", parentCitySlug: "phoenix" },
+  { slug: "azi", displayName: "AZI", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 24.4283, lng: 54.4581, aliases: ["azi"], wikidataId: null, iata: "AZI", airportName: "Bateen", parentCitySlug: "abu-dhabi" },
+  { slug: "bab", displayName: "BAB", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 39.1361, lng: -121.437, aliases: ["bab"], wikidataId: null, iata: "BAB", airportName: "Beale Air Force Base", parentCitySlug: "sacramento" },
+  { slug: "baf", displayName: "BAF", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.1578, lng: -72.7156, aliases: ["baf"], wikidataId: null, iata: "BAF", airportName: "Westfield-Barnes Regional", parentCitySlug: "hartford" },
+  { slug: "bah", displayName: "BAH", country: "Bahrain", countryCode: "BH", iana: "Asia/Bahrain", lat: 26.2708, lng: 50.6336, aliases: ["bah"], wikidataId: null, iata: "BAH", airportName: "Bahrain International", parentCitySlug: "manama" },
+  { slug: "bbj", displayName: "BBJ", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.9453, lng: 6.565, aliases: ["bbj"], wikidataId: null, iata: "BBJ", airportName: "Bitburg", parentCitySlug: "luxembourg-city" },
+  { slug: "bbq", displayName: "BBQ", country: "Antigua and Barbuda", countryCode: "AG", iana: "America/Antigua", lat: 17.6358, lng: -61.8286, aliases: ["bbq"], wikidataId: null, iata: "BBQ", airportName: "Codrington", parentCitySlug: "saint-johns" },
+  { slug: "bbs", displayName: "BBS", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.3239, lng: -0.8475, aliases: ["bbs"], wikidataId: null, iata: "BBS", airportName: "Blackbushe", parentCitySlug: "london" },
+  { slug: "bbu", displayName: "BBU", country: "Romania", countryCode: "RO", iana: "Europe/Bucharest", lat: 44.5032, lng: 26.1021, aliases: ["bbu"], wikidataId: null, iata: "BBU", airportName: "B\u0103neasa International", parentCitySlug: "bucharest" },
+  { slug: "bbx", displayName: "BBX", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.1375, lng: -75.2651, aliases: ["bbx"], wikidataId: null, iata: "BBX", airportName: "Wings Field", parentCitySlug: "philadelphia" },
+  { slug: "bcn", displayName: "BCN", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 41.2971, lng: 2.0785, aliases: ["bcn"], wikidataId: null, iata: "BCN", airportName: "Barcelona International", parentCitySlug: "barcelona" },
+  { slug: "bct", displayName: "BCT", country: "USA", countryCode: "US", iana: "America/New_York", lat: 26.3785, lng: -80.1077, aliases: ["bct"], wikidataId: null, iata: "BCT", airportName: "Boca Raton", parentCitySlug: "miami" },
+  { slug: "bdl", displayName: "BDL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.9389, lng: -72.6832, aliases: ["bdl"], wikidataId: null, iata: "BDL", airportName: "Bradley International", parentCitySlug: "hartford" },
+  { slug: "bds", displayName: "BDS", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 40.6576, lng: 17.947, aliases: ["bds"], wikidataId: null, iata: "BDS", airportName: "Brindisi \u2013 Salento", parentCitySlug: "taranto" },
+  { slug: "bed", displayName: "BED", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.47, lng: -71.289, aliases: ["bed"], wikidataId: null, iata: "BED", airportName: "Laurence G Hanscom Field", parentCitySlug: "boston" },
+  { slug: "beg", displayName: "BEG", country: "Serbia", countryCode: "RS", iana: "Europe/Belgrade", lat: 44.8184, lng: 20.3091, aliases: ["beg"], wikidataId: null, iata: "BEG", airportName: "Belgrade Nikola Tesla", parentCitySlug: "belgrade" },
+  { slug: "ben", displayName: "BEN", country: "Libya", countryCode: "LY", iana: "Africa/Tripoli", lat: 32.0968, lng: 20.2695, aliases: ["ben"], wikidataId: null, iata: "BEN", airportName: "Benina International", parentCitySlug: "benghazi" },
+  { slug: "bev", displayName: "BEV", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 31.287, lng: 34.723, aliases: ["bev"], wikidataId: null, iata: "BEV", airportName: "Beersheba (Teyman)", parentCitySlug: "jerusalem" },
+  { slug: "bex", displayName: "BEX", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.6164, lng: -1.0958, aliases: ["bex"], wikidataId: null, iata: "BEX", airportName: "RAF Benson", parentCitySlug: "london" },
+  { slug: "bey", displayName: "BEY", country: "Lebanon", countryCode: "LB", iana: "Asia/Beirut", lat: 33.8209, lng: 35.4884, aliases: ["bey"], wikidataId: null, iata: "BEY", airportName: "Beirut Rafic Hariri International", parentCitySlug: "beirut" },
+  { slug: "bfe", displayName: "BFE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.9647, lng: 8.5444, aliases: ["bfe"], wikidataId: null, iata: "BFE", airportName: "Bielefeld", parentCitySlug: "bielefeld" },
+  { slug: "bfi", displayName: "BFI", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.53, lng: -122.302, aliases: ["bfi"], wikidataId: null, iata: "BFI", airportName: "Boeing Field King County International", parentCitySlug: "seattle" },
+  { slug: "bfk", displayName: "BFK", country: "USA", countryCode: "US", iana: "America/Denver", lat: 39.7017, lng: -104.752, aliases: ["bfk"], wikidataId: null, iata: "BFK", airportName: "Buckley Air Force Base", parentCitySlug: "denver" },
+  { slug: "bfp", displayName: "BFP", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7725, lng: -80.3914, aliases: ["bfp"], wikidataId: null, iata: "BFP", airportName: "Beaver County", parentCitySlug: "pittsburgh" },
+  { slug: "bgc", displayName: "BGC", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 41.8578, lng: -6.7071, aliases: ["bgc"], wikidataId: null, iata: "BGC", airportName: "Bragan\xE7a", parentCitySlug: "chaves" },
+  { slug: "bgw", displayName: "BGW", country: "Iraq", countryCode: "IQ", iana: "Asia/Baghdad", lat: 33.2625, lng: 44.2346, aliases: ["bgw"], wikidataId: null, iata: "BGW", airportName: "Baghdad International", parentCitySlug: "baghdad" },
+  { slug: "bgy", displayName: "BGY", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.6739, lng: 9.7042, aliases: ["bgy"], wikidataId: null, iata: "BGY", airportName: "Il Caravaggio International", parentCitySlug: "milan" },
+  { slug: "bgz", displayName: "BGZ", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 41.5871, lng: -8.4451, aliases: ["bgz"], wikidataId: null, iata: "BGZ", airportName: "Braga Municipal Aerodrome", parentCitySlug: "braga" },
+  { slug: "bjc", displayName: "BJC", country: "USA", countryCode: "US", iana: "America/Denver", lat: 39.9088, lng: -105.117, aliases: ["bjc"], wikidataId: null, iata: "BJC", airportName: "Rocky Mountain Metropolitan", parentCitySlug: "denver" },
+  { slug: "bjp", displayName: "BJP", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -22.9792, lng: -46.5375, aliases: ["bjp"], wikidataId: null, iata: "BJP", airportName: "Estadual Arthur Siqueira", parentCitySlug: "sao-paulo" },
+  { slug: "bjy", displayName: "BJY", country: "Serbia", countryCode: "RS", iana: "Europe/Belgrade", lat: 44.9353, lng: 20.2575, aliases: ["bjy"], wikidataId: null, iata: "BJY", airportName: "Batajnica Air Base", parentCitySlug: "belgrade" },
+  { slug: "bka", displayName: "BKA", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.6172, lng: 38.06, aliases: ["bka"], wikidataId: null, iata: "BKA", airportName: "Bykovo", parentCitySlug: "moscow" },
+  { slug: "bkk", displayName: "BKK", country: "Thailand", countryCode: "TH", iana: "Asia/Bangkok", lat: 13.6811, lng: 100.747, aliases: [], wikidataId: null, iata: "BKK", airportName: "Suvarnabhumi", parentCitySlug: "bangkok" },
+  { slug: "blb", displayName: "BLB", country: "Panama", countryCode: "PA", iana: "America/Panama", lat: 8.9148, lng: -79.5996, aliases: ["blb"], wikidataId: null, iata: "BLB", airportName: "Panama Pacific International", parentCitySlug: "panama-city" },
+  { slug: "bli", displayName: "BLI", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 48.7928, lng: -122.538, aliases: ["bli"], wikidataId: null, iata: "BLI", airportName: "Bellingham International", parentCitySlug: "vancouver" },
+  { slug: "blk", displayName: "BLK", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.7717, lng: -3.0286, aliases: ["blk"], wikidataId: null, iata: "BLK", airportName: "Blackpool International", parentCitySlug: "liverpool" },
+  { slug: "blq", displayName: "BLQ", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 44.5354, lng: 11.2887, aliases: ["blq"], wikidataId: null, iata: "BLQ", airportName: "Bologna Guglielmo Marconi", parentCitySlug: "bologna" },
+  { slug: "blr", displayName: "BLR", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 13.1979, lng: 77.7063, aliases: ["blr"], wikidataId: null, iata: "BLR", airportName: "Kempegowda International", parentCitySlug: "bangalore" },
+  { slug: "blv", displayName: "BLV", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 38.5452, lng: -89.8352, aliases: ["blv"], wikidataId: null, iata: "BLV", airportName: "Scott AFB/Midamerica", parentCitySlug: "st-louis" },
+  { slug: "bma", displayName: "BMA", country: "Sweden", countryCode: "SE", iana: "Europe/Stockholm", lat: 59.3544, lng: 17.9417, aliases: ["bma"], wikidataId: null, iata: "BMA", airportName: "Stockholm-Bromma", parentCitySlug: "stockholm" },
+  { slug: "bmi", displayName: "BMI", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 40.4771, lng: -88.9159, aliases: ["bmi"], wikidataId: null, iata: "BMI", airportName: "Central Illinois Regional Airport at Bloomington-Normal", parentCitySlug: "peoria" },
+  { slug: "bnj", displayName: "BNJ", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.7689, lng: 7.1633, aliases: ["bnj"], wikidataId: null, iata: "BNJ", airportName: "Bonn-Hangelar", parentCitySlug: "cologne" },
+  { slug: "bog", displayName: "BOG", country: "Colombia", countryCode: "CO", iana: "America/Bogota", lat: 4.7016, lng: -74.1469, aliases: ["bog"], wikidataId: null, iata: "BOG", airportName: "El Dorado International", parentCitySlug: "bogota" },
+  { slug: "bom", displayName: "BOM", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 19.0887, lng: 72.8679, aliases: ["bom"], wikidataId: null, iata: "BOM", airportName: "Chhatrapati Shivaji International", parentCitySlug: "mumbai" },
+  { slug: "bon", displayName: "BON", country: "Curacao", countryCode: "CW", iana: "America/Curacao", lat: 12.131, lng: -68.2685, aliases: ["bon"], wikidataId: null, iata: "BON", airportName: "Flamingo International", parentCitySlug: "willemstad" },
+  { slug: "bor", displayName: "BOR", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 47.6556, lng: 7.0108, aliases: ["bor"], wikidataId: null, iata: "BOR", airportName: "Fontaine", parentCitySlug: "freiburg" },
+  { slug: "bos", displayName: "BOS", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.3643, lng: -71.0052, aliases: [], wikidataId: null, iata: "BOS", airportName: "General Edward Lawrence Logan International", parentCitySlug: "boston" },
+  { slug: "bpm", displayName: "BPM", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 17.4531, lng: 78.4676, aliases: ["bpm"], wikidataId: null, iata: "BPM", airportName: "Begumpet", parentCitySlug: "hyderabad" },
+  { slug: "bqh", displayName: "BQH", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.3308, lng: 0.0325, aliases: ["bqh"], wikidataId: null, iata: "BQH", airportName: "London Biggin Hill", parentCitySlug: "london" },
+  { slug: "bre", displayName: "BRE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.0475, lng: 8.7867, aliases: ["bre"], wikidataId: null, iata: "BRE", airportName: "Bremen", parentCitySlug: "bremen" },
+  { slug: "brn", displayName: "BRN", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.9141, lng: 7.4971, aliases: ["brn"], wikidataId: null, iata: "BRN", airportName: "Bern Belp", parentCitySlug: "bern" },
+  { slug: "bru", displayName: "BRU", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 50.9014, lng: 4.4844, aliases: ["bru"], wikidataId: null, iata: "BRU", airportName: "Brussels", parentCitySlug: "brussels" },
+  { slug: "brv", displayName: "BRV", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.5069, lng: 8.5728, aliases: ["brv"], wikidataId: null, iata: "BRV", airportName: "Bremerhaven", parentCitySlug: "bremen" },
+  { slug: "bsb", displayName: "BSB", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -15.8692, lng: -47.9208, aliases: ["bsb"], wikidataId: null, iata: "BSB", airportName: "Presidente Juscelino Kubistschek International", parentCitySlug: "brasilia" },
+  { slug: "bsl", displayName: "BSL", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 47.59, lng: 7.5292, aliases: ["bsl"], wikidataId: null, iata: "BSL", airportName: "EuroAirport Basel-Mulhouse-Freiburg", parentCitySlug: "freiburg" },
+  { slug: "bth", displayName: "BTH", country: "Indonesia", countryCode: "ID", iana: "Asia/Jakarta", lat: 1.121, lng: 104.119, aliases: ["bth"], wikidataId: null, iata: "BTH", airportName: "Hang Nadim International", parentCitySlug: "singapore" },
+  { slug: "bts", displayName: "BTS", country: "Slovakia", countryCode: "SK", iana: "Europe/Bratislava", lat: 48.1702, lng: 17.2127, aliases: ["bts"], wikidataId: null, iata: "BTS", airportName: "M. R. \u0160tef\xE1nik", parentCitySlug: "bratislava" },
+  { slug: "bud", displayName: "BUD", country: "Hungary", countryCode: "HU", iana: "Europe/Budapest", lat: 47.4298, lng: 19.2611, aliases: ["bud"], wikidataId: null, iata: "BUD", airportName: "Budapest Liszt Ferenc International", parentCitySlug: "budapest" },
+  { slug: "bur", displayName: "BUR", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.2007, lng: -118.359, aliases: ["bur"], wikidataId: null, iata: "BUR", airportName: "Bob Hope", parentCitySlug: "los-angeles" },
+  { slug: "bus", displayName: "BUS", country: "Georgia", countryCode: "GE", iana: "Asia/Tbilisi", lat: 41.6103, lng: 41.5997, aliases: ["bus"], wikidataId: null, iata: "BUS", airportName: "Batumi International", parentCitySlug: "batumi" },
+  { slug: "bva", displayName: "BVA", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 49.4544, lng: 2.1128, aliases: ["bva"], wikidataId: null, iata: "BVA", airportName: "Paris Beauvais Till\xE9", parentCitySlug: "paris" },
+  { slug: "bvy", displayName: "BVY", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.5842, lng: -70.9165, aliases: ["bvy"], wikidataId: null, iata: "BVY", airportName: "Beverly Municipal", parentCitySlug: "boston" },
+  { slug: "bwi", displayName: "BWI", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.1754, lng: -76.6683, aliases: ["bwi"], wikidataId: null, iata: "BWI", airportName: "Baltimore/Washington International Thurgood Marshall", parentCitySlug: "washington-dc" },
+  { slug: "bwu", displayName: "BWU", country: "Australia", countryCode: "AU", iana: "Australia/Sydney", lat: -33.9244, lng: 150.988, aliases: ["bwu"], wikidataId: null, iata: "BWU", airportName: "Sydney Bankstown", parentCitySlug: "sydney" },
+  { slug: "bxk", displayName: "BXK", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.4204, lng: -112.686, aliases: ["bxk"], wikidataId: null, iata: "BXK", airportName: "Buckeye Municipal", parentCitySlug: "phoenix" },
+  { slug: "bxo", displayName: "BXO", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.9744, lng: 8.3969, aliases: ["bxo"], wikidataId: null, iata: "BXO", airportName: "Buochs", parentCitySlug: "zurich" },
+  { slug: "byu", displayName: "BYU", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.985, lng: 11.64, aliases: ["byu"], wikidataId: null, iata: "BYU", airportName: "Bayreuth", parentCitySlug: "nuremberg" },
+  { slug: "bzr", displayName: "BZR", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.3235, lng: 3.3539, aliases: ["bzr"], wikidataId: null, iata: "BZR", airportName: "B\xE9ziers-Vias", parentCitySlug: "montpellier" },
+  { slug: "bzv", displayName: "BZV", country: "Congo", countryCode: "CG", iana: "Africa/Brazzaville", lat: -4.2517, lng: 15.253, aliases: ["bzv"], wikidataId: null, iata: "BZV", airportName: "Maya-Maya", parentCitySlug: "kinshasa" },
+  { slug: "cai", displayName: "CAI", country: "Egypt", countryCode: "EG", iana: "Africa/Cairo", lat: 30.1219, lng: 31.4056, aliases: ["cai"], wikidataId: null, iata: "CAI", airportName: "Cairo International", parentCitySlug: "cairo" },
+  { slug: "can", displayName: "CAN", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 23.3924, lng: 113.299, aliases: ["can"], wikidataId: null, iata: "CAN", airportName: "Guangzhou Baiyun International", parentCitySlug: "guangzhou" },
+  { slug: "cat", displayName: "CAT", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 38.725, lng: -9.3552, aliases: ["cat"], wikidataId: null, iata: "CAT", airportName: "Cascais", parentCitySlug: "amadora" },
+  { slug: "cbr", displayName: "CBR", country: "Australia", countryCode: "AU", iana: "Australia/Sydney", lat: -35.3069, lng: 149.195, aliases: ["cbr"], wikidataId: null, iata: "CBR", airportName: "Canberra International", parentCitySlug: "canberra" },
+  { slug: "ccb", displayName: "CCB", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.1116, lng: -117.688, aliases: ["ccb"], wikidataId: null, iata: "CCB", airportName: "Cable", parentCitySlug: "los-angeles" },
+  { slug: "ccr", displayName: "CCR", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.9897, lng: -122.057, aliases: ["ccr"], wikidataId: null, iata: "CCR", airportName: "Buchanan Field", parentCitySlug: "san-francisco" },
+  { slug: "ccs", displayName: "CCS", country: "Venezuela", countryCode: "VE", iana: "America/Caracas", lat: 10.6012, lng: -66.9912, aliases: ["ccs"], wikidataId: null, iata: "CCS", airportName: "Sim\xF3n Bol\xEDvar International", parentCitySlug: "caracas" },
+  { slug: "ccu", displayName: "CCU", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 22.6547, lng: 88.4467, aliases: ["ccu"], wikidataId: null, iata: "CCU", airportName: "Netaji Subhash Chandra Bose International", parentCitySlug: "kolkata" },
+  { slug: "ccz", displayName: "CCZ", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 25.4171, lng: -77.8809, aliases: ["ccz"], wikidataId: null, iata: "CCZ", airportName: "Chub Cay", parentCitySlug: "nassau" },
+  { slug: "cdg", displayName: "CDG", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 49.0128, lng: 2.55, aliases: ["cdg"], wikidataId: null, iata: "CDG", airportName: "Charles de Gaulle International", parentCitySlug: "paris" },
+  { slug: "cdu", displayName: "CDU", country: "Australia", countryCode: "AU", iana: "Australia/Sydney", lat: -34.0403, lng: 150.687, aliases: ["cdu"], wikidataId: null, iata: "CDU", airportName: "Camden", parentCitySlug: "sydney" },
+  { slug: "cdw", displayName: "CDW", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.8752, lng: -74.2814, aliases: ["cdw"], wikidataId: null, iata: "CDW", airportName: "Essex County", parentCitySlug: "new-york" },
+  { slug: "ceb", displayName: "CEB", country: "Philippines", countryCode: "PH", iana: "Asia/Manila", lat: 10.3075, lng: 123.979, aliases: ["ceb"], wikidataId: null, iata: "CEB", airportName: "Mactan Cebu International", parentCitySlug: "cebu" },
+  { slug: "cef", displayName: "CEF", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.194, lng: -72.5348, aliases: ["cef"], wikidataId: null, iata: "CEF", airportName: "Westover ARB/Metropolitan", parentCitySlug: "hartford" },
+  { slug: "ceg", displayName: "CEG", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.1781, lng: -2.9778, aliases: ["ceg"], wikidataId: null, iata: "CEG", airportName: "Hawarden", parentCitySlug: "liverpool" },
+  { slug: "ceq", displayName: "CEQ", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.542, lng: 6.9535, aliases: ["ceq"], wikidataId: null, iata: "CEQ", airportName: "Cannes-Mandelieu", parentCitySlug: "monaco" },
+  { slug: "cgh", displayName: "CGH", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -23.6261, lng: -46.6564, aliases: ["cgh"], wikidataId: null, iata: "CGH", airportName: "Congonhas", parentCitySlug: "sao-paulo" },
+  { slug: "cgk", displayName: "CGK", country: "Indonesia", countryCode: "ID", iana: "Asia/Jakarta", lat: -6.1256, lng: 106.656, aliases: ["cgk"], wikidataId: null, iata: "CGK", airportName: "Soekarno-Hatta International", parentCitySlug: "jakarta" },
+  { slug: "cgn", displayName: "CGN", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.8659, lng: 7.1427, aliases: ["cgn"], wikidataId: null, iata: "CGN", airportName: "Cologne Bonn", parentCitySlug: "cologne" },
+  { slug: "cgx", displayName: "CGX", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.8588, lng: -87.6079, aliases: ["cgx"], wikidataId: null, iata: "CGX", airportName: "Chicago Meigs", parentCitySlug: "chicago" },
+  { slug: "cgz", displayName: "CGZ", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 32.9549, lng: -111.767, aliases: ["cgz"], wikidataId: null, iata: "CGZ", airportName: "Casa Grande Municipal", parentCitySlug: "phoenix" },
+  { slug: "chf", displayName: "CHF", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 35.1402, lng: 128.6962, aliases: ["chf"], wikidataId: null, iata: "CHF", airportName: "Jinhae Airbase/Airport (G-813/K-10)", parentCitySlug: "busan" },
+  { slug: "cia", displayName: "CIA", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 41.7994, lng: 12.5949, aliases: ["cia"], wikidataId: null, iata: "CIA", airportName: "Ciampino\u2013G. B. Pastine International", parentCitySlug: "rome" },
+  { slug: "ckg", displayName: "CKG", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 29.7192, lng: 106.642, aliases: ["ckg"], wikidataId: null, iata: "CKG", airportName: "Chongqing Jiangbei International", parentCitySlug: "chongqing" },
+  { slug: "ckl", displayName: "CKL", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.8783, lng: 38.0617, aliases: ["ckl"], wikidataId: null, iata: "CKL", airportName: "Chkalovskiy Air Base", parentCitySlug: "moscow" },
+  { slug: "cld", displayName: "CLD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.1283, lng: -117.28, aliases: ["cld"], wikidataId: null, iata: "CLD", airportName: "Mc Clellan-Palomar", parentCitySlug: "san-diego" },
+  { slug: "cmb", displayName: "CMB", country: "Sri Lanka", countryCode: "LK", iana: "Asia/Colombo", lat: 7.1808, lng: 79.8841, aliases: ["cmb"], wikidataId: null, iata: "CMB", airportName: "Bandaranaike International Colombo", parentCitySlug: "colombo" },
+  { slug: "cmh", displayName: "CMH", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.998, lng: -82.8919, aliases: ["cmh"], wikidataId: null, iata: "CMH", airportName: "John Glenn Columbus International", parentCitySlug: "columbus" },
+  { slug: "cmn", displayName: "CMN", country: "Morocco", countryCode: "MA", iana: "Africa/Casablanca", lat: 33.3675, lng: -7.59, aliases: ["cmn"], wikidataId: null, iata: "CMN", airportName: "Mohammed V International", parentCitySlug: "casablanca" },
+  { slug: "cmr", displayName: "CMR", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.1099, lng: 7.359, aliases: ["cmr"], wikidataId: null, iata: "CMR", airportName: "Colmar-Houssen", parentCitySlug: "freiburg" },
+  { slug: "cno", displayName: "CNO", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.9747, lng: -117.637, aliases: ["cno"], wikidataId: null, iata: "CNO", airportName: "Chino", parentCitySlug: "irvine" },
+  { slug: "cor", displayName: "COR", country: "Argentina", countryCode: "AR", iana: "America/Cordoba", lat: -31.3236, lng: -64.208, aliases: ["cor"], wikidataId: null, iata: "COR", airportName: "Ingeniero Ambrosio Taravella", parentCitySlug: "cordoba-argentina" },
+  { slug: "cph", displayName: "CPH", country: "Denmark", countryCode: "DK", iana: "Europe/Copenhagen", lat: 55.6179, lng: 12.656, aliases: ["cph"], wikidataId: null, iata: "CPH", airportName: "Copenhagen Kastrup", parentCitySlug: "copenhagen" },
+  { slug: "cpt", displayName: "CPT", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -33.9648, lng: 18.6017, aliases: ["cpt"], wikidataId: null, iata: "CPT", airportName: "Cape Town International", parentCitySlug: "cape-town" },
+  { slug: "crl", displayName: "CRL", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 50.4592, lng: 4.4538, aliases: ["crl"], wikidataId: null, iata: "CRL", airportName: "Brussels South Charleroi", parentCitySlug: "brussels" },
+  { slug: "csf", displayName: "CSF", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 49.2535, lng: 2.5191, aliases: ["csf"], wikidataId: null, iata: "CSF", airportName: "Creil Air Base", parentCitySlug: "paris" },
+  { slug: "ctg", displayName: "CTG", country: "Colombia", countryCode: "CO", iana: "America/Bogota", lat: 10.4424, lng: -75.513, aliases: ["ctg"], wikidataId: null, iata: "CTG", airportName: "Rafael Nu\xF1ez International", parentCitySlug: "cartagena" },
+  { slug: "cth", displayName: "CTH", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.979, lng: -75.8655, aliases: ["cth"], wikidataId: null, iata: "CTH", airportName: "Chester County G O Carlson", parentCitySlug: "philadelphia" },
+  { slug: "ctu", displayName: "CTU", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 30.5785, lng: 103.947, aliases: ["ctu"], wikidataId: null, iata: "CTU", airportName: "Chengdu Shuangliu International", parentCitySlug: "chengdu" },
+  { slug: "cur", displayName: "CUR", country: "Curacao", countryCode: "CW", iana: "America/Curacao", lat: 12.1889, lng: -68.9598, aliases: ["cur"], wikidataId: null, iata: "CUR", airportName: "Hato International", parentCitySlug: "willemstad" },
+  { slug: "cuz", displayName: "CUZ", country: "Peru", countryCode: "PE", iana: "America/Lima", lat: -13.5357, lng: -71.9388, aliases: ["cuz"], wikidataId: null, iata: "CUZ", airportName: "Alejandro Velasco Astete International", parentCitySlug: "cusco" },
+  { slug: "cvg", displayName: "CVG", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.0488, lng: -84.6678, aliases: ["cvg"], wikidataId: null, iata: "CVG", airportName: "Cincinnati Northern Kentucky International", parentCitySlug: "cincinnati" },
+  { slug: "cvj", displayName: "CVJ", country: "Mexico", countryCode: "MX", iana: "America/Mexico_City", lat: 18.8348, lng: -99.2613, aliases: ["cvj"], wikidataId: null, iata: "CVJ", airportName: "General Mariano Matamoros", parentCitySlug: "mexico-city" },
+  { slug: "cwe", displayName: "CWE", country: "Egypt", countryCode: "EG", iana: "Africa/Cairo", lat: 30.1164, lng: 30.9154, aliases: ["cwe"], wikidataId: null, iata: "CWE", airportName: "Cairo West", parentCitySlug: "cairo" },
+  { slug: "cxh", displayName: "CXH", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.2944, lng: -123.111, aliases: ["cxh"], wikidataId: null, iata: "CXH", airportName: "Vancouver Harbour Water Aerodrome", parentCitySlug: "vancouver" },
+  { slug: "cxo", displayName: "CXO", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 30.3518, lng: -95.4145, aliases: ["cxo"], wikidataId: null, iata: "CXO", airportName: "Conroe-North Houston Regional", parentCitySlug: "houston" },
+  { slug: "cyr", displayName: "CYR", country: "Uruguay", countryCode: "UY", iana: "America/Montevideo", lat: -34.4564, lng: -57.7706, aliases: ["cyr"], wikidataId: null, iata: "CYR", airportName: "Laguna de Los Patos International", parentCitySlug: "buenos-aires" },
+  { slug: "daa", displayName: "DAA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.715, lng: -77.181, aliases: ["daa"], wikidataId: null, iata: "DAA", airportName: "Davison Army Air Field", parentCitySlug: "washington-dc" },
+  { slug: "dac", displayName: "DAC", country: "Bangladesh", countryCode: "BD", iana: "Asia/Dhaka", lat: 23.8433, lng: 90.3978, aliases: ["dac"], wikidataId: null, iata: "DAC", airportName: "Hazrat Shahjalal International", parentCitySlug: "dhaka" },
+  { slug: "dal", displayName: "DAL", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.8471, lng: -96.8518, aliases: ["dal"], wikidataId: null, iata: "DAL", airportName: "Dallas Love Field", parentCitySlug: "dallas" },
+  { slug: "dar", displayName: "DAR", country: "Tanzania", countryCode: "TZ", iana: "Africa/Dar_es_Salaam", lat: -6.8781, lng: 39.2026, aliases: ["dar"], wikidataId: null, iata: "DAR", airportName: "Julius Nyerere International", parentCitySlug: "dar-es-salaam" },
+  { slug: "dbv", displayName: "DBV", country: "Croatia", countryCode: "HR", iana: "Europe/Zagreb", lat: 42.5614, lng: 18.2682, aliases: ["dbv"], wikidataId: null, iata: "DBV", airportName: "Dubrovnik", parentCitySlug: "herceg-novi" },
+  { slug: "dca", displayName: "DCA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.8521, lng: -77.0377, aliases: ["dca"], wikidataId: null, iata: "DCA", airportName: "Ronald Reagan Washington National", parentCitySlug: "washington-dc" },
+  { slug: "deb", displayName: "DEB", country: "Hungary", countryCode: "HU", iana: "Europe/Budapest", lat: 47.4889, lng: 21.6153, aliases: ["deb"], wikidataId: null, iata: "DEB", airportName: "Debrecen International", parentCitySlug: "debrecen" },
+  { slug: "del", displayName: "DEL", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 28.5665, lng: 77.1031, aliases: ["del"], wikidataId: null, iata: "DEL", airportName: "Indira Gandhi International", parentCitySlug: "delhi" },
+  { slug: "den", displayName: "DEN", country: "USA", countryCode: "US", iana: "America/Denver", lat: 39.8617, lng: -104.673, aliases: [], wikidataId: null, iata: "DEN", airportName: "Denver International", parentCitySlug: "denver" },
+  { slug: "det", displayName: "DET", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.4092, lng: -83.0099, aliases: ["det"], wikidataId: null, iata: "DET", airportName: "Coleman A. Young Municipal", parentCitySlug: "detroit" },
+  { slug: "dfw", displayName: "DFW", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.8968, lng: -97.038, aliases: [], wikidataId: null, iata: "DFW", airportName: "Dallas Fort Worth International", parentCitySlug: "dallas" },
+  { slug: "dha", displayName: "DHA", country: "Saudi Arabia", countryCode: "SA", iana: "Asia/Riyadh", lat: 26.2654, lng: 50.152, aliases: ["dha"], wikidataId: null, iata: "DHA", airportName: "King Abdulaziz Air Base", parentCitySlug: "manama" },
+  { slug: "dhf", displayName: "DHF", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 24.2482, lng: 54.5477, aliases: ["dhf"], wikidataId: null, iata: "DHF", airportName: "Al Dhafra Air Base", parentCitySlug: "abu-dhabi" },
+  { slug: "dhr", displayName: "DHR", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 52.9234, lng: 4.7806, aliases: ["dhr"], wikidataId: null, iata: "DHR", airportName: "De Kooy", parentCitySlug: "amsterdam" },
+  { slug: "dia", displayName: "DIA", country: "Qatar", countryCode: "QA", iana: "Asia/Qatar", lat: 25.2611, lng: 51.5651, aliases: ["dia"], wikidataId: null, iata: "DIA", airportName: "Doha International", parentCitySlug: "doha" },
+  { slug: "dil", displayName: "DIL", country: "Timor-Leste", countryCode: "TL", iana: "Asia/Dili", lat: -8.5464, lng: 125.526, aliases: ["dil"], wikidataId: null, iata: "DIL", airportName: "Presidente Nicolau Lobato International", parentCitySlug: "dili" },
+  { slug: "dkr", displayName: "DKR", country: "Senegal", countryCode: "SN", iana: "Africa/Dakar", lat: 14.7397, lng: -17.4902, aliases: ["dkr"], wikidataId: null, iata: "DKR", airportName: "L\xE9opold S\xE9dar Senghor International", parentCitySlug: "dakar" },
+  { slug: "dme", displayName: "DME", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.4088, lng: 37.9063, aliases: ["dme"], wikidataId: null, iata: "DME", airportName: "Domodedovo International", parentCitySlug: "moscow" },
+  { slug: "dmk", displayName: "DMK", country: "Thailand", countryCode: "TH", iana: "Asia/Bangkok", lat: 13.9126, lng: 100.607, aliases: ["dmk"], wikidataId: null, iata: "DMK", airportName: "Don Mueang International", parentCitySlug: "bangkok" },
+  { slug: "dnd", displayName: "DND", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 56.4525, lng: -3.0258, aliases: ["dnd"], wikidataId: null, iata: "DND", airportName: "Dundee", parentCitySlug: "edinburgh" },
+  { slug: "dnr", displayName: "DNR", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.5877, lng: -2.08, aliases: ["dnr"], wikidataId: null, iata: "DNR", airportName: "Dinard-Pleurtuit-Saint-Malo", parentCitySlug: "rennes" },
+  { slug: "doh", displayName: "DOH", country: "Qatar", countryCode: "QA", iana: "Asia/Qatar", lat: 25.2731, lng: 51.6081, aliases: ["doh"], wikidataId: null, iata: "DOH", airportName: "Hamad International", parentCitySlug: "doha" },
+  { slug: "dpa", displayName: "DPA", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.9078, lng: -88.2486, aliases: ["dpa"], wikidataId: null, iata: "DPA", airportName: "Dupage", parentCitySlug: "chicago" },
+  { slug: "dps", displayName: "DPS", country: "Indonesia", countryCode: "ID", iana: "Asia/Makassar", lat: -8.7482, lng: 115.167, aliases: ["dps"], wikidataId: null, iata: "DPS", airportName: "Ngurah Rai (Bali) International", parentCitySlug: "denpasar" },
+  { slug: "dsa", displayName: "DSA", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.4805, lng: -1.0107, aliases: ["dsa"], wikidataId: null, iata: "DSA", airportName: "Robin Hood Doncaster Sheffield", parentCitySlug: "leeds" },
+  { slug: "dss", displayName: "DSS", country: "Senegal", countryCode: "SN", iana: "Africa/Dakar", lat: 14.67, lng: -17.0733, aliases: ["dss"], wikidataId: null, iata: "DSS", airportName: "Blaise Diagne International", parentCitySlug: "dakar" },
+  { slug: "dtw", displayName: "DTW", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.2124, lng: -83.3534, aliases: [], wikidataId: null, iata: "DTW", airportName: "Detroit Metropolitan Wayne County", parentCitySlug: "detroit" },
+  { slug: "dub", displayName: "DUB", country: "Ireland", countryCode: "IE", iana: "Europe/Dublin", lat: 53.4213, lng: -6.2701, aliases: ["dub"], wikidataId: null, iata: "DUB", airportName: "Dublin", parentCitySlug: "dublin" },
+  { slug: "dus", displayName: "DUS", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.2895, lng: 6.7668, aliases: ["dus"], wikidataId: null, iata: "DUS", airportName: "D\xFCsseldorf", parentCitySlug: "cologne" },
+  { slug: "dvt", displayName: "DVT", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.6883, lng: -112.083, aliases: ["dvt"], wikidataId: null, iata: "DVT", airportName: "Phoenix Deer Valley", parentCitySlug: "phoenix" },
+  { slug: "dwc", displayName: "DWC", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 24.8964, lng: 55.1614, aliases: ["dwc"], wikidataId: null, iata: "DWC", airportName: "Al Maktoum International", parentCitySlug: "dubai" },
+  { slug: "dwh", displayName: "DWH", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 30.0618, lng: -95.5528, aliases: ["dwh"], wikidataId: null, iata: "DWH", airportName: "David Wayne Hooks Memorial", parentCitySlug: "houston" },
+  { slug: "dxb", displayName: "DXB", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 25.2528, lng: 55.3644, aliases: ["dxb"], wikidataId: null, iata: "DXB", airportName: "Dubai International", parentCitySlug: "dubai" },
+  { slug: "dyl", displayName: "DYL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.333, lng: -75.1223, aliases: ["dyl"], wikidataId: null, iata: "DYL", airportName: "Doylestown", parentCitySlug: "philadelphia" },
+  { slug: "dyu", displayName: "DYU", country: "Tajikistan", countryCode: "TJ", iana: "Asia/Dushanbe", lat: 38.5433, lng: 68.825, aliases: ["dyu"], wikidataId: null, iata: "DYU", airportName: "Dushanbe", parentCitySlug: "dushanbe" },
+  { slug: "eae", displayName: "EAE", country: "Vanuatu", countryCode: "VU", iana: "Pacific/Efate", lat: -17.0903, lng: 168.343, aliases: ["eae"], wikidataId: null, iata: "EAE", airportName: "Siwo", parentCitySlug: "port-vila" },
+  { slug: "ebb", displayName: "EBB", country: "Uganda", countryCode: "UG", iana: "Africa/Kampala", lat: 0.0424, lng: 32.4435, aliases: ["ebb"], wikidataId: null, iata: "EBB", airportName: "Entebbe International", parentCitySlug: "kampala" },
+  { slug: "ebu", displayName: "EBU", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 45.5406, lng: 4.2964, aliases: ["ebu"], wikidataId: null, iata: "EBU", airportName: "Saint-\xC9tienne-Bouth\xE9on", parentCitySlug: "lyon" },
+  { slug: "eci", displayName: "ECI", country: "Nicaragua", countryCode: "NI", iana: "America/Managua", lat: 11.4275, lng: -86.0334, aliases: ["eci"], wikidataId: null, iata: "ECI", airportName: "Costa Esmeralda", parentCitySlug: "granada-nicaragua" },
+  { slug: "ecn", displayName: "ECN", country: "Cyprus", countryCode: "CY", iana: "Asia/Nicosia", lat: 35.1547, lng: 33.4961, aliases: ["ecn"], wikidataId: null, iata: "ECN", airportName: "Ercan International", parentCitySlug: "nicosia" },
+  { slug: "ecv", displayName: "ECV", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 40.3707, lng: -3.7851, aliases: ["ecv"], wikidataId: null, iata: "ECV", airportName: "Cuatro Vientos", parentCitySlug: "madrid" },
+  { slug: "edf", displayName: "EDF", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.251, lng: -149.807, aliases: ["edf"], wikidataId: null, iata: "EDF", airportName: "Elmendorf Air Force Base", parentCitySlug: "anchorage" },
+  { slug: "edi", displayName: "EDI", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 55.95, lng: -3.3725, aliases: ["edi"], wikidataId: null, iata: "EDI", airportName: "Edinburgh", parentCitySlug: "edinburgh" },
+  { slug: "efd", displayName: "EFD", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.6073, lng: -95.1588, aliases: ["efd"], wikidataId: null, iata: "EFD", airportName: "Ellington", parentCitySlug: "houston" },
+  { slug: "eib", displayName: "EIB", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.9916, lng: 10.4797, aliases: ["eib"], wikidataId: null, iata: "EIB", airportName: "Eisenach-Kindel", parentCitySlug: "erfurt" },
+  { slug: "ein", displayName: "EIN", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 51.4501, lng: 5.3745, aliases: ["ein"], wikidataId: null, iata: "EIN", airportName: "Eindhoven", parentCitySlug: "maastricht" },
+  { slug: "eml", displayName: "EML", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 47.0924, lng: 8.3052, aliases: ["eml"], wikidataId: null, iata: "EML", airportName: "Emmen Air Base", parentCitySlug: "zurich" },
+  { slug: "emt", displayName: "EMT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.0861, lng: -118.035, aliases: ["emt"], wikidataId: null, iata: "EMT", airportName: "San Gabriel Valley", parentCitySlug: "los-angeles" },
+  { slug: "eoh", displayName: "EOH", country: "Colombia", countryCode: "CO", iana: "America/Bogota", lat: 6.2205, lng: -75.5906, aliases: ["eoh"], wikidataId: null, iata: "EOH", airportName: "Enrique Olaya Herrera", parentCitySlug: "medellin" },
+  { slug: "epa", displayName: "EPA", country: "Argentina", countryCode: "AR", iana: "America/Buenos_Aires", lat: -34.6099, lng: -58.6126, aliases: ["epa"], wikidataId: null, iata: "EPA", airportName: "El Palomar", parentCitySlug: "buenos-aires" },
+  { slug: "erf", displayName: "ERF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.9798, lng: 10.9581, aliases: ["erf"], wikidataId: null, iata: "ERF", airportName: "Erfurt", parentCitySlug: "erfurt" },
+  { slug: "ers", displayName: "ERS", country: "Namibia", countryCode: "NA", iana: "Africa/Windhoek", lat: -22.6122, lng: 17.0804, aliases: ["ers"], wikidataId: null, iata: "ERS", airportName: "Eros", parentCitySlug: "windhoek" },
+  { slug: "esd", displayName: "ESD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 48.7082, lng: -122.91, aliases: ["esd"], wikidataId: null, iata: "ESD", airportName: "Orcas Island", parentCitySlug: "vancouver" },
+  { slug: "esh", displayName: "ESH", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 50.8356, lng: -0.2972, aliases: ["esh"], wikidataId: null, iata: "ESH", airportName: "Shoreham", parentCitySlug: "london" },
+  { slug: "ess", displayName: "ESS", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.4023, lng: 6.9373, aliases: ["ess"], wikidataId: null, iata: "ESS", airportName: "Essen Mulheim", parentCitySlug: "cologne" },
+  { slug: "etz", displayName: "ETZ", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.9821, lng: 6.2513, aliases: ["etz"], wikidataId: null, iata: "ETZ", airportName: "Metz-Nancy-Lorraine", parentCitySlug: "luxembourg-city" },
+  { slug: "eua", displayName: "EUA", country: "Tonga", countryCode: "TO", iana: "Pacific/Tongatapu", lat: -21.3783, lng: -174.958, aliases: ["eua"], wikidataId: null, iata: "EUA", airportName: "Kaufana", parentCitySlug: "nukualofa" },
+  { slug: "eum", displayName: "EUM", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 54.0794, lng: 9.9414, aliases: ["eum"], wikidataId: null, iata: "EUM", airportName: "Neum\xFCnster", parentCitySlug: "hamburg" },
+  { slug: "evn", displayName: "EVN", country: "Armenia", countryCode: "AM", iana: "Asia/Yerevan", lat: 40.1473, lng: 44.3959, aliases: ["evn"], wikidataId: null, iata: "EVN", airportName: "Zvartnots International", parentCitySlug: "yerevan" },
+  { slug: "ewb", displayName: "EWB", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.6761, lng: -70.9569, aliases: ["ewb"], wikidataId: null, iata: "EWB", airportName: "New Bedford Regional", parentCitySlug: "boston" },
+  { slug: "ewr", displayName: "EWR", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.6925, lng: -74.1687, aliases: ["ewr"], wikidataId: null, iata: "EWR", airportName: "Newark Liberty International", parentCitySlug: "new-york" },
+  { slug: "eze", displayName: "EZE", country: "Argentina", countryCode: "AR", iana: "America/Buenos_Aires", lat: -34.8222, lng: -58.5358, aliases: ["eze"], wikidataId: null, iata: "EZE", airportName: "Ministro Pistarini International", parentCitySlug: "buenos-aires" },
+  { slug: "fab", displayName: "FAB", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.2758, lng: -0.7763, aliases: ["fab"], wikidataId: null, iata: "FAB", airportName: "Farnborough", parentCitySlug: "london" },
+  { slug: "faj", displayName: "FAJ", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.3089, lng: -65.6619, aliases: ["faj"], wikidataId: null, iata: "FAJ", airportName: "Diego Jimenez Torres", parentCitySlug: "san-juan" },
+  { slug: "fbu", displayName: "FBU", country: "Norway", countryCode: "NO", iana: "Europe/Oslo", lat: 59.8958, lng: 10.6172, aliases: ["fbu"], wikidataId: null, iata: "FBU", airportName: "Oslo, Fornebu", parentCitySlug: "oslo" },
+  { slug: "fcb", displayName: "FCB", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -28.8231, lng: 27.9089, aliases: ["fcb"], wikidataId: null, iata: "FCB", airportName: "Ficksburg Sentraoes", parentCitySlug: "maseru" },
+  { slug: "fcm", displayName: "FCM", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 44.8272, lng: -93.4571, aliases: ["fcm"], wikidataId: null, iata: "FCM", airportName: "Flying Cloud", parentCitySlug: "minneapolis" },
+  { slug: "fco", displayName: "FCO", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 41.8003, lng: 12.2389, aliases: ["fco"], wikidataId: null, iata: "FCO", airportName: "Leonardo da Vinci\u2013Fiumicino", parentCitySlug: "vatican-city" },
+  { slug: "fdh", displayName: "FDH", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 47.6713, lng: 9.5115, aliases: ["fdh"], wikidataId: null, iata: "FDH", airportName: "Friedrichshafen", parentCitySlug: "vaduz" },
+  { slug: "fdo", displayName: "FDO", country: "Argentina", countryCode: "AR", iana: "America/Buenos_Aires", lat: -34.4532, lng: -58.5896, aliases: ["fdo"], wikidataId: null, iata: "FDO", airportName: "San Fernando", parentCitySlug: "buenos-aires" },
+  { slug: "fel", displayName: "FEL", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.2056, lng: 11.2669, aliases: ["fel"], wikidataId: null, iata: "FEL", airportName: "F\xFCrstenfeldbruck Air Base", parentCitySlug: "munich" },
+  { slug: "fez-airport", displayName: "FEZ", country: "Morocco", countryCode: "MA", iana: "Africa/Casablanca", lat: 33.9273, lng: -4.978, aliases: [], wikidataId: null, iata: "FEZ", airportName: "Sa\xEFss", parentCitySlug: "fez" },
+  { slug: "fgi", displayName: "FGI", country: "Samoa", countryCode: "WS", iana: "Pacific/Apia", lat: -13.8487, lng: -171.74, aliases: ["fgi"], wikidataId: null, iata: "FGI", airportName: "Fagali'i", parentCitySlug: "apia" },
+  { slug: "fih", displayName: "FIH", country: "DR Congo", countryCode: "CD", iana: "Africa/Kinshasa", lat: -4.3857, lng: 15.4446, aliases: ["fih"], wikidataId: null, iata: "FIH", airportName: "Ndjili International", parentCitySlug: "kinshasa" },
+  { slug: "fkb", displayName: "FKB", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.7794, lng: 8.0805, aliases: ["fkb"], wikidataId: null, iata: "FKB", airportName: "Karlsruhe Baden-Baden", parentCitySlug: "karlsruhe" },
+  { slug: "fkj", displayName: "FKJ", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 36.1428, lng: 136.224, aliases: ["fkj"], wikidataId: null, iata: "FKJ", airportName: "Fukui", parentCitySlug: "shirakawa-go" },
+  { slug: "fll", displayName: "FLL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 26.0726, lng: -80.1527, aliases: ["fll"], wikidataId: null, iata: "FLL", airportName: "Fort Lauderdale Hollywood International", parentCitySlug: "miami" },
+  { slug: "fme", displayName: "FME", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.0854, lng: -76.7594, aliases: ["fme"], wikidataId: null, iata: "FME", airportName: "Tipton", parentCitySlug: "washington-dc" },
+  { slug: "fmo", displayName: "FMO", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 52.1346, lng: 7.6848, aliases: ["fmo"], wikidataId: null, iata: "FMO", airportName: "M\xFCnster Osnabr\xFCck", parentCitySlug: "bielefeld" },
+  { slug: "fni", displayName: "FNI", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.7574, lng: 4.4163, aliases: ["fni"], wikidataId: null, iata: "FNI", airportName: "N\xEEmes-Arles-Camargue", parentCitySlug: "montpellier" },
+  { slug: "fnj", displayName: "FNJ", country: "North Korea", countryCode: "KP", iana: "Asia/Pyongyang", lat: 39.2241, lng: 125.67, aliases: ["fnj"], wikidataId: null, iata: "FNJ", airportName: "Pyongyang Sunan International", parentCitySlug: "pyongyang" },
+  { slug: "fon", displayName: "FON", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 10.478, lng: -84.6345, aliases: ["fon"], wikidataId: null, iata: "FON", airportName: "Arenal", parentCitySlug: "alajuela" },
+  { slug: "fra", displayName: "FRA", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.0333, lng: 8.5706, aliases: ["fra"], wikidataId: null, iata: "FRA", airportName: "Frankfurt am Main", parentCitySlug: "frankfurt" },
+  { slug: "frg", displayName: "FRG", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7288, lng: -73.4134, aliases: ["frg"], wikidataId: null, iata: "FRG", airportName: "Republic", parentCitySlug: "new-york" },
+  { slug: "frj", displayName: "FRJ", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.4175, lng: 6.7357, aliases: ["frj"], wikidataId: null, iata: "FRJ", airportName: "Fr\xE9jus", parentCitySlug: "monaco" },
+  { slug: "frl", displayName: "FRL", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 44.1948, lng: 12.0701, aliases: ["frl"], wikidataId: null, iata: "FRL", airportName: "Forl\xEC", parentCitySlug: "san-marino" },
+  { slug: "frn", displayName: "FRN", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.2664, lng: -149.653, aliases: ["frn"], wikidataId: null, iata: "FRN", airportName: "Bryant Army Heliport", parentCitySlug: "anchorage" },
+  { slug: "fru", displayName: "FRU", country: "Kyrgyzstan", countryCode: "KG", iana: "Asia/Bishkek", lat: 43.0613, lng: 74.4776, aliases: ["fru"], wikidataId: null, iata: "FRU", airportName: "Manas International", parentCitySlug: "bishkek" },
+  { slug: "frz", displayName: "FRZ", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.1146, lng: 9.286, aliases: ["frz"], wikidataId: null, iata: "FRZ", airportName: "Fritzlar", parentCitySlug: "giessen" },
+  { slug: "ftw", displayName: "FTW", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.8198, lng: -97.3624, aliases: ["ftw"], wikidataId: null, iata: "FTW", airportName: "Fort Worth Meacham International", parentCitySlug: "dallas" },
+  { slug: "fty", displayName: "FTY", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.7791, lng: -84.5214, aliases: ["fty"], wikidataId: null, iata: "FTY", airportName: "Fulton County Airport Brown Field", parentCitySlug: "atlanta" },
+  { slug: "ful", displayName: "FUL", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.872, lng: -117.98, aliases: ["ful"], wikidataId: null, iata: "FUL", airportName: "Fullerton Municipal", parentCitySlug: "los-angeles" },
+  { slug: "fun", displayName: "FUN", country: "Tuvalu", countryCode: "TV", iana: "Pacific/Funafuti", lat: -8.525, lng: 179.196, aliases: ["fun"], wikidataId: null, iata: "FUN", airportName: "Funafuti International", parentCitySlug: "funafuti" },
+  { slug: "fuo", displayName: "FUO", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 23.0833, lng: 113.07, aliases: ["fuo"], wikidataId: null, iata: "FUO", airportName: "Foshan Shadi", parentCitySlug: "guangzhou" },
+  { slug: "fwh", displayName: "FWH", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.7692, lng: -97.4415, aliases: ["fwh"], wikidataId: null, iata: "FWH", airportName: "NAS Fort Worth JRB/Carswell Field", parentCitySlug: "dallas" },
+  { slug: "fxe", displayName: "FXE", country: "USA", countryCode: "US", iana: "America/New_York", lat: 26.1973, lng: -80.1707, aliases: ["fxe"], wikidataId: null, iata: "FXE", airportName: "Fort Lauderdale Executive", parentCitySlug: "miami" },
+  { slug: "gai", displayName: "GAI", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.1683, lng: -77.166, aliases: ["gai"], wikidataId: null, iata: "GAI", airportName: "Montgomery County Airpark", parentCitySlug: "washington-dc" },
+  { slug: "gcj", displayName: "GCJ", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -25.9863, lng: 28.1401, aliases: ["gcj"], wikidataId: null, iata: "GCJ", airportName: "Grand Central", parentCitySlug: "johannesburg" },
+  { slug: "gdl", displayName: "GDL", country: "Mexico", countryCode: "MX", iana: "America/Mexico_City", lat: 20.5218, lng: -103.311, aliases: ["gdl"], wikidataId: null, iata: "GDL", airportName: "Don Miguel Hidalgo Y Costilla International", parentCitySlug: "guadalajara" },
+  { slug: "gdn", displayName: "GDN", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 54.3776, lng: 18.4662, aliases: ["gdn"], wikidataId: null, iata: "GDN", airportName: "Gda\u0144sk Lech Wa\u0142\u0119sa", parentCitySlug: "gdansk" },
+  { slug: "gea", displayName: "GEA", country: "New Caledonia", countryCode: "NC", iana: "Pacific/Noumea", lat: -22.2583, lng: 166.473, aliases: ["gea"], wikidataId: null, iata: "GEA", airportName: "Noum\xE9a Magenta", parentCitySlug: "noumea" },
+  { slug: "gec", displayName: "GEC", country: "Cyprus", countryCode: "CY", iana: "Asia/Nicosia", lat: 35.2359, lng: 33.7244, aliases: ["gec"], wikidataId: null, iata: "GEC", airportName: "Lefkoniko", parentCitySlug: "nicosia" },
+  { slug: "geo", displayName: "GEO", country: "Guyana", countryCode: "GY", iana: "America/Guyana", lat: 6.4985, lng: -58.2541, aliases: ["geo"], wikidataId: null, iata: "GEO", airportName: "Cheddi Jagan International", parentCitySlug: "georgetown" },
+  { slug: "gex", displayName: "GEX", country: "Australia", countryCode: "AU", iana: "Australia/Hobart", lat: -38.225, lng: 144.333, aliases: ["gex"], wikidataId: null, iata: "GEX", airportName: "Geelong", parentCitySlug: "melbourne" },
+  { slug: "gfo", displayName: "GFO", country: "Guyana", countryCode: "GY", iana: "America/Guyana", lat: 6.3589, lng: -58.6552, aliases: ["gfo"], wikidataId: null, iata: "GFO", airportName: "Bartica A", parentCitySlug: "georgetown" },
+  { slug: "gig", displayName: "GIG", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -22.81, lng: -43.2506, aliases: ["gig"], wikidataId: null, iata: "GIG", airportName: "Rio Gale\xE3o \u2013 Tom Jobim International", parentCitySlug: "rio-de-janeiro" },
+  { slug: "gke", displayName: "GKE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.9608, lng: 6.0424, aliases: ["gke"], wikidataId: null, iata: "GKE", airportName: "Geilenkirchen Air Base", parentCitySlug: "aachen" },
+  { slug: "glz", displayName: "GLZ", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 51.5674, lng: 4.9318, aliases: ["glz"], wikidataId: null, iata: "GLZ", airportName: "Gilze Rijen Air Base", parentCitySlug: "rotterdam" },
+  { slug: "gmd", displayName: "GMD", country: "Morocco", countryCode: "MA", iana: "Africa/Casablanca", lat: 33.6554, lng: -7.2214, aliases: ["gmd"], wikidataId: null, iata: "GMD", airportName: "Ben Slimane", parentCitySlug: "casablanca" },
+  { slug: "gml", displayName: "GML", country: "Ukraine", countryCode: "UA", iana: "Europe/Kiev", lat: 50.6035, lng: 30.1919, aliases: ["gml"], wikidataId: null, iata: "GML", airportName: "Gostomel", parentCitySlug: "kyiv" },
+  { slug: "gmp", displayName: "GMP", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 37.5583, lng: 126.791, aliases: ["gmp"], wikidataId: null, iata: "GMP", airportName: "Gimpo International", parentCitySlug: "seoul" },
+  { slug: "gnb", displayName: "GNB", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 45.3629, lng: 5.3294, aliases: ["gnb"], wikidataId: null, iata: "GNB", airportName: "Grenoble-Is\xE8re", parentCitySlug: "lyon" },
+  { slug: "gnd", displayName: "GND", country: "Grenada", countryCode: "GD", iana: "America/Grenada", lat: 12.0042, lng: -61.7862, aliases: ["gnd"], wikidataId: null, iata: "GND", airportName: "Point Salines International", parentCitySlug: "st-george" },
+  { slug: "gon", displayName: "GON", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.3301, lng: -72.0451, aliases: ["gon"], wikidataId: null, iata: "GON", airportName: "Groton New London", parentCitySlug: "hartford" },
+  { slug: "gpl", displayName: "GPL", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 10.2172, lng: -83.797, aliases: ["gpl"], wikidataId: null, iata: "GPL", airportName: "Guapiles", parentCitySlug: "alajuela" },
+  { slug: "grf", displayName: "GRF", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.0792, lng: -122.581, aliases: ["grf"], wikidataId: null, iata: "GRF", airportName: "Gray Army Air Field", parentCitySlug: "seattle" },
+  { slug: "gru", displayName: "GRU", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -23.4356, lng: -46.4731, aliases: ["gru"], wikidataId: null, iata: "GRU", airportName: "Guarulhos - Governador Andr\xE9 Franco Montoro International", parentCitySlug: "sao-paulo" },
+  { slug: "grx", displayName: "GRX", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 37.1887, lng: -3.7774, aliases: ["grx"], wikidataId: null, iata: "GRX", airportName: "Federico Garcia Lorca", parentCitySlug: "granada-spain" },
+  { slug: "gsj", displayName: "GSJ", country: "Guatemala", countryCode: "GT", iana: "America/Guatemala", lat: 13.9362, lng: -90.8358, aliases: ["gsj"], wikidataId: null, iata: "GSJ", airportName: "San Jos\xE9", parentCitySlug: "antigua-guatemala" },
+  { slug: "gua", displayName: "GUA", country: "Guatemala", countryCode: "GT", iana: "America/Guatemala", lat: 14.5833, lng: -90.5275, aliases: ["gua"], wikidataId: null, iata: "GUA", airportName: "La Aurora", parentCitySlug: "antigua-guatemala" },
+  { slug: "gut", displayName: "GUT", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.9228, lng: 8.3063, aliases: ["gut"], wikidataId: null, iata: "GUT", airportName: "G\xFCtersloh Air Base", parentCitySlug: "bielefeld" },
+  { slug: "gvl", displayName: "GVL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 34.2726, lng: -83.8302, aliases: ["gvl"], wikidataId: null, iata: "GVL", airportName: "Lee Gilmer Memorial", parentCitySlug: "atlanta" },
+  { slug: "gyd", displayName: "GYD", country: "Azerbaijan", countryCode: "AZ", iana: "Asia/Baku", lat: 40.4675, lng: 50.0467, aliases: ["gyd"], wikidataId: null, iata: "GYD", airportName: "Heydar Aliyev International", parentCitySlug: "baku" },
+  { slug: "gyg", displayName: "GYG", country: "Russia", countryCode: "RU", iana: "Asia/Yakutsk", lat: 62.1035, lng: 129.5453, aliases: ["gyg"], wikidataId: null, iata: "GYG", airportName: "Magan", parentCitySlug: "yakutsk" },
+  { slug: "gyi", displayName: "GYI", country: "Rwanda", countryCode: "RW", iana: "Africa/Kigali", lat: -1.6772, lng: 29.2589, aliases: ["gyi"], wikidataId: null, iata: "GYI", airportName: "Gisenyi", parentCitySlug: "kigali" },
+  { slug: "gyr", displayName: "GYR", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.4225, lng: -112.376, aliases: ["gyr"], wikidataId: null, iata: "GYR", airportName: "Phoenix Goodyear", parentCitySlug: "phoenix" },
+  { slug: "gyy", displayName: "GYY", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.6163, lng: -87.4128, aliases: ["gyy"], wikidataId: null, iata: "GYY", airportName: "Gary Chicago International", parentCitySlug: "chicago" },
+  { slug: "gzm", displayName: "GZM", country: "Malta", countryCode: "MT", iana: "Europe/Malta", lat: 36.0272, lng: 14.2728, aliases: ["gzm"], wikidataId: null, iata: "GZM", airportName: "Xewkija Heliport", parentCitySlug: "valletta" },
+  { slug: "haf", displayName: "HAF", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.5134, lng: -122.501, aliases: ["haf"], wikidataId: null, iata: "HAF", airportName: "Half Moon Bay", parentCitySlug: "san-francisco" },
+  { slug: "ham", displayName: "HAM", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.6304, lng: 9.9882, aliases: ["ham"], wikidataId: null, iata: "HAM", airportName: "Hamburg", parentCitySlug: "hamburg" },
+  { slug: "han", displayName: "HAN", country: "Vietnam", countryCode: "VN", iana: "Asia/Saigon", lat: 21.2212, lng: 105.807, aliases: ["han"], wikidataId: null, iata: "HAN", airportName: "Noi Bai International", parentCitySlug: "hanoi" },
+  { slug: "hao", displayName: "HAO", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.3638, lng: -84.522, aliases: ["hao"], wikidataId: null, iata: "HAO", airportName: "Butler Co Regional Airport - Hogan Field", parentCitySlug: "cincinnati" },
+  { slug: "hav", displayName: "HAV", country: "Cuba", countryCode: "CU", iana: "America/Havana", lat: 22.9892, lng: -82.4091, aliases: ["hav"], wikidataId: null, iata: "HAV", airportName: "Jos\xE9 Mart\xED International", parentCitySlug: "havana" },
+  { slug: "hba", displayName: "HBA", country: "Australia", countryCode: "AU", iana: "Australia/Melbourne", lat: -42.8361, lng: 147.51, aliases: ["hba"], wikidataId: null, iata: "HBA", airportName: "Hobart International", parentCitySlug: "hobart" },
+  { slug: "hdh", displayName: "HDH", country: "USA", countryCode: "US", iana: "Pacific/Honolulu", lat: 21.5795, lng: -158.197, aliases: ["hdh"], wikidataId: null, iata: "HDH", airportName: "Dillingham Airfield", parentCitySlug: "honolulu" },
+  { slug: "hel", displayName: "HEL", country: "Finland", countryCode: "FI", iana: "Europe/Helsinki", lat: 60.3172, lng: 24.9633, aliases: ["hel"], wikidataId: null, iata: "HEL", airportName: "Helsinki Vantaa", parentCitySlug: "helsinki" },
+  { slug: "hem", displayName: "HEM", country: "Finland", countryCode: "FI", iana: "Europe/Helsinki", lat: 60.2546, lng: 25.0428, aliases: ["hem"], wikidataId: null, iata: "HEM", airportName: "Helsinki Malmi", parentCitySlug: "helsinki" },
+  { slug: "hew", displayName: "HEW", country: "Greece", countryCode: "GR", iana: "Europe/Athens", lat: 37.8933, lng: 23.7261, aliases: ["hew"], wikidataId: null, iata: "HEW", airportName: "Athen Helenikon", parentCitySlug: "athens" },
+  { slug: "hfa", displayName: "HFA", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 32.8094, lng: 35.0431, aliases: ["hfa"], wikidataId: null, iata: "HFA", airportName: "Haifa International", parentCitySlug: "haifa" },
+  { slug: "hfd", displayName: "HFD", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.7367, lng: -72.6494, aliases: ["hfd"], wikidataId: null, iata: "HFD", airportName: "Hartford Brainard", parentCitySlug: "hartford" },
+  { slug: "hhi", displayName: "HHI", country: "USA", countryCode: "US", iana: "Pacific/Honolulu", lat: 21.4835, lng: -158.04, aliases: ["hhi"], wikidataId: null, iata: "HHI", airportName: "Wheeler Army Airfield", parentCitySlug: "honolulu" },
+  { slug: "hhp", displayName: "HHP", country: "Hong Kong", countryCode: "HK", iana: "Asia/Hong_Kong", lat: 22.2894, lng: 114.1522, aliases: ["hhp"], wikidataId: null, iata: "HHP", airportName: "Shun Tak Heliport", parentCitySlug: "hong-kong" },
+  { slug: "hhr", displayName: "HHR", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.9228, lng: -118.335, aliases: ["hhr"], wikidataId: null, iata: "HHR", airportName: "Jack Northrop Field Hawthorne Municipal", parentCitySlug: "los-angeles" },
+  { slug: "hio", displayName: "HIO", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 45.5404, lng: -122.95, aliases: ["hio"], wikidataId: null, iata: "HIO", airportName: "Portland Hillsboro", parentCitySlug: "portland" },
+  { slug: "hir", displayName: "HIR", country: "Solomon Islands", countryCode: "SB", iana: "Pacific/Guadalcanal", lat: -9.428, lng: 160.055, aliases: ["hir"], wikidataId: null, iata: "HIR", airportName: "Honiara International", parentCitySlug: "honiara" },
+  { slug: "hkg", displayName: "HKG", country: "Hong Kong", countryCode: "HK", iana: "Asia/Hong_Kong", lat: 22.3089, lng: 113.915, aliases: ["hkg"], wikidataId: null, iata: "HKG", airportName: "Hong Kong International", parentCitySlug: "hong-kong" },
+  { slug: "hla", displayName: "HLA", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -25.9385, lng: 27.9261, aliases: ["hla"], wikidataId: null, iata: "HLA", airportName: "Lanseria", parentCitySlug: "johannesburg" },
+  { slug: "hlg", displayName: "HLG", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.175, lng: -80.6463, aliases: ["hlg"], wikidataId: null, iata: "HLG", airportName: "Wheeling Ohio County", parentCitySlug: "pittsburgh" },
+  { slug: "hlp", displayName: "HLP", country: "Indonesia", countryCode: "ID", iana: "Asia/Jakarta", lat: -6.2666, lng: 106.891, aliases: ["hlp"], wikidataId: null, iata: "HLP", airportName: "Halim Perdanakusuma International", parentCitySlug: "jakarta" },
+  { slug: "hnd", displayName: "HND", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 35.5523, lng: 139.78, aliases: ["hnd"], wikidataId: null, iata: "HND", airportName: "Tokyo Haneda International", parentCitySlug: "tokyo" },
+  { slug: "hnl", displayName: "HNL", country: "USA", countryCode: "US", iana: "Pacific/Honolulu", lat: 21.3206, lng: -157.9242, aliases: ["hnl"], wikidataId: null, iata: "HNL", airportName: "Daniel K Inouye International", parentCitySlug: "honolulu" },
+  { slug: "hoh", displayName: "HOH", country: "Austria", countryCode: "AT", iana: "Europe/Vienna", lat: 47.385, lng: 9.7, aliases: ["hoh"], wikidataId: null, iata: "HOH", airportName: "Hohenems-Dornbirn", parentCitySlug: "vaduz" },
+  { slug: "hou", displayName: "HOU", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.6454, lng: -95.2789, aliases: [], wikidataId: null, iata: "HOU", airportName: "William P Hobby", parentCitySlug: "houston" },
+  { slug: "hpn", displayName: "HPN", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.067, lng: -73.7076, aliases: ["hpn"], wikidataId: null, iata: "HPN", airportName: "Westchester County", parentCitySlug: "new-york" },
+  { slug: "hrt", displayName: "HRT", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 54.0489, lng: -1.2528, aliases: ["hrt"], wikidataId: null, iata: "HRT", airportName: "RAF Linton-On-Ouse", parentCitySlug: "leeds" },
+  { slug: "hsh", displayName: "HSH", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 35.9728, lng: -115.134, aliases: ["hsh"], wikidataId: null, iata: "HSH", airportName: "Henderson Executive", parentCitySlug: "las-vegas" },
+  { slug: "hst", displayName: "HST", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.4886, lng: -80.3836, aliases: [], wikidataId: null, iata: "HST", airportName: "Homestead ARB", parentCitySlug: "miami" },
+  { slug: "hsz", displayName: "HSZ", country: "Taiwan", countryCode: "TW", iana: "Asia/Taipei", lat: 24.818, lng: 120.939, aliases: ["hsz"], wikidataId: null, iata: "HSZ", airportName: "Hsinchu Air Base", parentCitySlug: "taipei" },
+  { slug: "hvn", displayName: "HVN", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.2637, lng: -72.8868, aliases: ["hvn"], wikidataId: null, iata: "HVN", airportName: "Tweed New Haven", parentCitySlug: "hartford" },
+  { slug: "hwd", displayName: "HWD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.6592, lng: -122.122, aliases: ["hwd"], wikidataId: null, iata: "HWD", airportName: "Hayward Executive", parentCitySlug: "san-francisco" },
+  { slug: "hwo", displayName: "HWO", country: "USA", countryCode: "US", iana: "America/New_York", lat: 26.0012, lng: -80.2407, aliases: ["hwo"], wikidataId: null, iata: "HWO", airportName: "North Perry", parentCitySlug: "miami" },
+  { slug: "hyc", displayName: "HYC", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.6117, lng: -0.8083, aliases: ["hyc"], wikidataId: null, iata: "HYC", airportName: "Wycombe Air Park", parentCitySlug: "london" },
+  { slug: "hyd", displayName: "HYD", country: "India", countryCode: "IN", iana: "Asia/Kolkata", lat: 17.2313, lng: 78.4299, aliases: ["hyd"], wikidataId: null, iata: "HYD", airportName: "Rajiv Gandhi International", parentCitySlug: "hyderabad" },
+  { slug: "hyv", displayName: "HYV", country: "Finland", countryCode: "FI", iana: "Europe/Helsinki", lat: 60.6544, lng: 24.8811, aliases: ["hyv"], wikidataId: null, iata: "HYV", airportName: "Hyvink\xE4\xE4 Airfield", parentCitySlug: "helsinki" },
+  { slug: "hzk", displayName: "HZK", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 65.9523, lng: -17.426, aliases: ["hzk"], wikidataId: null, iata: "HZK", airportName: "H\xFAsav\xEDk", parentCitySlug: "akureyri" },
+  { slug: "iad", displayName: "IAD", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.9445, lng: -77.4558, aliases: ["iad"], wikidataId: null, iata: "IAD", airportName: "Washington Dulles International", parentCitySlug: "washington-dc" },
+  { slug: "iah", displayName: "IAH", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.9844, lng: -95.3414, aliases: ["iah"], wikidataId: null, iata: "IAH", airportName: "George Bush Intercontinental Houston", parentCitySlug: "houston" },
+  { slug: "icn", displayName: "ICN", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 37.4691, lng: 126.451, aliases: ["icn"], wikidataId: null, iata: "ICN", airportName: "Incheon International", parentCitySlug: "seoul" },
+  { slug: "ieg", displayName: "IEG", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 52.1385, lng: 15.7986, aliases: ["ieg"], wikidataId: null, iata: "IEG", airportName: "Zielona G\xF3ra-Babimost", parentCitySlug: "swiebodzin" },
+  { slug: "ies", displayName: "IES", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.2936, lng: 13.3561, aliases: ["ies"], wikidataId: null, iata: "IES", airportName: "Riesa-G\xF6hlis", parentCitySlug: "leipzig" },
+  { slug: "iev", displayName: "IEV", country: "Ukraine", countryCode: "UA", iana: "Europe/Kiev", lat: 50.4019, lng: 30.4519, aliases: ["iev"], wikidataId: null, iata: "IEV", airportName: "Kiev Zhuliany International", parentCitySlug: "kyiv" },
+  { slug: "ifh", displayName: "IFH", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 32.9289, lng: 51.5611, aliases: ["ifh"], wikidataId: null, iata: "IFH", airportName: "Hesa", parentCitySlug: "isfahan" },
+  { slug: "ifn", displayName: "IFN", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 32.7508, lng: 51.8613, aliases: ["ifn"], wikidataId: null, iata: "IFN", airportName: "Esfahan Shahid Beheshti International", parentCitySlug: "isfahan" },
+  { slug: "igd", displayName: "IGD", country: "Turkey", countryCode: "TR", iana: "Europe/Istanbul", lat: 39.9766, lng: 43.8766, aliases: ["igd"], wikidataId: null, iata: "IGD", airportName: "I\u011Fd\u0131r", parentCitySlug: "yerevan" },
+  { slug: "igs", displayName: "IGS", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.7157, lng: 11.534, aliases: ["igs"], wikidataId: null, iata: "IGS", airportName: "Ingolstadt Manching", parentCitySlug: "munich" },
+  { slug: "ihc", displayName: "IHC", country: "Mozambique", countryCode: "MZ", iana: "Africa/Maputo", lat: -25.9971, lng: 32.9294, aliases: ["ihc"], wikidataId: null, iata: "IHC", airportName: "Inhaca", parentCitySlug: "maputo" },
+  { slug: "ika", displayName: "IKA", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 35.4161, lng: 51.1522, aliases: ["ika"], wikidataId: null, iata: "IKA", airportName: "Imam Khomeini International", parentCitySlug: "tehran" },
+  { slug: "ilg", displayName: "ILG", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.6787, lng: -75.6065, aliases: ["ilg"], wikidataId: null, iata: "ILG", airportName: "New Castle", parentCitySlug: "philadelphia" },
+  { slug: "iln", displayName: "ILN", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.4279, lng: -83.7921, aliases: ["iln"], wikidataId: null, iata: "ILN", airportName: "Wilmington Airpark", parentCitySlug: "cincinnati" },
+  { slug: "ins", displayName: "INS", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 36.5872, lng: -115.673, aliases: ["ins"], wikidataId: null, iata: "INS", airportName: "Creech Air Force Base", parentCitySlug: "las-vegas" },
+  { slug: "isb", displayName: "ISB", country: "Pakistan", countryCode: "PK", iana: "Asia/Karachi", lat: 33.5607, lng: 72.8516, aliases: ["isb"], wikidataId: null, iata: "ISB", airportName: "New Islamabad International", parentCitySlug: "islamabad" },
+  { slug: "isl", displayName: "ISL", country: "Turkey", countryCode: "TR", iana: "Europe/Istanbul", lat: 40.9769, lng: 28.8146, aliases: ["isl"], wikidataId: null, iata: "ISL", airportName: "Atat\xFCrk International", parentCitySlug: "istanbul" },
+  { slug: "isp", displayName: "ISP", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7952, lng: -73.1002, aliases: ["isp"], wikidataId: null, iata: "ISP", airportName: "Long Island Mac Arthur", parentCitySlug: "new-york" },
+  { slug: "ist", displayName: "IST", country: "Turkey", countryCode: "TR", iana: "Europe/Istanbul", lat: 41.2753, lng: 28.7519, aliases: [], wikidataId: null, iata: "IST", airportName: "Istanbul", parentCitySlug: "istanbul" },
+  { slug: "itm", displayName: "ITM", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 34.7855, lng: 135.438, aliases: ["itm"], wikidataId: null, iata: "ITM", airportName: "Osaka International", parentCitySlug: "osaka" },
+  { slug: "iws", displayName: "IWS", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.8182, lng: -95.6726, aliases: ["iws"], wikidataId: null, iata: "IWS", airportName: "West Houston", parentCitySlug: "houston" },
+  { slug: "jad", displayName: "JAD", country: "Australia", countryCode: "AU", iana: "Australia/Perth", lat: -32.0975, lng: 115.881, aliases: ["jad"], wikidataId: null, iata: "JAD", airportName: "Perth Jandakot", parentCitySlug: "perth" },
+  { slug: "jak", displayName: "JAK", country: "Haiti", countryCode: "HT", iana: "America/Port-au-Prince", lat: 18.2411, lng: -72.5185, aliases: ["jak"], wikidataId: null, iata: "JAK", airportName: "Jacmel", parentCitySlug: "port-au-prince" },
+  { slug: "jap", displayName: "JAP", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 9.9814, lng: -84.7727, aliases: ["jap"], wikidataId: null, iata: "JAP", airportName: "Chacarita", parentCitySlug: "alajuela" },
+  { slug: "jed", displayName: "JED", country: "Saudi Arabia", countryCode: "SA", iana: "Asia/Riyadh", lat: 21.6796, lng: 39.1565, aliases: ["jed"], wikidataId: null, iata: "JED", airportName: "King Abdulaziz International", parentCitySlug: "jeddah" },
+  { slug: "jfk", displayName: "JFK", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.6398, lng: -73.7789, aliases: ["jfk"], wikidataId: null, iata: "JFK", airportName: "John F Kennedy International", parentCitySlug: "new-york" },
+  { slug: "jhb", displayName: "JHB", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 1.6413, lng: 103.67, aliases: ["jhb"], wikidataId: null, iata: "JHB", airportName: "Senai International", parentCitySlug: "singapore" },
+  { slug: "jnb", displayName: "JNB", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -26.1392, lng: 28.246, aliases: ["jnb"], wikidataId: null, iata: "JNB", airportName: "OR Tambo International", parentCitySlug: "johannesburg" },
+  { slug: "jot", displayName: "JOT", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.5178, lng: -88.1755, aliases: ["jot"], wikidataId: null, iata: "JOT", airportName: "Joliet Regional", parentCitySlug: "chicago" },
+  { slug: "jra", displayName: "JRA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7545, lng: -74.0071, aliases: ["jra"], wikidataId: null, iata: "JRA", airportName: "West 30th St. Heliport", parentCitySlug: "new-york" },
+  { slug: "jrb", displayName: "JRB", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7012, lng: -74.009, aliases: ["jrb"], wikidataId: null, iata: "JRB", airportName: "Downtown-Manhattan/Wall St Heliport", parentCitySlug: "new-york" },
+  { slug: "jrf", displayName: "JRF", country: "USA", countryCode: "US", iana: "Pacific/Honolulu", lat: 21.3074, lng: -158.07, aliases: ["jrf"], wikidataId: null, iata: "JRF", airportName: "Kalaeloa", parentCitySlug: "honolulu" },
+  { slug: "kbp", displayName: "KBP", country: "Ukraine", countryCode: "UA", iana: "Europe/Kiev", lat: 50.345, lng: 30.8947, aliases: ["kbp"], wikidataId: null, iata: "KBP", airportName: "Boryspil International", parentCitySlug: "kyiv" },
+  { slug: "kch", displayName: "KCH", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 1.4847, lng: 110.347, aliases: ["kch"], wikidataId: null, iata: "KCH", airportName: "Kuching International", parentCitySlug: "kuching" },
+  { slug: "kef", displayName: "KEF", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 63.985, lng: -22.6056, aliases: ["kef"], wikidataId: null, iata: "KEF", airportName: "Keflavik International", parentCitySlug: "reykjavik" },
+  { slug: "kgl", displayName: "KGL", country: "Rwanda", countryCode: "RW", iana: "Africa/Kigali", lat: -1.9686, lng: 30.1395, aliases: ["kgl"], wikidataId: null, iata: "KGL", airportName: "Kigali International", parentCitySlug: "kigali" },
+  { slug: "khi", displayName: "KHI", country: "Pakistan", countryCode: "PK", iana: "Asia/Karachi", lat: 24.9065, lng: 67.1608, aliases: ["khi"], wikidataId: null, iata: "KHI", airportName: "Jinnah International", parentCitySlug: "karachi" },
+  { slug: "kiv", displayName: "KIV", country: "Moldova", countryCode: "MD", iana: "Europe/Chisinau", lat: 46.9277, lng: 28.931, aliases: ["kiv"], wikidataId: null, iata: "KIV", airportName: "Chi\u015Fin\u0103u International", parentCitySlug: "chisinau" },
+  { slug: "kix", displayName: "KIX", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 34.4273, lng: 135.244, aliases: ["kix"], wikidataId: null, iata: "KIX", airportName: "Kansai International", parentCitySlug: "osaka" },
+  { slug: "kjk", displayName: "KJK", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 50.8172, lng: 3.2047, aliases: ["kjk"], wikidataId: null, iata: "KJK", airportName: "Wevelgem", parentCitySlug: "bruges" },
+  { slug: "kls", displayName: "KLS", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 46.118, lng: -122.898, aliases: ["kls"], wikidataId: null, iata: "KLS", airportName: "Southwest Washington Regional", parentCitySlug: "portland" },
+  { slug: "klu", displayName: "KLU", country: "Austria", countryCode: "AT", iana: "Europe/Vienna", lat: 46.6425, lng: 14.3377, aliases: ["klu"], wikidataId: null, iata: "KLU", airportName: "Klagenfurt", parentCitySlug: "ljubljana" },
+  { slug: "kmq", displayName: "KMQ", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 36.3946, lng: 136.407, aliases: ["kmq"], wikidataId: null, iata: "KMQ", airportName: "Komatsu", parentCitySlug: "shirakawa-go" },
+  { slug: "kna", displayName: "KNA", country: "Chile", countryCode: "CL", iana: "America/Santiago", lat: -32.9496, lng: -71.4786, aliases: ["kna"], wikidataId: null, iata: "KNA", airportName: "Vi\xF1a del mar", parentCitySlug: "valparaiso" },
+  { slug: "koq", displayName: "KOQ", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.7211, lng: 11.9528, aliases: ["koq"], wikidataId: null, iata: "KOQ", airportName: "K\xF6then", parentCitySlug: "leipzig" },
+  { slug: "kos", displayName: "KOS", country: "Cambodia", countryCode: "KH", iana: "Asia/Phnom_Penh", lat: 10.5797, lng: 103.637, aliases: ["kos"], wikidataId: null, iata: "KOS", airportName: "Sihanoukville International", parentCitySlug: "sihanoukville" },
+  { slug: "kov", displayName: "KOV", country: "Kazakhstan", countryCode: "KZ", iana: "Asia/Qyzylorda", lat: 53.3291, lng: 69.5946, aliases: ["kov"], wikidataId: null, iata: "KOV", airportName: "Kokshetau", parentCitySlug: "schuchinsk" },
+  { slug: "krh", displayName: "KRH", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.2136, lng: -0.1386, aliases: ["krh"], wikidataId: null, iata: "KRH", airportName: "Redhill Aerodrome", parentCitySlug: "london" },
+  { slug: "ksn", displayName: "KSN", country: "Kazakhstan", countryCode: "KZ", iana: "Asia/Qyzylorda", lat: 53.2069, lng: 63.5503, aliases: ["ksn"], wikidataId: null, iata: "KSN", airportName: "Kostanay West", parentCitySlug: "kostanay" },
+  { slug: "ktm", displayName: "KTM", country: "Nepal", countryCode: "NP", iana: "Asia/Katmandu", lat: 27.6966, lng: 85.3591, aliases: ["ktm"], wikidataId: null, iata: "KTM", airportName: "Tribhuvan International", parentCitySlug: "kathmandu" },
+  { slug: "kul", displayName: "KUL", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 2.7456, lng: 101.71, aliases: ["kul"], wikidataId: null, iata: "KUL", airportName: "Kuala Lumpur International", parentCitySlug: "kuala-lumpur" },
+  { slug: "kuo", displayName: "KUO", country: "Finland", countryCode: "FI", iana: "Europe/Helsinki", lat: 63.0071, lng: 27.7978, aliases: ["kuo"], wikidataId: null, iata: "KUO", airportName: "Kuopio", parentCitySlug: "kuopio" },
+  { slug: "kwi", displayName: "KWI", country: "Kuwait", countryCode: "KW", iana: "Asia/Kuwait", lat: 29.2266, lng: 47.9689, aliases: ["kwi"], wikidataId: null, iata: "KWI", airportName: "Kuwait International", parentCitySlug: "kuwait-city" },
+  { slug: "kzg", displayName: "KZG", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.7431, lng: 10.2006, aliases: ["kzg"], wikidataId: null, iata: "KZG", airportName: "Flugplatz Kitzingen", parentCitySlug: "nuremberg" },
+  { slug: "las", displayName: "LAS", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 36.0801, lng: -115.152, aliases: ["las"], wikidataId: null, iata: "LAS", airportName: "McCarran International", parentCitySlug: "las-vegas" },
+  { slug: "lax", displayName: "LAX", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.9425, lng: -118.408, aliases: ["lax"], wikidataId: null, iata: "LAX", airportName: "Los Angeles International", parentCitySlug: "los-angeles" },
+  { slug: "lba", displayName: "LBA", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.8659, lng: -1.6606, aliases: ["lba"], wikidataId: null, iata: "LBA", airportName: "Leeds Bradford", parentCitySlug: "leeds" },
+  { slug: "lbc", displayName: "LBC", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.8054, lng: 10.7192, aliases: ["lbc"], wikidataId: null, iata: "LBC", airportName: "L\xFCbeck Blankensee", parentCitySlug: "hamburg" },
+  { slug: "lbe", displayName: "LBE", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.2759, lng: -79.4048, aliases: ["lbe"], wikidataId: null, iata: "LBE", airportName: "Arnold Palmer Regional", parentCitySlug: "pittsburgh" },
+  { slug: "lbg", displayName: "LBG", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.9694, lng: 2.4414, aliases: ["lbg"], wikidataId: null, iata: "LBG", airportName: "Paris-Le Bourget", parentCitySlug: "paris" },
+  { slug: "lca", displayName: "LCA", country: "Cyprus", countryCode: "CY", iana: "Asia/Nicosia", lat: 34.8751, lng: 33.6249, aliases: ["lca"], wikidataId: null, iata: "LCA", airportName: "Larnaca International", parentCitySlug: "nicosia" },
+  { slug: "lcg", displayName: "LCG", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 43.3021, lng: -8.3773, aliases: ["lcg"], wikidataId: null, iata: "LCG", airportName: "A Coru\xF1a", parentCitySlug: "a-coruna" },
+  { slug: "lck", displayName: "LCK", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.8138, lng: -82.9278, aliases: ["lck"], wikidataId: null, iata: "LCK", airportName: "Rickenbacker International", parentCitySlug: "columbus" },
+  { slug: "lcy", displayName: "LCY", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.5053, lng: 0.0553, aliases: ["lcy"], wikidataId: null, iata: "LCY", airportName: "London City", parentCitySlug: "london" },
+  { slug: "ldj", displayName: "LDJ", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.6174, lng: -74.2446, aliases: ["ldj"], wikidataId: null, iata: "LDJ", airportName: "Linden", parentCitySlug: "new-york" },
+  { slug: "led", displayName: "LED", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 59.8003, lng: 30.2625, aliases: ["led"], wikidataId: null, iata: "LED", airportName: "Pulkovo", parentCitySlug: "st-petersburg" },
+  { slug: "lej", displayName: "LEJ", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.4239, lng: 12.2364, aliases: ["lej"], wikidataId: null, iata: "LEJ", airportName: "Leipzig/Halle", parentCitySlug: "leipzig" },
+  { slug: "leu", displayName: "LEU", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 42.3386, lng: 1.4092, aliases: ["leu"], wikidataId: null, iata: "LEU", airportName: "Pirineus - la Seu d'Urgel", parentCitySlug: "andorra-la-vella" },
+  { slug: "lev", displayName: "LEV", country: "Fiji", countryCode: "FJ", iana: "Pacific/Fiji", lat: -17.7111, lng: 178.759, aliases: ["lev"], wikidataId: null, iata: "LEV", airportName: "Levuka Airfield", parentCitySlug: "suva" },
+  { slug: "ley", displayName: "LEY", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 52.4603, lng: 5.5272, aliases: ["ley"], wikidataId: null, iata: "LEY", airportName: "Lelystad", parentCitySlug: "amsterdam" },
+  { slug: "lga", displayName: "LGA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7772, lng: -73.8726, aliases: ["lga"], wikidataId: null, iata: "LGA", airportName: "La Guardia", parentCitySlug: "new-york" },
+  { slug: "lgb", displayName: "LGB", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.8177, lng: -118.152, aliases: ["lgb"], wikidataId: null, iata: "LGB", airportName: "Long Beach /Daugherty Field/", parentCitySlug: "los-angeles" },
+  { slug: "lgg", displayName: "LGG", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 50.6374, lng: 5.4432, aliases: ["lgg"], wikidataId: null, iata: "LGG", airportName: "Li\xE8ge", parentCitySlug: "maastricht" },
+  { slug: "lgw", displayName: "LGW", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.1481, lng: -0.1903, aliases: ["lgw"], wikidataId: null, iata: "LGW", airportName: "London Gatwick", parentCitySlug: "london" },
+  { slug: "lha", displayName: "LHA", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.3693, lng: 7.8277, aliases: ["lha"], wikidataId: null, iata: "LHA", airportName: "Lahr", parentCitySlug: "freiburg" },
+  { slug: "lhe", displayName: "LHE", country: "Pakistan", countryCode: "PK", iana: "Asia/Karachi", lat: 31.5216, lng: 74.4036, aliases: ["lhe"], wikidataId: null, iata: "LHE", airportName: "Alama Iqbal International", parentCitySlug: "lahore" },
+  { slug: "lhr", displayName: "LHR", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.4706, lng: -0.4619, aliases: ["lhr"], wikidataId: null, iata: "LHR", airportName: "London Heathrow", parentCitySlug: "london" },
+  { slug: "lid", displayName: "LID", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 52.1661, lng: 4.4179, aliases: ["lid"], wikidataId: null, iata: "LID", airportName: "Valkenburg Naval Air Base", parentCitySlug: "rotterdam" },
+  { slug: "lil", displayName: "LIL", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 50.5633, lng: 3.0869, aliases: ["lil"], wikidataId: null, iata: "LIL", airportName: "Lille-Lesquin", parentCitySlug: "bruges" },
+  { slug: "lim", displayName: "LIM", country: "Peru", countryCode: "PE", iana: "America/Lima", lat: -12.0219, lng: -77.1143, aliases: ["lim"], wikidataId: null, iata: "LIM", airportName: "Jorge Ch\xE1vez International", parentCitySlug: "lima" },
+  { slug: "lin", displayName: "LIN", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.4451, lng: 9.2767, aliases: ["lin"], wikidataId: null, iata: "LIN", airportName: "Milano Linate", parentCitySlug: "milan" },
+  { slug: "lis", displayName: "LIS", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 38.7813, lng: -9.1359, aliases: ["lis"], wikidataId: null, iata: "LIS", airportName: "Humberto Delgado Airport (Lisbon Portela Airport)", parentCitySlug: "lisbon" },
+  { slug: "lju", displayName: "LJU", country: "Slovenia", countryCode: "SI", iana: "Europe/Ljubljana", lat: 46.2237, lng: 14.4576, aliases: ["lju"], wikidataId: null, iata: "LJU", airportName: "Ljubljana Jo\u017Ee Pu\u010Dnik", parentCitySlug: "ljubljana" },
+  { slug: "lli", displayName: "LLI", country: "Ethiopia", countryCode: "ET", iana: "Africa/Addis_Ababa", lat: 11.975, lng: 38.98, aliases: ["lli"], wikidataId: null, iata: "LLI", airportName: "Lalibella", parentCitySlug: "lalibela" },
+  { slug: "lly", displayName: "LLY", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.9429, lng: -74.8457, aliases: ["lly"], wikidataId: null, iata: "LLY", airportName: "South Jersey Regional", parentCitySlug: "philadelphia" },
+  { slug: "los", displayName: "LOS", country: "Nigeria", countryCode: "NG", iana: "Africa/Lagos", lat: 6.5774, lng: 3.3212, aliases: ["los"], wikidataId: null, iata: "LOS", airportName: "Murtala Muhammed International", parentCitySlug: "lagos" },
+  { slug: "lot", displayName: "LOT", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.6073, lng: -88.0962, aliases: ["lot"], wikidataId: null, iata: "LOT", airportName: "Lewis University", parentCitySlug: "chicago" },
+  { slug: "lpb", displayName: "LPB", country: "Bolivia", countryCode: "BO", iana: "America/La_Paz", lat: -16.5133, lng: -68.1923, aliases: ["lpb"], wikidataId: null, iata: "LPB", airportName: "El Alto International", parentCitySlug: "la-paz" },
+  { slug: "lpg", displayName: "LPG", country: "Argentina", countryCode: "AR", iana: "America/Buenos_Aires", lat: -34.9722, lng: -57.8947, aliases: ["lpg"], wikidataId: null, iata: "LPG", airportName: "La Plata", parentCitySlug: "buenos-aires" },
+  { slug: "lpl", displayName: "LPL", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.3336, lng: -2.8497, aliases: ["lpl"], wikidataId: null, iata: "LPL", airportName: "Liverpool John Lennon", parentCitySlug: "liverpool" },
+  { slug: "lpq", displayName: "LPQ", country: "Laos", countryCode: "LA", iana: "Asia/Vientiane", lat: 19.8973, lng: 102.161, aliases: ["lpq"], wikidataId: null, iata: "LPQ", airportName: "Luang Phabang International", parentCitySlug: "luang-prabang" },
+  { slug: "lsv", displayName: "LSV", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 36.2362, lng: -115.034, aliases: ["lsv"], wikidataId: null, iata: "LSV", airportName: "Nellis Air Force Base", parentCitySlug: "las-vegas" },
+  { slug: "ltn", displayName: "LTN", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.8747, lng: -0.3683, aliases: ["ltn"], wikidataId: null, iata: "LTN", airportName: "London Luton", parentCitySlug: "london" },
+  { slug: "luf", displayName: "LUF", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.535, lng: -112.383, aliases: ["luf"], wikidataId: null, iata: "LUF", airportName: "Luke Air Force Base", parentCitySlug: "phoenix" },
+  { slug: "lug", displayName: "LUG", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.0043, lng: 8.9106, aliases: ["lug"], wikidataId: null, iata: "LUG", airportName: "Lugano", parentCitySlug: "milan" },
+  { slug: "luk", displayName: "LUK", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.1033, lng: -84.4186, aliases: ["luk"], wikidataId: null, iata: "LUK", airportName: "Cincinnati Municipal Airport Lunken Field", parentCitySlug: "cincinnati" },
+  { slug: "lun", displayName: "LUN", country: "Zambia", countryCode: "ZM", iana: "Africa/Lusaka", lat: -15.3308, lng: 28.4526, aliases: ["lun"], wikidataId: null, iata: "LUN", airportName: "Kenneth Kaunda International Airport Lusaka", parentCitySlug: "lusaka" },
+  { slug: "lux", displayName: "LUX", country: "Luxembourg", countryCode: "LU", iana: "Europe/Luxembourg", lat: 49.6233, lng: 6.2044, aliases: ["lux"], wikidataId: null, iata: "LUX", airportName: "Luxembourg-Findel International", parentCitySlug: "luxembourg-city" },
+  { slug: "lva", displayName: "LVA", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.0314, lng: -0.743, aliases: ["lva"], wikidataId: null, iata: "LVA", airportName: "Laval-Entrammes", parentCitySlug: "rennes" },
+  { slug: "lvk", displayName: "LVK", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.6934, lng: -121.82, aliases: ["lvk"], wikidataId: null, iata: "LVK", airportName: "Livermore Municipal", parentCitySlug: "san-francisco" },
+  { slug: "lwm", displayName: "LWM", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.7172, lng: -71.1234, aliases: ["lwm"], wikidataId: null, iata: "LWM", airportName: "Lawrence Municipal", parentCitySlug: "boston" },
+  { slug: "lyn", displayName: "LYN", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 45.7272, lng: 4.9443, aliases: ["lyn"], wikidataId: null, iata: "LYN", airportName: "Lyon-Bron", parentCitySlug: "lyon" },
+  { slug: "lys", displayName: "LYS", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 45.7256, lng: 5.0811, aliases: ["lys"], wikidataId: null, iata: "LYS", airportName: "Lyon Saint-Exup\xE9ry", parentCitySlug: "lyon" },
+  { slug: "lzu", displayName: "LZU", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.9781, lng: -83.9624, aliases: ["lzu"], wikidataId: null, iata: "LZU", airportName: "Gwinnett County Briscoe Field", parentCitySlug: "atlanta" },
+  { slug: "maa", displayName: "MAA", country: "India", countryCode: "IN", iana: "Asia/Calcutta", lat: 12.99, lng: 80.1693, aliases: ["maa"], wikidataId: null, iata: "MAA", airportName: "Chennai International", parentCitySlug: "chennai" },
+  { slug: "mad", displayName: "MAD", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 40.4719, lng: -3.5626, aliases: ["mad"], wikidataId: null, iata: "MAD", airportName: "Adolfo Su\xE1rez Madrid\u2013Barajas", parentCitySlug: "madrid" },
+  { slug: "man", displayName: "MAN", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.3537, lng: -2.275, aliases: ["man"], wikidataId: null, iata: "MAN", airportName: "Manchester", parentCitySlug: "manchester" },
+  { slug: "mbu", displayName: "MBU", country: "Solomon Islands", countryCode: "SB", iana: "Pacific/Guadalcanal", lat: -9.7475, lng: 159.839, aliases: ["mbu"], wikidataId: null, iata: "MBU", airportName: "Babanakira", parentCitySlug: "honiara" },
+  { slug: "mbw", displayName: "MBW", country: "Australia", countryCode: "AU", iana: "Australia/Hobart", lat: -37.9758, lng: 145.102, aliases: ["mbw"], wikidataId: null, iata: "MBW", airportName: "Melbourne Moorabbin", parentCitySlug: "melbourne" },
+  { slug: "mcc", displayName: "MCC", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.6676, lng: -121.401, aliases: ["mcc"], wikidataId: null, iata: "MCC", airportName: "Mc Clellan Airfield", parentCitySlug: "sacramento" },
+  { slug: "mct", displayName: "MCT", country: "Oman", countryCode: "OM", iana: "Asia/Muscat", lat: 23.5933, lng: 58.2844, aliases: ["mct"], wikidataId: null, iata: "MCT", airportName: "Muscat International", parentCitySlug: "muscat" },
+  { slug: "mde", displayName: "MDE", country: "Colombia", countryCode: "CO", iana: "America/Bogota", lat: 6.1645, lng: -75.4231, aliases: ["mde"], wikidataId: null, iata: "MDE", airportName: "Jose Maria C\xF3rdova International", parentCitySlug: "medellin" },
+  { slug: "mdw", displayName: "MDW", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.786, lng: -87.7524, aliases: ["mdw"], wikidataId: null, iata: "MDW", airportName: "Chicago Midway International", parentCitySlug: "chicago" },
+  { slug: "meb", displayName: "MEB", country: "Australia", countryCode: "AU", iana: "Australia/Hobart", lat: -37.7281, lng: 144.902, aliases: ["meb"], wikidataId: null, iata: "MEB", airportName: "Melbourne Essendon", parentCitySlug: "melbourne" },
+  { slug: "mek", displayName: "MEK", country: "Morocco", countryCode: "MA", iana: "Africa/Casablanca", lat: 33.8791, lng: -5.5151, aliases: ["mek"], wikidataId: null, iata: "MEK", airportName: "Bassatine", parentCitySlug: "fez" },
+  { slug: "mel", displayName: "MEL", country: "Australia", countryCode: "AU", iana: "Australia/Hobart", lat: -37.6733, lng: 144.843, aliases: ["mel"], wikidataId: null, iata: "MEL", airportName: "Melbourne International", parentCitySlug: "melbourne" },
+  { slug: "mex", displayName: "MEX", country: "Mexico", countryCode: "MX", iana: "America/Mexico_City", lat: 19.4363, lng: -99.0721, aliases: ["mex"], wikidataId: null, iata: "MEX", airportName: "Licenciado Benito Juarez International", parentCitySlug: "mexico-city" },
+  { slug: "mfm", displayName: "MFM", country: "Macau", countryCode: "MO", iana: "Asia/Macau", lat: 22.1496, lng: 113.592, aliases: ["mfm"], wikidataId: null, iata: "MFM", airportName: "Macau International", parentCitySlug: "hong-kong" },
+  { slug: "mga", displayName: "MGA", country: "Nicaragua", countryCode: "NI", iana: "America/Managua", lat: 12.1415, lng: -86.1682, aliases: ["mga"], wikidataId: null, iata: "MGA", airportName: "Augusto C. Sandino (Managua) International", parentCitySlug: "granada-nicaragua" },
+  { slug: "mge", displayName: "MGE", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.9154, lng: -84.5163, aliases: ["mge"], wikidataId: null, iata: "MGE", airportName: "Dobbins Air Reserve Base", parentCitySlug: "atlanta" },
+  { slug: "mgl", displayName: "MGL", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.2303, lng: 6.5044, aliases: ["mgl"], wikidataId: null, iata: "MGL", airportName: "M\xF6nchengladbach", parentCitySlug: "cologne" },
+  { slug: "mgy", displayName: "MGY", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.589, lng: -84.2249, aliases: ["mgy"], wikidataId: null, iata: "MGY", airportName: "Dayton-Wright Brothers", parentCitySlug: "cincinnati" },
+  { slug: "mhd", displayName: "MHD", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 36.2352, lng: 59.641, aliases: ["mhd"], wikidataId: null, iata: "MHD", airportName: "Mashhad International", parentCitySlug: "mashhad" },
+  { slug: "mhg", displayName: "MHG", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.4731, lng: 8.5142, aliases: ["mhg"], wikidataId: null, iata: "MHG", airportName: "Mannheim-City", parentCitySlug: "karlsruhe" },
+  { slug: "mhp", displayName: "MHP", country: "Belarus", countryCode: "BY", iana: "Europe/Minsk", lat: 53.8645, lng: 27.5397, aliases: ["mhp"], wikidataId: null, iata: "MHP", airportName: "Minsk 1", parentCitySlug: "minsk" },
+  { slug: "mhr", displayName: "MHR", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.5539, lng: -121.298, aliases: ["mhr"], wikidataId: null, iata: "MHR", airportName: "Sacramento Mather", parentCitySlug: "sacramento" },
+  { slug: "mht", displayName: "MHT", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.9326, lng: -71.4357, aliases: ["mht"], wikidataId: null, iata: "MHT", airportName: "Manchester-Boston Regional", parentCitySlug: "boston" },
+  { slug: "mia", displayName: "MIA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.7932, lng: -80.2906, aliases: [], wikidataId: null, iata: "MIA", airportName: "Miami International", parentCitySlug: "miami" },
+  { slug: "miv", displayName: "MIV", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.3678, lng: -75.0722, aliases: ["miv"], wikidataId: null, iata: "MIV", airportName: "Millville Municipal", parentCitySlug: "philadelphia" },
+  { slug: "mla", displayName: "MLA", country: "Malta", countryCode: "MT", iana: "Europe/Malta", lat: 35.8575, lng: 14.4775, aliases: ["mla"], wikidataId: null, iata: "MLA", airportName: "Malta International", parentCitySlug: "valletta" },
+  { slug: "mmk", displayName: "MMK", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 68.7817, lng: 32.7508, aliases: ["mmk"], wikidataId: null, iata: "MMK", airportName: "Murmansk", parentCitySlug: "murmansk" },
+  { slug: "mmu", displayName: "MMU", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.7994, lng: -74.4149, aliases: ["mmu"], wikidataId: null, iata: "MMU", airportName: "Morristown Municipal", parentCitySlug: "new-york" },
+  { slug: "mmx", displayName: "MMX", country: "Sweden", countryCode: "SE", iana: "Europe/Stockholm", lat: 55.5363, lng: 13.3762, aliases: ["mmx"], wikidataId: null, iata: "MMX", airportName: "Malm\xF6 Sturup", parentCitySlug: "copenhagen" },
+  { slug: "mni", displayName: "MNI", country: "Antigua and Barbuda", countryCode: "AG", iana: "America/Montserrat", lat: 16.7914, lng: -62.1933, aliases: ["mni"], wikidataId: null, iata: "MNI", airportName: "John A. Osborne", parentCitySlug: "saint-johns" },
+  { slug: "mnk", displayName: "MNK", country: "Kiribati", countryCode: "KI", iana: "Pacific/Tarawa", lat: 1.0036, lng: 173.031, aliases: ["mnk"], wikidataId: null, iata: "MNK", airportName: "Maiana", parentCitySlug: "tarawa" },
+  { slug: "mnl", displayName: "MNL", country: "Philippines", countryCode: "PH", iana: "Asia/Manila", lat: 14.5086, lng: 121.02, aliases: ["mnl"], wikidataId: null, iata: "MNL", airportName: "Ninoy Aquino International", parentCitySlug: "manila" },
+  { slug: "mnz", displayName: "MNZ", country: "USA", countryCode: "US", iana: "America/New_York", lat: 38.7214, lng: -77.5154, aliases: ["mnz"], wikidataId: null, iata: "MNZ", airportName: "Manassas Regional Airport/Harry P. Davis Field", parentCitySlug: "washington-dc" },
+  { slug: "mpl", displayName: "MPL", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.5762, lng: 3.963, aliases: ["mpl"], wikidataId: null, iata: "MPL", airportName: "Montpellier-M\xE9diterran\xE9e", parentCitySlug: "montpellier" },
+  { slug: "mpm", displayName: "MPM", country: "Mozambique", countryCode: "MZ", iana: "Africa/Maputo", lat: -25.9208, lng: 32.5726, aliases: ["mpm"], wikidataId: null, iata: "MPM", airportName: "Maputo", parentCitySlug: "maputo" },
+  { slug: "mri", displayName: "MRI", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.2135, lng: -149.844, aliases: ["mri"], wikidataId: null, iata: "MRI", airportName: "Merrill Field", parentCitySlug: "anchorage" },
+  { slug: "mru", displayName: "MRU", country: "Mauritius", countryCode: "MU", iana: "Indian/Mauritius", lat: -20.4302, lng: 57.6836, aliases: ["mru"], wikidataId: null, iata: "MRU", airportName: "Sir Seewoosagur Ramgoolam International", parentCitySlug: "port-louis" },
+  { slug: "msc", displayName: "MSC", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.4608, lng: -111.728, aliases: ["msc"], wikidataId: null, iata: "MSC", airportName: "Falcon Field", parentCitySlug: "phoenix" },
+  { slug: "msp", displayName: "MSP", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 44.882, lng: -93.2218, aliases: [], wikidataId: null, iata: "MSP", airportName: "Minneapolis-St Paul International/Wold-Chamberlain", parentCitySlug: "minneapolis" },
+  { slug: "msq", displayName: "MSQ", country: "Belarus", countryCode: "BY", iana: "Europe/Minsk", lat: 53.8825, lng: 28.0307, aliases: ["msq"], wikidataId: null, iata: "MSQ", airportName: "Minsk National", parentCitySlug: "minsk" },
+  { slug: "mst", displayName: "MST", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 50.9117, lng: 5.7701, aliases: [], wikidataId: null, iata: "MST", airportName: "Maastricht Aachen", parentCitySlug: "maastricht" },
+  { slug: "msu", displayName: "MSU", country: "Lesotho", countryCode: "LS", iana: "Africa/Maseru", lat: -29.4623, lng: 27.5525, aliases: ["msu"], wikidataId: null, iata: "MSU", airportName: "Moshoeshoe I International", parentCitySlug: "maseru" },
+  { slug: "msy", displayName: "MSY", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.9934, lng: -90.258, aliases: ["msy"], wikidataId: null, iata: "MSY", airportName: "Louis Armstrong New Orleans International", parentCitySlug: "new-orleans" },
+  { slug: "mtc", displayName: "MTC", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.6135, lng: -82.8369, aliases: ["mtc"], wikidataId: null, iata: "MTC", airportName: "Selfridge Air National Guard Base", parentCitySlug: "detroit" },
+  { slug: "mtn", displayName: "MTN", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.3257, lng: -76.4138, aliases: ["mtn"], wikidataId: null, iata: "MTN", airportName: "Martin State", parentCitySlug: "washington-dc" },
+  { slug: "mtz", displayName: "MTZ", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 31.3282, lng: 35.3886, aliases: ["mtz"], wikidataId: null, iata: "MTZ", airportName: "Bar Yehuda Airfield", parentCitySlug: "jerusalem" },
+  { slug: "muc", displayName: "MUC", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.3538, lng: 11.7861, aliases: ["muc"], wikidataId: null, iata: "MUC", airportName: "Munich", parentCitySlug: "munich" },
+  { slug: "mur", displayName: "MUR", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 4.179, lng: 114.329, aliases: ["mur"], wikidataId: null, iata: "MUR", airportName: "Marudi", parentCitySlug: "seria" },
+  { slug: "mva", displayName: "MVA", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 65.6558, lng: -16.9181, aliases: ["mva"], wikidataId: null, iata: "MVA", airportName: "Reykjahl\xED\xF0", parentCitySlug: "akureyri" },
+  { slug: "mvd", displayName: "MVD", country: "Uruguay", countryCode: "UY", iana: "America/Montevideo", lat: -34.8384, lng: -56.0308, aliases: ["mvd"], wikidataId: null, iata: "MVD", airportName: "Carrasco International /General C L Berisso", parentCitySlug: "montevideo" },
+  { slug: "mxp", displayName: "MXP", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.6306, lng: 8.7281, aliases: ["mxp"], wikidataId: null, iata: "MXP", airportName: "Malpensa International", parentCitySlug: "milan" },
+  { slug: "mxs", displayName: "MXS", country: "Samoa", countryCode: "WS", iana: "Pacific/Apia", lat: -13.7423, lng: -172.258, aliases: ["mxs"], wikidataId: null, iata: "MXS", airportName: "Maota", parentCitySlug: "apia" },
+  { slug: "myv", displayName: "MYV", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 39.0978, lng: -121.57, aliases: ["myv"], wikidataId: null, iata: "MYV", airportName: "Yuba County", parentCitySlug: "sacramento" },
+  { slug: "myy", displayName: "MYY", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 4.322, lng: 113.987, aliases: ["myy"], wikidataId: null, iata: "MYY", airportName: "Miri", parentCitySlug: "seria" },
+  { slug: "mzk", displayName: "MZK", country: "Kiribati", countryCode: "KI", iana: "Pacific/Tarawa", lat: 2.0586, lng: 173.271, aliases: ["mzk"], wikidataId: null, iata: "MZK", airportName: "Marakei", parentCitySlug: "tarawa" },
+  { slug: "mzm", displayName: "MZM", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 49.0717, lng: 6.1317, aliases: ["mzm"], wikidataId: null, iata: "MZM", airportName: "Metz-Frescaty (BA 128) Air Base", parentCitySlug: "luxembourg-city" },
+  { slug: "nap", displayName: "NAP", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 40.886, lng: 14.2908, aliases: ["nap"], wikidataId: null, iata: "NAP", airportName: "Naples International", parentCitySlug: "sorrento" },
+  { slug: "nas", displayName: "NAS", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 25.039, lng: -77.4662, aliases: ["nas"], wikidataId: null, iata: "NAS", airportName: "Lynden Pindling International", parentCitySlug: "nassau" },
+  { slug: "nay", displayName: "NAY", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 39.7828, lng: 116.388, aliases: ["nay"], wikidataId: null, iata: "NAY", airportName: "Beijing Nanyuan", parentCitySlug: "beijing" },
+  { slug: "nbg", displayName: "NBG", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.8253, lng: -90.035, aliases: ["nbg"], wikidataId: null, iata: "NBG", airportName: "New Orleans NAS JRB/Alvin Callender Field", parentCitySlug: "new-orleans" },
+  { slug: "nbo", displayName: "NBO", country: "Kenya", countryCode: "KE", iana: "Africa/Nairobi", lat: -1.3192, lng: 36.9278, aliases: ["nbo"], wikidataId: null, iata: "NBO", airportName: "Jomo Kenyatta International", parentCitySlug: "nairobi" },
+  { slug: "nce", displayName: "NCE", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 43.6584, lng: 7.2159, aliases: ["nce"], wikidataId: null, iata: "NCE", airportName: "Nice-C\xF4te d'Azur", parentCitySlug: "monaco" },
+  { slug: "ncu", displayName: "NCU", country: "Uzbekistan", countryCode: "UZ", iana: "Asia/Samarkand", lat: 42.4884, lng: 59.6233, aliases: ["ncu"], wikidataId: null, iata: "NCU", airportName: "Nukus", parentCitySlug: "nukus" },
+  { slug: "nel", displayName: "NEL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.0333, lng: -74.3533, aliases: ["nel"], wikidataId: null, iata: "NEL", airportName: "Lakehurst Maxfield Field", parentCitySlug: "philadelphia" },
+  { slug: "new", displayName: "NEW", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 30.0424, lng: -90.0283, aliases: ["new"], wikidataId: null, iata: "NEW", airportName: "Lakefront", parentCitySlug: "new-orleans" },
+  { slug: "ngf", displayName: "NGF", country: "USA", countryCode: "US", iana: "Pacific/Honolulu", lat: 21.4505, lng: -157.768, aliases: ["ngf"], wikidataId: null, iata: "NGF", airportName: "Kaneohe Bay MCAS (Marion E. Carl Field)", parentCitySlug: "honolulu" },
+  { slug: "ngz", displayName: "NGZ", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.7889, lng: -122.32, aliases: ["ngz"], wikidataId: null, iata: "NGZ", airportName: "Alameda Naval Air Station", parentCitySlug: "san-francisco" },
+  { slug: "nhd", displayName: "NHD", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 25.0268, lng: 55.3662, aliases: ["nhd"], wikidataId: null, iata: "NHD", airportName: "Al Minhad Air Base", parentCitySlug: "dubai" },
+  { slug: "nht", displayName: "NHT", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.553, lng: -0.4182, aliases: ["nht"], wikidataId: null, iata: "NHT", airportName: "RAF Northolt", parentCitySlug: "london" },
+  { slug: "nja", displayName: "NJA", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 35.4546, lng: 139.45, aliases: ["nja"], wikidataId: null, iata: "NJA", airportName: "Atsugi Naval Air Facility", parentCitySlug: "tokyo" },
+  { slug: "nkx", displayName: "NKX", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 32.8684, lng: -117.143, aliases: ["nkx"], wikidataId: null, iata: "NKX", airportName: "Miramar Marine Corps Air Station - Mitscher Field", parentCitySlug: "san-diego" },
+  { slug: "nlo", displayName: "NLO", country: "DR Congo", countryCode: "CD", iana: "Africa/Kinshasa", lat: -4.3267, lng: 15.3275, aliases: ["nlo"], wikidataId: null, iata: "NLO", airportName: "Ndolo", parentCitySlug: "kinshasa" },
+  { slug: "nmc", displayName: "NMC", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 24.5943, lng: -76.8202, aliases: ["nmc"], wikidataId: null, iata: "NMC", airportName: "Normans Cay", parentCitySlug: "nassau" },
+  { slug: "not", displayName: "NOT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.1436, lng: -122.556, aliases: ["not"], wikidataId: null, iata: "NOT", airportName: "Marin County Airport - Gnoss Field", parentCitySlug: "san-francisco" },
+  { slug: "nou", displayName: "NOU", country: "New Caledonia", countryCode: "NC", iana: "Pacific/Noumea", lat: -22.0146, lng: 166.213, aliases: ["nou"], wikidataId: null, iata: "NOU", airportName: "La Tontouta International", parentCitySlug: "noumea" },
+  { slug: "nrr", displayName: "NRR", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.2453, lng: -65.6434, aliases: ["nrr"], wikidataId: null, iata: "NRR", airportName: "Jos\xE9 Aponte de la Torre", parentCitySlug: "san-juan" },
+  { slug: "nrt", displayName: "NRT", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 35.7647, lng: 140.386, aliases: ["nrt"], wikidataId: null, iata: "NRT", airportName: "Narita International", parentCitySlug: "tokyo" },
+  { slug: "nue", displayName: "NUE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.4987, lng: 11.0781, aliases: ["nue"], wikidataId: null, iata: "NUE", airportName: "Nuremberg", parentCitySlug: "nuremberg" },
+  { slug: "nuq", displayName: "NUQ", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.4161, lng: -122.049, aliases: ["nuq"], wikidataId: null, iata: "NUQ", airportName: "Moffett Federal Airfield", parentCitySlug: "san-francisco" },
+  { slug: "nxx", displayName: "NXX", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.1998, lng: -75.1482, aliases: ["nxx"], wikidataId: null, iata: "NXX", airportName: "Willow Grove Naval Air Station/Joint Reserve Base", parentCitySlug: "philadelphia" },
+  { slug: "nyu", displayName: "NYU", country: "Myanmar", countryCode: "MM", iana: "Asia/Rangoon", lat: 21.1788, lng: 94.9302, aliases: ["nyu"], wikidataId: null, iata: "NYU", airportName: "Bagan", parentCitySlug: "bagan" },
+  { slug: "nzj", displayName: "NZJ", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.6761, lng: -117.731, aliases: ["nzj"], wikidataId: null, iata: "NZJ", airportName: "El Toro Marine Corps Air Station", parentCitySlug: "irvine" },
+  { slug: "nzy", displayName: "NZY", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 32.6992, lng: -117.215, aliases: ["nzy"], wikidataId: null, iata: "NZY", airportName: "North Island Naval Air Station-Halsey Field", parentCitySlug: "san-diego" },
+  { slug: "oak", displayName: "OAK", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.7213, lng: -122.221, aliases: ["oak"], wikidataId: null, iata: "OAK", airportName: "Metropolitan Oakland International", parentCitySlug: "san-francisco" },
+  { slug: "obf", displayName: "OBF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.0814, lng: 11.2831, aliases: ["obf"], wikidataId: null, iata: "OBF", airportName: "Oberpfaffenhofen", parentCitySlug: "munich" },
+  { slug: "obl", displayName: "OBL", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 51.2647, lng: 4.7533, aliases: ["obl"], wikidataId: null, iata: "OBL", airportName: "Zoersel (Oostmalle) Airfield", parentCitySlug: "brussels" },
+  { slug: "oca", displayName: "OCA", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.3254, lng: -80.2748, aliases: ["oca"], wikidataId: null, iata: "OCA", airportName: "Ocean Reef Club", parentCitySlug: "miami" },
+  { slug: "ocn", displayName: "OCN", country: "Australia", countryCode: "AU", iana: "America/Los_Angeles", lat: 33.2173, lng: -117.354, aliases: ["ocn"], wikidataId: null, iata: "OCN", airportName: "Oceanside Municipal", parentCitySlug: "san-diego" },
+  { slug: "odb", displayName: "ODB", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 37.842, lng: -4.8489, aliases: ["odb"], wikidataId: null, iata: "ODB", airportName: "C\xF3rdoba", parentCitySlug: "cordoba-spain" },
+  { slug: "odh", displayName: "ODH", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.2341, lng: -0.9428, aliases: ["odh"], wikidataId: null, iata: "ODH", airportName: "RAF Odiham", parentCitySlug: "london" },
+  { slug: "ods", displayName: "ODS", country: "Ukraine", countryCode: "UA", iana: "Europe/Kiev", lat: 46.4268, lng: 30.6765, aliases: ["ods"], wikidataId: null, iata: "ODS", airportName: "Odessa International", parentCitySlug: "odessa" },
+  { slug: "ogl", displayName: "OGL", country: "Guyana", countryCode: "GY", iana: "America/Guyana", lat: 6.8063, lng: -58.1059, aliases: ["ogl"], wikidataId: null, iata: "OGL", airportName: "Eugene F. Correira International", parentCitySlug: "georgetown" },
+  { slug: "oko", displayName: "OKO", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 35.7485, lng: 139.348, aliases: ["oko"], wikidataId: null, iata: "OKO", airportName: "Yokota Air Base", parentCitySlug: "tokyo" },
+  { slug: "omf", displayName: "OMF", country: "Jordan", countryCode: "JO", iana: "Asia/Amman", lat: 32.3564, lng: 36.2592, aliases: ["omf"], wikidataId: null, iata: "OMF", airportName: "King Hussein Air College", parentCitySlug: "amman" },
+  { slug: "omo", displayName: "OMO", country: "Bosnia and Herzegovina", countryCode: "BA", iana: "Europe/Sarajevo", lat: 43.2829, lng: 17.8459, aliases: ["omo"], wikidataId: null, iata: "OMO", airportName: "Mostar International", parentCitySlug: "mostar" },
+  { slug: "omr", displayName: "OMR", country: "Romania", countryCode: "RO", iana: "Europe/Bucharest", lat: 47.0253, lng: 21.9025, aliases: ["omr"], wikidataId: null, iata: "OMR", airportName: "Oradea International", parentCitySlug: "debrecen" },
+  { slug: "ont", displayName: "ONT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.056, lng: -117.601, aliases: ["ont"], wikidataId: null, iata: "ONT", airportName: "Ontario International", parentCitySlug: "irvine" },
+  { slug: "onx", displayName: "ONX", country: "Panama", countryCode: "PA", iana: "America/Panama", lat: 9.3566, lng: -79.8674, aliases: ["onx"], wikidataId: null, iata: "ONX", airportName: "Enrique Adolfo Jimenez", parentCitySlug: "panama-city" },
+  { slug: "opf", displayName: "OPF", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.907, lng: -80.2784, aliases: ["opf"], wikidataId: null, iata: "OPF", airportName: "Opa-locka Executive", parentCitySlug: "miami" },
+  { slug: "opo", displayName: "OPO", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 41.2481, lng: -8.6814, aliases: ["opo"], wikidataId: null, iata: "OPO", airportName: "Francisco de S\xE1 Carneiro", parentCitySlug: "matosinhos" },
+  { slug: "ord", displayName: "ORD", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.9786, lng: -87.9048, aliases: ["ord"], wikidataId: null, iata: "ORD", airportName: "Chicago O'Hare International", parentCitySlug: "chicago" },
+  { slug: "orh", displayName: "ORH", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.2673, lng: -71.8757, aliases: ["orh"], wikidataId: null, iata: "ORH", airportName: "Worcester Regional", parentCitySlug: "boston" },
+  { slug: "ory", displayName: "ORY", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.7233, lng: 2.3794, aliases: ["ory"], wikidataId: null, iata: "ORY", airportName: "Paris-Orly", parentCitySlug: "paris" },
+  { slug: "osf", displayName: "OSF", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.5117, lng: 37.5072, aliases: ["osf"], wikidataId: null, iata: "OSF", airportName: "Ostafyevo International", parentCitySlug: "moscow" },
+  { slug: "osl", displayName: "OSL", country: "Norway", countryCode: "NO", iana: "Europe/Oslo", lat: 60.121, lng: 11.0502, aliases: ["osl"], wikidataId: null, iata: "OSL", airportName: "Oslo Lufthavn", parentCitySlug: "oslo" },
+  { slug: "osn", displayName: "OSN", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 37.0906, lng: 127.03, aliases: ["osn"], wikidataId: null, iata: "OSN", airportName: "Osan Air Base", parentCitySlug: "seoul" },
+  { slug: "ost", displayName: "OST", country: "Belgium", countryCode: "BE", iana: "Europe/Brussels", lat: 51.1989, lng: 2.8622, aliases: ["ost"], wikidataId: null, iata: "OST", airportName: "Ostend-Bruges International", parentCitySlug: "bruges" },
+  { slug: "osu", displayName: "OSU", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.0798, lng: -83.073, aliases: ["osu"], wikidataId: null, iata: "OSU", airportName: "The Ohio State University Airport - Don Scott Field", parentCitySlug: "columbus" },
+  { slug: "otp", displayName: "OTP", country: "Romania", countryCode: "RO", iana: "Europe/Bucharest", lat: 44.5711, lng: 26.085, aliases: ["otp"], wikidataId: null, iata: "OTP", airportName: "Henri Coand\u0103 International", parentCitySlug: "bucharest" },
+  { slug: "oua", displayName: "OUA", country: "Burkina Faso", countryCode: "BF", iana: "Africa/Ouagadougou", lat: 12.3532, lng: -1.5124, aliases: ["oua"], wikidataId: null, iata: "OUA", airportName: "Ouagadougou", parentCitySlug: "ouagadougou" },
+  { slug: "ovd", displayName: "OVD", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 43.5636, lng: -6.0346, aliases: ["ovd"], wikidataId: null, iata: "OVD", airportName: "Asturias", parentCitySlug: "gijon" },
+  { slug: "owd", displayName: "OWD", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.1905, lng: -71.1729, aliases: ["owd"], wikidataId: null, iata: "OWD", airportName: "Norwood Memorial", parentCitySlug: "boston" },
+  { slug: "oxc", displayName: "OXC", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.4786, lng: -73.1352, aliases: ["oxc"], wikidataId: null, iata: "OXC", airportName: "Waterbury Oxford", parentCitySlug: "hartford" },
+  { slug: "pac", displayName: "PAC", country: "Panama", countryCode: "PA", iana: "America/Panama", lat: 8.9733, lng: -79.5556, aliases: ["pac"], wikidataId: null, iata: "PAC", airportName: "Marcos A. Gelabert International", parentCitySlug: "panama-city" },
+  { slug: "pad", displayName: "PAD", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 51.6141, lng: 8.6163, aliases: ["pad"], wikidataId: null, iata: "PAD", airportName: "Paderborn Lippstadt", parentCitySlug: "bielefeld" },
+  { slug: "pae", displayName: "PAE", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.9063, lng: -122.282, aliases: ["pae"], wikidataId: null, iata: "PAE", airportName: "Snohomish County (Paine Field)", parentCitySlug: "seattle" },
+  { slug: "pao", displayName: "PAO", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.4611, lng: -122.115, aliases: ["pao"], wikidataId: null, iata: "PAO", airportName: "Palo Alto Airport of Santa Clara County", parentCitySlug: "san-francisco" },
+  { slug: "pap", displayName: "PAP", country: "Haiti", countryCode: "HT", iana: "America/Port-au-Prince", lat: 18.58, lng: -72.2925, aliases: ["pap"], wikidataId: null, iata: "PAP", airportName: "Toussaint Louverture International", parentCitySlug: "port-au-prince" },
+  { slug: "paq", displayName: "PAQ", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.5949, lng: -149.089, aliases: ["paq"], wikidataId: null, iata: "PAQ", airportName: 'Warren "Bud" Woods Palmer Municipal', parentCitySlug: "anchorage" },
+  { slug: "pbh", displayName: "PBH", country: "Bhutan", countryCode: "BT", iana: "Asia/Thimphu", lat: 27.4032, lng: 89.4246, aliases: ["pbh"], wikidataId: null, iata: "PBH", airportName: "Paro", parentCitySlug: "thimphu" },
+  { slug: "pcb", displayName: "PCB", country: "Indonesia", countryCode: "ID", iana: "Asia/Jakarta", lat: -6.337, lng: 106.765, aliases: ["pcb"], wikidataId: null, iata: "PCB", airportName: "Pondok Cabe Air Base", parentCitySlug: "jakarta" },
+  { slug: "pcn", displayName: "PCN", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -41.3461, lng: 173.956, aliases: ["pcn"], wikidataId: null, iata: "PCN", airportName: "Picton Aerodrome", parentCitySlug: "wellington" },
+  { slug: "pdk", displayName: "PDK", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.8756, lng: -84.302, aliases: ["pdk"], wikidataId: null, iata: "PDK", airportName: "DeKalb Peachtree", parentCitySlug: "atlanta" },
+  { slug: "pdx", displayName: "PDX", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 45.5887, lng: -122.598, aliases: [], wikidataId: null, iata: "PDX", airportName: "Portland International", parentCitySlug: "portland" },
+  { slug: "pek", displayName: "PEK", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 40.0801, lng: 116.585, aliases: ["pek"], wikidataId: null, iata: "PEK", airportName: "Beijing Capital International", parentCitySlug: "beijing" },
+  { slug: "per", displayName: "PER", country: "Australia", countryCode: "AU", iana: "Australia/Perth", lat: -31.9403, lng: 115.967, aliases: ["per"], wikidataId: null, iata: "PER", airportName: "Perth International", parentCitySlug: "perth" },
+  { slug: "pfo", displayName: "PFO", country: "Cyprus", countryCode: "CY", iana: "Asia/Nicosia", lat: 34.718, lng: 32.4857, aliases: ["pfo"], wikidataId: null, iata: "PFO", airportName: "Paphos International", parentCitySlug: "paphos" },
+  { slug: "phl", displayName: "PHL", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.8719, lng: -75.2411, aliases: ["phl"], wikidataId: null, iata: "PHL", airportName: "Philadelphia International", parentCitySlug: "philadelphia" },
+  { slug: "phx", displayName: "PHX", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.4343, lng: -112.012, aliases: ["phx"], wikidataId: null, iata: "PHX", airportName: "Phoenix Sky Harbor International", parentCitySlug: "phoenix" },
+  { slug: "pia", displayName: "PIA", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 40.6642, lng: -89.6933, aliases: ["pia"], wikidataId: null, iata: "PIA", airportName: "General Wayne A. Downing Peoria International", parentCitySlug: "peoria" },
+  { slug: "pid", displayName: "PID", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 25.083, lng: -77.3, aliases: ["pid"], wikidataId: null, iata: "PID", airportName: "Nassau Paradise Island", parentCitySlug: "nassau" },
+  { slug: "pit", displayName: "PIT", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.4915, lng: -80.2329, aliases: ["pit"], wikidataId: null, iata: "PIT", airportName: "Pittsburgh International", parentCitySlug: "pittsburgh" },
+  { slug: "pkk", displayName: "PKK", country: "Myanmar", countryCode: "MM", iana: "Asia/Rangoon", lat: 21.4043, lng: 95.1113, aliases: ["pkk"], wikidataId: null, iata: "PKK", airportName: "Pakhokku", parentCitySlug: "bagan" },
+  { slug: "pkx", displayName: "PKX", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 39.5099, lng: 116.4109, aliases: ["pkx"], wikidataId: null, iata: "PKX", airportName: "Beijing Daxing International", parentCitySlug: "beijing" },
+  { slug: "pmd", displayName: "PMD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.6294, lng: -118.085, aliases: ["pmd"], wikidataId: null, iata: "PMD", airportName: "Palmdale Regional/USAF Plant 42", parentCitySlug: "los-angeles" },
+  { slug: "pmo", displayName: "PMO", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 38.176, lng: 13.091, aliases: ["pmo"], wikidataId: null, iata: "PMO", airportName: "Falcone\u2013Borsellino", parentCitySlug: "palermo" },
+  { slug: "pne", displayName: "PNE", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.0819, lng: -75.0106, aliases: ["pne"], wikidataId: null, iata: "PNE", airportName: "Northeast Philadelphia", parentCitySlug: "philadelphia" },
+  { slug: "pnh", displayName: "PNH", country: "Cambodia", countryCode: "KH", iana: "Asia/Phnom_Penh", lat: 11.5466, lng: 104.844, aliases: ["pnh"], wikidataId: null, iata: "PNH", airportName: "Phnom Penh International", parentCitySlug: "phnom-penh" },
+  { slug: "poc", displayName: "POC", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.0916, lng: -117.782, aliases: ["poc"], wikidataId: null, iata: "POC", airportName: "Brackett Field", parentCitySlug: "los-angeles" },
+  { slug: "pow", displayName: "POW", country: "Slovenia", countryCode: "SI", iana: "Europe/Ljubljana", lat: 45.4734, lng: 13.615, aliases: ["pow"], wikidataId: null, iata: "POW", airportName: "Portoroz", parentCitySlug: "trieste" },
+  { slug: "pox", displayName: "POX", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 49.0967, lng: 2.0408, aliases: ["pox"], wikidataId: null, iata: "POX", airportName: "Pontoise - Cormeilles-en-Vexin", parentCitySlug: "paris" },
+  { slug: "poz", displayName: "POZ", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 52.421, lng: 16.8263, aliases: ["poz"], wikidataId: null, iata: "POZ", airportName: "Pozna\u0144-\u0141awica", parentCitySlug: "poznan" },
+  { slug: "ppm", displayName: "PPM", country: "USA", countryCode: "US", iana: "America/New_York", lat: 26.2471, lng: -80.1111, aliases: ["ppm"], wikidataId: null, iata: "PPM", airportName: "Pompano Beach Airpark", parentCitySlug: "miami" },
+  { slug: "ppq", displayName: "PPQ", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -40.9047, lng: 174.989, aliases: ["ppq"], wikidataId: null, iata: "PPQ", airportName: "Paraparaumu", parentCitySlug: "wellington" },
+  { slug: "pqc", displayName: "PQC", country: "Vietnam", countryCode: "VN", iana: "Asia/Saigon", lat: 10.1698, lng: 103.9931, aliases: ["pqc"], wikidataId: null, iata: "PQC", airportName: "Phu Quoc International", parentCitySlug: "sihanoukville" },
+  { slug: "prg", displayName: "PRG", country: "Czech Republic", countryCode: "CZ", iana: "Europe/Prague", lat: 50.1008, lng: 14.26, aliases: ["prg"], wikidataId: null, iata: "PRG", airportName: "V\xE1clav Havel Airport Prague", parentCitySlug: "prague" },
+  { slug: "prn", displayName: "PRN", country: "Serbia", countryCode: "RS", iana: "Europe/Belgrade", lat: 42.5728, lng: 21.0358, aliases: ["prn"], wikidataId: null, iata: "PRN", airportName: "Pri\u0161tina International", parentCitySlug: "pristina" },
+  { slug: "pry", displayName: "PRY", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -25.6539, lng: 28.2242, aliases: ["pry"], wikidataId: null, iata: "PRY", airportName: "Wonderboom", parentCitySlug: "johannesburg" },
+  { slug: "psa", displayName: "PSA", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 43.6839, lng: 10.3927, aliases: ["psa"], wikidataId: null, iata: "PSA", airportName: "Pisa International", parentCitySlug: "forte-dei-marmi" },
+  { slug: "pse", displayName: "PSE", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.0083, lng: -66.563, aliases: ["pse"], wikidataId: null, iata: "PSE", airportName: "Mercedita", parentCitySlug: "san-juan" },
+  { slug: "psl", displayName: "PSL", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 56.4392, lng: -3.3722, aliases: ["psl"], wikidataId: null, iata: "PSL", airportName: "Perth/Scone", parentCitySlug: "edinburgh" },
+  { slug: "ptk", displayName: "PTK", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.6655, lng: -83.4201, aliases: ["ptk"], wikidataId: null, iata: "PTK", airportName: "Oakland County International", parentCitySlug: "detroit" },
+  { slug: "pty", displayName: "PTY", country: "Panama", countryCode: "PA", iana: "America/Panama", lat: 9.0714, lng: -79.3835, aliases: ["pty"], wikidataId: null, iata: "PTY", airportName: "Tocumen International", parentCitySlug: "panama-city" },
+  { slug: "pus", displayName: "PUS", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 35.1795, lng: 128.938, aliases: ["pus"], wikidataId: null, iata: "PUS", airportName: "Gimhae International", parentCitySlug: "busan" },
+  { slug: "pvd", displayName: "PVD", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.7326, lng: -71.4204, aliases: ["pvd"], wikidataId: null, iata: "PVD", airportName: "Theodore Francis Green State", parentCitySlug: "boston" },
+  { slug: "pvg", displayName: "PVG", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 31.1434, lng: 121.805, aliases: ["pvg"], wikidataId: null, iata: "PVG", airportName: "Shanghai Pudong International", parentCitySlug: "shanghai" },
+  { slug: "pwk", displayName: "PWK", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 42.1142, lng: -87.9015, aliases: ["pwk"], wikidataId: null, iata: "PWK", airportName: "Chicago Executive", parentCitySlug: "chicago" },
+  { slug: "pwt", displayName: "PWT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.4902, lng: -122.765, aliases: ["pwt"], wikidataId: null, iata: "PWT", airportName: "Bremerton National", parentCitySlug: "seattle" },
+  { slug: "pyk", displayName: "PYK", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 35.7761, lng: 50.8267, aliases: ["pyk"], wikidataId: null, iata: "PYK", airportName: "Payam International", parentCitySlug: "tehran" },
+  { slug: "pym", displayName: "PYM", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.909, lng: -70.7288, aliases: ["pym"], wikidataId: null, iata: "PYM", airportName: "Plymouth Municipal", parentCitySlug: "boston" },
+  { slug: "pzy", displayName: "PZY", country: "Slovakia", countryCode: "SK", iana: "Europe/Bratislava", lat: 48.6252, lng: 17.8284, aliases: ["pzy"], wikidataId: null, iata: "PZY", airportName: "Pie\u0161\u0165any", parentCitySlug: "bratislava" },
+  { slug: "qef", displayName: "QEF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.96, lng: 8.6458, aliases: ["qef"], wikidataId: null, iata: "QEF", airportName: "Frankfurt-Egelsbach", parentCitySlug: "frankfurt" },
+  { slug: "qfo", displayName: "QFO", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 52.0908, lng: 0.1319, aliases: ["qfo"], wikidataId: null, iata: "QFO", airportName: "Duxford Aerodrome", parentCitySlug: "london" },
+  { slug: "qhr", displayName: "QHR", country: "Ethiopia", countryCode: "ET", iana: "Africa/Addis_Ababa", lat: 8.7163, lng: 39.0059, aliases: ["qhr"], wikidataId: null, iata: "QHR", airportName: "Harar Meda", parentCitySlug: "addis-ababa" },
+  { slug: "qla", displayName: "QLA", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.1872, lng: -1.0335, aliases: ["qla"], wikidataId: null, iata: "QLA", airportName: "Lasham", parentCitySlug: "london" },
+  { slug: "qld", displayName: "QLD", country: "Algeria", countryCode: "DZ", iana: "Africa/Algiers", lat: 36.5036, lng: 2.8142, aliases: ["qld"], wikidataId: null, iata: "QLD", airportName: "Blida", parentCitySlug: "algiers" },
+  { slug: "qlp", displayName: "QLP", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 44.088, lng: 9.988, aliases: ["qlp"], wikidataId: null, iata: "QLP", airportName: "Sarzana-Luni Air Base", parentCitySlug: "forte-dei-marmi" },
+  { slug: "qlr", displayName: "QLR", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 39.8283, lng: -8.8875, aliases: ["qlr"], wikidataId: null, iata: "QLR", airportName: "Monte Real Air Base", parentCitySlug: "leiria" },
+  { slug: "qlt", displayName: "QLT", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 41.5424, lng: 12.909, aliases: ["qlt"], wikidataId: null, iata: "QLT", airportName: "Latina Air Base", parentCitySlug: "rome" },
+  { slug: "qnc", displayName: "QNC", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.9575, lng: 6.8647, aliases: ["qnc"], wikidataId: null, iata: "QNC", airportName: "Neuchatel", parentCitySlug: "bern" },
+  { slug: "qnv", displayName: "QNV", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -22.7453, lng: -43.4603, aliases: ["qnv"], wikidataId: null, iata: "QNV", airportName: "Aeroclube", parentCitySlug: "rio-de-janeiro" },
+  { slug: "qpa", displayName: "QPA", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.3958, lng: 11.8479, aliases: ["qpa"], wikidataId: null, iata: "QPA", airportName: "Padova", parentCitySlug: "venice" },
+  { slug: "qpg", displayName: "QPG", country: "Singapore", countryCode: "SG", iana: "Asia/Singapore", lat: 1.3604, lng: 103.91, aliases: ["qpg"], wikidataId: null, iata: "QPG", airportName: "Paya Lebar Air Base", parentCitySlug: "singapore" },
+  { slug: "qra", displayName: "QRA", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -26.2425, lng: 28.1512, aliases: ["qra"], wikidataId: null, iata: "QRA", airportName: "Rand", parentCitySlug: "johannesburg" },
+  { slug: "qsa", displayName: "QSA", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 41.5209, lng: 2.1051, aliases: ["qsa"], wikidataId: null, iata: "QSA", airportName: "Sabadell", parentCitySlug: "barcelona" },
+  { slug: "qsn", displayName: "QSN", country: "Cuba", countryCode: "CU", iana: "America/Havana", lat: 22.7561, lng: -81.9209, aliases: ["qsn"], wikidataId: null, iata: "QSN", airportName: "San Nicolas De Bari", parentCitySlug: "havana" },
+  { slug: "qsr", displayName: "QSR", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 40.6204, lng: 14.9113, aliases: ["qsr"], wikidataId: null, iata: "QSR", airportName: "Salerno Costa d'Amalfi", parentCitySlug: "sorrento" },
+  { slug: "qxh", displayName: "QXH", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 52.2036, lng: 13.1564, aliases: ["qxh"], wikidataId: null, iata: "QXH", airportName: "Sch\xF6nhagen", parentCitySlug: "berlin" },
+  { slug: "qyd", displayName: "QYD", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 54.5797, lng: 18.5172, aliases: ["qyd"], wikidataId: null, iata: "QYD", airportName: "Oksywie Military Air Base", parentCitySlug: "gdansk" },
+  { slug: "rak", displayName: "RAK", country: "Morocco", countryCode: "MA", iana: "Africa/Casablanca", lat: 31.6069, lng: -8.0363, aliases: ["rak"], wikidataId: null, iata: "RAK", airportName: "Menara", parentCitySlug: "marrakesh" },
+  { slug: "ral", displayName: "RAL", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.9519, lng: -117.445, aliases: ["ral"], wikidataId: null, iata: "RAL", airportName: "Riverside Municipal", parentCitySlug: "irvine" },
+  { slug: "raz", displayName: "RAZ", country: "Pakistan", countryCode: "PK", iana: "Asia/Karachi", lat: 33.8497, lng: 73.7981, aliases: ["raz"], wikidataId: null, iata: "RAZ", airportName: "Rawalakot", parentCitySlug: "islamabad" },
+  { slug: "rbd", displayName: "RBD", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 32.6809, lng: -96.8682, aliases: ["rbd"], wikidataId: null, iata: "RBD", airportName: "Dallas Executive", parentCitySlug: "dallas" },
+  { slug: "rbk", displayName: "RBK", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.5742, lng: -117.128, aliases: ["rbk"], wikidataId: null, iata: "RBK", airportName: "French Valley", parentCitySlug: "irvine" },
+  { slug: "rcs", displayName: "RCS", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.3519, lng: 0.5033, aliases: ["rcs"], wikidataId: null, iata: "RCS", airportName: "Rochester", parentCitySlug: "london" },
+  { slug: "rgn", displayName: "RGN", country: "Myanmar", countryCode: "MM", iana: "Asia/Rangoon", lat: 16.9073, lng: 96.1332, aliases: ["rgn"], wikidataId: null, iata: "RGN", airportName: "Yangon International", parentCitySlug: "yangon" },
+  { slug: "rhv", displayName: "RHV", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.3329, lng: -121.819, aliases: ["rhv"], wikidataId: null, iata: "RHV", airportName: "Reid-Hillview Airport of Santa Clara County", parentCitySlug: "san-francisco" },
+  { slug: "riv", displayName: "RIV", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.8807, lng: -117.259, aliases: ["riv"], wikidataId: null, iata: "RIV", airportName: "March ARB", parentCitySlug: "irvine" },
+  { slug: "rix", displayName: "RIX", country: "Latvia", countryCode: "LV", iana: "Europe/Riga", lat: 56.9236, lng: 23.9711, aliases: ["rix"], wikidataId: null, iata: "RIX", airportName: "Riga International", parentCitySlug: "riga" },
+  { slug: "rke", displayName: "RKE", country: "Denmark", countryCode: "DK", iana: "Europe/Copenhagen", lat: 55.5856, lng: 12.1314, aliases: ["rke"], wikidataId: null, iata: "RKE", airportName: "Copenhagen Roskilde", parentCitySlug: "copenhagen" },
+  { slug: "rkv", displayName: "RKV", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 64.13, lng: -21.9406, aliases: ["rkv"], wikidataId: null, iata: "RKV", airportName: "Reykjavik", parentCitySlug: "reykjavik" },
+  { slug: "rmi", displayName: "RMI", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 44.0203, lng: 12.6117, aliases: ["rmi"], wikidataId: null, iata: "RMI", airportName: "Federico Fellini International", parentCitySlug: "san-marino" },
+  { slug: "rml", displayName: "RML", country: "Sri Lanka", countryCode: "LK", iana: "Asia/Colombo", lat: 6.822, lng: 79.8862, aliases: ["rml"], wikidataId: null, iata: "RML", airportName: "Colombo Ratmalana", parentCitySlug: "colombo" },
+  { slug: "rne", displayName: "RNE", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 46.0583, lng: 4.0014, aliases: ["rne"], wikidataId: null, iata: "RNE", airportName: "Roanne-Renaison", parentCitySlug: "lyon" },
+  { slug: "rns", displayName: "RNS", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.0695, lng: -1.7348, aliases: ["rns"], wikidataId: null, iata: "RNS", airportName: "Rennes-Saint-Jacques", parentCitySlug: "rennes" },
+  { slug: "rnt", displayName: "RNT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.4931, lng: -122.216, aliases: ["rnt"], wikidataId: null, iata: "RNT", airportName: "Renton Municipal", parentCitySlug: "seattle" },
+  { slug: "rpn", displayName: "RPN", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 32.981, lng: 35.5719, aliases: ["rpn"], wikidataId: null, iata: "RPN", airportName: "Ben Ya'akov", parentCitySlug: "haifa" },
+  { slug: "rtm", displayName: "RTM", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 51.9569, lng: 4.4372, aliases: ["rtm"], wikidataId: null, iata: "RTM", airportName: "Rotterdam The Hague", parentCitySlug: "rotterdam" },
+  { slug: "rts", displayName: "RTS", country: "Australia", countryCode: "AU", iana: "Australia/Perth", lat: -32.0067, lng: 115.54, aliases: ["rts"], wikidataId: null, iata: "RTS", airportName: "Rottnest Island", parentCitySlug: "perth" },
+  { slug: "ruh", displayName: "RUH", country: "Saudi Arabia", countryCode: "SA", iana: "Asia/Riyadh", lat: 24.9576, lng: 46.6988, aliases: ["ruh"], wikidataId: null, iata: "RUH", airportName: "King Khaled International", parentCitySlug: "riyadh" },
+  { slug: "ryg", displayName: "RYG", country: "Norway", countryCode: "NO", iana: "Europe/Oslo", lat: 59.3788, lng: 10.7854, aliases: ["ryg"], wikidataId: null, iata: "RYG", airportName: "Moss Airport, Rygge", parentCitySlug: "oslo" },
+  { slug: "sac", displayName: "SAC", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.5125, lng: -121.493, aliases: ["sac"], wikidataId: null, iata: "SAC", airportName: "Sacramento Executive", parentCitySlug: "sacramento" },
+  { slug: "sak", displayName: "SAK", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 65.7317, lng: -19.5728, aliases: ["sak"], wikidataId: null, iata: "SAK", airportName: "Sau\xF0\xE1rkr\xF3kur", parentCitySlug: "akureyri" },
+  { slug: "sal", displayName: "SAL", country: "El Salvador", countryCode: "SV", iana: "America/El_Salvador", lat: 13.4409, lng: -89.0557, aliases: ["sal"], wikidataId: null, iata: "SAL", airportName: "Monse\xF1or \xD3scar Arnulfo Romero International", parentCitySlug: "san-salvador" },
+  { slug: "san", displayName: "SAN", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 32.7336, lng: -117.19, aliases: ["san"], wikidataId: null, iata: "SAN", airportName: "San Diego International", parentCitySlug: "san-diego" },
+  { slug: "saq", displayName: "SAQ", country: "Bahamas", countryCode: "BS", iana: "America/Nassau", lat: 25.0538, lng: -78.049, aliases: ["saq"], wikidataId: null, iata: "SAQ", airportName: "San Andros", parentCitySlug: "nassau" },
+  { slug: "saw", displayName: "SAW", country: "Turkey", countryCode: "TR", iana: "Europe/Istanbul", lat: 40.8986, lng: 29.3092, aliases: ["saw"], wikidataId: null, iata: "SAW", airportName: "Sabiha G\xF6k\xE7en International", parentCitySlug: "istanbul" },
+  { slug: "sbd", displayName: "SBD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.0954, lng: -117.235, aliases: ["sbd"], wikidataId: null, iata: "SBD", airportName: "San Bernardino International", parentCitySlug: "irvine" },
+  { slug: "scf", displayName: "SCF", country: "USA", countryCode: "US", iana: "America/Phoenix", lat: 33.6229, lng: -111.911, aliases: ["scf"], wikidataId: null, iata: "SCF", airportName: "Scottsdale", parentCitySlug: "phoenix" },
+  { slug: "scl", displayName: "SCL", country: "Chile", countryCode: "CL", iana: "America/Santiago", lat: -33.393, lng: -70.7858, aliases: ["scl"], wikidataId: null, iata: "SCL", airportName: "Comodoro Arturo Merino Ben\xEDtez International", parentCitySlug: "santiago" },
+  { slug: "scq", displayName: "SCQ", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 42.8963, lng: -8.4151, aliases: ["scq"], wikidataId: null, iata: "SCQ", airportName: "Santiago de Compostela", parentCitySlug: "santiago-de-compostela" },
+  { slug: "sdm", displayName: "SDM", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 32.5723, lng: -116.98, aliases: ["sdm"], wikidataId: null, iata: "SDM", airportName: "Brown Field Municipal", parentCitySlug: "tijuana" },
+  { slug: "sdu", displayName: "SDU", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -22.9105, lng: -43.1631, aliases: ["sdu"], wikidataId: null, iata: "SDU", airportName: "Santos Dumont", parentCitySlug: "rio-de-janeiro" },
+  { slug: "sdv", displayName: "SDV", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 32.1147, lng: 34.7822, aliases: ["sdv"], wikidataId: null, iata: "SDV", airportName: "Sde Dov", parentCitySlug: "tel-aviv" },
+  { slug: "sea", displayName: "SEA", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.449, lng: -122.309, aliases: [], wikidataId: null, iata: "SEA", airportName: "Seattle Tacoma International", parentCitySlug: "seattle" },
+  { slug: "see", displayName: "SEE", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 32.8262, lng: -116.972, aliases: ["see"], wikidataId: null, iata: "SEE", airportName: "Gillespie Field", parentCitySlug: "san-diego" },
+  { slug: "sen", displayName: "SEN", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.5714, lng: 0.6956, aliases: ["sen"], wikidataId: null, iata: "SEN", airportName: "Southend", parentCitySlug: "london" },
+  { slug: "sfo", displayName: "SFO", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.619, lng: -122.375, aliases: ["sfo"], wikidataId: null, iata: "SFO", airportName: "San Francisco International", parentCitySlug: "san-francisco" },
+  { slug: "sfz", displayName: "SFZ", country: "USA", countryCode: "US", iana: "America/New_York", lat: 41.9208, lng: -71.4914, aliases: ["sfz"], wikidataId: null, iata: "SFZ", airportName: "North Central State", parentCitySlug: "boston" },
+  { slug: "sge", displayName: "SGE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.7077, lng: 8.083, aliases: ["sge"], wikidataId: null, iata: "SGE", airportName: "Siegerland", parentCitySlug: "siegen" },
+  { slug: "sgh", displayName: "SGH", country: "USA", countryCode: "US", iana: "America/New_York", lat: 39.8403, lng: -83.8402, aliases: ["sgh"], wikidataId: null, iata: "SGH", airportName: "Springfield-Beckley Municipal", parentCitySlug: "columbus" },
+  { slug: "sgn", displayName: "SGN", country: "Vietnam", countryCode: "VN", iana: "Asia/Saigon", lat: 10.8188, lng: 106.652, aliases: ["sgn"], wikidataId: null, iata: "SGN", airportName: "Tan Son Nhat International", parentCitySlug: "ho-chi-minh-city" },
+  { slug: "sgr", displayName: "SGR", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 29.6223, lng: -95.6565, aliases: ["sgr"], wikidataId: null, iata: "SGR", airportName: "Sugar Land Regional", parentCitySlug: "houston" },
+  { slug: "sha", displayName: "SHA", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 31.1979, lng: 121.336, aliases: ["sha"], wikidataId: null, iata: "SHA", airportName: "Shanghai Hongqiao International", parentCitySlug: "shanghai" },
+  { slug: "shj", displayName: "SHJ", country: "UAE", countryCode: "AE", iana: "Asia/Dubai", lat: 25.3286, lng: 55.5172, aliases: ["shj"], wikidataId: null, iata: "SHJ", airportName: "Sharjah International", parentCitySlug: "dubai" },
+  { slug: "shn", displayName: "SHN", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.2336, lng: -123.148, aliases: ["shn"], wikidataId: null, iata: "SHN", airportName: "Sanderson Field", parentCitySlug: "seattle" },
+  { slug: "sif", displayName: "SIF", country: "Nepal", countryCode: "NP", iana: "Asia/Katmandu", lat: 27.1595, lng: 84.9801, aliases: ["sif"], wikidataId: null, iata: "SIF", airportName: "Simara", parentCitySlug: "kathmandu" },
+  { slug: "sig", displayName: "SIG", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.4568, lng: -66.0981, aliases: ["sig"], wikidataId: null, iata: "SIG", airportName: "Fernando Luis Ribas Dominicci", parentCitySlug: "san-juan" },
+  { slug: "sij", displayName: "SIJ", country: "Iceland", countryCode: "IS", iana: "Atlantic/Reykjavik", lat: 66.1333, lng: -18.9167, aliases: ["sij"], wikidataId: null, iata: "SIJ", airportName: "Siglufj\xF6r\xF0ur", parentCitySlug: "akureyri" },
+  { slug: "sin", displayName: "SIN", country: "Singapore", countryCode: "SG", iana: "Asia/Singapore", lat: 1.3502, lng: 103.994, aliases: ["sin"], wikidataId: null, iata: "SIN", airportName: "Singapore Changi", parentCitySlug: "singapore" },
+  { slug: "sjc", displayName: "SJC", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.3626, lng: -121.929, aliases: ["sjc"], wikidataId: null, iata: "SJC", airportName: "Norman Y. Mineta San Jose International", parentCitySlug: "san-francisco" },
+  { slug: "sjj", displayName: "SJJ", country: "Bosnia and Herzegovina", countryCode: "BA", iana: "Europe/Sarajevo", lat: 43.8246, lng: 18.3315, aliases: ["sjj"], wikidataId: null, iata: "SJJ", airportName: "Sarajevo International", parentCitySlug: "sarajevo" },
+  { slug: "sjo", displayName: "SJO", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 9.9939, lng: -84.2088, aliases: ["sjo"], wikidataId: null, iata: "SJO", airportName: "Juan Santamaria International", parentCitySlug: "alajuela" },
+  { slug: "sju", displayName: "SJU", country: "Puerto Rico", countryCode: "PR", iana: "America/Puerto_Rico", lat: 18.4394, lng: -66.0018, aliases: ["sju"], wikidataId: null, iata: "SJU", airportName: "Luis Munoz Marin International", parentCitySlug: "san-juan" },
+  { slug: "skp", displayName: "SKP", country: "North Macedonia", countryCode: "MK", iana: "Europe/Skopje", lat: 41.9616, lng: 21.6214, aliases: ["skp"], wikidataId: null, iata: "SKP", airportName: "Skopje Alexander the Great", parentCitySlug: "skopje" },
+  { slug: "sle", displayName: "SLE", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 44.9095, lng: -123.003, aliases: ["sle"], wikidataId: null, iata: "SLE", airportName: "Salem Municipal Airport/McNary Field", parentCitySlug: "portland" },
+  { slug: "slu", displayName: "SLU", country: "Saint Lucia", countryCode: "LC", iana: "America/St_Lucia", lat: 14.0202, lng: -60.9929, aliases: ["slu"], wikidataId: null, iata: "SLU", airportName: "George F. L. Charles", parentCitySlug: "soufriere" },
+  { slug: "smf", displayName: "SMF", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.6954, lng: -121.591, aliases: ["smf"], wikidataId: null, iata: "SMF", airportName: "Sacramento International", parentCitySlug: "sacramento" },
+  { slug: "smo", displayName: "SMO", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.0158, lng: -118.451, aliases: ["smo"], wikidataId: null, iata: "SMO", airportName: "Santa Monica Municipal", parentCitySlug: "los-angeles" },
+  { slug: "smv", displayName: "SMV", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.5341, lng: 9.8841, aliases: ["smv"], wikidataId: null, iata: "SMV", airportName: "Samedan", parentCitySlug: "vaduz" },
+  { slug: "sna", displayName: "SNA", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.6757, lng: -117.868, aliases: ["sna"], wikidataId: null, iata: "SNA", airportName: "John Wayne Airport-Orange County", parentCitySlug: "irvine" },
+  { slug: "snz", displayName: "SNZ", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -22.9324, lng: -43.7191, aliases: ["snz"], wikidataId: null, iata: "SNZ", airportName: "Santa Cruz Air Force Base", parentCitySlug: "rio-de-janeiro" },
+  { slug: "sof", displayName: "SOF", country: "Bulgaria", countryCode: "BG", iana: "Europe/Sofia", lat: 42.6967, lng: 23.4114, aliases: ["sof"], wikidataId: null, iata: "SOF", airportName: "Sofia", parentCitySlug: "sofia" },
+  { slug: "spm", displayName: "SPM", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.9727, lng: 6.6925, aliases: ["spm"], wikidataId: null, iata: "SPM", airportName: "Spangdahlem Air Base", parentCitySlug: "luxembourg-city" },
+  { slug: "sql", displayName: "SQL", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 37.5119, lng: -122.25, aliases: ["sql"], wikidataId: null, iata: "SQL", airportName: "San Carlos", parentCitySlug: "san-francisco" },
+  { slug: "ssn", displayName: "SSN", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 37.4447, lng: 127.1127, aliases: ["ssn"], wikidataId: null, iata: "SSN", airportName: "Seoul Air Base (K-16)", parentCitySlug: "seoul" },
+  { slug: "ssz", displayName: "SSZ", country: "Brazil", countryCode: "BR", iana: "America/Sao_Paulo", lat: -23.9281, lng: -46.2997, aliases: ["ssz"], wikidataId: null, iata: "SSZ", airportName: "Base A\xE9rea de Santos", parentCitySlug: "sao-paulo" },
+  { slug: "stl", displayName: "STL", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 38.7487, lng: -90.37, aliases: ["stl"], wikidataId: null, iata: "STL", airportName: "St Louis Lambert International", parentCitySlug: "st-louis" },
+  { slug: "stn", displayName: "STN", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 51.885, lng: 0.235, aliases: ["stn"], wikidataId: null, iata: "STN", airportName: "London Stansted", parentCitySlug: "london" },
+  { slug: "stp", displayName: "STP", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 44.9345, lng: -93.06, aliases: ["stp"], wikidataId: null, iata: "STP", airportName: "St Paul Downtown Holman Field", parentCitySlug: "minneapolis" },
+  { slug: "str", displayName: "STR", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 48.6899, lng: 9.222, aliases: ["str"], wikidataId: null, iata: "STR", airportName: "Stuttgart", parentCitySlug: "stuttgart" },
+  { slug: "sub", displayName: "SUB", country: "Indonesia", countryCode: "ID", iana: "Asia/Jakarta", lat: -7.3798, lng: 112.787, aliases: ["sub"], wikidataId: null, iata: "SUB", airportName: "Juanda International", parentCitySlug: "surabaya" },
+  { slug: "sus", displayName: "SUS", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 38.6621, lng: -90.652, aliases: ["sus"], wikidataId: null, iata: "SUS", airportName: "Spirit of St Louis", parentCitySlug: "st-louis" },
+  { slug: "suu", displayName: "SUU", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 38.2627, lng: -121.927, aliases: ["suu"], wikidataId: null, iata: "SUU", airportName: "Travis Air Force Base", parentCitySlug: "sacramento" },
+  { slug: "suv", displayName: "SUV", country: "Fiji", countryCode: "FJ", iana: "Pacific/Fiji", lat: -18.0433, lng: 178.559, aliases: ["suv"], wikidataId: null, iata: "SUV", airportName: "Nausori International", parentCitySlug: "suva" },
+  { slug: "svo", displayName: "SVO", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.9726, lng: 37.4146, aliases: ["svo"], wikidataId: null, iata: "SVO", airportName: "Sheremetyevo International", parentCitySlug: "moscow" },
+  { slug: "swu", displayName: "SWU", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 37.2394, lng: 127.007, aliases: ["swu"], wikidataId: null, iata: "SWU", airportName: "Suwon", parentCitySlug: "seoul" },
+  { slug: "sxb", displayName: "SXB", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.5383, lng: 7.6282, aliases: ["sxb"], wikidataId: null, iata: "SXB", airportName: "Strasbourg", parentCitySlug: "freiburg" },
+  { slug: "sxf", displayName: "SXF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 52.38, lng: 13.5225, aliases: ["sxf"], wikidataId: null, iata: "SXF", airportName: "Berlin-Sch\xF6nefeld", parentCitySlug: "berlin" },
+  { slug: "syd", displayName: "SYD", country: "Australia", countryCode: "AU", iana: "Australia/Sydney", lat: -33.9461, lng: 151.177, aliases: ["syd"], wikidataId: null, iata: "SYD", airportName: "Sydney Kingsford Smith International", parentCitySlug: "sydney" },
+  { slug: "syq", displayName: "SYQ", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 9.9571, lng: -84.1398, aliases: ["syq"], wikidataId: null, iata: "SYQ", airportName: "Tobias Bolanos International", parentCitySlug: "alajuela" },
+  { slug: "szb", displayName: "SZB", country: "Malaysia", countryCode: "MY", iana: "Asia/Kuala_Lumpur", lat: 3.1306, lng: 101.549, aliases: ["szb"], wikidataId: null, iata: "SZB", airportName: "Sultan Abdul Aziz Shah International", parentCitySlug: "kuala-lumpur" },
+  { slug: "szx", displayName: "SZX", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 22.6393, lng: 113.811, aliases: ["szx"], wikidataId: null, iata: "SZX", airportName: "Shenzhen Bao'an International", parentCitySlug: "shenzhen" },
+  { slug: "tag", displayName: "TAG", country: "Philippines", countryCode: "PH", iana: "Asia/Manila", lat: 9.6654, lng: 123.8535, aliases: ["tag"], wikidataId: null, iata: "TAG", airportName: "Tagbilaran", parentCitySlug: "cebu" },
+  { slug: "tar", displayName: "TAR", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 40.5175, lng: 17.4032, aliases: ["tar"], wikidataId: null, iata: "TAR", airportName: 'Taranto-Grottaglie "Marcello Arlotta"', parentCitySlug: "taranto" },
+  { slug: "tas", displayName: "TAS", country: "Uzbekistan", countryCode: "UZ", iana: "Asia/Samarkand", lat: 41.2579, lng: 69.2812, aliases: ["tas"], wikidataId: null, iata: "TAS", airportName: "Tashkent International", parentCitySlug: "tashkent" },
+  { slug: "tbs", displayName: "TBS", country: "Georgia", countryCode: "GE", iana: "Asia/Tbilisi", lat: 41.6692, lng: 44.9547, aliases: ["tbs"], wikidataId: null, iata: "TBS", airportName: "Tbilisi International", parentCitySlug: "tbilisi" },
+  { slug: "tbu", displayName: "TBU", country: "Tonga", countryCode: "TO", iana: "Pacific/Tongatapu", lat: -21.2412, lng: -175.15, aliases: ["tbu"], wikidataId: null, iata: "TBU", airportName: "Fua'amotu International", parentCitySlug: "nukualofa" },
+  { slug: "tcm", displayName: "TCM", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.1377, lng: -122.476, aliases: ["tcm"], wikidataId: null, iata: "TCM", airportName: "McChord Air Force Base", parentCitySlug: "seattle" },
+  { slug: "teb", displayName: "TEB", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.8501, lng: -74.0608, aliases: ["teb"], wikidataId: null, iata: "TEB", airportName: "Teterboro", parentCitySlug: "new-york" },
+  { slug: "tga", displayName: "TGA", country: "Singapore", countryCode: "SG", iana: "Asia/Singapore", lat: 1.3873, lng: 103.709, aliases: ["tga"], wikidataId: null, iata: "TGA", airportName: "Tengah Air Base", parentCitySlug: "singapore" },
+  { slug: "tgd", displayName: "TGD", country: "Montenegro", countryCode: "ME", iana: "Europe/Podgorica", lat: 42.3594, lng: 19.2519, aliases: ["tgd"], wikidataId: null, iata: "TGD", airportName: "Podgorica", parentCitySlug: "podgorica" },
+  { slug: "tgu", displayName: "TGU", country: "Honduras", countryCode: "HN", iana: "America/Tegucigalpa", lat: 14.0609, lng: -87.2172, aliases: ["tgu"], wikidataId: null, iata: "TGU", airportName: "Toncont\xEDn International", parentCitySlug: "tegucigalpa" },
+  { slug: "thf", displayName: "THF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 52.473, lng: 13.4039, aliases: ["thf"], wikidataId: null, iata: "THF", airportName: "Berlin-Tempelhof International", parentCitySlug: "berlin" },
+  { slug: "thr", displayName: "THR", country: "Iran", countryCode: "IR", iana: "Asia/Tehran", lat: 35.6892, lng: 51.3134, aliases: ["thr"], wikidataId: null, iata: "THR", airportName: "Mehrabad International", parentCitySlug: "tehran" },
+  { slug: "tia", displayName: "TIA", country: "Albania", countryCode: "AL", iana: "Europe/Tirane", lat: 41.4147, lng: 19.7206, aliases: ["tia"], wikidataId: null, iata: "TIA", airportName: "Tirana International Airport Mother Teresa", parentCitySlug: "tirana" },
+  { slug: "tij", displayName: "TIJ", country: "Mexico", countryCode: "MX", iana: "America/Tijuana", lat: 32.5411, lng: -116.97, aliases: ["tij"], wikidataId: null, iata: "TIJ", airportName: "General Abelardo L. Rodr\xEDguez International", parentCitySlug: "tijuana" },
+  { slug: "tiv", displayName: "TIV", country: "Montenegro", countryCode: "ME", iana: "Europe/Podgorica", lat: 42.4047, lng: 18.7233, aliases: ["tiv"], wikidataId: null, iata: "TIV", airportName: "Tivat", parentCitySlug: "herceg-novi" },
+  { slug: "tiw", displayName: "TIW", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 47.2679, lng: -122.578, aliases: ["tiw"], wikidataId: null, iata: "TIW", airportName: "Tacoma Narrows", parentCitySlug: "seattle" },
+  { slug: "tjb", displayName: "TJB", country: "Indonesia", countryCode: "ID", iana: "Asia/Singapore", lat: 1.0527, lng: 103.3931, aliases: ["tjb"], wikidataId: null, iata: "TJB", airportName: "Sei Bati", parentCitySlug: "sentosa" },
+  { slug: "tlc", displayName: "TLC", country: "Mexico", countryCode: "MX", iana: "America/Mexico_City", lat: 19.3371, lng: -99.566, aliases: ["tlc"], wikidataId: null, iata: "TLC", airportName: "Licenciado Adolfo Lopez Mateos International", parentCitySlug: "mexico-city" },
+  { slug: "tll", displayName: "TLL", country: "Estonia", countryCode: "EE", iana: "Europe/Tallinn", lat: 59.4133, lng: 24.8328, aliases: ["tll"], wikidataId: null, iata: "TLL", airportName: "Lennart Meri Tallinn", parentCitySlug: "tallinn" },
+  { slug: "tlv", displayName: "TLV", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 32.0114, lng: 34.8867, aliases: ["tlv"], wikidataId: null, iata: "TLV", airportName: "Ben Gurion International", parentCitySlug: "tel-aviv" },
+  { slug: "tmb", displayName: "TMB", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.6479, lng: -80.4328, aliases: ["tmb"], wikidataId: null, iata: "TMB", airportName: "Kendall-Tamiami Executive", parentCitySlug: "miami" },
+  { slug: "tnf", displayName: "TNF", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.7519, lng: 2.1062, aliases: ["tnf"], wikidataId: null, iata: "TNF", airportName: "Toussus-le-Noble", parentCitySlug: "paris" },
+  { slug: "tnr", displayName: "TNR", country: "Madagascar", countryCode: "MG", iana: "Indian/Antananarivo", lat: -18.7969, lng: 47.4788, aliases: ["tnr"], wikidataId: null, iata: "TNR", airportName: "Ivato", parentCitySlug: "antananarivo" },
+  { slug: "tnt", displayName: "TNT", country: "USA", countryCode: "US", iana: "America/New_York", lat: 25.8618, lng: -80.897, aliases: ["tnt"], wikidataId: null, iata: "TNT", airportName: "Dade Collier Training and Transition", parentCitySlug: "miami" },
+  { slug: "toa", displayName: "TOA", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 33.8034, lng: -118.34, aliases: ["toa"], wikidataId: null, iata: "TOA", airportName: "Zamperini Field", parentCitySlug: "los-angeles" },
+  { slug: "toj", displayName: "TOJ", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 40.4967, lng: -3.4459, aliases: ["toj"], wikidataId: null, iata: "TOJ", airportName: "Torrej\xF3n", parentCitySlug: "madrid" },
+  { slug: "toy", displayName: "TOY", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 36.6483, lng: 137.188, aliases: ["toy"], wikidataId: null, iata: "TOY", airportName: "Toyama", parentCitySlug: "shirakawa-go" },
+  { slug: "tpe", displayName: "TPE", country: "Taiwan", countryCode: "TW", iana: "Asia/Taipei", lat: 25.0777, lng: 121.233, aliases: ["tpe"], wikidataId: null, iata: "TPE", airportName: "Taiwan Taoyuan International", parentCitySlug: "taipei" },
+  { slug: "tqd", displayName: "TQD", country: "Iraq", countryCode: "IQ", iana: "Asia/Baghdad", lat: 33.3381, lng: 43.5971, aliases: ["tqd"], wikidataId: null, iata: "TQD", airportName: "Al Taqaddum Air Base", parentCitySlug: "baghdad" },
+  { slug: "trs", displayName: "TRS", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.8275, lng: 13.4722, aliases: ["trs"], wikidataId: null, iata: "TRS", airportName: "Trieste\u2013Friuli Venezia Giulia", parentCitySlug: "trieste" },
+  { slug: "trw", displayName: "TRW", country: "Kiribati", countryCode: "KI", iana: "Pacific/Tarawa", lat: 1.3816, lng: 173.147, aliases: ["trw"], wikidataId: null, iata: "TRW", airportName: "Bonriki International", parentCitySlug: "tarawa" },
+  { slug: "tsa", displayName: "TSA", country: "Taiwan", countryCode: "TW", iana: "Asia/Taipei", lat: 25.0694, lng: 121.552, aliases: ["tsa"], wikidataId: null, iata: "TSA", airportName: "Taipei Songshan", parentCitySlug: "taipei" },
+  { slug: "tse", displayName: "TSE", country: "Kazakhstan", countryCode: "KZ", iana: "Asia/Qyzylorda", lat: 51.0222, lng: 71.4669, aliases: ["tse"], wikidataId: null, iata: "TSE", airportName: "Astana International", parentCitySlug: "astana" },
+  { slug: "tsf", displayName: "TSF", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.6484, lng: 12.1944, aliases: ["tsf"], wikidataId: null, iata: "TSF", airportName: "Treviso-Sant'Angelo", parentCitySlug: "venice" },
+  { slug: "ttd", displayName: "TTD", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 45.5494, lng: -122.401, aliases: ["ttd"], wikidataId: null, iata: "TTD", airportName: "Portland Troutdale", parentCitySlug: "portland" },
+  { slug: "ttn", displayName: "TTN", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.2767, lng: -74.8135, aliases: ["ttn"], wikidataId: null, iata: "TTN", airportName: "Trenton Mercer", parentCitySlug: "philadelphia" },
+  { slug: "tun", displayName: "TUN", country: "Tunisia", countryCode: "TN", iana: "Africa/Tunis", lat: 36.851, lng: 10.2272, aliases: ["tun"], wikidataId: null, iata: "TUN", airportName: "Tunis Carthage International", parentCitySlug: "tunis" },
+  { slug: "txl", displayName: "TXL", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 52.5597, lng: 13.2877, aliases: ["txl"], wikidataId: null, iata: "TXL", airportName: "Berlin-Tegel", parentCitySlug: "berlin" },
+  { slug: "tzl", displayName: "TZL", country: "Bosnia and Herzegovina", countryCode: "BA", iana: "Europe/Sarajevo", lat: 44.4587, lng: 18.7248, aliases: ["tzl"], wikidataId: null, iata: "TZL", airportName: "Tuzla International", parentCitySlug: "sarajevo" },
+  { slug: "ugn", displayName: "UGN", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 42.4222, lng: -87.8679, aliases: ["ugn"], wikidataId: null, iata: "UGN", airportName: "Waukegan National", parentCitySlug: "chicago" },
+  { slug: "uio", displayName: "UIO", country: "Ecuador", countryCode: "EC", iana: "America/Guayaquil", lat: -0.1292, lng: -78.3575, aliases: ["uio"], wikidataId: null, iata: "UIO", airportName: "Mariscal Sucre International", parentCitySlug: "quito" },
+  { slug: "ukb", displayName: "UKB", country: "Japan", countryCode: "JP", iana: "Asia/Tokyo", lat: 34.6328, lng: 135.224, aliases: ["ukb"], wikidataId: null, iata: "UKB", airportName: "Kobe", parentCitySlug: "osaka" },
+  { slug: "ukt", displayName: "UKT", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.4352, lng: -75.3819, aliases: ["ukt"], wikidataId: null, iata: "UKT", airportName: "Quakertown", parentCitySlug: "philadelphia" },
+  { slug: "uln", displayName: "ULN", country: "Mongolia", countryCode: "MN", iana: "Asia/Ulaanbaatar", lat: 47.8431, lng: 106.767, aliases: ["uln"], wikidataId: null, iata: "ULN", airportName: "Chinggis Khaan International", parentCitySlug: "ulaanbaatar" },
+  { slug: "uni", displayName: "UNI", country: "Grenada", countryCode: "GD", iana: "America/St_Vincent", lat: 12.6001, lng: -61.4119, aliases: ["uni"], wikidataId: null, iata: "UNI", airportName: "Union Island International", parentCitySlug: "st-george" },
+  { slug: "upb", displayName: "UPB", country: "Cuba", countryCode: "CU", iana: "America/Havana", lat: 23.0328, lng: -82.5794, aliases: ["upb"], wikidataId: null, iata: "UPB", airportName: "Playa Baracoa", parentCitySlug: "havana" },
+  { slug: "ura", displayName: "URA", country: "Kazakhstan", countryCode: "KZ", iana: "Asia/Oral", lat: 51.1508, lng: 51.5431, aliases: ["ura"], wikidataId: null, iata: "URA", airportName: "Uralsk", parentCitySlug: "uralsk" },
+  { slug: "urd", displayName: "URD", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 49.7942, lng: 11.1336, aliases: ["urd"], wikidataId: null, iata: "URD", airportName: "Burg Feuerstein", parentCitySlug: "nuremberg" },
+  { slug: "ush", displayName: "USH", country: "Argentina", countryCode: "AR", iana: "America/Argentina/Ushuaia", lat: -54.8433, lng: -68.2958, aliases: ["ush"], wikidataId: null, iata: "USH", airportName: "Malvinas Argentinas", parentCitySlug: "ushuaia" },
+  { slug: "usn", displayName: "USN", country: "South Korea", countryCode: "KR", iana: "Asia/Seoul", lat: 35.5935, lng: 129.352, aliases: ["usn"], wikidataId: null, iata: "USN", airportName: "Ulsan", parentCitySlug: "busan" },
+  { slug: "utc", displayName: "UTC", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 52.1273, lng: 5.2762, aliases: [], wikidataId: null, iata: "UTC", airportName: "Soesterberg Air Base", parentCitySlug: "woerden" },
+  { slug: "utp", displayName: "UTP", country: "Thailand", countryCode: "TH", iana: "Asia/Bangkok", lat: 12.6799, lng: 101.005, aliases: ["utp"], wikidataId: null, iata: "UTP", airportName: "U-Tapao International", parentCitySlug: "pattaya" },
+  { slug: "uvf", displayName: "UVF", country: "Saint Lucia", countryCode: "LC", iana: "America/St_Lucia", lat: 13.7332, lng: -60.9526, aliases: ["uvf"], wikidataId: null, iata: "UVF", airportName: "Hewanorra International", parentCitySlug: "soufriere" },
+  { slug: "vce", displayName: "VCE", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.5053, lng: 12.3519, aliases: ["vce"], wikidataId: null, iata: "VCE", airportName: "Venice Marco Polo", parentCitySlug: "venice" },
+  { slug: "vgo", displayName: "VGO", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 42.2318, lng: -8.6268, aliases: ["vgo"], wikidataId: null, iata: "VGO", airportName: "Vigo", parentCitySlug: "vigo" },
+  { slug: "vgt", displayName: "VGT", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 36.2107, lng: -115.194, aliases: ["vgt"], wikidataId: null, iata: "VGT", airportName: "North Las Vegas", parentCitySlug: "las-vegas" },
+  { slug: "vic", displayName: "VIC", country: "Italy", countryCode: "IT", iana: "Europe/Rome", lat: 45.5734, lng: 11.5295, aliases: ["vic"], wikidataId: null, iata: "VIC", airportName: "Vicenza", parentCitySlug: "venice" },
+  { slug: "vie", displayName: "VIE", country: "Austria", countryCode: "AT", iana: "Europe/Vienna", lat: 48.1103, lng: 16.5697, aliases: ["vie"], wikidataId: null, iata: "VIE", airportName: "Vienna International", parentCitySlug: "vienna" },
+  { slug: "viy", displayName: "VIY", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 48.7742, lng: 2.1917, aliases: ["viy"], wikidataId: null, iata: "VIY", airportName: "Villacoublay-V\xE9lizy (BA 107) Air Base", parentCitySlug: "paris" },
+  { slug: "vko", displayName: "VKO", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.5915, lng: 37.2615, aliases: ["vko"], wikidataId: null, iata: "VKO", airportName: "Vnukovo International", parentCitySlug: "moscow" },
+  { slug: "vlc", displayName: "VLC", country: "Spain", countryCode: "ES", iana: "Europe/Madrid", lat: 39.4893, lng: -0.4816, aliases: ["vlc"], wikidataId: null, iata: "VLC", airportName: "Valencia", parentCitySlug: "valencia" },
+  { slug: "vli", displayName: "VLI", country: "Vanuatu", countryCode: "VU", iana: "Pacific/Efate", lat: -17.6993, lng: 168.32, aliases: ["vli"], wikidataId: null, iata: "VLI", airportName: "Bauerfield International", parentCitySlug: "port-vila" },
+  { slug: "vno", displayName: "VNO", country: "Lithuania", countryCode: "LT", iana: "Europe/Vilnius", lat: 54.6341, lng: 25.2858, aliases: ["vno"], wikidataId: null, iata: "VNO", airportName: "Vilnius International", parentCitySlug: "vilnius" },
+  { slug: "vny", displayName: "VNY", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.2098, lng: -118.49, aliases: ["vny"], wikidataId: null, iata: "VNY", airportName: "Van Nuys", parentCitySlug: "los-angeles" },
+  { slug: "vod", displayName: "VOD", country: "Czech Republic", countryCode: "CZ", iana: "Europe/Prague", lat: 50.2166, lng: 14.3958, aliases: ["vod"], wikidataId: null, iata: "VOD", airportName: "Vodochody", parentCitySlug: "prague" },
+  { slug: "vpz", displayName: "VPZ", country: "USA", countryCode: "US", iana: "America/Chicago", lat: 41.454, lng: -87.0071, aliases: ["vpz"], wikidataId: null, iata: "VPZ", airportName: "Porter County Municipal", parentCitySlug: "chicago" },
+  { slug: "vrl", displayName: "VRL", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 41.2743, lng: -7.7205, aliases: ["vrl"], wikidataId: null, iata: "VRL", airportName: "Vila Real", parentCitySlug: "vila-real" },
+  { slug: "vse", displayName: "VSE", country: "Portugal", countryCode: "PT", iana: "Europe/Lisbon", lat: 40.7255, lng: -7.889, aliases: ["vse"], wikidataId: null, iata: "VSE", airportName: "Aerodromo Goncalves Lobato (Viseu Airport)", parentCitySlug: "vila-real" },
+  { slug: "vtm", displayName: "VTM", country: "Israel", countryCode: "IL", iana: "Asia/Jerusalem", lat: 31.2083, lng: 35.0123, aliases: ["vtm"], wikidataId: null, iata: "VTM", airportName: "Nevatim Air Base", parentCitySlug: "jerusalem" },
+  { slug: "vvc", displayName: "VVC", country: "Colombia", countryCode: "CO", iana: "America/Bogota", lat: 4.1679, lng: -73.6138, aliases: ["vvc"], wikidataId: null, iata: "VVC", airportName: "Vanguardia", parentCitySlug: "bogota" },
+  { slug: "waw", displayName: "WAW", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 52.1657, lng: 20.9671, aliases: ["waw"], wikidataId: null, iata: "WAW", airportName: "Warsaw Chopin", parentCitySlug: "warsaw" },
+  { slug: "wbu", displayName: "WBU", country: "USA", countryCode: "US", iana: "America/Denver", lat: 40.0394, lng: -105.226, aliases: ["wbu"], wikidataId: null, iata: "WBU", airportName: "Boulder Municipal", parentCitySlug: "denver" },
+  { slug: "wdh", displayName: "WDH", country: "Namibia", countryCode: "NA", iana: "Africa/Windhoek", lat: -22.4799, lng: 17.4709, aliases: ["wdh"], wikidataId: null, iata: "WDH", airportName: "Hosea Kutako International", parentCitySlug: "windhoek" },
+  { slug: "wdr", displayName: "WDR", country: "USA", countryCode: "US", iana: "America/New_York", lat: 33.9829, lng: -83.6674, aliases: ["wdr"], wikidataId: null, iata: "WDR", airportName: "Barrow County", parentCitySlug: "atlanta" },
+  { slug: "whp", displayName: "WHP", country: "USA", countryCode: "US", iana: "America/Los_Angeles", lat: 34.2593, lng: -118.413, aliases: ["whp"], wikidataId: null, iata: "WHP", airportName: "Whiteman", parentCitySlug: "los-angeles" },
+  { slug: "wie", displayName: "WIE", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.0498, lng: 8.3254, aliases: ["wie"], wikidataId: null, iata: "WIE", airportName: "Wiesbaden Army Airfield", parentCitySlug: "frankfurt" },
+  { slug: "wik", displayName: "WIK", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -36.8089, lng: 175.086, aliases: ["wik"], wikidataId: null, iata: "WIK", airportName: "Waiheke Reeve", parentCitySlug: "auckland" },
+  { slug: "wil", displayName: "WIL", country: "Kenya", countryCode: "KE", iana: "Africa/Nairobi", lat: -1.3217, lng: 36.8148, aliases: ["wil"], wikidataId: null, iata: "WIL", airportName: "Nairobi Wilson", parentCitySlug: "nairobi" },
+  { slug: "wkf", displayName: "WKF", country: "South Africa", countryCode: "ZA", iana: "Africa/Johannesburg", lat: -25.83, lng: 28.2225, aliases: ["wkf"], wikidataId: null, iata: "WKF", airportName: "Waterkloof Air Force Base", parentCitySlug: "johannesburg" },
+  { slug: "wlg", displayName: "WLG", country: "New Zealand", countryCode: "NZ", iana: "Pacific/Auckland", lat: -41.3272, lng: 174.805, aliases: ["wlg"], wikidataId: null, iata: "WLG", airportName: "Wellington International", parentCitySlug: "wellington" },
+  { slug: "wmi", displayName: "WMI", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 52.4511, lng: 20.6518, aliases: ["wmi"], wikidataId: null, iata: "WMI", airportName: "Modlin", parentCitySlug: "warsaw" },
+  { slug: "woe", displayName: "WOE", country: "Netherlands", countryCode: "NL", iana: "Europe/Amsterdam", lat: 51.4491, lng: 4.342, aliases: ["woe"], wikidataId: null, iata: "WOE", airportName: "Woensdrecht Air Base", parentCitySlug: "rotterdam" },
+  { slug: "wpu", displayName: "WPU", country: "Chile", countryCode: "CL", iana: "America/Santiago", lat: -54.9311, lng: -67.6263, aliases: ["wpu"], wikidataId: null, iata: "WPU", airportName: "Guardiamarina Za\xF1artu", parentCitySlug: "ushuaia" },
+  { slug: "wri", displayName: "WRI", country: "USA", countryCode: "US", iana: "America/New_York", lat: 40.0156, lng: -74.5917, aliases: ["wri"], wikidataId: null, iata: "WRI", airportName: "Mc Guire Air Force Base", parentCitySlug: "philadelphia" },
+  { slug: "wro", displayName: "WRO", country: "Poland", countryCode: "PL", iana: "Europe/Warsaw", lat: 51.1027, lng: 16.8858, aliases: ["wro"], wikidataId: null, iata: "WRO", airportName: "Copernicus Wroc\u0142aw", parentCitySlug: "wroclaw" },
+  { slug: "wrt", displayName: "WRT", country: "UK", countryCode: "GB", iana: "Europe/London", lat: 53.7451, lng: -2.8831, aliases: ["wrt"], wikidataId: null, iata: "WRT", airportName: "Warton", parentCitySlug: "liverpool" },
+  { slug: "wuh", displayName: "WUH", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 30.7838, lng: 114.208, aliases: ["wuh"], wikidataId: null, iata: "WUH", airportName: "Wuhan Tianhe International", parentCitySlug: "wuhan" },
+  { slug: "wvn", displayName: "WVN", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.5022, lng: 8.0522, aliases: ["wvn"], wikidataId: null, iata: "WVN", airportName: "Wilhelmshaven-Mariensiel", parentCitySlug: "bremen" },
+  { slug: "wwa", displayName: "WWA", country: "USA", countryCode: "US", iana: "America/Anchorage", lat: 61.5717, lng: -149.54, aliases: ["wwa"], wikidataId: null, iata: "WWA", airportName: "Wasilla", parentCitySlug: "anchorage" },
+  { slug: "xfw", displayName: "XFW", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 53.5353, lng: 9.8356, aliases: ["xfw"], wikidataId: null, iata: "XFW", airportName: "Hamburg-Finkenwerder", parentCitySlug: "hamburg" },
+  { slug: "xij", displayName: "XIJ", country: "Kuwait", countryCode: "KW", iana: "Asia/Kuwait", lat: 28.9348, lng: 47.7919, aliases: ["xij"], wikidataId: null, iata: "XIJ", airportName: "Ahmed Al Jaber Air Base", parentCitySlug: "kuwait-city" },
+  { slug: "xjd", displayName: "XJD", country: "Qatar", countryCode: "QA", iana: "Asia/Qatar", lat: 25.1173, lng: 51.315, aliases: ["xjd"], wikidataId: null, iata: "XJD", airportName: "Al Udeid Air Base", parentCitySlug: "doha" },
+  { slug: "xme", displayName: "XME", country: "France", countryCode: "FR", iana: "Europe/Paris", lat: 50.3105, lng: 4.0331, aliases: ["xme"], wikidataId: null, iata: "XME", airportName: "Maubeuge-\xC9lesmes", parentCitySlug: "brussels" },
+  { slug: "xpl", displayName: "XPL", country: "Honduras", countryCode: "HN", iana: "America/Tegucigalpa", lat: 14.3824, lng: -87.6212, aliases: ["xpl"], wikidataId: null, iata: "XPL", airportName: "Coronel Enrique Soto Cano Air Base", parentCitySlug: "tegucigalpa" },
+  { slug: "xqc", displayName: "XQC", country: "Iraq", countryCode: "IQ", iana: "Asia/Baghdad", lat: 33.9402, lng: 44.3616, aliases: ["xqc"], wikidataId: null, iata: "XQC", airportName: "Joint Base Balad", parentCitySlug: "samarra" },
+  { slug: "xqp", displayName: "XQP", country: "Costa Rica", countryCode: "CR", iana: "America/Costa_Rica", lat: 9.4432, lng: -84.1298, aliases: ["xqp"], wikidataId: null, iata: "XQP", airportName: "Quepos Managua", parentCitySlug: "alajuela" },
+  { slug: "xrh", displayName: "XRH", country: "Australia", countryCode: "AU", iana: "Australia/Sydney", lat: -33.6006, lng: 150.781, aliases: ["xrh"], wikidataId: null, iata: "XRH", airportName: "RAAF Base Richmond", parentCitySlug: "sydney" },
+  { slug: "xsp", displayName: "XSP", country: "Singapore", countryCode: "SG", iana: "Asia/Singapore", lat: 1.4169, lng: 103.868, aliases: ["xsp"], wikidataId: null, iata: "XSP", airportName: "Seletar", parentCitySlug: "singapore" },
+  { slug: "xxn", displayName: "XXN", country: "Saudi Arabia", countryCode: "SA", iana: "Asia/Riyadh", lat: 24.7098, lng: 46.7252, aliases: ["xxn"], wikidataId: null, iata: "XXN", airportName: "Riyadh Air Base", parentCitySlug: "riyadh" },
+  { slug: "ybw", displayName: "YBW", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 48.75, lng: -123.233, aliases: ["ybw"], wikidataId: null, iata: "YBW", airportName: "Bedwell Harbour Seaplane Base", parentCitySlug: "vancouver" },
+  { slug: "ycd", displayName: "YCD", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.055, lng: -123.8699, aliases: ["ycd"], wikidataId: null, iata: "YCD", airportName: "Nanaimo", parentCitySlug: "vancouver" },
+  { slug: "ycm", displayName: "YCM", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.1917, lng: -79.1717, aliases: ["ycm"], wikidataId: null, iata: "YCM", airportName: "Niagara District", parentCitySlug: "toronto" },
+  { slug: "ydt", displayName: "YDT", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.0742, lng: -123.012, aliases: ["ydt"], wikidataId: null, iata: "YDT", airportName: "Boundary Bay", parentCitySlug: "vancouver" },
+  { slug: "ygg", displayName: "YGG", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 48.8545, lng: -123.4969, aliases: ["ygg"], wikidataId: null, iata: "YGG", airportName: "Ganges Seaplane Base", parentCitySlug: "vancouver" },
+  { slug: "yhm", displayName: "YHM", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.1736, lng: -79.935, aliases: ["yhm"], wikidataId: null, iata: "YHM", airportName: "John C. Munro Hamilton International", parentCitySlug: "toronto" },
+  { slug: "yhu", displayName: "YHU", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.5175, lng: -73.4169, aliases: ["yhu"], wikidataId: null, iata: "YHU", airportName: "Montr\xE9al / Saint-Hubert", parentCitySlug: "montreal" },
+  { slug: "yih", displayName: "YIH", country: "China", countryCode: "CN", iana: "Asia/Shanghai", lat: 30.5566, lng: 111.48, aliases: ["yih"], wikidataId: null, iata: "YIH", airportName: "Yichang Sanxia", parentCitySlug: "jingzhou" },
+  { slug: "yip", displayName: "YIP", country: "USA", countryCode: "US", iana: "America/New_York", lat: 42.2379, lng: -83.5304, aliases: ["yip"], wikidataId: null, iata: "YIP", airportName: "Willow Run", parentCitySlug: "detroit" },
+  { slug: "yjn", displayName: "YJN", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.2944, lng: -73.2811, aliases: ["yjn"], wikidataId: null, iata: "YJN", airportName: "St Jean", parentCitySlug: "montreal" },
+  { slug: "yks", displayName: "YKS", country: "Russia", countryCode: "RU", iana: "Asia/Yakutsk", lat: 62.0933, lng: 129.771, aliases: ["yks"], wikidataId: null, iata: "YKS", airportName: "Yakutsk", parentCitySlug: "yakutsk" },
+  { slug: "ykz", displayName: "YKZ", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.8622, lng: -79.37, aliases: ["ykz"], wikidataId: null, iata: "YKZ", airportName: "Buttonville Municipal", parentCitySlug: "toronto" },
+  { slug: "yly", displayName: "YLY", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.1008, lng: -122.631, aliases: ["yly"], wikidataId: null, iata: "YLY", airportName: "Langley", parentCitySlug: "vancouver" },
+  { slug: "ymx", displayName: "YMX", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.6795, lng: -74.0387, aliases: ["ymx"], wikidataId: null, iata: "YMX", airportName: "Montreal International (Mirabel)", parentCitySlug: "montreal" },
+  { slug: "ynd", displayName: "YND", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.5217, lng: -75.5636, aliases: ["ynd"], wikidataId: null, iata: "YND", airportName: "Ottawa / Gatineau", parentCitySlug: "ottawa" },
+  { slug: "yoo", displayName: "YOO", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.9228, lng: -78.895, aliases: ["yoo"], wikidataId: null, iata: "YOO", airportName: "Toronto/Oshawa Executive", parentCitySlug: "toronto" },
+  { slug: "yow", displayName: "YOW", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.3225, lng: -75.6692, aliases: ["yow"], wikidataId: null, iata: "YOW", airportName: "Ottawa Macdonald-Cartier International", parentCitySlug: "ottawa" },
+  { slug: "yqg", displayName: "YQG", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 42.2756, lng: -82.9556, aliases: ["yqg"], wikidataId: null, iata: "YQG", airportName: "Windsor", parentCitySlug: "detroit" },
+  { slug: "yro", displayName: "YRO", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.4603, lng: -75.6461, aliases: ["yro"], wikidataId: null, iata: "YRO", airportName: "Ottawa / Rockcliffe", parentCitySlug: "ottawa" },
+  { slug: "yse", displayName: "YSE", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.7817, lng: -123.162, aliases: ["yse"], wikidataId: null, iata: "YSE", airportName: "Squamish", parentCitySlug: "vancouver" },
+  { slug: "ysh", displayName: "YSH", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 44.9458, lng: -75.9406, aliases: ["ysh"], wikidataId: null, iata: "YSH", airportName: "Smiths Falls-Montague (Russ Beach)", parentCitySlug: "ottawa" },
+  { slug: "ytz", displayName: "YTZ", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.6275, lng: -79.3962, aliases: ["ytz"], wikidataId: null, iata: "YTZ", airportName: "Billy Bishop Toronto City Centre", parentCitySlug: "toronto" },
+  { slug: "yul", displayName: "YUL", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.4706, lng: -73.7408, aliases: ["yul"], wikidataId: null, iata: "YUL", airportName: "Montreal / Pierre Elliott Trudeau International", parentCitySlug: "montreal" },
+  { slug: "yvr", displayName: "YVR", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.1939, lng: -123.184, aliases: ["yvr"], wikidataId: null, iata: "YVR", airportName: "Vancouver International", parentCitySlug: "vancouver" },
+  { slug: "yxx", displayName: "YXX", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.0253, lng: -122.361, aliases: ["yxx"], wikidataId: null, iata: "YXX", airportName: "Abbotsford", parentCitySlug: "vancouver" },
+  { slug: "yyj", displayName: "YYJ", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 48.6469, lng: -123.426, aliases: ["yyj"], wikidataId: null, iata: "YYJ", airportName: "Victoria International", parentCitySlug: "vancouver" },
+  { slug: "yyz", displayName: "YYZ", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.6772, lng: -79.6306, aliases: ["yyz"], wikidataId: null, iata: "YYZ", airportName: "Lester B. Pearson International", parentCitySlug: "toronto" },
+  { slug: "yzd", displayName: "YZD", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 43.7425, lng: -79.4656, aliases: ["yzd"], wikidataId: null, iata: "YZD", airportName: "Downsview", parentCitySlug: "toronto" },
+  { slug: "zag", displayName: "ZAG", country: "Croatia", countryCode: "HR", iana: "Europe/Zagreb", lat: 45.7429, lng: 16.0688, aliases: ["zag"], wikidataId: null, iata: "ZAG", airportName: "Zagreb", parentCitySlug: "zagreb" },
+  { slug: "zbm", displayName: "ZBM", country: "Canada", countryCode: "CA", iana: "America/Toronto", lat: 45.2908, lng: -72.7414, aliases: ["zbm"], wikidataId: null, iata: "ZBM", airportName: "Bromont (Roland Desourdy)", parentCitySlug: "montreal" },
+  { slug: "zhi", displayName: "ZHI", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 47.1816, lng: 7.4172, aliases: ["zhi"], wikidataId: null, iata: "ZHI", airportName: "Grenchen", parentCitySlug: "bern" },
+  { slug: "zia", displayName: "ZIA", country: "Russia", countryCode: "RU", iana: "Europe/Moscow", lat: 55.5533, lng: 38.15, aliases: ["zia"], wikidataId: null, iata: "ZIA", airportName: "Zhukovsky International", parentCitySlug: "moscow" },
+  { slug: "zin", displayName: "ZIN", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 46.6766, lng: 7.8791, aliases: ["zin"], wikidataId: null, iata: "ZIN", airportName: "Interlaken Air Base", parentCitySlug: "bern" },
+  { slug: "zna", displayName: "ZNA", country: "Canada", countryCode: "CA", iana: "America/Vancouver", lat: 49.1833, lng: -123.95, aliases: ["zna"], wikidataId: null, iata: "ZNA", airportName: "Nanaimo Harbour Water", parentCitySlug: "vancouver" },
+  { slug: "znf", displayName: "ZNF", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 50.1692, lng: 8.9616, aliases: ["znf"], wikidataId: null, iata: "ZNF", airportName: "Hanau Army Air Field", parentCitySlug: "frankfurt" },
+  { slug: "znz", displayName: "ZNZ", country: "Tanzania", countryCode: "TZ", iana: "Africa/Dar_es_Salaam", lat: -6.222, lng: 39.2249, aliases: ["znz"], wikidataId: null, iata: "ZNZ", airportName: "Abeid Amani Karume International", parentCitySlug: "zanzibar" },
+  { slug: "zql", displayName: "ZQL", country: "Germany", countryCode: "DE", iana: "Europe/Berlin", lat: 47.9733, lng: 8.5222, aliases: ["zql"], wikidataId: null, iata: "ZQL", airportName: "Donaueschingen-Villingen", parentCitySlug: "freiburg" },
+  { slug: "zrh", displayName: "ZRH", country: "Switzerland", countryCode: "CH", iana: "Europe/Zurich", lat: 47.4647, lng: 8.5492, aliases: ["zrh"], wikidataId: null, iata: "ZRH", airportName: "Z\xFCrich", parentCitySlug: "zurich" },
+  { slug: "zxt", displayName: "ZXT", country: "Azerbaijan", countryCode: "AZ", iana: "Asia/Baku", lat: 40.4955, lng: 49.9768, aliases: ["zxt"], wikidataId: null, iata: "ZXT", airportName: "Zabrat", parentCitySlug: "baku" }
+];
+
+// src/engine/entities.ts
+var CITY_DATA = [
   // --- North America ---
   {
     slug: "new-york",
@@ -92437,7 +93281,7 @@ var CITY_ENTITIES = [
     aliases: ["nyc", "ny"],
     wikidataId: null,
     vibes: ["electric", "hustling", "bold"],
-    svgCitiesSlug: "us-new-york"
+    iconSlug: "us-new-york"
   },
   {
     slug: "los-angeles",
@@ -92450,7 +93294,7 @@ var CITY_ENTITIES = [
     aliases: ["la"],
     wikidataId: null,
     vibes: ["laid-back", "sun-kissed", "dreamy"],
-    svgCitiesSlug: "us-los-angeles"
+    iconSlug: "us-los-angeles"
   },
   {
     slug: "chicago",
@@ -92463,7 +93307,7 @@ var CITY_ENTITIES = [
     aliases: ["chi"],
     wikidataId: null,
     vibes: ["gritty", "soulful", "windswept"],
-    svgCitiesSlug: "us-chicago"
+    iconSlug: "us-chicago"
   },
   {
     slug: "san-francisco",
@@ -92476,7 +93320,7 @@ var CITY_ENTITIES = [
     aliases: ["sf", "san fran"],
     wikidataId: null,
     vibes: ["foggy", "inventive", "free-spirited"],
-    svgCitiesSlug: "us-san-francisco"
+    iconSlug: "us-san-francisco"
   },
   {
     slug: "boston",
@@ -92489,7 +93333,7 @@ var CITY_ENTITIES = [
     aliases: ["bos"],
     wikidataId: null,
     vibes: ["scholarly", "scrappy", "storied"],
-    svgCitiesSlug: "us-boston"
+    iconSlug: "us-boston"
   },
   {
     slug: "miami",
@@ -92502,7 +93346,7 @@ var CITY_ENTITIES = [
     aliases: ["mia"],
     wikidataId: null,
     vibes: ["tropical", "electric", "vivid"],
-    svgCitiesSlug: "us-miami"
+    iconSlug: "us-miami"
   },
   {
     slug: "seattle",
@@ -92515,7 +93359,7 @@ var CITY_ENTITIES = [
     aliases: ["sea"],
     wikidataId: null,
     vibes: ["cozy", "caffeinated", "misty"],
-    svgCitiesSlug: "us-seattle"
+    iconSlug: "us-seattle"
   },
   {
     slug: "denver",
@@ -92528,7 +93372,7 @@ var CITY_ENTITIES = [
     aliases: ["den"],
     wikidataId: null,
     vibes: ["alpine", "outdoorsy", "crisp"],
-    svgCitiesSlug: "us-denver"
+    iconSlug: "us-denver"
   },
   {
     slug: "austin",
@@ -92541,7 +93385,7 @@ var CITY_ENTITIES = [
     aliases: ["aus"],
     wikidataId: null,
     vibes: ["weird", "creative", "hot"],
-    svgCitiesSlug: "us-austin"
+    iconSlug: "us-austin"
   },
   {
     slug: "portland",
@@ -92554,7 +93398,7 @@ var CITY_ENTITIES = [
     aliases: ["pdx"],
     wikidataId: null,
     vibes: ["quirky", "rainy", "chill"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "dallas",
@@ -92567,7 +93411,7 @@ var CITY_ENTITIES = [
     aliases: ["dfw"],
     wikidataId: null,
     vibes: ["big", "brash", "sprawling"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "houston",
@@ -92580,7 +93424,7 @@ var CITY_ENTITIES = [
     aliases: ["hou"],
     wikidataId: null,
     vibes: ["ambitious", "sprawling", "steamy"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "atlanta",
@@ -92593,7 +93437,7 @@ var CITY_ENTITIES = [
     aliases: ["atl"],
     wikidataId: null,
     vibes: ["southern", "buzzing", "warm"],
-    svgCitiesSlug: "us-atlanta"
+    iconSlug: "us-atlanta"
   },
   {
     slug: "las-vegas",
@@ -92606,7 +93450,7 @@ var CITY_ENTITIES = [
     aliases: ["vegas"],
     wikidataId: null,
     vibes: ["flashy", "restless", "neon"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "new-orleans",
@@ -92619,7 +93463,7 @@ var CITY_ENTITIES = [
     aliases: ["nola"],
     wikidataId: null,
     vibes: ["sultry", "soulful", "festive"],
-    svgCitiesSlug: "us-new-orleans"
+    iconSlug: "us-new-orleans"
   },
   {
     slug: "minneapolis",
@@ -92632,7 +93476,7 @@ var CITY_ENTITIES = [
     aliases: ["msp"],
     wikidataId: null,
     vibes: ["hardy", "friendly", "lakeside"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "detroit",
@@ -92645,7 +93489,7 @@ var CITY_ENTITIES = [
     aliases: ["dtw"],
     wikidataId: null,
     vibes: ["resilient", "gritty", "reborn"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "philadelphia",
@@ -92658,7 +93502,7 @@ var CITY_ENTITIES = [
     aliases: ["philly"],
     wikidataId: null,
     vibes: ["scrappy", "proud", "historic"],
-    svgCitiesSlug: "us-philadelphia"
+    iconSlug: "us-philadelphia"
   },
   {
     slug: "honolulu",
@@ -92671,7 +93515,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["aloha", "breezy", "golden"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "washington-dc",
@@ -92684,7 +93528,7 @@ var CITY_ENTITIES = [
     aliases: ["dc"],
     wikidataId: null,
     vibes: ["powerful", "polished", "monumental"],
-    svgCitiesSlug: "us-washington"
+    iconSlug: "us-washington"
   },
   {
     slug: "anchorage",
@@ -92697,7 +93541,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["wild", "rugged", "vast"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "toronto",
@@ -92710,7 +93554,7 @@ var CITY_ENTITIES = [
     aliases: ["canada"],
     wikidataId: null,
     vibes: ["multicultural", "polite", "dynamic"],
-    svgCitiesSlug: "ca-toronto"
+    iconSlug: "ca-toronto"
   },
   {
     slug: "montreal",
@@ -92723,7 +93567,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["bilingual", "festive", "artsy"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "vancouver",
@@ -92736,7 +93580,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["scenic", "laid-back", "lush"],
-    svgCitiesSlug: "ca-vancouver"
+    iconSlug: "ca-vancouver"
   },
   {
     slug: "mexico-city",
@@ -92749,7 +93593,7 @@ var CITY_ENTITIES = [
     aliases: ["cdmx", "mexico"],
     wikidataId: null,
     vibes: ["vibrant", "colorful", "ancient"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "albuquerque",
@@ -92762,7 +93606,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sun-baked", "expansive", "mystical"],
-    svgCitiesSlug: "us-albuquerque"
+    iconSlug: "us-albuquerque"
   },
   {
     slug: "cincinnati",
@@ -92775,7 +93619,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["unpretentious", "steady", "riverbound"],
-    svgCitiesSlug: "us-cincinnati"
+    iconSlug: "us-cincinnati"
   },
   {
     slug: "columbus",
@@ -92788,7 +93632,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["earnest", "balanced", "grounded"],
-    svgCitiesSlug: "us-columbus"
+    iconSlug: "us-columbus"
   },
   {
     slug: "hartford",
@@ -92801,7 +93645,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["nostalgic", "quiet", "weathered"],
-    svgCitiesSlug: "us-hartford"
+    iconSlug: "us-hartford"
   },
   {
     slug: "irvine",
@@ -92814,7 +93658,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["polished", "orderly", "pristine"],
-    svgCitiesSlug: "us-irvine"
+    iconSlug: "us-irvine"
   },
   {
     slug: "peoria",
@@ -92827,7 +93671,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humble", "unhurried", "practical"],
-    svgCitiesSlug: "us-peoria"
+    iconSlug: "us-peoria"
   },
   {
     slug: "phoenix",
@@ -92840,7 +93684,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["scorched", "resilient", "sprawling"],
-    svgCitiesSlug: "us-phoenix"
+    iconSlug: "us-phoenix"
   },
   {
     slug: "pittsburgh",
@@ -92853,7 +93697,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gritty", "proud", "blue-collar"],
-    svgCitiesSlug: "us-pittsburgh"
+    iconSlug: "us-pittsburgh"
   },
   {
     slug: "sacramento",
@@ -92866,7 +93710,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["laid-back", "sunlit", "easygoing"],
-    svgCitiesSlug: "us-sacramento"
+    iconSlug: "us-sacramento"
   },
   {
     slug: "san-diego",
@@ -92879,7 +93723,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["breezy", "sun-kissed", "carefree"],
-    svgCitiesSlug: "us-san-diego"
+    iconSlug: "us-san-diego"
   },
   {
     slug: "st-louis",
@@ -92892,7 +93736,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["soulful", "midwestern", "unpretentious"],
-    svgCitiesSlug: "us-st-louis"
+    iconSlug: "us-st-louis"
   },
   {
     slug: "ottawa",
@@ -92905,7 +93749,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["dignified", "bilingual", "crisp"],
-    svgCitiesSlug: "ca-ottawa"
+    iconSlug: "ca-ottawa"
   },
   {
     slug: "guadalajara",
@@ -92918,7 +93762,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spirited", "traditional", "warm"],
-    svgCitiesSlug: "mx-guadalajara"
+    iconSlug: "mx-guadalajara"
   },
   {
     slug: "tijuana",
@@ -92931,7 +93775,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["edgy", "border-crossing", "hustling"],
-    svgCitiesSlug: "mx-tijuana"
+    iconSlug: "mx-tijuana"
   },
   {
     slug: "san-juan",
@@ -92944,7 +93788,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "salsa-ready", "vibrant"],
-    svgCitiesSlug: "pr-san-juan"
+    iconSlug: "pr-san-juan"
   },
   // --- South America ---
   {
@@ -92958,7 +93802,7 @@ var CITY_ENTITIES = [
     aliases: ["brazil"],
     wikidataId: null,
     vibes: ["intense", "rhythmic", "massive"],
-    svgCitiesSlug: "br-sao-paulo"
+    iconSlug: "br-sao-paulo"
   },
   {
     slug: "buenos-aires",
@@ -92971,7 +93815,7 @@ var CITY_ENTITIES = [
     aliases: ["argentina"],
     wikidataId: null,
     vibes: ["passionate", "elegant", "nocturnal"],
-    svgCitiesSlug: "ar-buenos-aires"
+    iconSlug: "ar-buenos-aires"
   },
   {
     slug: "bogota",
@@ -92984,7 +93828,7 @@ var CITY_ENTITIES = [
     aliases: ["colombia"],
     wikidataId: null,
     vibes: ["warm", "lively", "elevated"],
-    svgCitiesSlug: "co-bogota"
+    iconSlug: "co-bogota"
   },
   {
     slug: "lima",
@@ -92997,7 +93841,7 @@ var CITY_ENTITIES = [
     aliases: ["peru"],
     wikidataId: null,
     vibes: ["misty", "flavorful", "ancient"],
-    svgCitiesSlug: "pe-lima"
+    iconSlug: "pe-lima"
   },
   {
     slug: "santiago",
@@ -93010,7 +93854,7 @@ var CITY_ENTITIES = [
     aliases: ["chile"],
     wikidataId: null,
     vibes: ["cosmopolitan", "crisp", "adventurous"],
-    svgCitiesSlug: "cl-santiago"
+    iconSlug: "cl-santiago"
   },
   {
     slug: "cordoba-argentina",
@@ -93023,7 +93867,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["scholarly", "passionate", "rebellious"],
-    svgCitiesSlug: "ar-cordoba"
+    iconSlug: "ar-cordoba"
   },
   {
     slug: "ushuaia",
@@ -93036,7 +93880,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["windswept", "remote", "adventurous"],
-    svgCitiesSlug: "ar-ushuaia"
+    iconSlug: "ar-ushuaia"
   },
   {
     slug: "la-paz",
@@ -93049,7 +93893,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["breathless", "high-altitude", "dizzying"],
-    svgCitiesSlug: "bo-la-paz"
+    iconSlug: "bo-la-paz"
   },
   {
     slug: "brasilia",
@@ -93062,7 +93906,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["modernist", "planned", "spacious"],
-    svgCitiesSlug: "br-brasilia"
+    iconSlug: "br-brasilia"
   },
   {
     slug: "rio-de-janeiro",
@@ -93075,7 +93919,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sensual", "exuberant", "sun-drenched"],
-    svgCitiesSlug: "br-rio-de-janeiro"
+    iconSlug: "br-rio-de-janeiro"
   },
   {
     slug: "valparaiso",
@@ -93088,7 +93932,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["bohemian", "colorful", "hilly"],
-    svgCitiesSlug: "cl-valparaiso"
+    iconSlug: "cl-valparaiso"
   },
   {
     slug: "cartagena",
@@ -93101,7 +93945,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sultry", "colonial", "festive"],
-    svgCitiesSlug: "co-cartagena"
+    iconSlug: "co-cartagena"
   },
   {
     slug: "medellin",
@@ -93114,7 +93958,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["transformed", "innovative", "springlike"],
-    svgCitiesSlug: "co-medellin"
+    iconSlug: "co-medellin"
   },
   {
     slug: "quito",
@@ -93127,7 +93971,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["elevated", "colonial", "crisp"],
-    svgCitiesSlug: "ec-quito"
+    iconSlug: "ec-quito"
   },
   {
     slug: "cusco",
@@ -93140,7 +93984,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["ancient", "mystical", "thin-aired"],
-    svgCitiesSlug: "pe-cusco"
+    iconSlug: "pe-cusco"
   },
   {
     slug: "montevideo",
@@ -93153,7 +93997,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["relaxed", "literary", "coastal"],
-    svgCitiesSlug: "uy-montevideo"
+    iconSlug: "uy-montevideo"
   },
   {
     slug: "caracas",
@@ -93166,7 +94010,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["intense", "volatile", "mountainous"],
-    svgCitiesSlug: "ve-caracas"
+    iconSlug: "ve-caracas"
   },
   // --- Europe ---
   {
@@ -93180,7 +94024,7 @@ var CITY_ENTITIES = [
     aliases: ["uk", "england"],
     wikidataId: null,
     vibes: ["posh", "cozy", "literary"],
-    svgCitiesSlug: "gb-london"
+    iconSlug: "gb-london"
   },
   {
     slug: "paris",
@@ -93193,7 +94037,7 @@ var CITY_ENTITIES = [
     aliases: ["france"],
     wikidataId: null,
     vibes: ["romantic", "chic", "dreamy"],
-    svgCitiesSlug: "fr-paris"
+    iconSlug: "fr-paris"
   },
   {
     slug: "berlin",
@@ -93206,7 +94050,7 @@ var CITY_ENTITIES = [
     aliases: ["germany"],
     wikidataId: null,
     vibes: ["free", "underground", "raw"],
-    svgCitiesSlug: "de-berlin"
+    iconSlug: "de-berlin"
   },
   {
     slug: "zurich",
@@ -93219,7 +94063,7 @@ var CITY_ENTITIES = [
     aliases: ["switzerland"],
     wikidataId: null,
     vibes: ["precise", "pristine", "alpine"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "amsterdam",
@@ -93232,7 +94076,7 @@ var CITY_ENTITIES = [
     aliases: ["netherlands", "holland"],
     wikidataId: null,
     vibes: ["open-minded", "breezy", "candid"],
-    svgCitiesSlug: "nl-amsterdam"
+    iconSlug: "nl-amsterdam"
   },
   {
     slug: "rome",
@@ -93245,7 +94089,7 @@ var CITY_ENTITIES = [
     aliases: ["italy"],
     wikidataId: null,
     vibes: ["eternal", "warm", "dramatic"],
-    svgCitiesSlug: "it-rome"
+    iconSlug: "it-rome"
   },
   {
     slug: "madrid",
@@ -93258,7 +94102,7 @@ var CITY_ENTITIES = [
     aliases: ["spain"],
     wikidataId: null,
     vibes: ["fiery", "nocturnal", "proud"],
-    svgCitiesSlug: "es-madrid"
+    iconSlug: "es-madrid"
   },
   {
     slug: "lisbon",
@@ -93271,7 +94115,7 @@ var CITY_ENTITIES = [
     aliases: ["portugal"],
     wikidataId: null,
     vibes: ["melancholic", "sunny", "soulful"],
-    svgCitiesSlug: "pt-lisbon"
+    iconSlug: "pt-lisbon"
   },
   {
     slug: "stockholm",
@@ -93284,7 +94128,7 @@ var CITY_ENTITIES = [
     aliases: ["sweden"],
     wikidataId: null,
     vibes: ["minimal", "sleek", "thoughtful"],
-    svgCitiesSlug: "se-stockholm"
+    iconSlug: "se-stockholm"
   },
   {
     slug: "oslo",
@@ -93297,7 +94141,7 @@ var CITY_ENTITIES = [
     aliases: ["norway"],
     wikidataId: null,
     vibes: ["rugged", "quiet", "pristine"],
-    svgCitiesSlug: "no-oslo"
+    iconSlug: "no-oslo"
   },
   {
     slug: "copenhagen",
@@ -93310,7 +94154,7 @@ var CITY_ENTITIES = [
     aliases: ["denmark"],
     wikidataId: null,
     vibes: ["hygge", "cozy", "whimsical"],
-    svgCitiesSlug: "dk-copenhagen"
+    iconSlug: "dk-copenhagen"
   },
   {
     slug: "helsinki",
@@ -93323,7 +94167,7 @@ var CITY_ENTITIES = [
     aliases: ["finland"],
     wikidataId: null,
     vibes: ["stoic", "serene", "luminous"],
-    svgCitiesSlug: "fi-helsinki"
+    iconSlug: "fi-helsinki"
   },
   {
     slug: "vienna",
@@ -93336,7 +94180,7 @@ var CITY_ENTITIES = [
     aliases: ["austria"],
     wikidataId: null,
     vibes: ["refined", "classical", "grand"],
-    svgCitiesSlug: "at-vienna"
+    iconSlug: "at-vienna"
   },
   {
     slug: "brussels",
@@ -93349,7 +94193,7 @@ var CITY_ENTITIES = [
     aliases: ["belgium"],
     wikidataId: null,
     vibes: ["cosmopolitan", "quirky", "indulgent"],
-    svgCitiesSlug: "be-brussels"
+    iconSlug: "be-brussels"
   },
   {
     slug: "warsaw",
@@ -93362,7 +94206,7 @@ var CITY_ENTITIES = [
     aliases: ["poland"],
     wikidataId: null,
     vibes: ["resilient", "rising", "spirited"],
-    svgCitiesSlug: "pl-warsaw"
+    iconSlug: "pl-warsaw"
   },
   {
     slug: "prague",
@@ -93375,7 +94219,7 @@ var CITY_ENTITIES = [
     aliases: ["czech republic", "czechia"],
     wikidataId: null,
     vibes: ["bohemian", "golden", "enchanted"],
-    svgCitiesSlug: "cz-prague"
+    iconSlug: "cz-prague"
   },
   {
     slug: "athens",
@@ -93388,7 +94232,7 @@ var CITY_ENTITIES = [
     aliases: ["greece"],
     wikidataId: null,
     vibes: ["ancient", "sun-drenched", "philosophical"],
-    svgCitiesSlug: "gr-athens"
+    iconSlug: "gr-athens"
   },
   {
     slug: "istanbul",
@@ -93401,7 +94245,7 @@ var CITY_ENTITIES = [
     aliases: ["turkey"],
     wikidataId: null,
     vibes: ["mystical", "bustling", "layered"],
-    svgCitiesSlug: "tr-istanbul"
+    iconSlug: "tr-istanbul"
   },
   {
     slug: "moscow",
@@ -93414,7 +94258,7 @@ var CITY_ENTITIES = [
     aliases: ["russia"],
     wikidataId: null,
     vibes: ["imposing", "wintry", "grand"],
-    svgCitiesSlug: "ru-moscow"
+    iconSlug: "ru-moscow"
   },
   {
     slug: "dublin",
@@ -93427,7 +94271,7 @@ var CITY_ENTITIES = [
     aliases: ["ireland"],
     wikidataId: null,
     vibes: ["convivial", "witty", "rainy"],
-    svgCitiesSlug: "ie-dublin"
+    iconSlug: "ie-dublin"
   },
   {
     slug: "edinburgh",
@@ -93440,7 +94284,7 @@ var CITY_ENTITIES = [
     aliases: ["scotland"],
     wikidataId: null,
     vibes: ["moody", "storied", "misty"],
-    svgCitiesSlug: "gb-edinburgh"
+    iconSlug: "gb-edinburgh"
   },
   {
     slug: "reykjavik",
@@ -93453,7 +94297,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["otherworldly", "stark", "luminous"],
-    svgCitiesSlug: "is-reykjavik"
+    iconSlug: "is-reykjavik"
   },
   {
     slug: "andorra-la-vella",
@@ -93466,7 +94310,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["alpine", "duty-free", "tucked-away"],
-    svgCitiesSlug: "ad-andorra"
+    iconSlug: "ad-andorra"
   },
   {
     slug: "tirana",
@@ -93479,7 +94323,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["colorful", "scrappy", "emerging"],
-    svgCitiesSlug: "al-tirana"
+    iconSlug: "al-tirana"
   },
   {
     slug: "baku",
@@ -93492,7 +94336,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["windy", "oil-slicked", "cosmopolitan"],
-    svgCitiesSlug: "az-baku"
+    iconSlug: "az-baku"
   },
   {
     slug: "mostar",
@@ -93505,7 +94349,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["bridged", "resilient", "haunted"],
-    svgCitiesSlug: "ba-mostar"
+    iconSlug: "ba-mostar"
   },
   {
     slug: "sarajevo",
@@ -93518,7 +94362,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["scarred", "multicultural", "spirited"],
-    svgCitiesSlug: "ba-sarajevo"
+    iconSlug: "ba-sarajevo"
   },
   {
     slug: "bruges",
@@ -93531,7 +94375,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["medieval", "tranquil", "chocolatey"],
-    svgCitiesSlug: "be-bruges"
+    iconSlug: "be-bruges"
   },
   {
     slug: "sofia",
@@ -93544,7 +94388,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["post-soviet", "leafy", "unpolished"],
-    svgCitiesSlug: "bg-sofia"
+    iconSlug: "bg-sofia"
   },
   {
     slug: "minsk",
@@ -93557,7 +94401,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["soviet-era", "orderly", "melancholic"],
-    svgCitiesSlug: "by-minsk"
+    iconSlug: "by-minsk"
   },
   {
     slug: "bern",
@@ -93570,7 +94414,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["calm", "arcaded", "genteel"],
-    svgCitiesSlug: "ch-bern"
+    iconSlug: "ch-bern"
   },
   {
     slug: "limassol",
@@ -93583,7 +94427,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunny", "beachfront", "relaxed"],
-    svgCitiesSlug: "cy-limassol"
+    iconSlug: "cy-limassol"
   },
   {
     slug: "nicosia",
@@ -93596,7 +94440,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["divided", "warm", "liminal"],
-    svgCitiesSlug: "cy-nicosia"
+    iconSlug: "cy-nicosia"
   },
   {
     slug: "paphos",
@@ -93609,7 +94453,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mythical", "seaside", "languid"],
-    svgCitiesSlug: "cy-paphos"
+    iconSlug: "cy-paphos"
   },
   {
     slug: "aachen",
@@ -93622,7 +94466,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["thermal", "imperial", "cross-border"],
-    svgCitiesSlug: "de-aachen"
+    iconSlug: "de-aachen"
   },
   {
     slug: "bielefeld",
@@ -93635,7 +94479,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["unassuming", "industrial", "modest"],
-    svgCitiesSlug: "de-bielefeld"
+    iconSlug: "de-bielefeld"
   },
   {
     slug: "bremen",
@@ -93648,7 +94492,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["maritime", "hanseatic", "independent"],
-    svgCitiesSlug: "de-bremen"
+    iconSlug: "de-bremen"
   },
   {
     slug: "cologne",
@@ -93661,7 +94505,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["carnival-ready", "jovial", "cathedral-shadowed"],
-    svgCitiesSlug: "de-cologne"
+    iconSlug: "de-cologne"
   },
   {
     slug: "erfurt",
@@ -93674,7 +94518,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["floral", "medieval", "gentle"],
-    svgCitiesSlug: "de-erfurt"
+    iconSlug: "de-erfurt"
   },
   {
     slug: "frankfurt",
@@ -93687,7 +94531,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["financial", "transient", "glass-towered"],
-    svgCitiesSlug: "de-frankfurt"
+    iconSlug: "de-frankfurt"
   },
   {
     slug: "freiburg",
@@ -93700,7 +94544,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunny", "eco-conscious", "youthful"],
-    svgCitiesSlug: "de-freiburg"
+    iconSlug: "de-freiburg"
   },
   {
     slug: "giessen",
@@ -93713,7 +94557,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["studious", "small-town", "unpretentious"],
-    svgCitiesSlug: "de-giessen"
+    iconSlug: "de-giessen"
   },
   {
     slug: "hamburg",
@@ -93726,7 +94570,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["maritime", "liberal", "rainy"],
-    svgCitiesSlug: "de-hamburg"
+    iconSlug: "de-hamburg"
   },
   {
     slug: "karlsruhe",
@@ -93739,7 +94583,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["planned", "sunny", "cultured"],
-    svgCitiesSlug: "de-karlsruhe"
+    iconSlug: "de-karlsruhe"
   },
   {
     slug: "leipzig",
@@ -93752,7 +94596,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["artistic", "rebellious", "emerging"],
-    svgCitiesSlug: "de-leipzig"
+    iconSlug: "de-leipzig"
   },
   {
     slug: "munich",
@@ -93765,7 +94609,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gemutlich", "beer-garden-ready", "prosperous"],
-    svgCitiesSlug: "de-munich"
+    iconSlug: "de-munich"
   },
   {
     slug: "nuremberg",
@@ -93778,7 +94622,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["medieval", "contemplative", "historic"],
-    svgCitiesSlug: "de-nuremberg"
+    iconSlug: "de-nuremberg"
   },
   {
     slug: "siegen",
@@ -93791,7 +94635,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["forested", "hilly", "tucked-away"],
-    svgCitiesSlug: "de-siegen"
+    iconSlug: "de-siegen"
   },
   {
     slug: "stuttgart",
@@ -93804,7 +94648,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["engineered", "industrious", "hilly"],
-    svgCitiesSlug: "de-stuttgart"
+    iconSlug: "de-stuttgart"
   },
   {
     slug: "tallinn",
@@ -93817,7 +94661,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["medieval", "digital", "baltic"],
-    svgCitiesSlug: "ee-tallinn"
+    iconSlug: "ee-tallinn"
   },
   {
     slug: "barcelona",
@@ -93830,7 +94674,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sensual", "modernist", "rebellious"],
-    svgCitiesSlug: "es-barcelona"
+    iconSlug: "es-barcelona"
   },
   {
     slug: "cordoba-spain",
@@ -93843,7 +94687,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["moorish", "scorching", "contemplative"],
-    svgCitiesSlug: "es-cordoba"
+    iconSlug: "es-cordoba"
   },
   {
     slug: "a-coruna",
@@ -93856,7 +94700,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["windswept", "maritime", "galician"],
-    svgCitiesSlug: "es-coruna"
+    iconSlug: "es-coruna"
   },
   {
     slug: "gijon",
@@ -93869,7 +94713,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["salty", "working-class", "green"],
-    svgCitiesSlug: "es-gijon"
+    iconSlug: "es-gijon"
   },
   {
     slug: "granada-spain",
@@ -93882,7 +94726,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["moorish", "poetic", "twilit"],
-    svgCitiesSlug: "es-granada"
+    iconSlug: "es-granada"
   },
   {
     slug: "malaga",
@@ -93895,7 +94739,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sun-soaked", "coastal", "breezy"],
-    svgCitiesSlug: "es-malaga"
+    iconSlug: "es-malaga"
   },
   {
     slug: "santiago-de-compostela",
@@ -93908,7 +94752,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["pilgrim-weary", "sacred", "misty"],
-    svgCitiesSlug: "es-santiago-de-compostela"
+    iconSlug: "es-santiago-de-compostela"
   },
   {
     slug: "valencia",
@@ -93921,7 +94765,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunlit", "orange-scented", "modern"],
-    svgCitiesSlug: "es-valencia"
+    iconSlug: "es-valencia"
   },
   {
     slug: "vigo",
@@ -93934,7 +94778,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rainy", "maritime", "industrial"],
-    svgCitiesSlug: "es-vigo"
+    iconSlug: "es-vigo"
   },
   {
     slug: "kuopio",
@@ -93947,7 +94791,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["lakeside", "sauna-ready", "tranquil"],
-    svgCitiesSlug: "fi-kuopio"
+    iconSlug: "fi-kuopio"
   },
   {
     slug: "lyon",
@@ -93960,7 +94804,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gastronomic", "silky", "traboule-hidden"],
-    svgCitiesSlug: "fr-lyon"
+    iconSlug: "fr-lyon"
   },
   {
     slug: "montpellier",
@@ -93973,7 +94817,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunny", "youthful", "mediterranean"],
-    svgCitiesSlug: "fr-montpellier"
+    iconSlug: "fr-montpellier"
   },
   {
     slug: "rennes",
@@ -93986,7 +94830,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rainy", "breton", "studious"],
-    svgCitiesSlug: "fr-rennes"
+    iconSlug: "fr-rennes"
   },
   {
     slug: "leeds",
@@ -93999,7 +94843,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["post-industrial", "direct", "northern"],
-    svgCitiesSlug: "gb-leeds"
+    iconSlug: "gb-leeds"
   },
   {
     slug: "manchester",
@@ -94012,7 +94856,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rainy", "musical", "gritty"],
-    svgCitiesSlug: "gb-manchester"
+    iconSlug: "gb-manchester"
   },
   {
     slug: "batumi",
@@ -94025,7 +94869,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["subtropical", "casino-lit", "humid"],
-    svgCitiesSlug: "ge-batumi"
+    iconSlug: "ge-batumi"
   },
   {
     slug: "tbilisi",
@@ -94038,7 +94882,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sulfuric", "bohemian", "crossroads"],
-    svgCitiesSlug: "ge-tbilisi"
+    iconSlug: "ge-tbilisi"
   },
   {
     slug: "zagreb",
@@ -94051,7 +94895,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["cafe-lingering", "post-yugoslav", "green"],
-    svgCitiesSlug: "hr-zagreb"
+    iconSlug: "hr-zagreb"
   },
   {
     slug: "budapest",
@@ -94064,7 +94908,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["thermal", "melancholic", "grand"],
-    svgCitiesSlug: "hu-budapest"
+    iconSlug: "hu-budapest"
   },
   {
     slug: "debrecen",
@@ -94077,7 +94921,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["earnest", "reformed", "provincial"],
-    svgCitiesSlug: "hu-debrecen"
+    iconSlug: "hu-debrecen"
   },
   {
     slug: "szeged",
@@ -94090,7 +94934,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunny", "paprika-scented", "peaceful"],
-    svgCitiesSlug: "hu-szeged"
+    iconSlug: "hu-szeged"
   },
   {
     slug: "akureyri",
@@ -94103,7 +94947,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["northern", "stark", "cozy"],
-    svgCitiesSlug: "is-akureyri"
+    iconSlug: "is-akureyri"
   },
   {
     slug: "bologna",
@@ -94116,7 +94960,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["studious", "porticoed", "leftist"],
-    svgCitiesSlug: "it-bologna"
+    iconSlug: "it-bologna"
   },
   {
     slug: "ferrara",
@@ -94129,7 +94973,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["cycling", "renaissance", "quiet"],
-    svgCitiesSlug: "it-ferrara"
+    iconSlug: "it-ferrara"
   },
   {
     slug: "forte-dei-marmi",
@@ -94142,7 +94986,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["jet-set", "beachside", "exclusive"],
-    svgCitiesSlug: "it-forte-dei-marmi"
+    iconSlug: "it-forte-dei-marmi"
   },
   {
     slug: "milan",
@@ -94155,7 +94999,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["fashionable", "ambitious", "sleek"],
-    svgCitiesSlug: "it-milan"
+    iconSlug: "it-milan"
   },
   {
     slug: "palermo",
@@ -94168,7 +95012,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["chaotic", "spicy", "sun-beaten"],
-    svgCitiesSlug: "it-palermo"
+    iconSlug: "it-palermo"
   },
   {
     slug: "sorrento",
@@ -94181,7 +95025,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["limoncello-sweet", "cliffside", "romantic"],
-    svgCitiesSlug: "it-sorrento"
+    iconSlug: "it-sorrento"
   },
   {
     slug: "taranto",
@@ -94194,7 +95038,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["maritime", "industrial", "salty"],
-    svgCitiesSlug: "it-taranto"
+    iconSlug: "it-taranto"
   },
   {
     slug: "trieste",
@@ -94207,7 +95051,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mitteleuropean", "melancholic", "coffee-scented"],
-    svgCitiesSlug: "it-trieste"
+    iconSlug: "it-trieste"
   },
   {
     slug: "venice",
@@ -94220,7 +95064,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["labyrinthine", "sinking", "dreamlike"],
-    svgCitiesSlug: "it-venice"
+    iconSlug: "it-venice"
   },
   {
     slug: "vaduz",
@@ -94233,7 +95077,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["alpine", "tax-sheltered", "tiny"],
-    svgCitiesSlug: "li-vaduz"
+    iconSlug: "li-vaduz"
   },
   {
     slug: "vilnius",
@@ -94246,7 +95090,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["baroque", "bohemian", "resilient"],
-    svgCitiesSlug: "lt-vilnius"
+    iconSlug: "lt-vilnius"
   },
   {
     slug: "luxembourg-city",
@@ -94259,7 +95103,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["multilingual", "prosperous", "compact"],
-    svgCitiesSlug: "lu-luxembourg"
+    iconSlug: "lu-luxembourg"
   },
   {
     slug: "riga",
@@ -94272,7 +95116,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["art-nouveau", "amber-lit", "baltic"],
-    svgCitiesSlug: "lv-riga"
+    iconSlug: "lv-riga"
   },
   {
     slug: "monaco",
@@ -94285,7 +95129,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["glamorous", "tax-free", "exclusive"],
-    svgCitiesSlug: "mc-monaco"
+    iconSlug: "mc-monaco"
   },
   {
     slug: "chisinau",
@@ -94298,7 +95142,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["post-soviet", "quiet", "wine-soaked"],
-    svgCitiesSlug: "md-chisinau"
+    iconSlug: "md-chisinau"
   },
   {
     slug: "budva",
@@ -94311,7 +95155,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["beach-ready", "nightlife-charged", "adriatic"],
-    svgCitiesSlug: "me-budva"
+    iconSlug: "me-budva"
   },
   {
     slug: "herceg-novi",
@@ -94324,7 +95168,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["floral", "sunny", "coastal"],
-    svgCitiesSlug: "me-herceg-novi"
+    iconSlug: "me-herceg-novi"
   },
   {
     slug: "podgorica",
@@ -94337,7 +95181,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["concrete", "functional", "sunny"],
-    svgCitiesSlug: "me-podgorica"
+    iconSlug: "me-podgorica"
   },
   {
     slug: "skopje",
@@ -94350,7 +95194,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rebuilt", "eclectic", "rough-edged"],
-    svgCitiesSlug: "mk-skopje"
+    iconSlug: "mk-skopje"
   },
   {
     slug: "valletta",
@@ -94363,7 +95207,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["honey-stoned", "fortified", "sunlit"],
-    svgCitiesSlug: "mt-valletta"
+    iconSlug: "mt-valletta"
   },
   {
     slug: "de-meije",
@@ -94376,7 +95220,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["pastoral", "watery", "tranquil"],
-    svgCitiesSlug: "nl-de-meije"
+    iconSlug: "nl-de-meije"
   },
   {
     slug: "maastricht",
@@ -94389,7 +95233,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hilly", "border-crossing", "burgundian"],
-    svgCitiesSlug: "nl-maastricht"
+    iconSlug: "nl-maastricht"
   },
   {
     slug: "rotterdam",
@@ -94402,7 +95246,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rebuilt", "bold", "architectural"],
-    svgCitiesSlug: "nl-rotterdam"
+    iconSlug: "nl-rotterdam"
   },
   {
     slug: "woerden",
@@ -94415,7 +95259,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["canal-lined", "cheese-market-fresh", "quiet"],
-    svgCitiesSlug: "nl-woerden"
+    iconSlug: "nl-woerden"
   },
   {
     slug: "gdansk",
@@ -94428,7 +95272,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hanseatic", "amber-tinged", "maritime"],
-    svgCitiesSlug: "pl-gdansk"
+    iconSlug: "pl-gdansk"
   },
   {
     slug: "poznan",
@@ -94441,7 +95285,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mercantile", "colorful", "proud"],
-    svgCitiesSlug: "pl-poznan"
+    iconSlug: "pl-poznan"
   },
   {
     slug: "swiebodzin",
@@ -94454,7 +95298,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["small-town", "quiet", "faithful"],
-    svgCitiesSlug: "pl-swiebodzin"
+    iconSlug: "pl-swiebodzin"
   },
   {
     slug: "wroclaw",
@@ -94467,7 +95311,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["island-dotted", "gnome-spotted", "colorful"],
-    svgCitiesSlug: "pl-wroclaw"
+    iconSlug: "pl-wroclaw"
   },
   {
     slug: "amadora",
@@ -94480,7 +95324,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["residential", "unpretentious", "suburban"],
-    svgCitiesSlug: "pt-amadora"
+    iconSlug: "pt-amadora"
   },
   {
     slug: "barcelos",
@@ -94493,7 +95337,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["folkloric", "ceramic", "traditional"],
-    svgCitiesSlug: "pt-barcelos"
+    iconSlug: "pt-barcelos"
   },
   {
     slug: "braga",
@@ -94506,7 +95350,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["baroque", "youthful", "faithful"],
-    svgCitiesSlug: "pt-braga"
+    iconSlug: "pt-braga"
   },
   {
     slug: "chaves",
@@ -94519,7 +95363,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["thermal", "fortified", "provincial"],
-    svgCitiesSlug: "pt-chaves"
+    iconSlug: "pt-chaves"
   },
   {
     slug: "guimaraes",
@@ -94532,7 +95376,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["medieval", "birthplace-proud", "storied"],
-    svgCitiesSlug: "pt-guimaraes"
+    iconSlug: "pt-guimaraes"
   },
   {
     slug: "leiria",
@@ -94545,7 +95389,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["castle-topped", "pine-scented", "central"],
-    svgCitiesSlug: "pt-leiria"
+    iconSlug: "pt-leiria"
   },
   {
     slug: "matosinhos",
@@ -94558,7 +95402,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["oceanic", "grilled-fish-scented", "beachside"],
-    svgCitiesSlug: "pt-matosinhos"
+    iconSlug: "pt-matosinhos"
   },
   {
     slug: "nazare",
@@ -94571,7 +95415,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["wave-battered", "fishing-village", "pious"],
-    svgCitiesSlug: "pt-nazare"
+    iconSlug: "pt-nazare"
   },
   {
     slug: "porto",
@@ -94584,7 +95428,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["soulful", "port-wine-soaked", "steep"],
-    svgCitiesSlug: "pt-porto"
+    iconSlug: "pt-porto"
   },
   {
     slug: "viana-do-castelo",
@@ -94597,7 +95441,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["folkloric", "maritime", "traditional"],
-    svgCitiesSlug: "pt-viana-do-castelo"
+    iconSlug: "pt-viana-do-castelo"
   },
   {
     slug: "vila-real",
@@ -94610,7 +95454,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["thermal", "mountainous", "peaceful"],
-    svgCitiesSlug: "pt-vila-real"
+    iconSlug: "pt-vila-real"
   },
   {
     slug: "bucharest",
@@ -94623,7 +95467,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["crumbling", "belle-epoque", "chaotic"],
-    svgCitiesSlug: "ro-bucharest"
+    iconSlug: "ro-bucharest"
   },
   {
     slug: "belgrade",
@@ -94636,7 +95480,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["defiant", "nightlife-charged", "balkan"],
-    svgCitiesSlug: "rs-belgrade"
+    iconSlug: "rs-belgrade"
   },
   {
     slug: "subotica",
@@ -94649,7 +95493,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["art-nouveau", "multicultural", "provincial"],
-    svgCitiesSlug: "rs-subotica"
+    iconSlug: "rs-subotica"
   },
   {
     slug: "murmansk",
@@ -94662,7 +95506,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["polar", "darkened", "hardy"],
-    svgCitiesSlug: "ru-murmansk"
+    iconSlug: "ru-murmansk"
   },
   {
     slug: "st-petersburg",
@@ -94675,7 +95519,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["imperial", "melancholic", "grand"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "tula",
@@ -94688,7 +95532,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["stoic", "industrial", "resilient"],
-    svgCitiesSlug: "ru-tula"
+    iconSlug: "ru-tula"
   },
   {
     slug: "yakutsk",
@@ -94701,7 +95545,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["frozen", "isolated", "extreme"],
-    svgCitiesSlug: "ru-yakutsk"
+    iconSlug: "ru-yakutsk"
   },
   {
     slug: "ljubljana",
@@ -94714,7 +95558,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["charming", "laid-back", "green"],
-    svgCitiesSlug: "si-ljubljana"
+    iconSlug: "si-ljubljana"
   },
   {
     slug: "bratislava",
@@ -94727,7 +95571,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["quiet", "unassuming", "emerging"],
-    svgCitiesSlug: "sk-bratislava"
+    iconSlug: "sk-bratislava"
   },
   {
     slug: "san-marino",
@@ -94740,7 +95584,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["serene", "timeless", "elevated"],
-    svgCitiesSlug: "sm-san-marino"
+    iconSlug: "sm-san-marino"
   },
   {
     slug: "kyiv",
@@ -94753,7 +95597,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["golden", "spirited", "ancient"],
-    svgCitiesSlug: "ua-kyiv"
+    iconSlug: "ua-kyiv"
   },
   {
     slug: "odessa",
@@ -94766,7 +95610,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["witty", "cosmopolitan", "breezy"],
-    svgCitiesSlug: "ua-odessa"
+    iconSlug: "ua-odessa"
   },
   {
     slug: "liverpool",
@@ -94779,7 +95623,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gritty", "musical", "proud"],
-    svgCitiesSlug: "uk-liverpool"
+    iconSlug: "uk-liverpool"
   },
   {
     slug: "vatican-city",
@@ -94792,7 +95636,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["reverent", "sacred", "hushed"],
-    svgCitiesSlug: "va-vatican"
+    iconSlug: "va-vatican"
   },
   {
     slug: "pristina",
@@ -94805,7 +95649,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["youthful", "defiant", "raw"],
-    svgCitiesSlug: "xk-pristina"
+    iconSlug: "xk-pristina"
   },
   // --- Africa ---
   {
@@ -94819,7 +95663,7 @@ var CITY_ENTITIES = [
     aliases: ["egypt"],
     wikidataId: null,
     vibes: ["ancient", "chaotic", "timeless"],
-    svgCitiesSlug: "eg-cairo"
+    iconSlug: "eg-cairo"
   },
   {
     slug: "johannesburg",
@@ -94832,7 +95676,7 @@ var CITY_ENTITIES = [
     aliases: ["south africa"],
     wikidataId: null,
     vibes: ["ambitious", "golden", "resilient"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "cape-town",
@@ -94845,7 +95689,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["stunning", "breezy", "wild"],
-    svgCitiesSlug: "za-cape-town"
+    iconSlug: "za-cape-town"
   },
   {
     slug: "lagos",
@@ -94858,7 +95702,7 @@ var CITY_ENTITIES = [
     aliases: ["nigeria"],
     wikidataId: null,
     vibes: ["hustling", "loud", "unstoppable"],
-    svgCitiesSlug: "ng-lagos"
+    iconSlug: "ng-lagos"
   },
   {
     slug: "nairobi",
@@ -94871,7 +95715,7 @@ var CITY_ENTITIES = [
     aliases: ["kenya"],
     wikidataId: null,
     vibes: ["enterprising", "sunny", "rising"],
-    svgCitiesSlug: "ke-nairobi"
+    iconSlug: "ke-nairobi"
   },
   {
     slug: "ouagadougou",
@@ -94884,7 +95728,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["dusty", "warm", "resilient"],
-    svgCitiesSlug: "bf-ouagadougou"
+    iconSlug: "bf-ouagadougou"
   },
   {
     slug: "lalibela",
@@ -94897,7 +95741,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mystical", "devotional", "ancient"],
-    svgCitiesSlug: "et-lalibela"
+    iconSlug: "et-lalibela"
   },
   {
     slug: "addis-ababa",
@@ -94910,7 +95754,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["bustling", "hopeful", "high"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "accra",
@@ -94923,7 +95767,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["vibrant", "welcoming", "humid"],
-    svgCitiesSlug: "gh-accra"
+    iconSlug: "gh-accra"
   },
   {
     slug: "abidjan",
@@ -94936,7 +95780,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["dynamic", "tropical", "ambitious"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "kinshasa",
@@ -94949,7 +95793,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["frenetic", "rhythmic", "boundless"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "maseru",
@@ -94962,7 +95806,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["windswept", "rugged", "quiet"],
-    svgCitiesSlug: "ls-maseru"
+    iconSlug: "ls-maseru"
   },
   {
     slug: "benghazi",
@@ -94975,7 +95819,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["weathered", "tense", "coastal"],
-    svgCitiesSlug: "ly-benghazi"
+    iconSlug: "ly-benghazi"
   },
   {
     slug: "casablanca",
@@ -94988,7 +95832,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["bustling", "cinematic", "salty"],
-    svgCitiesSlug: "ma-casablanca"
+    iconSlug: "ma-casablanca"
   },
   {
     slug: "fez",
@@ -95001,7 +95845,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["labyrinthine", "ancient", "aromatic"],
-    svgCitiesSlug: "ma-fez"
+    iconSlug: "ma-fez"
   },
   {
     slug: "marrakesh",
@@ -95014,7 +95858,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["intoxicating", "spicy", "ochre"],
-    svgCitiesSlug: "ma-marrakesh"
+    iconSlug: "ma-marrakesh"
   },
   {
     slug: "antananarivo",
@@ -95027,7 +95871,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hilly", "chaotic", "resourceful"],
-    svgCitiesSlug: "mg-antananarivo"
+    iconSlug: "mg-antananarivo"
   },
   {
     slug: "maputo",
@@ -95040,7 +95884,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "rhythmic", "languid"],
-    svgCitiesSlug: "mz-maputo"
+    iconSlug: "mz-maputo"
   },
   {
     slug: "windhoek",
@@ -95053,7 +95897,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["crisp", "spacious", "sunlit"],
-    svgCitiesSlug: "na-windhoek"
+    iconSlug: "na-windhoek"
   },
   {
     slug: "kigali",
@@ -95066,7 +95910,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["clean", "orderly", "rising"],
-    svgCitiesSlug: "rw-kigali"
+    iconSlug: "rw-kigali"
   },
   {
     slug: "dakar",
@@ -95079,7 +95923,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["colorful", "musical", "coastal"],
-    svgCitiesSlug: "sn-dakar"
+    iconSlug: "sn-dakar"
   },
   {
     slug: "dar-es-salaam",
@@ -95092,7 +95936,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humid", "bustling", "swahili"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "zanzibar",
@@ -95105,7 +95949,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spiced", "turquoise", "timeless"],
-    svgCitiesSlug: "tz-zanzibar"
+    iconSlug: "tz-zanzibar"
   },
   {
     slug: "tunis",
@@ -95118,7 +95962,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mediterranean", "refined", "layered"],
-    svgCitiesSlug: "tn-tunis"
+    iconSlug: "tn-tunis"
   },
   {
     slug: "kampala",
@@ -95131,7 +95975,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["green", "hilly", "lively"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "lusaka",
@@ -95144,7 +95988,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["warm", "dusty", "easy-going"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "algiers",
@@ -95157,7 +96001,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["white", "steep", "nostalgic"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   // --- Middle East ---
   {
@@ -95171,7 +96015,7 @@ var CITY_ENTITIES = [
     aliases: ["uae"],
     wikidataId: null,
     vibes: ["opulent", "futuristic", "dazzling"],
-    svgCitiesSlug: "ae-dubai"
+    iconSlug: "ae-dubai"
   },
   {
     slug: "riyadh",
@@ -95184,7 +96028,7 @@ var CITY_ENTITIES = [
     aliases: ["saudi arabia"],
     wikidataId: null,
     vibes: ["vast", "ambitious", "scorching"],
-    svgCitiesSlug: "sa-riyadh"
+    iconSlug: "sa-riyadh"
   },
   {
     slug: "jerusalem",
@@ -95197,7 +96041,7 @@ var CITY_ENTITIES = [
     aliases: ["israel"],
     wikidataId: null,
     vibes: ["sacred", "ancient", "layered"],
-    svgCitiesSlug: "il-jerusalem"
+    iconSlug: "il-jerusalem"
   },
   {
     slug: "abu-dhabi",
@@ -95210,7 +96054,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["opulent", "sleek", "air-conditioned"],
-    svgCitiesSlug: "ae-abu-dhabi"
+    iconSlug: "ae-abu-dhabi"
   },
   {
     slug: "manama",
@@ -95223,7 +96067,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["cosmopolitan", "balmy", "relaxed"],
-    svgCitiesSlug: "bh-manama"
+    iconSlug: "bh-manama"
   },
   {
     slug: "haifa",
@@ -95236,7 +96080,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["terraced", "diverse", "breezy"],
-    svgCitiesSlug: "il-haifa"
+    iconSlug: "il-haifa"
   },
   {
     slug: "tel-aviv",
@@ -95249,7 +96093,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hedonistic", "sun-drenched", "electric"],
-    svgCitiesSlug: "il-tel-aviv"
+    iconSlug: "il-tel-aviv"
   },
   {
     slug: "baghdad",
@@ -95262,7 +96106,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["ancient", "complex", "resilient"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "samarra",
@@ -95275,7 +96119,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sacred", "timeworn", "dusty"],
-    svgCitiesSlug: "iq-samarra"
+    iconSlug: "iq-samarra"
   },
   {
     slug: "isfahan",
@@ -95288,7 +96132,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["turquoise", "poetic", "elegant"],
-    svgCitiesSlug: "ir-isfahan"
+    iconSlug: "ir-isfahan"
   },
   {
     slug: "mashhad",
@@ -95301,7 +96145,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["devotional", "bustling", "pilgrimage-bound"],
-    svgCitiesSlug: "ir-mashhad"
+    iconSlug: "ir-mashhad"
   },
   {
     slug: "tehran",
@@ -95314,7 +96158,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mountainous", "dynamic", "sprawling"],
-    svgCitiesSlug: "ir-tehran"
+    iconSlug: "ir-tehran"
   },
   {
     slug: "amman",
@@ -95327,7 +96171,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sandy", "hilly", "welcoming"],
-    svgCitiesSlug: "jo-amman"
+    iconSlug: "jo-amman"
   },
   {
     slug: "kuwait-city",
@@ -95340,7 +96184,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gleaming", "modern", "sweltering"],
-    svgCitiesSlug: "kw-kuwait"
+    iconSlug: "kw-kuwait"
   },
   {
     slug: "beirut",
@@ -95353,7 +96197,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["resilient", "cultured", "phoenician"],
-    svgCitiesSlug: "lb-beirut"
+    iconSlug: "lb-beirut"
   },
   {
     slug: "muscat",
@@ -95366,7 +96210,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["fragrant", "serene", "white-washed"],
-    svgCitiesSlug: "om-muscat"
+    iconSlug: "om-muscat"
   },
   {
     slug: "doha",
@@ -95379,7 +96223,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gleaming", "ambitious", "modern"],
-    svgCitiesSlug: "qa-doha"
+    iconSlug: "qa-doha"
   },
   {
     slug: "jeddah",
@@ -95392,7 +96236,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humid", "cosmopolitan", "gateway-like"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   // --- Asia ---
   {
@@ -95406,7 +96250,7 @@ var CITY_ENTITIES = [
     aliases: ["japan"],
     wikidataId: null,
     vibes: ["zen", "precise", "futuristic"],
-    svgCitiesSlug: "jp-tokyo"
+    iconSlug: "jp-tokyo"
   },
   {
     slug: "osaka",
@@ -95419,7 +96263,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["playful", "flavorful", "neon"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "seoul",
@@ -95432,7 +96276,7 @@ var CITY_ENTITIES = [
     aliases: ["korea", "south korea"],
     wikidataId: null,
     vibes: ["trendy", "fast-paced", "glossy"],
-    svgCitiesSlug: "kr-seoul"
+    iconSlug: "kr-seoul"
   },
   {
     slug: "shanghai",
@@ -95445,7 +96289,7 @@ var CITY_ENTITIES = [
     aliases: ["china"],
     wikidataId: null,
     vibes: ["electric", "towering", "relentless"],
-    svgCitiesSlug: "cn-shanghai"
+    iconSlug: "cn-shanghai"
   },
   {
     slug: "beijing",
@@ -95458,7 +96302,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["imperial", "vast", "storied"],
-    svgCitiesSlug: "cn-beijing"
+    iconSlug: "cn-beijing"
   },
   {
     slug: "hong-kong",
@@ -95471,7 +96315,7 @@ var CITY_ENTITIES = [
     aliases: ["hk"],
     wikidataId: null,
     vibes: ["dense", "neon", "kinetic"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "singapore",
@@ -95484,7 +96328,7 @@ var CITY_ENTITIES = [
     aliases: ["sg"],
     wikidataId: null,
     vibes: ["orderly", "lush", "spotless"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "bangkok",
@@ -95497,7 +96341,7 @@ var CITY_ENTITIES = [
     aliases: ["bkk", "thailand"],
     wikidataId: null,
     vibes: ["steamy", "chaotic", "golden"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "mumbai",
@@ -95510,7 +96354,7 @@ var CITY_ENTITIES = [
     aliases: ["india"],
     wikidataId: null,
     vibes: ["intense", "cinematic", "teeming"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "delhi",
@@ -95523,7 +96367,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spicy", "historic", "vibrant"],
-    svgCitiesSlug: "in-delhi"
+    iconSlug: "in-delhi"
   },
   {
     slug: "karachi",
@@ -95536,7 +96380,7 @@ var CITY_ENTITIES = [
     aliases: ["pakistan"],
     wikidataId: null,
     vibes: ["gritty", "sprawling", "spirited"],
-    svgCitiesSlug: "pk-karachi"
+    iconSlug: "pk-karachi"
   },
   {
     slug: "dhaka",
@@ -95549,7 +96393,7 @@ var CITY_ENTITIES = [
     aliases: ["bangladesh"],
     wikidataId: null,
     vibes: ["dense", "lively", "colorful"],
-    svgCitiesSlug: "bd-dhaka"
+    iconSlug: "bd-dhaka"
   },
   {
     slug: "ho-chi-minh-city",
@@ -95562,7 +96406,7 @@ var CITY_ENTITIES = [
     aliases: ["vietnam"],
     wikidataId: null,
     vibes: ["buzzing", "aromatic", "warm"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "jakarta",
@@ -95575,7 +96419,7 @@ var CITY_ENTITIES = [
     aliases: ["indonesia"],
     wikidataId: null,
     vibes: ["tropical", "sprawling", "lively"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "kuala-lumpur",
@@ -95588,7 +96432,7 @@ var CITY_ENTITIES = [
     aliases: ["malaysia"],
     wikidataId: null,
     vibes: ["gleaming", "tropical", "diverse"],
-    svgCitiesSlug: "my-kuala-lumpur"
+    iconSlug: "my-kuala-lumpur"
   },
   {
     slug: "manila",
@@ -95601,7 +96445,7 @@ var CITY_ENTITIES = [
     aliases: ["philippines"],
     wikidataId: null,
     vibes: ["cheerful", "resilient", "warm"],
-    svgCitiesSlug: "ph-manila"
+    iconSlug: "ph-manila"
   },
   {
     slug: "taipei",
@@ -95614,7 +96458,7 @@ var CITY_ENTITIES = [
     aliases: ["taiwan"],
     wikidataId: null,
     vibes: ["inventive", "nocturnal", "sweet"],
-    svgCitiesSlug: "tw-taipei"
+    iconSlug: "tw-taipei"
   },
   {
     slug: "kathmandu",
@@ -95627,7 +96471,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spiritual", "high", "serene"],
-    svgCitiesSlug: "np-kathmandu"
+    iconSlug: "np-kathmandu"
   },
   {
     slug: "yerevan",
@@ -95640,7 +96484,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["rosy", "ancient", "soviet-tinged"],
-    svgCitiesSlug: "am-yerevan"
+    iconSlug: "am-yerevan"
   },
   {
     slug: "seria",
@@ -95653,7 +96497,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "quiet", "industrial"],
-    svgCitiesSlug: "bn-seria"
+    iconSlug: "bn-seria"
   },
   {
     slug: "thimphu",
@@ -95666,7 +96510,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["peaceful", "buddhist", "mountain-fresh"],
-    svgCitiesSlug: "bt-thimphu"
+    iconSlug: "bt-thimphu"
   },
   {
     slug: "chengdu",
@@ -95679,7 +96523,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spicy", "laid-back", "misty"],
-    svgCitiesSlug: "cn-chengdu"
+    iconSlug: "cn-chengdu"
   },
   {
     slug: "jingzhou",
@@ -95692,7 +96536,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["historic", "riverside", "tranquil"],
-    svgCitiesSlug: "cn-jingzhou"
+    iconSlug: "cn-jingzhou"
   },
   {
     slug: "leshan",
@@ -95705,7 +96549,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["peaceful", "meditative", "riverside"],
-    svgCitiesSlug: "cn-leshan"
+    iconSlug: "cn-leshan"
   },
   {
     slug: "shenzhen",
@@ -95718,7 +96562,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["ambitious", "innovative", "frenetic"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "guangzhou",
@@ -95731,7 +96575,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["steamy", "mercantile", "bold"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "chongqing",
@@ -95744,7 +96588,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["fiery", "foggy", "sprawling"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "wuhan",
@@ -95757,7 +96601,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["riverside", "industrial", "hot"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "denpasar",
@@ -95770,7 +96614,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "spiritual", "languid"],
-    svgCitiesSlug: "id-denpasar"
+    iconSlug: "id-denpasar"
   },
   {
     slug: "surabaya",
@@ -95783,7 +96627,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hot", "gritty", "industrial"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "agra",
@@ -95796,7 +96640,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["monumental", "hazy", "timeless"],
-    svgCitiesSlug: "in-agra"
+    iconSlug: "in-agra"
   },
   {
     slug: "kolkata",
@@ -95809,7 +96653,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["literary", "humid", "intense"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "bangalore",
@@ -95822,7 +96666,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["cosmopolitan", "temperate", "innovative"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "chennai",
@@ -95835,7 +96679,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["hot", "traditional", "coastal"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "hyderabad",
@@ -95848,7 +96692,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["spiced", "historic", "tech-savvy"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "kyoto",
@@ -95861,7 +96705,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tranquil", "refined", "timeless"],
-    svgCitiesSlug: "jp-kyoto"
+    iconSlug: "jp-kyoto"
   },
   {
     slug: "nara",
@@ -95874,7 +96718,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["gentle", "sacred", "serene"],
-    svgCitiesSlug: "jp-nara"
+    iconSlug: "jp-nara"
   },
   {
     slug: "shirakawa-go",
@@ -95887,7 +96731,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["snowy", "rustic", "traditional"],
-    svgCitiesSlug: "jp-shirakawa-go"
+    iconSlug: "jp-shirakawa-go"
   },
   {
     slug: "sihanoukville",
@@ -95900,7 +96744,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["beachy", "laid-back", "tropical"],
-    svgCitiesSlug: "kh-sihanoukville"
+    iconSlug: "kh-sihanoukville"
   },
   {
     slug: "phnom-penh",
@@ -95913,7 +96757,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humid", "chaotic", "emerging"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "bishkek",
@@ -95926,7 +96770,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["soviet", "mountainous", "fresh"],
-    svgCitiesSlug: "kg-bishkek"
+    iconSlug: "kg-bishkek"
   },
   {
     slug: "pyongyang",
@@ -95939,7 +96783,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["austere", "controlled", "monumental"],
-    svgCitiesSlug: "kp-pyongyang"
+    iconSlug: "kp-pyongyang"
   },
   {
     slug: "busan",
@@ -95952,7 +96796,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["coastal", "breezy", "relaxed"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "almaty",
@@ -95965,7 +96809,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mountainous", "cosmopolitan", "soviet-nostalgic"],
-    svgCitiesSlug: "kz-alma-aty"
+    iconSlug: "kz-alma-aty"
   },
   {
     slug: "astana",
@@ -95978,7 +96822,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["futuristic", "windswept", "ambitious"],
-    svgCitiesSlug: "kz-astana"
+    iconSlug: "kz-astana"
   },
   {
     slug: "kostanay",
@@ -95991,7 +96835,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["provincial", "vast", "quiet"],
-    svgCitiesSlug: "kz-kostanay"
+    iconSlug: "kz-kostanay"
   },
   {
     slug: "schuchinsk",
@@ -96004,7 +96848,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["pine-scented", "lakeside", "peaceful"],
-    svgCitiesSlug: "kz-schuchinsk"
+    iconSlug: "kz-schuchinsk"
   },
   {
     slug: "uralsk",
@@ -96017,7 +96861,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["frontier", "spacious", "remote"],
-    svgCitiesSlug: "kz-uralsk"
+    iconSlug: "kz-uralsk"
   },
   {
     slug: "luang-prabang",
@@ -96030,7 +96874,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["golden", "tranquil", "spiritual"],
-    svgCitiesSlug: "la-luang-prabang"
+    iconSlug: "la-luang-prabang"
   },
   {
     slug: "bagan",
@@ -96043,7 +96887,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mystical", "ancient", "dusty"],
-    svgCitiesSlug: "mm-bagan"
+    iconSlug: "mm-bagan"
   },
   {
     slug: "yangon",
@@ -96056,7 +96900,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["golden", "humid", "timeless"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "ulaanbaatar",
@@ -96069,7 +96913,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["harsh", "nomadic", "smoky"],
-    svgCitiesSlug: "mn-ulaanbaatar"
+    iconSlug: "mn-ulaanbaatar"
   },
   {
     slug: "kuching",
@@ -96082,7 +96926,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["riverside", "laid-back", "tropical"],
-    svgCitiesSlug: "my-kuching"
+    iconSlug: "my-kuching"
   },
   {
     slug: "islamabad",
@@ -96095,7 +96939,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["green", "planned", "serene"],
-    svgCitiesSlug: "pk-islamabad"
+    iconSlug: "pk-islamabad"
   },
   {
     slug: "lahore",
@@ -96108,7 +96952,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["vibrant", "historic", "spicy"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "cebu",
@@ -96121,7 +96965,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "festive", "coastal"],
-    svgCitiesSlug: "ph-cebu"
+    iconSlug: "ph-cebu"
   },
   {
     slug: "sentosa",
@@ -96134,7 +96978,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["resort-like", "manicured", "playful"],
-    svgCitiesSlug: "sg-sentosa"
+    iconSlug: "sg-sentosa"
   },
   {
     slug: "colombo",
@@ -96147,7 +96991,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humid", "colonial", "bustling"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "pattaya",
@@ -96160,7 +97004,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["neon", "beachy", "hedonistic"],
-    svgCitiesSlug: "th-pattaya"
+    iconSlug: "th-pattaya"
   },
   {
     slug: "dushanbe",
@@ -96173,7 +97017,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mountainous", "soviet", "leafy"],
-    svgCitiesSlug: "tj-dushanbe"
+    iconSlug: "tj-dushanbe"
   },
   {
     slug: "dili",
@@ -96186,7 +97030,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "emerging", "coastal"],
-    svgCitiesSlug: "tl-dili"
+    iconSlug: "tl-dili"
   },
   {
     slug: "ashgabat",
@@ -96199,7 +97043,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["marble", "surreal", "gleaming"],
-    svgCitiesSlug: "tm-ashgabat"
+    iconSlug: "tm-ashgabat"
   },
   {
     slug: "nukus",
@@ -96212,7 +97056,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["remote", "dusty", "stark"],
-    svgCitiesSlug: "uz-nukus"
+    iconSlug: "uz-nukus"
   },
   {
     slug: "tashkent",
@@ -96225,7 +97069,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["soviet", "sunny", "spacious"],
-    svgCitiesSlug: "uz-tashkent"
+    iconSlug: "uz-tashkent"
   },
   {
     slug: "hanoi",
@@ -96238,7 +97082,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["motorbike-buzzing", "aromatic", "humid"],
-    svgCitiesSlug: "vn-hanoi"
+    iconSlug: "vn-hanoi"
   },
   {
     slug: "vung-tau",
@@ -96251,7 +97095,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["breezy", "coastal", "relaxed"],
-    svgCitiesSlug: "vn-vung-tau"
+    iconSlug: "vn-vung-tau"
   },
   // --- Oceania ---
   {
@@ -96265,7 +97109,7 @@ var CITY_ENTITIES = [
     aliases: ["australia"],
     wikidataId: null,
     vibes: ["sunny", "sparkling", "coastal"],
-    svgCitiesSlug: "au-sydney"
+    iconSlug: "au-sydney"
   },
   {
     slug: "melbourne",
@@ -96278,7 +97122,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["artsy", "caffeinated", "eclectic"],
-    svgCitiesSlug: "au-melbourne"
+    iconSlug: "au-melbourne"
   },
   {
     slug: "auckland",
@@ -96291,7 +97135,7 @@ var CITY_ENTITIES = [
     aliases: ["new zealand", "nz"],
     wikidataId: null,
     vibes: ["adventurous", "green", "fresh"],
-    svgCitiesSlug: null
+    iconSlug: null
   },
   {
     slug: "canberra",
@@ -96304,7 +97148,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["planned", "leafy", "bureaucratic"],
-    svgCitiesSlug: "au-canberra"
+    iconSlug: "au-canberra"
   },
   {
     slug: "hobart",
@@ -96317,7 +97161,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["cool", "maritime", "artsy"],
-    svgCitiesSlug: "au-hobart"
+    iconSlug: "au-hobart"
   },
   {
     slug: "perth",
@@ -96330,7 +97174,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["sunny", "isolated", "relaxed"],
-    svgCitiesSlug: "au-perth"
+    iconSlug: "au-perth"
   },
   {
     slug: "suva",
@@ -96343,7 +97187,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "humid", "island-time"],
-    svgCitiesSlug: "fj-suva"
+    iconSlug: "fj-suva"
   },
   {
     slug: "tarawa",
@@ -96356,7 +97200,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["remote", "atoll-bound", "lagoon-like"],
-    svgCitiesSlug: "ki-tarawa"
+    iconSlug: "ki-tarawa"
   },
   {
     slug: "port-louis",
@@ -96369,7 +97213,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "bustling", "creole"],
-    svgCitiesSlug: "mu-port-louis"
+    iconSlug: "mu-port-louis"
   },
   {
     slug: "noumea",
@@ -96382,7 +97226,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["french", "turquoise", "resort-like"],
-    svgCitiesSlug: "nc-noumea"
+    iconSlug: "nc-noumea"
   },
   {
     slug: "wellington",
@@ -96395,7 +97239,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["windy", "creative", "caffeinated"],
-    svgCitiesSlug: "nz-wellington"
+    iconSlug: "nz-wellington"
   },
   {
     slug: "honiara",
@@ -96408,7 +97252,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "quiet", "emerging"],
-    svgCitiesSlug: "sb-honiara"
+    iconSlug: "sb-honiara"
   },
   {
     slug: "nukualofa",
@@ -96421,7 +97265,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["remote", "pacific", "tranquil"],
-    svgCitiesSlug: "to-nukualofa"
+    iconSlug: "to-nukualofa"
   },
   {
     slug: "funafuti",
@@ -96434,7 +97278,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tiny", "coral", "vulnerable"],
-    svgCitiesSlug: "tv-funafuti"
+    iconSlug: "tv-funafuti"
   },
   {
     slug: "port-vila",
@@ -96447,7 +97291,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "volcanic", "laid-back"],
-    svgCitiesSlug: "vu-port-vila"
+    iconSlug: "vu-port-vila"
   },
   {
     slug: "apia",
@@ -96460,7 +97304,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["warm", "polynesian", "unhurried"],
-    svgCitiesSlug: "ws-apia"
+    iconSlug: "ws-apia"
   },
   // --- Central America & Caribbean ---
   {
@@ -96474,7 +97318,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["turquoise", "colonial", "breezy"],
-    svgCitiesSlug: "ag-saint-john"
+    iconSlug: "ag-saint-john"
   },
   {
     slug: "nassau",
@@ -96487,7 +97331,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["turquoise", "resort", "tropical"],
-    svgCitiesSlug: "bs-nassau"
+    iconSlug: "bs-nassau"
   },
   {
     slug: "san-ignacio",
@@ -96500,7 +97344,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["jungle-wrapped", "mystical", "adventurous"],
-    svgCitiesSlug: "bz-san-ignacio"
+    iconSlug: "bz-san-ignacio"
   },
   {
     slug: "alajuela",
@@ -96513,7 +97357,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["tropical", "verdant", "volcanic"],
-    svgCitiesSlug: "cr-alajuela"
+    iconSlug: "cr-alajuela"
   },
   {
     slug: "havana",
@@ -96526,7 +97370,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["nostalgic", "sultry", "rhythmic"],
-    svgCitiesSlug: "cu-havana"
+    iconSlug: "cu-havana"
   },
   {
     slug: "willemstad",
@@ -96539,7 +97383,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["pastel", "breezy", "dutch-tinged"],
-    svgCitiesSlug: "cw-willemstadt"
+    iconSlug: "cw-willemstadt"
   },
   {
     slug: "st-george",
@@ -96552,7 +97396,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["colonial", "cobblestoned", "volcanic"],
-    svgCitiesSlug: "gd-st-george"
+    iconSlug: "gd-st-george"
   },
   {
     slug: "antigua-guatemala",
@@ -96565,7 +97409,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["colonial", "volcanic", "cobblestoned"],
-    svgCitiesSlug: "gt-antigua"
+    iconSlug: "gt-antigua"
   },
   {
     slug: "georgetown",
@@ -96578,7 +97422,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["wooden", "tropical", "colonial"],
-    svgCitiesSlug: "gy-georgetown"
+    iconSlug: "gy-georgetown"
   },
   {
     slug: "tegucigalpa",
@@ -96591,7 +97435,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["mountainous", "chaotic", "resilient"],
-    svgCitiesSlug: "hn-tegucigalpa"
+    iconSlug: "hn-tegucigalpa"
   },
   {
     slug: "port-au-prince",
@@ -96604,7 +97448,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["vibrant", "resilient", "intense"],
-    svgCitiesSlug: "ht-port-au-prince"
+    iconSlug: "ht-port-au-prince"
   },
   {
     slug: "soufriere",
@@ -96617,7 +97461,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["volcanic", "lush", "dramatic"],
-    svgCitiesSlug: "lc-soufriere"
+    iconSlug: "lc-soufriere"
   },
   {
     slug: "granada-nicaragua",
@@ -96630,7 +97474,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["colonial", "lakeside", "colorful"],
-    svgCitiesSlug: "ni-granada"
+    iconSlug: "ni-granada"
   },
   {
     slug: "panama-city",
@@ -96643,7 +97487,7 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["humid", "cosmopolitan", "gleaming"],
-    svgCitiesSlug: "pa-panama"
+    iconSlug: "pa-panama"
   },
   {
     slug: "san-salvador",
@@ -96656,13 +97500,17 @@ var CITY_ENTITIES = [
     aliases: [],
     wikidataId: null,
     vibes: ["vibrant", "resilient", "volcanic"],
-    svgCitiesSlug: "sv-san-salvador"
+    iconSlug: "sv-san-salvador"
   }
+];
+var ENTITIES = [
+  ...CITY_DATA.map((e) => ({ ...e, kind: "city" })),
+  ...AIRPORT_DATA.map((e) => ({ ...e, kind: "airport" }))
 ];
 var entityBySlug = /* @__PURE__ */ new Map();
 var entityByDisplayName = /* @__PURE__ */ new Map();
 var entityByAlias = /* @__PURE__ */ new Map();
-for (const entity of CITY_ENTITIES) {
+for (const entity of ENTITIES) {
   entityBySlug.set(entity.slug, entity);
   entityByDisplayName.set(normalize(entity.displayName), entity);
   for (const alias of entity.aliases) {
@@ -96671,6 +97519,7 @@ for (const entity of CITY_ENTITIES) {
 }
 function lookupEntity(input) {
   const lower = input.toLowerCase().trim();
+  if (TZ_ABBREVIATIONS[lower]) return null;
   const byAlias = entityByAlias.get(lower);
   if (byAlias) return byAlias;
   const byName = entityByDisplayName.get(normalize(input));
@@ -96756,6 +97605,19 @@ function resolveLocation(input) {
 function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   const entity = lookupEntity(originalTrimmed);
   if (entity) {
+    if (entity.kind === "airport") {
+      return {
+        primary: {
+          iana: entity.iana,
+          displayName: entity.displayName,
+          kind: "city",
+          country: entity.country,
+          resolveMethod: "entity",
+          entitySlug: entity.slug
+        },
+        alternatives: []
+      };
+    }
     const entityCityKey = normalize(entity.displayName);
     const entries = normalizedCityMap.get(entityCityKey);
     if (entries && entries.length > 0) {

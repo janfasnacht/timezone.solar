@@ -6,11 +6,11 @@ import type { Feature, LineString } from 'geojson'
 import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
-import { getMapCities, getAllMapCities, findCityForMap } from '@/engine/map-cities'
-import type { CityEntity } from '@/engine/city-entities'
+import { getMapEntities, getAllMapEntities, findEntityForMap } from '@/engine/map-entities'
+import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
-import { CityDot, type CityRole } from './CityDot'
-import { CityHoverCard } from './CityHoverCard'
+import { EntityDot, type EntityRole } from './EntityDot'
+import { EntityHoverCard } from './EntityHoverCard'
 import { PinnedCityLabel } from './PinnedCityLabel'
 import { TimezoneOverlay } from './TimezoneOverlay'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
@@ -43,7 +43,7 @@ interface WorldMapProps {
 
 export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showTimezones = false, showBorders = false, showGrid = true, cityDensity = 'main' }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [hoveredCity, setHoveredCity] = useState<CityEntity | null>(null)
+  const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
 
   // Pan/zoom state for touch gestures
@@ -106,9 +106,9 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const { data: tzData } = useTimezoneData(showTimezones)
 
-  const mapCities = useMemo(() => getMapCities(), [])
-  const allCities = useMemo(() => getAllMapCities(), [])
-  const mapSlugs = useMemo(() => new Set(mapCities.map((c) => c.slug)), [mapCities])
+  const baseMapEntities = useMemo(() => getMapEntities(), [])
+  const allMapEntities = useMemo(() => getAllMapEntities(), [])
+  const mapSlugs = useMemo(() => new Set(baseMapEntities.map((c) => c.slug)), [baseMapEntities])
 
   // Same-city guard
   const isSameCity = conversion
@@ -117,59 +117,59 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const effectiveConversion = isSameCity ? null : conversion
 
-  // Merge dynamic cities into the base set
-  const cities = useMemo(() => {
+  // Merge dynamic source/target entities (cities or airports) into the base set
+  const entities = useMemo(() => {
     if (cityDensity === 'none') {
-      // Still show source/target cities even in 'none' mode
+      // Still show source/target entities even in 'none' mode
       if (!effectiveConversion) return []
-      const extras: CityEntity[] = []
+      const extras: Entity[] = []
       for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
         if (!name) continue
-        const entity = findCityForMap(name)
+        const entity = findEntityForMap(name)
         if (entity) extras.push(entity)
       }
       return extras
     }
 
-    const baseCities = cityDensity === 'all' ? allCities : mapCities
-    if (!effectiveConversion) return baseCities
-    const slugs = new Set(baseCities.map((c) => c.slug))
-    const extras: CityEntity[] = []
+    const base = cityDensity === 'all' ? allMapEntities : baseMapEntities
+    if (!effectiveConversion) return base
+    const slugs = new Set(base.map((c) => c.slug))
+    const extras: Entity[] = []
     for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
       if (!name) continue
-      const entity = findCityForMap(name)
+      const entity = findEntityForMap(name)
       if (entity && !slugs.has(entity.slug)) {
         extras.push(entity)
         slugs.add(entity.slug)
       }
     }
-    return extras.length > 0 ? [...baseCities, ...extras] : baseCities
-  }, [cityDensity, mapCities, allCities, effectiveConversion])
+    return extras.length > 0 ? [...base, ...extras] : base
+  }, [cityDensity, baseMapEntities, allMapEntities, effectiveConversion])
 
-  const projectedCities = useMemo(
+  const projectedEntities = useMemo(
     () =>
-      cities
-        .map((city) => {
-          const point = projection([city.lng, city.lat])
+      entities
+        .map((entity) => {
+          const point = projection([entity.lng, entity.lat])
           if (!point) return null
-          return { city, x: point[0], y: point[1] }
+          return { entity, x: point[0], y: point[1] }
         })
         .filter(
-          (c): c is { city: CityEntity; x: number; y: number } => c !== null
+          (c): c is { entity: Entity; x: number; y: number } => c !== null
         ),
-    [cities, projection]
+    [entities, projection]
   )
 
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
-    const src = projectedCities.find(
-      (c) => c.city.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase()
+    const src = projectedEntities.find(
+      (c) => c.entity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase()
     )
-    const tgt = projectedCities.find(
-      (c) => c.city.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
+    const tgt = projectedEntities.find(
+      (c) => c.entity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
     )
     return { sourceProjected: src ?? null, targetProjected: tgt ?? null }
-  }, [effectiveConversion, projectedCities])
+  }, [effectiveConversion, projectedEntities])
 
   // Great-circle path between source and target. We oversample the geodesic
   // explicitly because d3-geo's default adaptive resampling is too coarse at
@@ -177,8 +177,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   // splitting during projection so transpacific routes don't wrap across.
   const arcData = useMemo(() => {
     if (!sourceProjected || !targetProjected) return null
-    const a: [number, number] = [sourceProjected.city.lng, sourceProjected.city.lat]
-    const b: [number, number] = [targetProjected.city.lng, targetProjected.city.lat]
+    const a: [number, number] = [sourceProjected.entity.lng, sourceProjected.entity.lat]
+    const b: [number, number] = [targetProjected.entity.lng, targetProjected.entity.lat]
     const interp = geoInterpolate(a, b)
     const N = 128
     const coordinates: [number, number][] = []
@@ -201,10 +201,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const [screenPos, setScreenPos] = useState<{ x: number; y: number } | null>(null)
 
   const handleHover = useCallback(
-    (city: CityEntity | null) => {
-      setHoveredCity(city)
-      if (city && svgRef.current && containerRef.current) {
-        const projected = projectedCities.find((c) => c.city.slug === city.slug)
+    (entity: Entity | null) => {
+      setHoveredEntity(entity)
+      if (entity && svgRef.current && containerRef.current) {
+        const projected = projectedEntities.find((c) => c.entity.slug === entity.slug)
         if (projected) {
           const svgRect = svgRef.current.getBoundingClientRect()
           const cRect = containerRef.current.getBoundingClientRect()
@@ -222,7 +222,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         setScreenPos(null)
       }
     },
-    [projectedCities]
+    [projectedEntities]
   )
 
   useEffect(() => {
@@ -319,19 +319,19 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   }, [updateTransform])
 
   const handleClick = useCallback(
-    (city: CityEntity) => {
+    (entity: Entity) => {
       if (onCityClick) {
-        onCityClick(city.displayName)
+        onCityClick(entity.displayName)
       } else {
-        window.location.href = `/?q=${encodeURIComponent(city.displayName)}`
+        window.location.href = `/?q=${encodeURIComponent(entity.displayName)}`
       }
     },
     [onCityClick]
   )
 
-  function getCityRole(city: CityEntity): CityRole {
+  function getEntityRole(entity: Entity): EntityRole {
     if (!effectiveConversion) return 'none'
-    const name = city.displayName.toLowerCase()
+    const name = entity.displayName.toLowerCase()
     if (name === effectiveConversion.sourceCity.toLowerCase()) return 'source'
     if (name === effectiveConversion.targetCity.toLowerCase()) return 'target'
     return 'none'
@@ -341,9 +341,9 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const labelOpacity = 0.75
 
   // Check if hovered city is a pinned city (source or target)
-  const hoveredIsPinned = hoveredCity && effectiveConversion
-    ? hoveredCity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase() ||
-      hoveredCity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
+  const hoveredIsPinned = hoveredEntity && effectiveConversion
+    ? hoveredEntity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase() ||
+      hoveredEntity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
     : false
 
   // Compute screen positions for pinned city labels
@@ -363,8 +363,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       y: projected.y * mapScale + offsetY,
     })
 
-    const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.city } : null
-    const tgt = targetProjected ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.city } : null
+    const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
+    const tgt = targetProjected ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity } : null
 
     // Smart placement: if both exist, place them on opposite sides to avoid overlap
     let srcPlacement: 'above' | 'below' = 'above'
@@ -388,11 +388,11 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   }, [effectiveConversion, sourceProjected, targetProjected, containerRect])
 
   // Determine variant for each pinned label
-  const srcIsHovered = hoveredCity && pinnedLabels?.src?.entity
-    ? hoveredCity.slug === pinnedLabels.src.entity.slug
+  const srcIsHovered = hoveredEntity && pinnedLabels?.src?.entity
+    ? hoveredEntity.slug === pinnedLabels.src.entity.slug
     : false
-  const tgtIsHovered = hoveredCity && pinnedLabels?.tgt?.entity
-    ? hoveredCity.slug === pinnedLabels.tgt.entity.slug
+  const tgtIsHovered = hoveredEntity && pinnedLabels?.tgt?.entity
+    ? hoveredEntity.slug === pinnedLabels.tgt.entity.slug
     : false
 
   return (
@@ -493,15 +493,15 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           </>
         )}
 
-        {/* City dots */}
-        {projectedCities.map(({ city, x, y }) => (
-          <CityDot
-            key={city.slug}
-            city={city}
+        {/* Entity markers (cities and airports) */}
+        {projectedEntities.map(({ entity, x, y }) => (
+          <EntityDot
+            key={entity.slug}
+            entity={entity}
             x={x}
             y={y}
-            role={getCityRole(city)}
-            minor={cityDensity === 'all' && !mapSlugs.has(city.slug)}
+            role={getEntityRole(entity)}
+            minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
             onHover={handleHover}
             onClick={handleClick}
           />
@@ -545,10 +545,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       )}
       </div>
 
-      {/* Hover card for non-pinned cities only */}
-      {hoveredCity && screenPos && !hoveredIsPinned && (
-        <CityHoverCard
-          city={hoveredCity}
+      {/* Hover card for non-pinned entities only */}
+      {hoveredEntity && screenPos && !hoveredIsPinned && (
+        <EntityHoverCard
+          entity={hoveredEntity}
           x={screenPos.x}
           y={screenPos.y}
           containerRect={containerRect}

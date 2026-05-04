@@ -1,5 +1,5 @@
 import cityTimezones from 'city-timezones'
-import { getAllEntities, lookupEntity, type CityEntity } from './city-entities'
+import { getAllEntities, lookupEntity, type Entity } from './entities'
 
 /**
  * Curated set of ~90 city slugs for the world map display.
@@ -123,10 +123,10 @@ const MAP_CITY_SLUGS = new Set([
   'wellington',
 ])
 
-let cached: CityEntity[] | null = null
-let allCached: CityEntity[] | null = null
+let cached: Entity[] | null = null
+let allCached: Entity[] | null = null
 
-export function getMapCities(): CityEntity[] {
+export function getMapEntities(): Entity[] {
   if (cached) return cached
   cached = getAllEntities().filter((e) => MAP_CITY_SLUGS.has(e.slug))
   return cached
@@ -136,11 +136,11 @@ export function getMapCities(): CityEntity[] {
  * All cities from city-timezones DB (~7K), merged with curated entities.
  * Curated entities take priority for matching city names.
  */
-export function getAllMapCities(): CityEntity[] {
+export function getAllMapEntities(): Entity[] {
   if (allCached) return allCached
   const curated = getAllEntities()
   const curatedSlugs = new Set(curated.map((c) => c.slug))
-  const extras: CityEntity[] = []
+  const extras: Entity[] = []
   const mapping = cityTimezones.cityMapping as Array<{
     city: string
     lat: number
@@ -155,6 +155,7 @@ export function getAllMapCities(): CityEntity[] {
     if (curatedSlugs.has(slug) || seenSlugs.has(slug)) continue
     seenSlugs.add(slug)
     extras.push({
+      kind: 'city',
       slug,
       displayName: entry.city,
       country: entry.country,
@@ -165,7 +166,7 @@ export function getAllMapCities(): CityEntity[] {
       aliases: [],
       wikidataId: null,
       vibes: null,
-      svgCitiesSlug: null,
+      iconSlug: null,
     })
   }
   allCached = [...curated, ...extras]
@@ -173,10 +174,10 @@ export function getAllMapCities(): CityEntity[] {
 }
 
 /**
- * Look up a city by name, first from curated entities, then from city-timezones.
- * Returns a CityEntity-compatible object with at least slug, displayName, lat, lng, iana.
+ * Look up an entity by name for map rendering, first from curated entities,
+ * then from the city-timezones database as a fallback.
  */
-export function findCityForMap(name: string): CityEntity | null {
+export function findEntityForMap(name: string): Entity | null {
   const entity = lookupEntity(name)
   if (entity) return entity
 
@@ -192,6 +193,7 @@ export function findCityForMap(name: string): CityEntity | null {
   if (results.length === 0) return null
   const best = results[0]
   return {
+    kind: 'city',
     slug: best.city.toLowerCase().replace(/\s+/g, '-'),
     displayName: best.city,
     country: best.country,
@@ -202,6 +204,6 @@ export function findCityForMap(name: string): CityEntity | null {
     aliases: [],
     wikidataId: null,
     vibes: null,
-    svgCitiesSlug: null,
+    iconSlug: null,
   }
 }

@@ -1,5 +1,5 @@
 /** City/region aliases -> canonical city names for resolver lookup
- *  Migrated to CityEntity.aliases in city-entities.ts — kept as empty export for compatibility */
+ *  Migrated to Entity.aliases in entities.ts — kept as empty export for compatibility */
 export const CITY_ALIASES: Record<string, string> = {}
 
 /** US states -> IANA timezone (for the primary/most populous city) */

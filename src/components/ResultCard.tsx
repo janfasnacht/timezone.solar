@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { usePreferences } from '@/hooks/usePreferences'
 import { getDstWarning } from '@/lib/dstWarning'
+import { formatEntityLabel } from '@/engine/entities'
 import type { ConversionResult } from '@/engine/types'
 import type { MatchType } from '@/engine/confidence'
 
@@ -21,6 +22,8 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
   const targetClock = useLiveClock(result.target.iana, use24h)
   const { source, target, offsetDifference, dayBoundary, dstNote } = result
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
+  const sourceLabel = formatEntityLabel(source.entitySlug, source.city)
+  const targetLabel = formatEntityLabel(target.entitySlug, target.city)
 
   const targetDate = useMemo(() => {
     const dt = DateTime.fromISO(result.targetDateTime)
@@ -60,7 +63,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
         <div className="flex items-baseline justify-between">
           <div>
             <div className="text-[0.85rem] text-muted-foreground">
-              {source.city}{source.country ? `, ${source.country}` : ''}
+              {sourceLabel}{source.country ? `, ${source.country}` : ''}
             </div>
           </div>
           <div className="text-right">
@@ -89,7 +92,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
         {/* Target */}
         <div>
           <div className="mb-1 text-[0.85rem] text-muted-foreground">
-            {target.city}{target.country ? `, ${target.country}` : ''}
+            {targetLabel}{target.country ? `, ${target.country}` : ''}
           </div>
           <div className="flex items-baseline gap-[0.6rem]">
             <span className="font-serif text-[2.25rem] sm:text-[2.75rem] md:text-[4rem] font-semibold leading-none tracking-[-0.03em] text-accent">

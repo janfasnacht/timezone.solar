@@ -1,5 +1,5 @@
 import { parseLandingPath } from '@/engine/landing-routes'
-import { getEntityBySlug } from '@/engine/city-entities'
+import { getEntityBySlug } from '@/engine/entities'
 import App from './App.tsx'
 
 // On landing page paths, set ?q= for the app pipeline but keep the path visible

@@ -6,6 +6,7 @@ const categories: { hint: string; examples: string[] }[] = [
   { hint: 'between two cities', examples: ['Boston 6pm in LA', 'noon Tokyo to London'] },
   { hint: 'from your timezone', examples: ['6pm in Tokyo', '9am London'] },
   { hint: 'current time somewhere', examples: ['Tokyo', 'EST', 'Berlin'] },
+  { hint: 'by airport code', examples: ['JFK to LHR', '3pm NRT in SFO', 'HND'] },
   { hint: 'with date or relative time', examples: ['tomorrow 3pm London in EST', 'in 2 hours in Berlin'] },
 ]
 

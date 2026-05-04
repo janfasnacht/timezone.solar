@@ -9,7 +9,7 @@ import {
 import { DateTime } from 'luxon'
 import { useMinuteTick } from '@/hooks/useMinuteTick'
 import { parse } from '@/engine/parser'
-import { lookupEntity } from '@/engine/city-entities'
+import { lookupEntity } from '@/engine/entities'
 import { WorldMap, type MapConversion, type CityDensity } from '@/components/map/WorldMap'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'

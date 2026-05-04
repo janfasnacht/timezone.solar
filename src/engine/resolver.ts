@@ -3,7 +3,7 @@ import Fuse from 'fuse.js'
 import type { LocationRef, LocationKind, ResolveResult } from './types'
 import { CITY_ALIASES, US_STATE_TIMEZONES } from './aliases'
 import { TZ_ABBREVIATIONS, TZ_ABBREVIATION_LABELS } from './constants'
-import { lookupEntity } from './city-entities'
+import { lookupEntity } from './entities'
 
 interface CityEntry {
   city: string
@@ -132,9 +132,25 @@ function resolveLocationUncached(
   normalizedKey: string,
   originalTrimmed: string,
 ): ResolveResult | null {
-  // Layer 0: Entity lookup (curated cities with stable identity)
+  // Layer 0: Entity lookup (curated cities and airports with stable identity).
+  // For airports, displayName stays bare (e.g. "JFK"). The "JFK · New York"
+  // composite is built at display time in `formatEntityLabel` so the raw IATA
+  // remains round-trippable through the map's name-based lookups.
   const entity = lookupEntity(originalTrimmed)
   if (entity) {
+    if (entity.kind === 'airport') {
+      return {
+        primary: {
+          iana: entity.iana,
+          displayName: entity.displayName,
+          kind: 'city',
+          country: entity.country,
+          resolveMethod: 'entity',
+          entitySlug: entity.slug,
+        },
+        alternatives: [],
+      }
+    }
     const entityCityKey = normalize(entity.displayName)
     const entries = normalizedCityMap.get(entityCityKey)
     if (entries && entries.length > 0) {
