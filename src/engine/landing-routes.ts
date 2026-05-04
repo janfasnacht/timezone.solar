@@ -1,4 +1,4 @@
-import { getEntityBySlug } from './city-entities'
+import { getEntityBySlug } from './entities'
 
 export interface LandingRoute {
   fromSlug: string

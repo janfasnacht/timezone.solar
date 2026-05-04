@@ -1,6 +1,17 @@
 import { normalize } from './resolver'
+import { TZ_ABBREVIATIONS } from './constants'
+import { AIRPORT_DATA } from './airport-data.generated'
 
-export interface CityEntity {
+/**
+ * EntityKind describes what a curated catalog record IS.
+ * Distinct from LocationKind in `types.ts` which describes how the parser
+ * INTERPRETED a string (e.g. "Tokyo" → city, "EST" → timezone). The two
+ * vocabularies overlap by name on 'city' and 'region' but represent different
+ * concerns and should not be unified.
+ */
+export type EntityKind = 'city' | 'airport' | 'landmark' | 'region'
+
+interface BaseEntity {
   slug: string
   displayName: string
   country: string
@@ -10,11 +21,24 @@ export interface CityEntity {
   lng: number
   aliases: string[]
   wikidataId: string | null
-  vibes: string[] | null
-  svgCitiesSlug: string | null
 }
 
-const CITY_ENTITIES: readonly CityEntity[] = [
+export interface CityEntity extends BaseEntity {
+  kind: 'city'
+  vibes: string[] | null
+  iconSlug: string | null
+}
+
+export interface AirportEntity extends BaseEntity {
+  kind: 'airport'
+  iata: string             // 3-letter IATA, uppercase, e.g. 'JFK'
+  airportName: string      // full name, e.g. 'John F. Kennedy International'
+  parentCitySlug: string | null
+}
+
+export type Entity = CityEntity | AirportEntity
+
+const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
   // --- North America ---
   {
     slug: 'new-york',
@@ -27,7 +51,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['nyc', 'ny'],
     wikidataId: null,
     vibes: ['electric', 'hustling', 'bold'],
-    svgCitiesSlug: 'us-new-york',
+    iconSlug: 'us-new-york',
   },
   {
     slug: 'los-angeles',
@@ -40,7 +64,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['la'],
     wikidataId: null,
     vibes: ['laid-back', 'sun-kissed', 'dreamy'],
-    svgCitiesSlug: 'us-los-angeles',
+    iconSlug: 'us-los-angeles',
   },
   {
     slug: 'chicago',
@@ -53,7 +77,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['chi'],
     wikidataId: null,
     vibes: ['gritty', 'soulful', 'windswept'],
-    svgCitiesSlug: 'us-chicago',
+    iconSlug: 'us-chicago',
   },
   {
     slug: 'san-francisco',
@@ -66,7 +90,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['sf', 'san fran'],
     wikidataId: null,
     vibes: ['foggy', 'inventive', 'free-spirited'],
-    svgCitiesSlug: 'us-san-francisco',
+    iconSlug: 'us-san-francisco',
   },
   {
     slug: 'boston',
@@ -79,7 +103,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['bos'],
     wikidataId: null,
     vibes: ['scholarly', 'scrappy', 'storied'],
-    svgCitiesSlug: 'us-boston',
+    iconSlug: 'us-boston',
   },
   {
     slug: 'miami',
@@ -92,7 +116,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['mia'],
     wikidataId: null,
     vibes: ['tropical', 'electric', 'vivid'],
-    svgCitiesSlug: 'us-miami',
+    iconSlug: 'us-miami',
   },
   {
     slug: 'seattle',
@@ -105,7 +129,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['sea'],
     wikidataId: null,
     vibes: ['cozy', 'caffeinated', 'misty'],
-    svgCitiesSlug: 'us-seattle',
+    iconSlug: 'us-seattle',
   },
   {
     slug: 'denver',
@@ -118,7 +142,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['den'],
     wikidataId: null,
     vibes: ['alpine', 'outdoorsy', 'crisp'],
-    svgCitiesSlug: 'us-denver',
+    iconSlug: 'us-denver',
   },
   {
     slug: 'austin',
@@ -131,7 +155,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['aus'],
     wikidataId: null,
     vibes: ['weird', 'creative', 'hot'],
-    svgCitiesSlug: 'us-austin',
+    iconSlug: 'us-austin',
   },
   {
     slug: 'portland',
@@ -144,7 +168,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['pdx'],
     wikidataId: null,
     vibes: ['quirky', 'rainy', 'chill'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'dallas',
@@ -157,7 +181,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['dfw'],
     wikidataId: null,
     vibes: ['big', 'brash', 'sprawling'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'houston',
@@ -170,7 +194,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['hou'],
     wikidataId: null,
     vibes: ['ambitious', 'sprawling', 'steamy'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'atlanta',
@@ -183,7 +207,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['atl'],
     wikidataId: null,
     vibes: ['southern', 'buzzing', 'warm'],
-    svgCitiesSlug: 'us-atlanta',
+    iconSlug: 'us-atlanta',
   },
   {
     slug: 'las-vegas',
@@ -196,7 +220,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['vegas'],
     wikidataId: null,
     vibes: ['flashy', 'restless', 'neon'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'new-orleans',
@@ -209,7 +233,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['nola'],
     wikidataId: null,
     vibes: ['sultry', 'soulful', 'festive'],
-    svgCitiesSlug: 'us-new-orleans',
+    iconSlug: 'us-new-orleans',
   },
   {
     slug: 'minneapolis',
@@ -222,7 +246,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['msp'],
     wikidataId: null,
     vibes: ['hardy', 'friendly', 'lakeside'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'detroit',
@@ -235,7 +259,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['dtw'],
     wikidataId: null,
     vibes: ['resilient', 'gritty', 'reborn'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'philadelphia',
@@ -248,7 +272,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['philly'],
     wikidataId: null,
     vibes: ['scrappy', 'proud', 'historic'],
-    svgCitiesSlug: 'us-philadelphia',
+    iconSlug: 'us-philadelphia',
   },
   {
     slug: 'honolulu',
@@ -261,7 +285,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['aloha', 'breezy', 'golden'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'washington-dc',
@@ -274,7 +298,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['dc'],
     wikidataId: null,
     vibes: ['powerful', 'polished', 'monumental'],
-    svgCitiesSlug: 'us-washington',
+    iconSlug: 'us-washington',
   },
   {
     slug: 'anchorage',
@@ -287,7 +311,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['wild', 'rugged', 'vast'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'toronto',
@@ -300,7 +324,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['canada'],
     wikidataId: null,
     vibes: ['multicultural', 'polite', 'dynamic'],
-    svgCitiesSlug: 'ca-toronto',
+    iconSlug: 'ca-toronto',
   },
   {
     slug: 'montreal',
@@ -313,7 +337,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['bilingual', 'festive', 'artsy'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'vancouver',
@@ -326,7 +350,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['scenic', 'laid-back', 'lush'],
-    svgCitiesSlug: 'ca-vancouver',
+    iconSlug: 'ca-vancouver',
   },
   {
     slug: 'mexico-city',
@@ -339,7 +363,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['cdmx', 'mexico'],
     wikidataId: null,
     vibes: ['vibrant', 'colorful', 'ancient'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'albuquerque',
@@ -352,7 +376,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sun-baked', 'expansive', 'mystical'],
-    svgCitiesSlug: 'us-albuquerque',
+    iconSlug: 'us-albuquerque',
   },
   {
     slug: 'cincinnati',
@@ -365,7 +389,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['unpretentious', 'steady', 'riverbound'],
-    svgCitiesSlug: 'us-cincinnati',
+    iconSlug: 'us-cincinnati',
   },
   {
     slug: 'columbus',
@@ -378,7 +402,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['earnest', 'balanced', 'grounded'],
-    svgCitiesSlug: 'us-columbus',
+    iconSlug: 'us-columbus',
   },
   {
     slug: 'hartford',
@@ -391,7 +415,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['nostalgic', 'quiet', 'weathered'],
-    svgCitiesSlug: 'us-hartford',
+    iconSlug: 'us-hartford',
   },
   {
     slug: 'irvine',
@@ -404,7 +428,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['polished', 'orderly', 'pristine'],
-    svgCitiesSlug: 'us-irvine',
+    iconSlug: 'us-irvine',
   },
   {
     slug: 'peoria',
@@ -417,7 +441,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humble', 'unhurried', 'practical'],
-    svgCitiesSlug: 'us-peoria',
+    iconSlug: 'us-peoria',
   },
   {
     slug: 'phoenix',
@@ -430,7 +454,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['scorched', 'resilient', 'sprawling'],
-    svgCitiesSlug: 'us-phoenix',
+    iconSlug: 'us-phoenix',
   },
   {
     slug: 'pittsburgh',
@@ -443,7 +467,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gritty', 'proud', 'blue-collar'],
-    svgCitiesSlug: 'us-pittsburgh',
+    iconSlug: 'us-pittsburgh',
   },
   {
     slug: 'sacramento',
@@ -456,7 +480,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['laid-back', 'sunlit', 'easygoing'],
-    svgCitiesSlug: 'us-sacramento',
+    iconSlug: 'us-sacramento',
   },
   {
     slug: 'san-diego',
@@ -469,7 +493,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['breezy', 'sun-kissed', 'carefree'],
-    svgCitiesSlug: 'us-san-diego',
+    iconSlug: 'us-san-diego',
   },
   {
     slug: 'st-louis',
@@ -482,7 +506,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['soulful', 'midwestern', 'unpretentious'],
-    svgCitiesSlug: 'us-st-louis',
+    iconSlug: 'us-st-louis',
   },
   {
     slug: 'ottawa',
@@ -495,7 +519,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['dignified', 'bilingual', 'crisp'],
-    svgCitiesSlug: 'ca-ottawa',
+    iconSlug: 'ca-ottawa',
   },
   {
     slug: 'guadalajara',
@@ -508,7 +532,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spirited', 'traditional', 'warm'],
-    svgCitiesSlug: 'mx-guadalajara',
+    iconSlug: 'mx-guadalajara',
   },
   {
     slug: 'tijuana',
@@ -521,7 +545,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['edgy', 'border-crossing', 'hustling'],
-    svgCitiesSlug: 'mx-tijuana',
+    iconSlug: 'mx-tijuana',
   },
   {
     slug: 'san-juan',
@@ -534,7 +558,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'salsa-ready', 'vibrant'],
-    svgCitiesSlug: 'pr-san-juan',
+    iconSlug: 'pr-san-juan',
   },
 
   // --- South America ---
@@ -549,7 +573,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['brazil'],
     wikidataId: null,
     vibes: ['intense', 'rhythmic', 'massive'],
-    svgCitiesSlug: 'br-sao-paulo',
+    iconSlug: 'br-sao-paulo',
   },
   {
     slug: 'buenos-aires',
@@ -562,7 +586,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['argentina'],
     wikidataId: null,
     vibes: ['passionate', 'elegant', 'nocturnal'],
-    svgCitiesSlug: 'ar-buenos-aires',
+    iconSlug: 'ar-buenos-aires',
   },
   {
     slug: 'bogota',
@@ -575,7 +599,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['colombia'],
     wikidataId: null,
     vibes: ['warm', 'lively', 'elevated'],
-    svgCitiesSlug: 'co-bogota',
+    iconSlug: 'co-bogota',
   },
   {
     slug: 'lima',
@@ -588,7 +612,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['peru'],
     wikidataId: null,
     vibes: ['misty', 'flavorful', 'ancient'],
-    svgCitiesSlug: 'pe-lima',
+    iconSlug: 'pe-lima',
   },
   {
     slug: 'santiago',
@@ -601,7 +625,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['chile'],
     wikidataId: null,
     vibes: ['cosmopolitan', 'crisp', 'adventurous'],
-    svgCitiesSlug: 'cl-santiago',
+    iconSlug: 'cl-santiago',
   },
   {
     slug: 'cordoba-argentina',
@@ -614,7 +638,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['scholarly', 'passionate', 'rebellious'],
-    svgCitiesSlug: 'ar-cordoba',
+    iconSlug: 'ar-cordoba',
   },
   {
     slug: 'ushuaia',
@@ -627,7 +651,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['windswept', 'remote', 'adventurous'],
-    svgCitiesSlug: 'ar-ushuaia',
+    iconSlug: 'ar-ushuaia',
   },
   {
     slug: 'la-paz',
@@ -640,7 +664,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['breathless', 'high-altitude', 'dizzying'],
-    svgCitiesSlug: 'bo-la-paz',
+    iconSlug: 'bo-la-paz',
   },
   {
     slug: 'brasilia',
@@ -653,7 +677,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['modernist', 'planned', 'spacious'],
-    svgCitiesSlug: 'br-brasilia',
+    iconSlug: 'br-brasilia',
   },
   {
     slug: 'rio-de-janeiro',
@@ -666,7 +690,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sensual', 'exuberant', 'sun-drenched'],
-    svgCitiesSlug: 'br-rio-de-janeiro',
+    iconSlug: 'br-rio-de-janeiro',
   },
   {
     slug: 'valparaiso',
@@ -679,7 +703,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['bohemian', 'colorful', 'hilly'],
-    svgCitiesSlug: 'cl-valparaiso',
+    iconSlug: 'cl-valparaiso',
   },
   {
     slug: 'cartagena',
@@ -692,7 +716,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sultry', 'colonial', 'festive'],
-    svgCitiesSlug: 'co-cartagena',
+    iconSlug: 'co-cartagena',
   },
   {
     slug: 'medellin',
@@ -705,7 +729,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['transformed', 'innovative', 'springlike'],
-    svgCitiesSlug: 'co-medellin',
+    iconSlug: 'co-medellin',
   },
   {
     slug: 'quito',
@@ -718,7 +742,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['elevated', 'colonial', 'crisp'],
-    svgCitiesSlug: 'ec-quito',
+    iconSlug: 'ec-quito',
   },
   {
     slug: 'cusco',
@@ -731,7 +755,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['ancient', 'mystical', 'thin-aired'],
-    svgCitiesSlug: 'pe-cusco',
+    iconSlug: 'pe-cusco',
   },
   {
     slug: 'montevideo',
@@ -744,7 +768,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['relaxed', 'literary', 'coastal'],
-    svgCitiesSlug: 'uy-montevideo',
+    iconSlug: 'uy-montevideo',
   },
   {
     slug: 'caracas',
@@ -757,7 +781,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['intense', 'volatile', 'mountainous'],
-    svgCitiesSlug: 've-caracas',
+    iconSlug: 've-caracas',
   },
 
   // --- Europe ---
@@ -772,7 +796,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['uk', 'england'],
     wikidataId: null,
     vibes: ['posh', 'cozy', 'literary'],
-    svgCitiesSlug: 'gb-london',
+    iconSlug: 'gb-london',
   },
   {
     slug: 'paris',
@@ -785,7 +809,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['france'],
     wikidataId: null,
     vibes: ['romantic', 'chic', 'dreamy'],
-    svgCitiesSlug: 'fr-paris',
+    iconSlug: 'fr-paris',
   },
   {
     slug: 'berlin',
@@ -798,7 +822,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['germany'],
     wikidataId: null,
     vibes: ['free', 'underground', 'raw'],
-    svgCitiesSlug: 'de-berlin',
+    iconSlug: 'de-berlin',
   },
   {
     slug: 'zurich',
@@ -811,7 +835,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['switzerland'],
     wikidataId: null,
     vibes: ['precise', 'pristine', 'alpine'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'amsterdam',
@@ -824,7 +848,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['netherlands', 'holland'],
     wikidataId: null,
     vibes: ['open-minded', 'breezy', 'candid'],
-    svgCitiesSlug: 'nl-amsterdam',
+    iconSlug: 'nl-amsterdam',
   },
   {
     slug: 'rome',
@@ -837,7 +861,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['italy'],
     wikidataId: null,
     vibes: ['eternal', 'warm', 'dramatic'],
-    svgCitiesSlug: 'it-rome',
+    iconSlug: 'it-rome',
   },
   {
     slug: 'madrid',
@@ -850,7 +874,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['spain'],
     wikidataId: null,
     vibes: ['fiery', 'nocturnal', 'proud'],
-    svgCitiesSlug: 'es-madrid',
+    iconSlug: 'es-madrid',
   },
   {
     slug: 'lisbon',
@@ -863,7 +887,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['portugal'],
     wikidataId: null,
     vibes: ['melancholic', 'sunny', 'soulful'],
-    svgCitiesSlug: 'pt-lisbon',
+    iconSlug: 'pt-lisbon',
   },
   {
     slug: 'stockholm',
@@ -876,7 +900,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['sweden'],
     wikidataId: null,
     vibes: ['minimal', 'sleek', 'thoughtful'],
-    svgCitiesSlug: 'se-stockholm',
+    iconSlug: 'se-stockholm',
   },
   {
     slug: 'oslo',
@@ -889,7 +913,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['norway'],
     wikidataId: null,
     vibes: ['rugged', 'quiet', 'pristine'],
-    svgCitiesSlug: 'no-oslo',
+    iconSlug: 'no-oslo',
   },
   {
     slug: 'copenhagen',
@@ -902,7 +926,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['denmark'],
     wikidataId: null,
     vibes: ['hygge', 'cozy', 'whimsical'],
-    svgCitiesSlug: 'dk-copenhagen',
+    iconSlug: 'dk-copenhagen',
   },
   {
     slug: 'helsinki',
@@ -915,7 +939,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['finland'],
     wikidataId: null,
     vibes: ['stoic', 'serene', 'luminous'],
-    svgCitiesSlug: 'fi-helsinki',
+    iconSlug: 'fi-helsinki',
   },
   {
     slug: 'vienna',
@@ -928,7 +952,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['austria'],
     wikidataId: null,
     vibes: ['refined', 'classical', 'grand'],
-    svgCitiesSlug: 'at-vienna',
+    iconSlug: 'at-vienna',
   },
   {
     slug: 'brussels',
@@ -941,7 +965,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['belgium'],
     wikidataId: null,
     vibes: ['cosmopolitan', 'quirky', 'indulgent'],
-    svgCitiesSlug: 'be-brussels',
+    iconSlug: 'be-brussels',
   },
   {
     slug: 'warsaw',
@@ -954,7 +978,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['poland'],
     wikidataId: null,
     vibes: ['resilient', 'rising', 'spirited'],
-    svgCitiesSlug: 'pl-warsaw',
+    iconSlug: 'pl-warsaw',
   },
   {
     slug: 'prague',
@@ -967,7 +991,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['czech republic', 'czechia'],
     wikidataId: null,
     vibes: ['bohemian', 'golden', 'enchanted'],
-    svgCitiesSlug: 'cz-prague',
+    iconSlug: 'cz-prague',
   },
   {
     slug: 'athens',
@@ -980,7 +1004,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['greece'],
     wikidataId: null,
     vibes: ['ancient', 'sun-drenched', 'philosophical'],
-    svgCitiesSlug: 'gr-athens',
+    iconSlug: 'gr-athens',
   },
   {
     slug: 'istanbul',
@@ -993,7 +1017,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['turkey'],
     wikidataId: null,
     vibes: ['mystical', 'bustling', 'layered'],
-    svgCitiesSlug: 'tr-istanbul',
+    iconSlug: 'tr-istanbul',
   },
   {
     slug: 'moscow',
@@ -1006,7 +1030,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['russia'],
     wikidataId: null,
     vibes: ['imposing', 'wintry', 'grand'],
-    svgCitiesSlug: 'ru-moscow',
+    iconSlug: 'ru-moscow',
   },
   {
     slug: 'dublin',
@@ -1019,7 +1043,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['ireland'],
     wikidataId: null,
     vibes: ['convivial', 'witty', 'rainy'],
-    svgCitiesSlug: 'ie-dublin',
+    iconSlug: 'ie-dublin',
   },
   {
     slug: 'edinburgh',
@@ -1032,7 +1056,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['scotland'],
     wikidataId: null,
     vibes: ['moody', 'storied', 'misty'],
-    svgCitiesSlug: 'gb-edinburgh',
+    iconSlug: 'gb-edinburgh',
   },
   {
     slug: 'reykjavik',
@@ -1045,7 +1069,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['otherworldly', 'stark', 'luminous'],
-    svgCitiesSlug: 'is-reykjavik',
+    iconSlug: 'is-reykjavik',
   },
   {
     slug: 'andorra-la-vella',
@@ -1058,7 +1082,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['alpine', 'duty-free', 'tucked-away'],
-    svgCitiesSlug: 'ad-andorra',
+    iconSlug: 'ad-andorra',
   },
   {
     slug: 'tirana',
@@ -1071,7 +1095,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['colorful', 'scrappy', 'emerging'],
-    svgCitiesSlug: 'al-tirana',
+    iconSlug: 'al-tirana',
   },
   {
     slug: 'baku',
@@ -1084,7 +1108,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['windy', 'oil-slicked', 'cosmopolitan'],
-    svgCitiesSlug: 'az-baku',
+    iconSlug: 'az-baku',
   },
   {
     slug: 'mostar',
@@ -1097,7 +1121,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['bridged', 'resilient', 'haunted'],
-    svgCitiesSlug: 'ba-mostar',
+    iconSlug: 'ba-mostar',
   },
   {
     slug: 'sarajevo',
@@ -1110,7 +1134,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['scarred', 'multicultural', 'spirited'],
-    svgCitiesSlug: 'ba-sarajevo',
+    iconSlug: 'ba-sarajevo',
   },
   {
     slug: 'bruges',
@@ -1123,7 +1147,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['medieval', 'tranquil', 'chocolatey'],
-    svgCitiesSlug: 'be-bruges',
+    iconSlug: 'be-bruges',
   },
   {
     slug: 'sofia',
@@ -1136,7 +1160,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['post-soviet', 'leafy', 'unpolished'],
-    svgCitiesSlug: 'bg-sofia',
+    iconSlug: 'bg-sofia',
   },
   {
     slug: 'minsk',
@@ -1149,7 +1173,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['soviet-era', 'orderly', 'melancholic'],
-    svgCitiesSlug: 'by-minsk',
+    iconSlug: 'by-minsk',
   },
   {
     slug: 'bern',
@@ -1162,7 +1186,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['calm', 'arcaded', 'genteel'],
-    svgCitiesSlug: 'ch-bern',
+    iconSlug: 'ch-bern',
   },
   {
     slug: 'limassol',
@@ -1175,7 +1199,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunny', 'beachfront', 'relaxed'],
-    svgCitiesSlug: 'cy-limassol',
+    iconSlug: 'cy-limassol',
   },
   {
     slug: 'nicosia',
@@ -1188,7 +1212,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['divided', 'warm', 'liminal'],
-    svgCitiesSlug: 'cy-nicosia',
+    iconSlug: 'cy-nicosia',
   },
   {
     slug: 'paphos',
@@ -1201,7 +1225,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mythical', 'seaside', 'languid'],
-    svgCitiesSlug: 'cy-paphos',
+    iconSlug: 'cy-paphos',
   },
   {
     slug: 'aachen',
@@ -1214,7 +1238,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['thermal', 'imperial', 'cross-border'],
-    svgCitiesSlug: 'de-aachen',
+    iconSlug: 'de-aachen',
   },
   {
     slug: 'bielefeld',
@@ -1227,7 +1251,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['unassuming', 'industrial', 'modest'],
-    svgCitiesSlug: 'de-bielefeld',
+    iconSlug: 'de-bielefeld',
   },
   {
     slug: 'bremen',
@@ -1240,7 +1264,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['maritime', 'hanseatic', 'independent'],
-    svgCitiesSlug: 'de-bremen',
+    iconSlug: 'de-bremen',
   },
   {
     slug: 'cologne',
@@ -1253,7 +1277,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['carnival-ready', 'jovial', 'cathedral-shadowed'],
-    svgCitiesSlug: 'de-cologne',
+    iconSlug: 'de-cologne',
   },
   {
     slug: 'erfurt',
@@ -1266,7 +1290,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['floral', 'medieval', 'gentle'],
-    svgCitiesSlug: 'de-erfurt',
+    iconSlug: 'de-erfurt',
   },
   {
     slug: 'frankfurt',
@@ -1279,7 +1303,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['financial', 'transient', 'glass-towered'],
-    svgCitiesSlug: 'de-frankfurt',
+    iconSlug: 'de-frankfurt',
   },
   {
     slug: 'freiburg',
@@ -1292,7 +1316,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunny', 'eco-conscious', 'youthful'],
-    svgCitiesSlug: 'de-freiburg',
+    iconSlug: 'de-freiburg',
   },
   {
     slug: 'giessen',
@@ -1305,7 +1329,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['studious', 'small-town', 'unpretentious'],
-    svgCitiesSlug: 'de-giessen',
+    iconSlug: 'de-giessen',
   },
   {
     slug: 'hamburg',
@@ -1318,7 +1342,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['maritime', 'liberal', 'rainy'],
-    svgCitiesSlug: 'de-hamburg',
+    iconSlug: 'de-hamburg',
   },
   {
     slug: 'karlsruhe',
@@ -1331,7 +1355,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['planned', 'sunny', 'cultured'],
-    svgCitiesSlug: 'de-karlsruhe',
+    iconSlug: 'de-karlsruhe',
   },
   {
     slug: 'leipzig',
@@ -1344,7 +1368,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['artistic', 'rebellious', 'emerging'],
-    svgCitiesSlug: 'de-leipzig',
+    iconSlug: 'de-leipzig',
   },
   {
     slug: 'munich',
@@ -1357,7 +1381,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gemutlich', 'beer-garden-ready', 'prosperous'],
-    svgCitiesSlug: 'de-munich',
+    iconSlug: 'de-munich',
   },
   {
     slug: 'nuremberg',
@@ -1370,7 +1394,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['medieval', 'contemplative', 'historic'],
-    svgCitiesSlug: 'de-nuremberg',
+    iconSlug: 'de-nuremberg',
   },
   {
     slug: 'siegen',
@@ -1383,7 +1407,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['forested', 'hilly', 'tucked-away'],
-    svgCitiesSlug: 'de-siegen',
+    iconSlug: 'de-siegen',
   },
   {
     slug: 'stuttgart',
@@ -1396,7 +1420,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['engineered', 'industrious', 'hilly'],
-    svgCitiesSlug: 'de-stuttgart',
+    iconSlug: 'de-stuttgart',
   },
   {
     slug: 'tallinn',
@@ -1409,7 +1433,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['medieval', 'digital', 'baltic'],
-    svgCitiesSlug: 'ee-tallinn',
+    iconSlug: 'ee-tallinn',
   },
   {
     slug: 'barcelona',
@@ -1422,7 +1446,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sensual', 'modernist', 'rebellious'],
-    svgCitiesSlug: 'es-barcelona',
+    iconSlug: 'es-barcelona',
   },
   {
     slug: 'cordoba-spain',
@@ -1435,7 +1459,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['moorish', 'scorching', 'contemplative'],
-    svgCitiesSlug: 'es-cordoba',
+    iconSlug: 'es-cordoba',
   },
   {
     slug: 'a-coruna',
@@ -1448,7 +1472,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['windswept', 'maritime', 'galician'],
-    svgCitiesSlug: 'es-coruna',
+    iconSlug: 'es-coruna',
   },
   {
     slug: 'gijon',
@@ -1461,7 +1485,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['salty', 'working-class', 'green'],
-    svgCitiesSlug: 'es-gijon',
+    iconSlug: 'es-gijon',
   },
   {
     slug: 'granada-spain',
@@ -1474,7 +1498,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['moorish', 'poetic', 'twilit'],
-    svgCitiesSlug: 'es-granada',
+    iconSlug: 'es-granada',
   },
   {
     slug: 'malaga',
@@ -1487,7 +1511,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sun-soaked', 'coastal', 'breezy'],
-    svgCitiesSlug: 'es-malaga',
+    iconSlug: 'es-malaga',
   },
   {
     slug: 'santiago-de-compostela',
@@ -1500,7 +1524,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['pilgrim-weary', 'sacred', 'misty'],
-    svgCitiesSlug: 'es-santiago-de-compostela',
+    iconSlug: 'es-santiago-de-compostela',
   },
   {
     slug: 'valencia',
@@ -1513,7 +1537,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunlit', 'orange-scented', 'modern'],
-    svgCitiesSlug: 'es-valencia',
+    iconSlug: 'es-valencia',
   },
   {
     slug: 'vigo',
@@ -1526,7 +1550,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rainy', 'maritime', 'industrial'],
-    svgCitiesSlug: 'es-vigo',
+    iconSlug: 'es-vigo',
   },
   {
     slug: 'kuopio',
@@ -1539,7 +1563,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['lakeside', 'sauna-ready', 'tranquil'],
-    svgCitiesSlug: 'fi-kuopio',
+    iconSlug: 'fi-kuopio',
   },
   {
     slug: 'lyon',
@@ -1552,7 +1576,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gastronomic', 'silky', 'traboule-hidden'],
-    svgCitiesSlug: 'fr-lyon',
+    iconSlug: 'fr-lyon',
   },
   {
     slug: 'montpellier',
@@ -1565,7 +1589,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunny', 'youthful', 'mediterranean'],
-    svgCitiesSlug: 'fr-montpellier',
+    iconSlug: 'fr-montpellier',
   },
   {
     slug: 'rennes',
@@ -1578,7 +1602,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rainy', 'breton', 'studious'],
-    svgCitiesSlug: 'fr-rennes',
+    iconSlug: 'fr-rennes',
   },
   {
     slug: 'leeds',
@@ -1591,7 +1615,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['post-industrial', 'direct', 'northern'],
-    svgCitiesSlug: 'gb-leeds',
+    iconSlug: 'gb-leeds',
   },
   {
     slug: 'manchester',
@@ -1604,7 +1628,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rainy', 'musical', 'gritty'],
-    svgCitiesSlug: 'gb-manchester',
+    iconSlug: 'gb-manchester',
   },
   {
     slug: 'batumi',
@@ -1617,7 +1641,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['subtropical', 'casino-lit', 'humid'],
-    svgCitiesSlug: 'ge-batumi',
+    iconSlug: 'ge-batumi',
   },
   {
     slug: 'tbilisi',
@@ -1630,7 +1654,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sulfuric', 'bohemian', 'crossroads'],
-    svgCitiesSlug: 'ge-tbilisi',
+    iconSlug: 'ge-tbilisi',
   },
   {
     slug: 'zagreb',
@@ -1643,7 +1667,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['cafe-lingering', 'post-yugoslav', 'green'],
-    svgCitiesSlug: 'hr-zagreb',
+    iconSlug: 'hr-zagreb',
   },
   {
     slug: 'budapest',
@@ -1656,7 +1680,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['thermal', 'melancholic', 'grand'],
-    svgCitiesSlug: 'hu-budapest',
+    iconSlug: 'hu-budapest',
   },
   {
     slug: 'debrecen',
@@ -1669,7 +1693,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['earnest', 'reformed', 'provincial'],
-    svgCitiesSlug: 'hu-debrecen',
+    iconSlug: 'hu-debrecen',
   },
   {
     slug: 'szeged',
@@ -1682,7 +1706,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunny', 'paprika-scented', 'peaceful'],
-    svgCitiesSlug: 'hu-szeged',
+    iconSlug: 'hu-szeged',
   },
   {
     slug: 'akureyri',
@@ -1695,7 +1719,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['northern', 'stark', 'cozy'],
-    svgCitiesSlug: 'is-akureyri',
+    iconSlug: 'is-akureyri',
   },
   {
     slug: 'bologna',
@@ -1708,7 +1732,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['studious', 'porticoed', 'leftist'],
-    svgCitiesSlug: 'it-bologna',
+    iconSlug: 'it-bologna',
   },
   {
     slug: 'ferrara',
@@ -1721,7 +1745,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['cycling', 'renaissance', 'quiet'],
-    svgCitiesSlug: 'it-ferrara',
+    iconSlug: 'it-ferrara',
   },
   {
     slug: 'forte-dei-marmi',
@@ -1734,7 +1758,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['jet-set', 'beachside', 'exclusive'],
-    svgCitiesSlug: 'it-forte-dei-marmi',
+    iconSlug: 'it-forte-dei-marmi',
   },
   {
     slug: 'milan',
@@ -1747,7 +1771,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['fashionable', 'ambitious', 'sleek'],
-    svgCitiesSlug: 'it-milan',
+    iconSlug: 'it-milan',
   },
   {
     slug: 'palermo',
@@ -1760,7 +1784,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['chaotic', 'spicy', 'sun-beaten'],
-    svgCitiesSlug: 'it-palermo',
+    iconSlug: 'it-palermo',
   },
   {
     slug: 'sorrento',
@@ -1773,7 +1797,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['limoncello-sweet', 'cliffside', 'romantic'],
-    svgCitiesSlug: 'it-sorrento',
+    iconSlug: 'it-sorrento',
   },
   {
     slug: 'taranto',
@@ -1786,7 +1810,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['maritime', 'industrial', 'salty'],
-    svgCitiesSlug: 'it-taranto',
+    iconSlug: 'it-taranto',
   },
   {
     slug: 'trieste',
@@ -1799,7 +1823,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mitteleuropean', 'melancholic', 'coffee-scented'],
-    svgCitiesSlug: 'it-trieste',
+    iconSlug: 'it-trieste',
   },
   {
     slug: 'venice',
@@ -1812,7 +1836,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['labyrinthine', 'sinking', 'dreamlike'],
-    svgCitiesSlug: 'it-venice',
+    iconSlug: 'it-venice',
   },
   {
     slug: 'vaduz',
@@ -1825,7 +1849,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['alpine', 'tax-sheltered', 'tiny'],
-    svgCitiesSlug: 'li-vaduz',
+    iconSlug: 'li-vaduz',
   },
   {
     slug: 'vilnius',
@@ -1838,7 +1862,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['baroque', 'bohemian', 'resilient'],
-    svgCitiesSlug: 'lt-vilnius',
+    iconSlug: 'lt-vilnius',
   },
   {
     slug: 'luxembourg-city',
@@ -1851,7 +1875,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['multilingual', 'prosperous', 'compact'],
-    svgCitiesSlug: 'lu-luxembourg',
+    iconSlug: 'lu-luxembourg',
   },
   {
     slug: 'riga',
@@ -1864,7 +1888,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['art-nouveau', 'amber-lit', 'baltic'],
-    svgCitiesSlug: 'lv-riga',
+    iconSlug: 'lv-riga',
   },
   {
     slug: 'monaco',
@@ -1877,7 +1901,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['glamorous', 'tax-free', 'exclusive'],
-    svgCitiesSlug: 'mc-monaco',
+    iconSlug: 'mc-monaco',
   },
   {
     slug: 'chisinau',
@@ -1890,7 +1914,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['post-soviet', 'quiet', 'wine-soaked'],
-    svgCitiesSlug: 'md-chisinau',
+    iconSlug: 'md-chisinau',
   },
   {
     slug: 'budva',
@@ -1903,7 +1927,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['beach-ready', 'nightlife-charged', 'adriatic'],
-    svgCitiesSlug: 'me-budva',
+    iconSlug: 'me-budva',
   },
   {
     slug: 'herceg-novi',
@@ -1916,7 +1940,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['floral', 'sunny', 'coastal'],
-    svgCitiesSlug: 'me-herceg-novi',
+    iconSlug: 'me-herceg-novi',
   },
   {
     slug: 'podgorica',
@@ -1929,7 +1953,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['concrete', 'functional', 'sunny'],
-    svgCitiesSlug: 'me-podgorica',
+    iconSlug: 'me-podgorica',
   },
   {
     slug: 'skopje',
@@ -1942,7 +1966,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rebuilt', 'eclectic', 'rough-edged'],
-    svgCitiesSlug: 'mk-skopje',
+    iconSlug: 'mk-skopje',
   },
   {
     slug: 'valletta',
@@ -1955,7 +1979,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['honey-stoned', 'fortified', 'sunlit'],
-    svgCitiesSlug: 'mt-valletta',
+    iconSlug: 'mt-valletta',
   },
   {
     slug: 'de-meije',
@@ -1968,7 +1992,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['pastoral', 'watery', 'tranquil'],
-    svgCitiesSlug: 'nl-de-meije',
+    iconSlug: 'nl-de-meije',
   },
   {
     slug: 'maastricht',
@@ -1981,7 +2005,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hilly', 'border-crossing', 'burgundian'],
-    svgCitiesSlug: 'nl-maastricht',
+    iconSlug: 'nl-maastricht',
   },
   {
     slug: 'rotterdam',
@@ -1994,7 +2018,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rebuilt', 'bold', 'architectural'],
-    svgCitiesSlug: 'nl-rotterdam',
+    iconSlug: 'nl-rotterdam',
   },
   {
     slug: 'woerden',
@@ -2007,7 +2031,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['canal-lined', 'cheese-market-fresh', 'quiet'],
-    svgCitiesSlug: 'nl-woerden',
+    iconSlug: 'nl-woerden',
   },
   {
     slug: 'gdansk',
@@ -2020,7 +2044,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hanseatic', 'amber-tinged', 'maritime'],
-    svgCitiesSlug: 'pl-gdansk',
+    iconSlug: 'pl-gdansk',
   },
   {
     slug: 'poznan',
@@ -2033,7 +2057,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mercantile', 'colorful', 'proud'],
-    svgCitiesSlug: 'pl-poznan',
+    iconSlug: 'pl-poznan',
   },
   {
     slug: 'swiebodzin',
@@ -2046,7 +2070,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['small-town', 'quiet', 'faithful'],
-    svgCitiesSlug: 'pl-swiebodzin',
+    iconSlug: 'pl-swiebodzin',
   },
   {
     slug: 'wroclaw',
@@ -2059,7 +2083,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['island-dotted', 'gnome-spotted', 'colorful'],
-    svgCitiesSlug: 'pl-wroclaw',
+    iconSlug: 'pl-wroclaw',
   },
   {
     slug: 'amadora',
@@ -2072,7 +2096,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['residential', 'unpretentious', 'suburban'],
-    svgCitiesSlug: 'pt-amadora',
+    iconSlug: 'pt-amadora',
   },
   {
     slug: 'barcelos',
@@ -2085,7 +2109,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['folkloric', 'ceramic', 'traditional'],
-    svgCitiesSlug: 'pt-barcelos',
+    iconSlug: 'pt-barcelos',
   },
   {
     slug: 'braga',
@@ -2098,7 +2122,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['baroque', 'youthful', 'faithful'],
-    svgCitiesSlug: 'pt-braga',
+    iconSlug: 'pt-braga',
   },
   {
     slug: 'chaves',
@@ -2111,7 +2135,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['thermal', 'fortified', 'provincial'],
-    svgCitiesSlug: 'pt-chaves',
+    iconSlug: 'pt-chaves',
   },
   {
     slug: 'guimaraes',
@@ -2124,7 +2148,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['medieval', 'birthplace-proud', 'storied'],
-    svgCitiesSlug: 'pt-guimaraes',
+    iconSlug: 'pt-guimaraes',
   },
   {
     slug: 'leiria',
@@ -2137,7 +2161,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['castle-topped', 'pine-scented', 'central'],
-    svgCitiesSlug: 'pt-leiria',
+    iconSlug: 'pt-leiria',
   },
   {
     slug: 'matosinhos',
@@ -2150,7 +2174,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['oceanic', 'grilled-fish-scented', 'beachside'],
-    svgCitiesSlug: 'pt-matosinhos',
+    iconSlug: 'pt-matosinhos',
   },
   {
     slug: 'nazare',
@@ -2163,7 +2187,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['wave-battered', 'fishing-village', 'pious'],
-    svgCitiesSlug: 'pt-nazare',
+    iconSlug: 'pt-nazare',
   },
   {
     slug: 'porto',
@@ -2176,7 +2200,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['soulful', 'port-wine-soaked', 'steep'],
-    svgCitiesSlug: 'pt-porto',
+    iconSlug: 'pt-porto',
   },
   {
     slug: 'viana-do-castelo',
@@ -2189,7 +2213,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['folkloric', 'maritime', 'traditional'],
-    svgCitiesSlug: 'pt-viana-do-castelo',
+    iconSlug: 'pt-viana-do-castelo',
   },
   {
     slug: 'vila-real',
@@ -2202,7 +2226,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['thermal', 'mountainous', 'peaceful'],
-    svgCitiesSlug: 'pt-vila-real',
+    iconSlug: 'pt-vila-real',
   },
   {
     slug: 'bucharest',
@@ -2215,7 +2239,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['crumbling', 'belle-epoque', 'chaotic'],
-    svgCitiesSlug: 'ro-bucharest',
+    iconSlug: 'ro-bucharest',
   },
   {
     slug: 'belgrade',
@@ -2228,7 +2252,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['defiant', 'nightlife-charged', 'balkan'],
-    svgCitiesSlug: 'rs-belgrade',
+    iconSlug: 'rs-belgrade',
   },
   {
     slug: 'subotica',
@@ -2241,7 +2265,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['art-nouveau', 'multicultural', 'provincial'],
-    svgCitiesSlug: 'rs-subotica',
+    iconSlug: 'rs-subotica',
   },
   {
     slug: 'murmansk',
@@ -2254,7 +2278,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['polar', 'darkened', 'hardy'],
-    svgCitiesSlug: 'ru-murmansk',
+    iconSlug: 'ru-murmansk',
   },
   {
     slug: 'st-petersburg',
@@ -2267,7 +2291,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['imperial', 'melancholic', 'grand'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'tula',
@@ -2280,7 +2304,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['stoic', 'industrial', 'resilient'],
-    svgCitiesSlug: 'ru-tula',
+    iconSlug: 'ru-tula',
   },
   {
     slug: 'yakutsk',
@@ -2293,7 +2317,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['frozen', 'isolated', 'extreme'],
-    svgCitiesSlug: 'ru-yakutsk',
+    iconSlug: 'ru-yakutsk',
   },
   {
     slug: 'ljubljana',
@@ -2306,7 +2330,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['charming', 'laid-back', 'green'],
-    svgCitiesSlug: 'si-ljubljana',
+    iconSlug: 'si-ljubljana',
   },
   {
     slug: 'bratislava',
@@ -2319,7 +2343,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['quiet', 'unassuming', 'emerging'],
-    svgCitiesSlug: 'sk-bratislava',
+    iconSlug: 'sk-bratislava',
   },
   {
     slug: 'san-marino',
@@ -2332,7 +2356,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['serene', 'timeless', 'elevated'],
-    svgCitiesSlug: 'sm-san-marino',
+    iconSlug: 'sm-san-marino',
   },
   {
     slug: 'kyiv',
@@ -2345,7 +2369,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['golden', 'spirited', 'ancient'],
-    svgCitiesSlug: 'ua-kyiv',
+    iconSlug: 'ua-kyiv',
   },
   {
     slug: 'odessa',
@@ -2358,7 +2382,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['witty', 'cosmopolitan', 'breezy'],
-    svgCitiesSlug: 'ua-odessa',
+    iconSlug: 'ua-odessa',
   },
   {
     slug: 'liverpool',
@@ -2371,7 +2395,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gritty', 'musical', 'proud'],
-    svgCitiesSlug: 'uk-liverpool',
+    iconSlug: 'uk-liverpool',
   },
   {
     slug: 'vatican-city',
@@ -2384,7 +2408,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['reverent', 'sacred', 'hushed'],
-    svgCitiesSlug: 'va-vatican',
+    iconSlug: 'va-vatican',
   },
   {
     slug: 'pristina',
@@ -2397,7 +2421,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['youthful', 'defiant', 'raw'],
-    svgCitiesSlug: 'xk-pristina',
+    iconSlug: 'xk-pristina',
   },
 
   // --- Africa ---
@@ -2412,7 +2436,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['egypt'],
     wikidataId: null,
     vibes: ['ancient', 'chaotic', 'timeless'],
-    svgCitiesSlug: 'eg-cairo',
+    iconSlug: 'eg-cairo',
   },
   {
     slug: 'johannesburg',
@@ -2425,7 +2449,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['south africa'],
     wikidataId: null,
     vibes: ['ambitious', 'golden', 'resilient'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'cape-town',
@@ -2438,7 +2462,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['stunning', 'breezy', 'wild'],
-    svgCitiesSlug: 'za-cape-town',
+    iconSlug: 'za-cape-town',
   },
   {
     slug: 'lagos',
@@ -2451,7 +2475,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['nigeria'],
     wikidataId: null,
     vibes: ['hustling', 'loud', 'unstoppable'],
-    svgCitiesSlug: 'ng-lagos',
+    iconSlug: 'ng-lagos',
   },
   {
     slug: 'nairobi',
@@ -2464,7 +2488,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['kenya'],
     wikidataId: null,
     vibes: ['enterprising', 'sunny', 'rising'],
-    svgCitiesSlug: 'ke-nairobi',
+    iconSlug: 'ke-nairobi',
   },
   {
     slug: 'ouagadougou',
@@ -2477,7 +2501,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['dusty', 'warm', 'resilient'],
-    svgCitiesSlug: 'bf-ouagadougou',
+    iconSlug: 'bf-ouagadougou',
   },
   {
     slug: 'lalibela',
@@ -2490,7 +2514,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mystical', 'devotional', 'ancient'],
-    svgCitiesSlug: 'et-lalibela',
+    iconSlug: 'et-lalibela',
   },
   {
     slug: 'addis-ababa',
@@ -2503,7 +2527,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['bustling', 'hopeful', 'high'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'accra',
@@ -2516,7 +2540,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['vibrant', 'welcoming', 'humid'],
-    svgCitiesSlug: 'gh-accra',
+    iconSlug: 'gh-accra',
   },
   {
     slug: 'abidjan',
@@ -2529,7 +2553,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['dynamic', 'tropical', 'ambitious'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'kinshasa',
@@ -2542,7 +2566,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['frenetic', 'rhythmic', 'boundless'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'maseru',
@@ -2555,7 +2579,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['windswept', 'rugged', 'quiet'],
-    svgCitiesSlug: 'ls-maseru',
+    iconSlug: 'ls-maseru',
   },
   {
     slug: 'benghazi',
@@ -2568,7 +2592,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['weathered', 'tense', 'coastal'],
-    svgCitiesSlug: 'ly-benghazi',
+    iconSlug: 'ly-benghazi',
   },
   {
     slug: 'casablanca',
@@ -2581,7 +2605,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['bustling', 'cinematic', 'salty'],
-    svgCitiesSlug: 'ma-casablanca',
+    iconSlug: 'ma-casablanca',
   },
   {
     slug: 'fez',
@@ -2594,7 +2618,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['labyrinthine', 'ancient', 'aromatic'],
-    svgCitiesSlug: 'ma-fez',
+    iconSlug: 'ma-fez',
   },
   {
     slug: 'marrakesh',
@@ -2607,7 +2631,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['intoxicating', 'spicy', 'ochre'],
-    svgCitiesSlug: 'ma-marrakesh',
+    iconSlug: 'ma-marrakesh',
   },
   {
     slug: 'antananarivo',
@@ -2620,7 +2644,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hilly', 'chaotic', 'resourceful'],
-    svgCitiesSlug: 'mg-antananarivo',
+    iconSlug: 'mg-antananarivo',
   },
   {
     slug: 'maputo',
@@ -2633,7 +2657,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'rhythmic', 'languid'],
-    svgCitiesSlug: 'mz-maputo',
+    iconSlug: 'mz-maputo',
   },
   {
     slug: 'windhoek',
@@ -2646,7 +2670,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['crisp', 'spacious', 'sunlit'],
-    svgCitiesSlug: 'na-windhoek',
+    iconSlug: 'na-windhoek',
   },
   {
     slug: 'kigali',
@@ -2659,7 +2683,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['clean', 'orderly', 'rising'],
-    svgCitiesSlug: 'rw-kigali',
+    iconSlug: 'rw-kigali',
   },
   {
     slug: 'dakar',
@@ -2672,7 +2696,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['colorful', 'musical', 'coastal'],
-    svgCitiesSlug: 'sn-dakar',
+    iconSlug: 'sn-dakar',
   },
   {
     slug: 'dar-es-salaam',
@@ -2685,7 +2709,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humid', 'bustling', 'swahili'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'zanzibar',
@@ -2698,7 +2722,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spiced', 'turquoise', 'timeless'],
-    svgCitiesSlug: 'tz-zanzibar',
+    iconSlug: 'tz-zanzibar',
   },
   {
     slug: 'tunis',
@@ -2711,7 +2735,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mediterranean', 'refined', 'layered'],
-    svgCitiesSlug: 'tn-tunis',
+    iconSlug: 'tn-tunis',
   },
   {
     slug: 'kampala',
@@ -2724,7 +2748,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['green', 'hilly', 'lively'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'lusaka',
@@ -2737,7 +2761,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['warm', 'dusty', 'easy-going'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'algiers',
@@ -2750,7 +2774,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['white', 'steep', 'nostalgic'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
 
   // --- Middle East ---
@@ -2765,7 +2789,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['uae'],
     wikidataId: null,
     vibes: ['opulent', 'futuristic', 'dazzling'],
-    svgCitiesSlug: 'ae-dubai',
+    iconSlug: 'ae-dubai',
   },
   {
     slug: 'riyadh',
@@ -2778,7 +2802,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['saudi arabia'],
     wikidataId: null,
     vibes: ['vast', 'ambitious', 'scorching'],
-    svgCitiesSlug: 'sa-riyadh',
+    iconSlug: 'sa-riyadh',
   },
   {
     slug: 'jerusalem',
@@ -2791,7 +2815,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['israel'],
     wikidataId: null,
     vibes: ['sacred', 'ancient', 'layered'],
-    svgCitiesSlug: 'il-jerusalem',
+    iconSlug: 'il-jerusalem',
   },
   {
     slug: 'abu-dhabi',
@@ -2804,7 +2828,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['opulent', 'sleek', 'air-conditioned'],
-    svgCitiesSlug: 'ae-abu-dhabi',
+    iconSlug: 'ae-abu-dhabi',
   },
   {
     slug: 'manama',
@@ -2817,7 +2841,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['cosmopolitan', 'balmy', 'relaxed'],
-    svgCitiesSlug: 'bh-manama',
+    iconSlug: 'bh-manama',
   },
   {
     slug: 'haifa',
@@ -2830,7 +2854,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['terraced', 'diverse', 'breezy'],
-    svgCitiesSlug: 'il-haifa',
+    iconSlug: 'il-haifa',
   },
   {
     slug: 'tel-aviv',
@@ -2843,7 +2867,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hedonistic', 'sun-drenched', 'electric'],
-    svgCitiesSlug: 'il-tel-aviv',
+    iconSlug: 'il-tel-aviv',
   },
   {
     slug: 'baghdad',
@@ -2856,7 +2880,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['ancient', 'complex', 'resilient'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'samarra',
@@ -2869,7 +2893,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sacred', 'timeworn', 'dusty'],
-    svgCitiesSlug: 'iq-samarra',
+    iconSlug: 'iq-samarra',
   },
   {
     slug: 'isfahan',
@@ -2882,7 +2906,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['turquoise', 'poetic', 'elegant'],
-    svgCitiesSlug: 'ir-isfahan',
+    iconSlug: 'ir-isfahan',
   },
   {
     slug: 'mashhad',
@@ -2895,7 +2919,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['devotional', 'bustling', 'pilgrimage-bound'],
-    svgCitiesSlug: 'ir-mashhad',
+    iconSlug: 'ir-mashhad',
   },
   {
     slug: 'tehran',
@@ -2908,7 +2932,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mountainous', 'dynamic', 'sprawling'],
-    svgCitiesSlug: 'ir-tehran',
+    iconSlug: 'ir-tehran',
   },
   {
     slug: 'amman',
@@ -2921,7 +2945,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sandy', 'hilly', 'welcoming'],
-    svgCitiesSlug: 'jo-amman',
+    iconSlug: 'jo-amman',
   },
   {
     slug: 'kuwait-city',
@@ -2934,7 +2958,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gleaming', 'modern', 'sweltering'],
-    svgCitiesSlug: 'kw-kuwait',
+    iconSlug: 'kw-kuwait',
   },
   {
     slug: 'beirut',
@@ -2947,7 +2971,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['resilient', 'cultured', 'phoenician'],
-    svgCitiesSlug: 'lb-beirut',
+    iconSlug: 'lb-beirut',
   },
   {
     slug: 'muscat',
@@ -2960,7 +2984,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['fragrant', 'serene', 'white-washed'],
-    svgCitiesSlug: 'om-muscat',
+    iconSlug: 'om-muscat',
   },
   {
     slug: 'doha',
@@ -2973,7 +2997,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gleaming', 'ambitious', 'modern'],
-    svgCitiesSlug: 'qa-doha',
+    iconSlug: 'qa-doha',
   },
   {
     slug: 'jeddah',
@@ -2986,7 +3010,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humid', 'cosmopolitan', 'gateway-like'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
 
   // --- Asia ---
@@ -3001,7 +3025,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['japan'],
     wikidataId: null,
     vibes: ['zen', 'precise', 'futuristic'],
-    svgCitiesSlug: 'jp-tokyo',
+    iconSlug: 'jp-tokyo',
   },
   {
     slug: 'osaka',
@@ -3014,7 +3038,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['playful', 'flavorful', 'neon'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'seoul',
@@ -3027,7 +3051,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['korea', 'south korea'],
     wikidataId: null,
     vibes: ['trendy', 'fast-paced', 'glossy'],
-    svgCitiesSlug: 'kr-seoul',
+    iconSlug: 'kr-seoul',
   },
   {
     slug: 'shanghai',
@@ -3040,7 +3064,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['china'],
     wikidataId: null,
     vibes: ['electric', 'towering', 'relentless'],
-    svgCitiesSlug: 'cn-shanghai',
+    iconSlug: 'cn-shanghai',
   },
   {
     slug: 'beijing',
@@ -3053,7 +3077,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['imperial', 'vast', 'storied'],
-    svgCitiesSlug: 'cn-beijing',
+    iconSlug: 'cn-beijing',
   },
   {
     slug: 'hong-kong',
@@ -3066,7 +3090,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['hk'],
     wikidataId: null,
     vibes: ['dense', 'neon', 'kinetic'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'singapore',
@@ -3079,7 +3103,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['sg'],
     wikidataId: null,
     vibes: ['orderly', 'lush', 'spotless'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'bangkok',
@@ -3092,7 +3116,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['bkk', 'thailand'],
     wikidataId: null,
     vibes: ['steamy', 'chaotic', 'golden'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'mumbai',
@@ -3105,7 +3129,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['india'],
     wikidataId: null,
     vibes: ['intense', 'cinematic', 'teeming'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'delhi',
@@ -3118,7 +3142,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spicy', 'historic', 'vibrant'],
-    svgCitiesSlug: 'in-delhi',
+    iconSlug: 'in-delhi',
   },
   {
     slug: 'karachi',
@@ -3131,7 +3155,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['pakistan'],
     wikidataId: null,
     vibes: ['gritty', 'sprawling', 'spirited'],
-    svgCitiesSlug: 'pk-karachi',
+    iconSlug: 'pk-karachi',
   },
   {
     slug: 'dhaka',
@@ -3144,7 +3168,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['bangladesh'],
     wikidataId: null,
     vibes: ['dense', 'lively', 'colorful'],
-    svgCitiesSlug: 'bd-dhaka',
+    iconSlug: 'bd-dhaka',
   },
   {
     slug: 'ho-chi-minh-city',
@@ -3157,7 +3181,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['vietnam'],
     wikidataId: null,
     vibes: ['buzzing', 'aromatic', 'warm'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'jakarta',
@@ -3170,7 +3194,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['indonesia'],
     wikidataId: null,
     vibes: ['tropical', 'sprawling', 'lively'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'kuala-lumpur',
@@ -3183,7 +3207,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['malaysia'],
     wikidataId: null,
     vibes: ['gleaming', 'tropical', 'diverse'],
-    svgCitiesSlug: 'my-kuala-lumpur',
+    iconSlug: 'my-kuala-lumpur',
   },
   {
     slug: 'manila',
@@ -3196,7 +3220,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['philippines'],
     wikidataId: null,
     vibes: ['cheerful', 'resilient', 'warm'],
-    svgCitiesSlug: 'ph-manila',
+    iconSlug: 'ph-manila',
   },
   {
     slug: 'taipei',
@@ -3209,7 +3233,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['taiwan'],
     wikidataId: null,
     vibes: ['inventive', 'nocturnal', 'sweet'],
-    svgCitiesSlug: 'tw-taipei',
+    iconSlug: 'tw-taipei',
   },
   {
     slug: 'kathmandu',
@@ -3222,7 +3246,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spiritual', 'high', 'serene'],
-    svgCitiesSlug: 'np-kathmandu',
+    iconSlug: 'np-kathmandu',
   },
   {
     slug: 'yerevan',
@@ -3235,7 +3259,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['rosy', 'ancient', 'soviet-tinged'],
-    svgCitiesSlug: 'am-yerevan',
+    iconSlug: 'am-yerevan',
   },
   {
     slug: 'seria',
@@ -3248,7 +3272,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'quiet', 'industrial'],
-    svgCitiesSlug: 'bn-seria',
+    iconSlug: 'bn-seria',
   },
   {
     slug: 'thimphu',
@@ -3261,7 +3285,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['peaceful', 'buddhist', 'mountain-fresh'],
-    svgCitiesSlug: 'bt-thimphu',
+    iconSlug: 'bt-thimphu',
   },
   {
     slug: 'chengdu',
@@ -3274,7 +3298,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spicy', 'laid-back', 'misty'],
-    svgCitiesSlug: 'cn-chengdu',
+    iconSlug: 'cn-chengdu',
   },
   {
     slug: 'jingzhou',
@@ -3287,7 +3311,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['historic', 'riverside', 'tranquil'],
-    svgCitiesSlug: 'cn-jingzhou',
+    iconSlug: 'cn-jingzhou',
   },
   {
     slug: 'leshan',
@@ -3300,7 +3324,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['peaceful', 'meditative', 'riverside'],
-    svgCitiesSlug: 'cn-leshan',
+    iconSlug: 'cn-leshan',
   },
   {
     slug: 'shenzhen',
@@ -3313,7 +3337,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['ambitious', 'innovative', 'frenetic'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'guangzhou',
@@ -3326,7 +3350,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['steamy', 'mercantile', 'bold'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'chongqing',
@@ -3339,7 +3363,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['fiery', 'foggy', 'sprawling'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'wuhan',
@@ -3352,7 +3376,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['riverside', 'industrial', 'hot'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'denpasar',
@@ -3365,7 +3389,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'spiritual', 'languid'],
-    svgCitiesSlug: 'id-denpasar',
+    iconSlug: 'id-denpasar',
   },
   {
     slug: 'surabaya',
@@ -3378,7 +3402,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hot', 'gritty', 'industrial'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'agra',
@@ -3391,7 +3415,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['monumental', 'hazy', 'timeless'],
-    svgCitiesSlug: 'in-agra',
+    iconSlug: 'in-agra',
   },
   {
     slug: 'kolkata',
@@ -3404,7 +3428,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['literary', 'humid', 'intense'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'bangalore',
@@ -3417,7 +3441,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['cosmopolitan', 'temperate', 'innovative'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'chennai',
@@ -3430,7 +3454,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['hot', 'traditional', 'coastal'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'hyderabad',
@@ -3443,7 +3467,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['spiced', 'historic', 'tech-savvy'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'kyoto',
@@ -3456,7 +3480,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tranquil', 'refined', 'timeless'],
-    svgCitiesSlug: 'jp-kyoto',
+    iconSlug: 'jp-kyoto',
   },
   {
     slug: 'nara',
@@ -3469,7 +3493,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['gentle', 'sacred', 'serene'],
-    svgCitiesSlug: 'jp-nara',
+    iconSlug: 'jp-nara',
   },
   {
     slug: 'shirakawa-go',
@@ -3482,7 +3506,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['snowy', 'rustic', 'traditional'],
-    svgCitiesSlug: 'jp-shirakawa-go',
+    iconSlug: 'jp-shirakawa-go',
   },
   {
     slug: 'sihanoukville',
@@ -3495,7 +3519,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['beachy', 'laid-back', 'tropical'],
-    svgCitiesSlug: 'kh-sihanoukville',
+    iconSlug: 'kh-sihanoukville',
   },
   {
     slug: 'phnom-penh',
@@ -3508,7 +3532,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humid', 'chaotic', 'emerging'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'bishkek',
@@ -3521,7 +3545,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['soviet', 'mountainous', 'fresh'],
-    svgCitiesSlug: 'kg-bishkek',
+    iconSlug: 'kg-bishkek',
   },
   {
     slug: 'pyongyang',
@@ -3534,7 +3558,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['austere', 'controlled', 'monumental'],
-    svgCitiesSlug: 'kp-pyongyang',
+    iconSlug: 'kp-pyongyang',
   },
   {
     slug: 'busan',
@@ -3547,7 +3571,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['coastal', 'breezy', 'relaxed'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'almaty',
@@ -3560,7 +3584,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mountainous', 'cosmopolitan', 'soviet-nostalgic'],
-    svgCitiesSlug: 'kz-alma-aty',
+    iconSlug: 'kz-alma-aty',
   },
   {
     slug: 'astana',
@@ -3573,7 +3597,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['futuristic', 'windswept', 'ambitious'],
-    svgCitiesSlug: 'kz-astana',
+    iconSlug: 'kz-astana',
   },
   {
     slug: 'kostanay',
@@ -3586,7 +3610,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['provincial', 'vast', 'quiet'],
-    svgCitiesSlug: 'kz-kostanay',
+    iconSlug: 'kz-kostanay',
   },
   {
     slug: 'schuchinsk',
@@ -3599,7 +3623,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['pine-scented', 'lakeside', 'peaceful'],
-    svgCitiesSlug: 'kz-schuchinsk',
+    iconSlug: 'kz-schuchinsk',
   },
   {
     slug: 'uralsk',
@@ -3612,7 +3636,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['frontier', 'spacious', 'remote'],
-    svgCitiesSlug: 'kz-uralsk',
+    iconSlug: 'kz-uralsk',
   },
   {
     slug: 'luang-prabang',
@@ -3625,7 +3649,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['golden', 'tranquil', 'spiritual'],
-    svgCitiesSlug: 'la-luang-prabang',
+    iconSlug: 'la-luang-prabang',
   },
   {
     slug: 'bagan',
@@ -3638,7 +3662,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mystical', 'ancient', 'dusty'],
-    svgCitiesSlug: 'mm-bagan',
+    iconSlug: 'mm-bagan',
   },
   {
     slug: 'yangon',
@@ -3651,7 +3675,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['golden', 'humid', 'timeless'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'ulaanbaatar',
@@ -3664,7 +3688,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['harsh', 'nomadic', 'smoky'],
-    svgCitiesSlug: 'mn-ulaanbaatar',
+    iconSlug: 'mn-ulaanbaatar',
   },
   {
     slug: 'kuching',
@@ -3677,7 +3701,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['riverside', 'laid-back', 'tropical'],
-    svgCitiesSlug: 'my-kuching',
+    iconSlug: 'my-kuching',
   },
   {
     slug: 'islamabad',
@@ -3690,7 +3714,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['green', 'planned', 'serene'],
-    svgCitiesSlug: 'pk-islamabad',
+    iconSlug: 'pk-islamabad',
   },
   {
     slug: 'lahore',
@@ -3703,7 +3727,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['vibrant', 'historic', 'spicy'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'cebu',
@@ -3716,7 +3740,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'festive', 'coastal'],
-    svgCitiesSlug: 'ph-cebu',
+    iconSlug: 'ph-cebu',
   },
   {
     slug: 'sentosa',
@@ -3729,7 +3753,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['resort-like', 'manicured', 'playful'],
-    svgCitiesSlug: 'sg-sentosa',
+    iconSlug: 'sg-sentosa',
   },
   {
     slug: 'colombo',
@@ -3742,7 +3766,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humid', 'colonial', 'bustling'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'pattaya',
@@ -3755,7 +3779,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['neon', 'beachy', 'hedonistic'],
-    svgCitiesSlug: 'th-pattaya',
+    iconSlug: 'th-pattaya',
   },
   {
     slug: 'dushanbe',
@@ -3768,7 +3792,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mountainous', 'soviet', 'leafy'],
-    svgCitiesSlug: 'tj-dushanbe',
+    iconSlug: 'tj-dushanbe',
   },
   {
     slug: 'dili',
@@ -3781,7 +3805,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'emerging', 'coastal'],
-    svgCitiesSlug: 'tl-dili',
+    iconSlug: 'tl-dili',
   },
   {
     slug: 'ashgabat',
@@ -3794,7 +3818,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['marble', 'surreal', 'gleaming'],
-    svgCitiesSlug: 'tm-ashgabat',
+    iconSlug: 'tm-ashgabat',
   },
   {
     slug: 'nukus',
@@ -3807,7 +3831,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['remote', 'dusty', 'stark'],
-    svgCitiesSlug: 'uz-nukus',
+    iconSlug: 'uz-nukus',
   },
   {
     slug: 'tashkent',
@@ -3820,7 +3844,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['soviet', 'sunny', 'spacious'],
-    svgCitiesSlug: 'uz-tashkent',
+    iconSlug: 'uz-tashkent',
   },
   {
     slug: 'hanoi',
@@ -3833,7 +3857,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['motorbike-buzzing', 'aromatic', 'humid'],
-    svgCitiesSlug: 'vn-hanoi',
+    iconSlug: 'vn-hanoi',
   },
   {
     slug: 'vung-tau',
@@ -3846,7 +3870,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['breezy', 'coastal', 'relaxed'],
-    svgCitiesSlug: 'vn-vung-tau',
+    iconSlug: 'vn-vung-tau',
   },
 
   // --- Oceania ---
@@ -3861,7 +3885,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['australia'],
     wikidataId: null,
     vibes: ['sunny', 'sparkling', 'coastal'],
-    svgCitiesSlug: 'au-sydney',
+    iconSlug: 'au-sydney',
   },
   {
     slug: 'melbourne',
@@ -3874,7 +3898,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['artsy', 'caffeinated', 'eclectic'],
-    svgCitiesSlug: 'au-melbourne',
+    iconSlug: 'au-melbourne',
   },
   {
     slug: 'auckland',
@@ -3887,7 +3911,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: ['new zealand', 'nz'],
     wikidataId: null,
     vibes: ['adventurous', 'green', 'fresh'],
-    svgCitiesSlug: null,
+    iconSlug: null,
   },
   {
     slug: 'canberra',
@@ -3900,7 +3924,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['planned', 'leafy', 'bureaucratic'],
-    svgCitiesSlug: 'au-canberra',
+    iconSlug: 'au-canberra',
   },
   {
     slug: 'hobart',
@@ -3913,7 +3937,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['cool', 'maritime', 'artsy'],
-    svgCitiesSlug: 'au-hobart',
+    iconSlug: 'au-hobart',
   },
   {
     slug: 'perth',
@@ -3926,7 +3950,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['sunny', 'isolated', 'relaxed'],
-    svgCitiesSlug: 'au-perth',
+    iconSlug: 'au-perth',
   },
   {
     slug: 'suva',
@@ -3939,7 +3963,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'humid', 'island-time'],
-    svgCitiesSlug: 'fj-suva',
+    iconSlug: 'fj-suva',
   },
   {
     slug: 'tarawa',
@@ -3952,7 +3976,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['remote', 'atoll-bound', 'lagoon-like'],
-    svgCitiesSlug: 'ki-tarawa',
+    iconSlug: 'ki-tarawa',
   },
   {
     slug: 'port-louis',
@@ -3965,7 +3989,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'bustling', 'creole'],
-    svgCitiesSlug: 'mu-port-louis',
+    iconSlug: 'mu-port-louis',
   },
   {
     slug: 'noumea',
@@ -3978,7 +4002,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['french', 'turquoise', 'resort-like'],
-    svgCitiesSlug: 'nc-noumea',
+    iconSlug: 'nc-noumea',
   },
   {
     slug: 'wellington',
@@ -3991,7 +4015,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['windy', 'creative', 'caffeinated'],
-    svgCitiesSlug: 'nz-wellington',
+    iconSlug: 'nz-wellington',
   },
   {
     slug: 'honiara',
@@ -4004,7 +4028,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'quiet', 'emerging'],
-    svgCitiesSlug: 'sb-honiara',
+    iconSlug: 'sb-honiara',
   },
   {
     slug: 'nukualofa',
@@ -4017,7 +4041,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['remote', 'pacific', 'tranquil'],
-    svgCitiesSlug: 'to-nukualofa',
+    iconSlug: 'to-nukualofa',
   },
   {
     slug: 'funafuti',
@@ -4030,7 +4054,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tiny', 'coral', 'vulnerable'],
-    svgCitiesSlug: 'tv-funafuti',
+    iconSlug: 'tv-funafuti',
   },
   {
     slug: 'port-vila',
@@ -4043,7 +4067,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'volcanic', 'laid-back'],
-    svgCitiesSlug: 'vu-port-vila',
+    iconSlug: 'vu-port-vila',
   },
   {
     slug: 'apia',
@@ -4056,7 +4080,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['warm', 'polynesian', 'unhurried'],
-    svgCitiesSlug: 'ws-apia',
+    iconSlug: 'ws-apia',
   },
 
   // --- Central America & Caribbean ---
@@ -4071,7 +4095,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['turquoise', 'colonial', 'breezy'],
-    svgCitiesSlug: 'ag-saint-john',
+    iconSlug: 'ag-saint-john',
   },
   {
     slug: 'nassau',
@@ -4084,7 +4108,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['turquoise', 'resort', 'tropical'],
-    svgCitiesSlug: 'bs-nassau',
+    iconSlug: 'bs-nassau',
   },
   {
     slug: 'san-ignacio',
@@ -4097,7 +4121,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['jungle-wrapped', 'mystical', 'adventurous'],
-    svgCitiesSlug: 'bz-san-ignacio',
+    iconSlug: 'bz-san-ignacio',
   },
   {
     slug: 'alajuela',
@@ -4110,7 +4134,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['tropical', 'verdant', 'volcanic'],
-    svgCitiesSlug: 'cr-alajuela',
+    iconSlug: 'cr-alajuela',
   },
   {
     slug: 'havana',
@@ -4123,7 +4147,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['nostalgic', 'sultry', 'rhythmic'],
-    svgCitiesSlug: 'cu-havana',
+    iconSlug: 'cu-havana',
   },
   {
     slug: 'willemstad',
@@ -4136,7 +4160,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['pastel', 'breezy', 'dutch-tinged'],
-    svgCitiesSlug: 'cw-willemstadt',
+    iconSlug: 'cw-willemstadt',
   },
   {
     slug: 'st-george',
@@ -4149,7 +4173,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['colonial', 'cobblestoned', 'volcanic'],
-    svgCitiesSlug: 'gd-st-george',
+    iconSlug: 'gd-st-george',
   },
   {
     slug: 'antigua-guatemala',
@@ -4162,7 +4186,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['colonial', 'volcanic', 'cobblestoned'],
-    svgCitiesSlug: 'gt-antigua',
+    iconSlug: 'gt-antigua',
   },
   {
     slug: 'georgetown',
@@ -4175,7 +4199,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['wooden', 'tropical', 'colonial'],
-    svgCitiesSlug: 'gy-georgetown',
+    iconSlug: 'gy-georgetown',
   },
   {
     slug: 'tegucigalpa',
@@ -4188,7 +4212,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['mountainous', 'chaotic', 'resilient'],
-    svgCitiesSlug: 'hn-tegucigalpa',
+    iconSlug: 'hn-tegucigalpa',
   },
   {
     slug: 'port-au-prince',
@@ -4201,7 +4225,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['vibrant', 'resilient', 'intense'],
-    svgCitiesSlug: 'ht-port-au-prince',
+    iconSlug: 'ht-port-au-prince',
   },
   {
     slug: 'soufriere',
@@ -4214,7 +4238,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['volcanic', 'lush', 'dramatic'],
-    svgCitiesSlug: 'lc-soufriere',
+    iconSlug: 'lc-soufriere',
   },
   {
     slug: 'granada-nicaragua',
@@ -4227,7 +4251,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['colonial', 'lakeside', 'colorful'],
-    svgCitiesSlug: 'ni-granada',
+    iconSlug: 'ni-granada',
   },
   {
     slug: 'panama-city',
@@ -4240,7 +4264,7 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['humid', 'cosmopolitan', 'gleaming'],
-    svgCitiesSlug: 'pa-panama',
+    iconSlug: 'pa-panama',
   },
   {
     slug: 'san-salvador',
@@ -4253,17 +4277,25 @@ const CITY_ENTITIES: readonly CityEntity[] = [
     aliases: [],
     wikidataId: null,
     vibes: ['vibrant', 'resilient', 'volcanic'],
-    svgCitiesSlug: 'sv-san-salvador',
+    iconSlug: 'sv-san-salvador',
   },
+]
+
+
+// --- Build the unified entity list from per-kind data sources ---
+
+const ENTITIES: readonly Entity[] = [
+  ...CITY_DATA.map((e): CityEntity => ({ ...e, kind: 'city' })),
+  ...AIRPORT_DATA.map((e): AirportEntity => ({ ...e, kind: 'airport' })),
 ]
 
 // --- Pre-computed lookup maps ---
 
-const entityBySlug = new Map<string, CityEntity>()
-const entityByDisplayName = new Map<string, CityEntity>()
-const entityByAlias = new Map<string, CityEntity>()
+const entityBySlug = new Map<string, Entity>()
+const entityByDisplayName = new Map<string, Entity>()
+const entityByAlias = new Map<string, Entity>()
 
-for (const entity of CITY_ENTITIES) {
+for (const entity of ENTITIES) {
   entityBySlug.set(entity.slug, entity)
   entityByDisplayName.set(normalize(entity.displayName), entity)
   for (const alias of entity.aliases) {
@@ -4273,8 +4305,14 @@ for (const entity of CITY_ENTITIES) {
 
 // --- Exports ---
 
-export function lookupEntity(input: string): CityEntity | null {
+export function lookupEntity(input: string): Entity | null {
   const lower = input.toLowerCase().trim()
+  // TZ abbreviations are owned by the resolver's TZ layer. Without this guard,
+  // an airport whose IATA matches a TZ code (currently only IST = Istanbul
+  // Airport vs. India Standard Time) would silently override the timezone
+  // interpretation. Returning null here lets the resolver fall through to its
+  // dedicated TZ-abbreviation layer.
+  if (TZ_ABBREVIATIONS[lower]) return null
   const byAlias = entityByAlias.get(lower)
   if (byAlias) return byAlias
   const byName = entityByDisplayName.get(normalize(input))
@@ -4282,18 +4320,38 @@ export function lookupEntity(input: string): CityEntity | null {
   return null
 }
 
-export function getEntityBySlug(slug: string): CityEntity | null {
+export function getEntityBySlug(slug: string): Entity | null {
   return entityBySlug.get(slug) ?? null
 }
 
-export function getAllEntities(): readonly CityEntity[] {
-  return CITY_ENTITIES
+export function getAllEntities(): readonly Entity[] {
+  return ENTITIES
 }
 
 export function getVibes(slug: string): string[] | null {
-  return entityBySlug.get(slug)?.vibes ?? null
+  const entity = entityBySlug.get(slug)
+  return entity?.kind === 'city' ? entity.vibes : null
 }
 
-export function getSvgCitiesSlug(entitySlug: string): string | null {
-  return entityBySlug.get(entitySlug)?.svgCitiesSlug ?? null
+export function getIconSlug(entitySlug: string): string | null {
+  const entity = entityBySlug.get(entitySlug)
+  return entity?.kind === 'city' ? entity.iconSlug : null
+}
+
+/**
+ * Display label for a TimezoneInfo / LocationRef referencing an entity.
+ * Cities render as the bare display name. Airports render as "IATA · Parent City"
+ * (e.g. "JFK · New York") so the result card carries geographic context for
+ * 3-letter airport codes. Falls back to `fallback` if the slug is missing or
+ * doesn't resolve.
+ */
+export function formatEntityLabel(entitySlug: string | undefined, fallback: string): string {
+  if (!entitySlug) return fallback
+  const entity = entityBySlug.get(entitySlug)
+  if (!entity) return fallback
+  if (entity.kind === 'airport' && entity.parentCitySlug) {
+    const parent = entityBySlug.get(entity.parentCitySlug)
+    if (parent) return `${entity.displayName} · ${parent.displayName}`
+  }
+  return entity.displayName
 }

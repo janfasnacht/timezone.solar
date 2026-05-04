@@ -1,6 +1,6 @@
 import type { ResolveResult } from './types'
 import { resolveLocation } from './resolver'
-import { lookupEntity } from './city-entities'
+import { lookupEntity } from './entities'
 import { US_STATE_TIMEZONES } from './aliases'
 import { resolveConfidence } from './confidence'
 
@@ -9,7 +9,7 @@ export interface ResolveResultWithConfidence {
   confidence: number
 }
 
-function isEntityCity(input: string): boolean {
+function isKnownEntity(input: string): boolean {
   return lookupEntity(input) !== null
 }
 
@@ -17,7 +17,7 @@ function shortInputGating(input: string, result: ResolveResult): boolean {
   if (input.length > 3) return true
   const method = result.primary.resolveMethod
   if (method === 'entity' || method === 'state' || method === 'abbreviation') return true
-  if (method === 'city-db' && isEntityCity(input)) return true
+  if (method === 'city-db' && isKnownEntity(input)) return true
   return false
 }
 
@@ -64,7 +64,7 @@ export function resolveWithConfidence(input: string): ResolveResultWithConfidenc
   if (!shortInputGating(input, result)) return null
 
   const filtered = filterDistinctAlternatives(result)
-  const isEntity = filtered.primary.resolveMethod === 'entity' || isEntityCity(input)
+  const isEntity = filtered.primary.resolveMethod === 'entity' || isKnownEntity(input)
   const conf = resolveConfidence(filtered.primary, filtered.alternatives, isEntity)
 
   return { result: filtered, confidence: conf }

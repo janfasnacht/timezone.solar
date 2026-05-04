@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { getVibes } from '@/engine/city-entities'
+import { getVibes } from '@/engine/entities'
 
 interface CityVibeProps {
   entitySlug?: string

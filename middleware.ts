@@ -1,5 +1,5 @@
 import { parseLandingPath } from './src/engine/landing-routes'
-import { getEntityBySlug } from './src/engine/city-entities'
+import { getEntityBySlug } from './src/engine/entities'
 
 const CRAWLERS = /Googlebot|Slackbot|Twitterbot|facebookexternalhit|LinkedInBot|WhatsApp|Discordbot|TelegramBot|Applebot/i
 

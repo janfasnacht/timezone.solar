@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Link, Download, Share2, Check } from 'lucide-react'
-import { getSvgCitiesSlug } from '@/engine/city-entities'
+import { getIconSlug, formatEntityLabel } from '@/engine/entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import { buildCanonicalUrl, buildOgImageUrl, formatCanonicalDisplay } from '@/lib/canonicalUrl'
 import type { ConversionResult } from '@/engine/types'
@@ -40,6 +40,9 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
 
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
   const { source, target, dayBoundary } = result
+
+  const sourceLabel = formatEntityLabel(source.entitySlug, source.city)
+  const targetLabel = formatEntityLabel(target.entitySlug, target.city)
 
   const copyTimeText = `${target[timeKey]} ${target.abbreviation}`
   const shareUrl = buildCanonicalUrl(result, query)
@@ -112,8 +115,8 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
     }
   }, [fetchOgImage, filename, shareUrl])
 
-  const sourceIconSlug = source.entitySlug ? getSvgCitiesSlug(source.entitySlug) : null
-  const targetIconSlug = target.entitySlug ? getSvgCitiesSlug(target.entitySlug) : null
+  const sourceIconSlug = source.entitySlug ? getIconSlug(source.entitySlug) : null
+  const targetIconSlug = target.entitySlug ? getIconSlug(target.entitySlug) : null
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface">
@@ -124,13 +127,13 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
         {/* Conversion summary — single compact row */}
         <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap">
           {sourceIconSlug && <CityIcon slug={sourceIconSlug} />}
-          <span className="font-mono text-[0.75rem] text-foreground">{source.city}</span>
+          <span className="font-mono text-[0.75rem] text-foreground">{sourceLabel}</span>
           <span className="font-mono text-[0.65rem] text-muted-foreground">{source[timeKey]}</span>
           <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 text-muted-foreground">
             <path d="M3 8h10M9 4l4 4-4 4" />
           </svg>
           {targetIconSlug && <CityIcon slug={targetIconSlug} />}
-          <span className="font-mono text-[0.75rem] text-foreground">{target.city}</span>
+          <span className="font-mono text-[0.75rem] text-foreground">{targetLabel}</span>
           <span className="font-mono text-[0.65rem] text-muted-foreground">{target[timeKey]}</span>
         </div>
 
