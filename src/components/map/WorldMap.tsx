@@ -1,7 +1,8 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from 'react'
-import { geoNaturalEarth1, geoPath, geoGraticule10 } from 'd3-geo'
+import { geoNaturalEarth1, geoPath, geoGraticule10, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import type { Topology, GeometryCollection } from 'topojson-specification'
+import type { Feature, LineString } from 'geojson'
 import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
@@ -170,26 +171,31 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     return { sourceProjected: src ?? null, targetProjected: tgt ?? null }
   }, [effectiveConversion, projectedCities])
 
-  // Curved arc between source and target
+  // Great-circle path between source and target. We oversample the geodesic
+  // explicitly because d3-geo's default adaptive resampling is too coarse at
+  // this scale (visibly polygonal). geoPath still handles antimeridian
+  // splitting during projection so transpacific routes don't wrap across.
   const arcData = useMemo(() => {
     if (!sourceProjected || !targetProjected) return null
-    const sx = sourceProjected.x
-    const sy = sourceProjected.y
-    const tx = targetProjected.x
-    const ty = targetProjected.y
-    const cpx = (sx + tx) / 2
-    const dist = Math.sqrt((tx - sx) ** 2 + (ty - sy) ** 2)
-    const bulge = Math.min(dist * 0.25, 60)
-    const cpy = (sy + ty) / 2 - bulge
-    // Actual midpoint on the quadratic bezier at t=0.5
-    const midX = 0.25 * sx + 0.5 * cpx + 0.25 * tx
-    const midY = 0.25 * sy + 0.5 * cpy + 0.25 * ty
-    return {
-      d: `M${sx},${sy} Q${cpx},${cpy} ${tx},${ty}`,
-      midX,
-      midY,
+    const a: [number, number] = [sourceProjected.city.lng, sourceProjected.city.lat]
+    const b: [number, number] = [targetProjected.city.lng, targetProjected.city.lat]
+    const interp = geoInterpolate(a, b)
+    const N = 128
+    const coordinates: [number, number][] = []
+    for (let i = 0; i <= N; i++) {
+      coordinates.push(interp(i / N) as [number, number])
     }
-  }, [sourceProjected, targetProjected])
+    const lineString: Feature<LineString> = {
+      type: 'Feature',
+      properties: {},
+      geometry: { type: 'LineString', coordinates },
+    }
+    const d = pathGenerator(lineString)
+    if (!d) return null
+    const midProjected = projection(interp(0.5))
+    if (!midProjected) return null
+    return { d, midX: midProjected[0], midY: midProjected[1] }
+  }, [sourceProjected, targetProjected, pathGenerator, projection])
 
   const svgRef = useRef<SVGSVGElement>(null)
   const [screenPos, setScreenPos] = useState<{ x: number; y: number } | null>(null)
@@ -449,22 +455,32 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           style={{ pointerEvents: 'none' }}
         />
 
-        {/* Connection arc */}
+        {/* Great-circle connection arc */}
         {arcData && (
           <>
             <path
               d={arcData.d}
               fill="none"
               stroke="var(--color-accent)"
+              strokeWidth={3.5}
+              strokeOpacity={arcOpacity * 0.3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d={arcData.d}
+              fill="none"
+              stroke="var(--color-accent)"
               strokeWidth={1.2}
               strokeOpacity={arcOpacity}
-              strokeDasharray="4 3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-            {/* Offset label — sits on the arc midpoint */}
+            {/* Offset label — sits on the geodesic midpoint */}
             {effectiveConversion && effectiveConversion.offsetDifference && (
               <text
                 x={arcData.midX}
-                y={arcData.midY - 4}
+                y={arcData.midY - 5}
                 textAnchor="middle"
                 fill="var(--color-accent)"
                 fontSize={8}
