@@ -90721,21 +90721,69 @@ function extractRelativeTime(input) {
 var FULL_DAYS = /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi;
 var SHORT_DAYS_NO_SUN = /\b(mon|tue|tues|wed|thu|thur|thurs|fri|sat)\b/gi;
 var PREFIX_DAY = /\b(next|this|last)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b/gi;
-function stripDayOfWeek(input) {
+var DAY_NAME_MAP = {
+  monday: "monday",
+  mon: "monday",
+  tuesday: "tuesday",
+  tue: "tuesday",
+  tues: "tuesday",
+  wednesday: "wednesday",
+  wed: "wednesday",
+  thursday: "thursday",
+  thu: "thursday",
+  thur: "thursday",
+  thurs: "thursday",
+  friday: "friday",
+  fri: "friday",
+  saturday: "saturday",
+  sat: "saturday",
+  sunday: "sunday",
+  sun: "sunday"
+};
+function extractDayOfWeek(input) {
   let cleaned = input;
-  cleaned = cleaned.replace(PREFIX_DAY, " ");
+  let dayOfWeek2 = null;
+  const prefixMatch = cleaned.match(PREFIX_DAY);
+  if (prefixMatch) {
+    const parts = prefixMatch[0].trim().toLowerCase().split(/\s+/);
+    const anchor = parts[0];
+    const day = DAY_NAME_MAP[parts[1]];
+    if (day) {
+      dayOfWeek2 = { type: "day-of-week", day, anchor };
+    }
+    cleaned = cleaned.replace(PREFIX_DAY, " ");
+  }
+  if (!dayOfWeek2) {
+    const fullMatch = cleaned.match(FULL_DAYS);
+    if (fullMatch) {
+      const day = DAY_NAME_MAP[fullMatch[0].toLowerCase()];
+      if (day) {
+        dayOfWeek2 = { type: "day-of-week", day, anchor: "bare" };
+      }
+    }
+  }
   cleaned = cleaned.replace(FULL_DAYS, " ");
+  if (!dayOfWeek2) {
+    const shortMatch = cleaned.match(SHORT_DAYS_NO_SUN);
+    if (shortMatch) {
+      const day = DAY_NAME_MAP[shortMatch[0].toLowerCase()];
+      if (day) {
+        dayOfWeek2 = { type: "day-of-week", day, anchor: "bare" };
+      }
+    }
+  }
   cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, " ");
-  return cleaned.replace(/\s+/g, " ").trim();
+  return { cleaned: cleaned.replace(/\s+/g, " ").trim(), dayOfWeek: dayOfWeek2 };
 }
 function preprocess(input) {
   let cleaned = input;
   cleaned = cleaned.replace(/\?+$/, "").trim();
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned);
   cleaned = afterRelative;
-  cleaned = stripDayOfWeek(cleaned);
+  const { cleaned: afterDayOfWeek, dayOfWeek: dayOfWeek2 } = extractDayOfWeek(cleaned);
+  cleaned = afterDayOfWeek;
   cleaned = cleaned.replace(/\bnow\b/gi, " ").replace(/\s+/g, " ").trim();
-  return { cleaned, relativeMinutes };
+  return { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2 };
 }
 function removeConnectorBeforeTime(tokens) {
   const result = [];
@@ -90915,7 +90963,7 @@ function greedyExtract(tokens) {
 function parse(input) {
   const raw = input.trim();
   if (!raw) return { parsed: null, matchType: "none", noiseCount: 0 };
-  const { cleaned, relativeMinutes } = preprocess(raw);
+  const { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2 } = preprocess(raw);
   if (!cleaned) return { parsed: null, matchType: "none", noiseCount: 0 };
   const allTokens = tokenize(cleaned);
   let dateModifier = null;
@@ -90926,6 +90974,9 @@ function parse(input) {
     }
     return true;
   });
+  if (!dateModifier && dayOfWeek2) {
+    dateModifier = dayOfWeek2;
+  }
   const noiseTokens = afterDateMod.filter((t) => t.type === "NOISE");
   const signalTokens = afterDateMod.filter((t) => t.type !== "NOISE");
   const noiseCount = noiseTokens.length;
@@ -103318,6 +103369,28 @@ function getDstNote(sourceDt, targetDt) {
   if (targetInDst) return "DST active in target location";
   return null;
 }
+var WEEKDAY_MAP = {
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+  sunday: 7
+};
+function dayOfWeekOffset(mod, currentWeekday) {
+  const target = WEEKDAY_MAP[mod.day];
+  const diff2 = target - currentWeekday;
+  switch (mod.anchor) {
+    case "next":
+    case "bare":
+      return diff2 <= 0 ? diff2 + 7 : diff2;
+    case "this":
+      return diff2;
+    case "last":
+      return diff2 >= 0 ? diff2 - 7 : diff2;
+  }
+}
 function convert(intent) {
   const { source, target, time, dateModifier } = intent;
   const now2 = DateTime.now();
@@ -103342,6 +103415,9 @@ function convert(intent) {
     } else if (dateModifier === "yesterday") {
       sourceDt = sourceDt.minus({ days: 1 });
     } else if (dateModifier === "today") {
+    } else if (typeof dateModifier === "object" && dateModifier?.type === "day-of-week") {
+      const offset2 = dayOfWeekOffset(dateModifier, sourceDt.weekday);
+      sourceDt = sourceDt.plus({ days: offset2 });
     } else {
       const nowInSource = now2.setZone(source.iana);
       if (sourceDt < nowInSource) {
@@ -103359,6 +103435,9 @@ function convert(intent) {
       sourceDt = sourceDt.plus({ days: 1 });
     } else if (dateModifier === "yesterday") {
       sourceDt = sourceDt.minus({ days: 1 });
+    } else if (typeof dateModifier === "object" && dateModifier?.type === "day-of-week") {
+      const offset2 = dayOfWeekOffset(dateModifier, sourceDt.weekday);
+      sourceDt = sourceDt.plus({ days: offset2 });
     }
   }
   const targetDt = sourceDt.setZone(target.iana);
