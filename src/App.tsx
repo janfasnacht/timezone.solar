@@ -108,12 +108,12 @@ function App() {
   const { placeholder, feelingWord, getCurrentExample, previewCities, advance: advanceExample } = useRotatingPlaceholder()
 
   const isLanding = !result && !error
-  // The header lifts as soon as there is something to show. Map counts as content
-  // in its own right: WorldMap uses preserveAspectRatio="slice", so a short
-  // container crops the world instead of shrinking it. Whenever a result exists
-  // both views are active, so toggling never moves the input — the only place the
-  // header travels is the empty landing state, where there is nothing to anchor.
-  const isActive = Boolean(result || error || currentInputValue.trim() || view === 'map')
+  // The header lifts once there is something to show — never merely because you
+  // typed. Map counts as content in its own right: WorldMap uses
+  // preserveAspectRatio="slice", so a short container crops the world rather than
+  // shrinking it. Whenever a result exists both views are active, so toggling
+  // never moves the input.
+  const isActive = Boolean(result || error || view === 'map')
 
   useEffect(() => {
     if (urlQuery) {
