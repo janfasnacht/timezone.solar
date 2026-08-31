@@ -13,9 +13,12 @@ interface ResultCardProps {
   isUsingCurrentTime: boolean
   matchType?: MatchType
   onSwap: () => void
+  /** Shared with the map view; shifts the displayed times when non-zero. */
+  offsetMinutes?: number
+  onResetOffset?: () => void
 }
 
-export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: ResultCardProps) {
+export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offsetMinutes = 0, onResetOffset }: ResultCardProps) {
   const { timeFormat } = usePreferences()
   const use24h = timeFormat === '24h'
   const sourceClock = useLiveClock(result.source.iana, use24h)
@@ -25,10 +28,22 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
   const sourceLabel = formatEntityLabel(source.entitySlug, source.city)
   const targetLabel = formatEntityLabel(target.entitySlug, target.city)
 
+  // When the shared time stepper is off zero, both times move with it.
+  const shifted = useMemo(() => {
+    if (offsetMinutes === 0) return null
+    const fmt = use24h ? 'HH:mm' : 'h:mm a'
+    // fromISO normalises to the local zone, so each side is put back in its own.
+    const src = DateTime.fromISO(result.sourceDateTime).setZone(source.iana).plus({ minutes: offsetMinutes })
+    const tgt = DateTime.fromISO(result.targetDateTime).setZone(target.iana).plus({ minutes: offsetMinutes })
+    if (!src.isValid || !tgt.isValid) return null
+    return { source: src.toFormat(fmt), target: tgt.toFormat(fmt), targetDate: tgt.toFormat('EEE, MMM d') }
+  }, [result.sourceDateTime, result.targetDateTime, source.iana, target.iana, offsetMinutes, use24h])
+
   const targetDate = useMemo(() => {
+    if (shifted) return shifted.targetDate
     const dt = DateTime.fromISO(result.targetDateTime)
     return dt.isValid ? dt.toFormat('EEE, MMM d') : null
-  }, [result.targetDateTime])
+  }, [result.targetDateTime, shifted])
 
   const dstWarning = useMemo(() => {
     const ref = DateTime.fromISO(result.sourceDateTime)
@@ -36,8 +51,8 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
     return getDstWarning(source.iana, target.iana, ref)
   }, [source.iana, target.iana, result.sourceDateTime])
 
-  const sourceHeroTime = isUsingCurrentTime ? sourceClock : source[timeKey]
-  const targetHeroTime = isUsingCurrentTime ? targetClock : target[timeKey]
+  const sourceHeroTime = shifted?.source ?? (isUsingCurrentTime ? sourceClock : source[timeKey])
+  const targetHeroTime = shifted?.target ?? (isUsingCurrentTime ? targetClock : target[timeKey])
 
   // Split time and period (AM/PM) for the target hero display
   const targetTimeParts = useMemo(() => {
@@ -120,6 +135,15 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
               <span className={normalChip}>
                 {targetDate}
               </span>
+            )}
+            {offsetMinutes !== 0 && (
+              <button
+                onClick={onResetOffset}
+                className={`${highlightChip} cursor-pointer transition-colors hover:border-accent`}
+                title="Reset to the original time"
+              >
+                {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h nudged ·  ↺
+              </button>
             )}
             {matchType && matchType !== 'exact' && matchType !== 'none' && (
               <span className={normalChip} title={`Parser match: ${matchType}`}>

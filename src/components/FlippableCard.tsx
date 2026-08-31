@@ -11,9 +11,11 @@ interface FlippableCardProps {
   onSwap: () => void
   query: string
   use24h: boolean
+  offsetMinutes?: number
+  onResetOffset?: () => void
 }
 
-export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h }: FlippableCardProps) {
+export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h, offsetMinutes, onResetOffset }: FlippableCardProps) {
   const [flipped, setFlipped] = useState(false)
   const [prevResult, setPrevResult] = useState(result)
 
@@ -40,6 +42,8 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
               isUsingCurrentTime={isUsingCurrentTime}
               matchType={matchType}
               onSwap={onSwap}
+              offsetMinutes={offsetMinutes}
+              onResetOffset={onResetOffset}
             />
           </div>
 

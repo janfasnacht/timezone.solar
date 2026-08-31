@@ -10,6 +10,7 @@ import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { ViewToggle } from '@/components/ViewToggle'
+import { TimeOffsetControl } from '@/components/TimeOffsetControl'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
 import { useUrlState } from '@/hooks/useUrlState'
@@ -18,6 +19,7 @@ import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useTimeOffset } from '@/hooks/useTimeOffset'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { buildCanonicalParams } from '@/lib/canonicalUrl'
 
@@ -58,6 +60,8 @@ function App() {
   // layer toggles and the time nudge survive a trip through the card view.
   const [mapMounted, setMapMounted] = useState(view === 'map')
   useEffect(() => { if (view === 'map') setMapMounted(true) }, [view])
+  const homeIana = homeCity?.iana ?? Intl.DateTimeFormat().resolvedOptions().timeZone
+  const offset = useTimeOffset(result, homeIana, timeFormat === '24h')
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -267,6 +271,7 @@ function App() {
                     homeCity={homeCity}
                     use24h={timeFormat === '24h'}
                     hasQuery={currentInputValue.trim().length > 0}
+                    offset={offset}
                     onCityClick={handleCityClick}
                     previewCities={previewCities}
                     isMobile={isMobile}
@@ -293,7 +298,13 @@ function App() {
                     onSwap={handleSwap}
                     query={currentInputValue}
                     use24h={timeFormat === '24h'}
+                    offsetMinutes={offset.offsetMinutes}
+                    onResetOffset={offset.reset}
                   />
+                  {/* Same stepper as the map's, so the control is reachable here too */}
+                  <div className="mt-4 flex justify-center">
+                    <TimeOffsetControl offset={offset} />
+                  </div>
                 </div>
               )}
             </m.div>

@@ -1,14 +1,9 @@
-import { useMemo, useState, useCallback, useRef, useEffect } from 'react'
-import {
-  ChevronLeft,
-  ChevronRight,
-  Layers,
-  RotateCcw,
-} from 'lucide-react'
+import { useMemo, useState, useRef, useEffect } from 'react'
+import { Layers } from 'lucide-react'
 import { DateTime } from 'luxon'
-import { useMinuteTick } from '@/hooks/useMinuteTick'
-import { parse } from '@/engine/parser'
+import { TimeOffsetControl } from '@/components/TimeOffsetControl'
 import { lookupEntity } from '@/engine/entities'
+import type { TimeOffset } from '@/hooks/useTimeOffset'
 import { WorldMap, type MapConversion, type CityDensity } from '@/components/map/WorldMap'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'
@@ -20,6 +15,8 @@ interface MapViewProps {
   use24h: boolean
   /** True while the shared QueryInput holds text — suppresses the idle preview arc. */
   hasQuery: boolean
+  /** Shared with the card view, so a nudge survives switching renderings. */
+  offset: TimeOffset
   onCityClick: (cityName: string) => void
   previewCities: PreviewCities
   isMobile?: boolean
@@ -30,19 +27,18 @@ export default function MapView({
   homeCity,
   use24h,
   hasQuery,
+  offset,
   onCityClick,
   previewCities,
   isMobile = false,
 }: MapViewProps) {
-  const liveTick = useMinuteTick()
+  const { offsetMinutes, displayTime } = offset
   const [showGrid, setShowGrid] = useState(true)
   const [showBorders, setShowBorders] = useState(false)
   const [showTimezones, setShowTimezones] = useState(false)
   const [cityDensity, setCityDensity] = useState<CityDensity>('main')
   const [layersOpen, setLayersOpen] = useState(false)
   const layersRef = useRef<HTMLDivElement>(null)
-  const [offsetMinutes, setOffsetMinutes] = useState(0)
-  const [timeInput, setTimeInput] = useState('')
 
   // Close layers panel on click outside
   useEffect(() => {
@@ -56,94 +52,7 @@ export default function MapView({
     return () => document.removeEventListener('mousedown', handleClick)
   }, [layersOpen])
 
-  // Reset offset when result changes
-  const [prevResult, setPrevResult] = useState(result)
-  if (result !== prevResult) {
-    setPrevResult(result)
-    setOffsetMinutes(0)
-    setTimeInput('')
-  }
-
-  const baseTime = useMemo(() => {
-    if (result) {
-      const dt = DateTime.fromISO(result.sourceDateTime)
-      if (dt.isValid) return dt.toJSDate()
-    }
-    return liveTick
-  }, [result, liveTick])
-
-  const displayTime = useMemo(() => {
-    if (offsetMinutes === 0) return baseTime
-    return new Date(baseTime.getTime() + offsetMinutes * 60_000)
-  }, [baseTime, offsetMinutes])
-
-  const nudge = useCallback(
-    (delta: number) => setOffsetMinutes((prev) => prev + delta),
-    []
-  )
-
-  const resetOffset = useCallback(() => {
-    setOffsetMinutes(0)
-    setTimeInput('')
-  }, [])
-
-  const isOffset = offsetMinutes !== 0
-
-  const homeIana = homeCity?.iana ?? Intl.DateTimeFormat().resolvedOptions().timeZone
   const homeCityName = homeCity?.city ?? null
-
-  const clockLabel = useMemo(() => {
-    const dt = DateTime.fromJSDate(displayTime).setZone(homeIana)
-    return dt.toFormat(use24h ? 'HH:mm' : 'h:mm a')
-  }, [displayTime, homeIana, use24h])
-
-  // Handle time input submission
-  const handleTimeSubmit = useCallback((value: string) => {
-    const trimmed = value.trim()
-    if (!trimmed) {
-      setOffsetMinutes(0)
-      setTimeInput('')
-      return
-    }
-
-    const { parsed } = parse(trimmed)
-    if (!parsed) return
-
-    const realNow = DateTime.now().setZone(homeIana)
-    let targetDt = realNow
-
-    if (parsed.time.type === 'absolute') {
-      targetDt = realNow.set({
-        hour: parsed.time.hour,
-        minute: parsed.time.minute,
-        second: 0,
-        millisecond: 0,
-      })
-    } else if (parsed.time.type === 'relative') {
-      targetDt = realNow.plus({ minutes: parsed.time.minutes })
-    }
-
-    if (parsed.dateModifier === 'tomorrow') {
-      targetDt = targetDt.plus({ days: 1 })
-    } else if (parsed.dateModifier === 'yesterday') {
-      targetDt = targetDt.minus({ days: 1 })
-    }
-
-    const diffMinutes = targetDt.diff(realNow, 'minutes').minutes
-    setOffsetMinutes(Math.round(diffMinutes))
-    setTimeInput(trimmed)
-  }, [homeIana])
-
-  const handleTimeKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleTimeSubmit(timeInput)
-      ;(e.target as HTMLInputElement).blur()
-    } else if (e.key === 'Escape') {
-      setTimeInput('')
-      setOffsetMinutes(0)
-      ;(e.target as HTMLInputElement).blur()
-    }
-  }, [timeInput, handleTimeSubmit])
 
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
 
@@ -161,8 +70,8 @@ export default function MapView({
     }
     // Recompute times with offset applied
     const fmt = use24h ? 'HH:mm' : 'h:mm a'
-    const srcDt = DateTime.fromISO(result.sourceDateTime).plus({ minutes: offsetMinutes })
-    const tgtDt = DateTime.fromISO(result.targetDateTime).plus({ minutes: offsetMinutes })
+    const srcDt = DateTime.fromISO(result.sourceDateTime).setZone(result.source.iana).plus({ minutes: offsetMinutes })
+    const tgtDt = DateTime.fromISO(result.targetDateTime).setZone(result.target.iana).plus({ minutes: offsetMinutes })
     return {
       sourceCity: result.source.city,
       targetCity: result.target.city,
@@ -270,38 +179,7 @@ export default function MapView({
           {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Time nudge */}
-          {isOffset && (
-            <button
-              onClick={resetOffset}
-              className="p-2 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
-              title="Reset to now"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-          )}
-          {isOffset && (
-            <span className="text-accent text-xs font-mono font-medium">
-              {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h
-            </span>
-          )}
-          <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
-            <button onClick={() => nudge(-60)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full" title="-1 hour">
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <input
-              type="text"
-              value={timeInput}
-              onChange={(e) => setTimeInput(e.target.value)}
-              onKeyDown={handleTimeKeyDown}
-              onBlur={() => { if (timeInput.trim() && timeInput !== clockLabel) handleTimeSubmit(timeInput) }}
-              placeholder={clockLabel}
-              className="w-[60px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
-            />
-            <button onClick={() => nudge(60)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full" title="+1 hour">
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          <TimeOffsetControl offset={offset} roomy />
         </div>
       ) : (
         <>
@@ -340,39 +218,8 @@ export default function MapView({
             </button>
           </div>
 
-          {/* Time nudge — bottom right (desktop) */}
-          <div className="absolute bottom-4 right-4 z-40 flex items-center gap-2">
-            {isOffset && (
-              <button
-                onClick={resetOffset}
-                className="p-1 text-accent hover:text-accent-foreground transition-colors rounded-full hover:bg-accent/10"
-                title="Reset to now"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
-            )}
-            {isOffset && (
-              <span className="text-accent text-xs font-mono font-medium">
-                {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h
-              </span>
-            )}
-            <div className={`${pillBase} bg-surface/60 h-10 flex items-center gap-0.5 px-1.5 ${isOffset ? 'border-accent/40' : ''}`}>
-              <button onClick={() => nudge(-60)} className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover" title="-1 hour">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <input
-                type="text"
-                value={timeInput}
-                onChange={(e) => setTimeInput(e.target.value)}
-                onKeyDown={handleTimeKeyDown}
-                onBlur={() => { if (timeInput.trim() && timeInput !== clockLabel) handleTimeSubmit(timeInput) }}
-                placeholder={clockLabel}
-                className="w-[70px] bg-transparent text-center font-mono text-sm text-foreground leading-tight outline-none placeholder:text-foreground"
-              />
-              <button onClick={() => nudge(60)} className="p-1 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-surface-hover" title="+1 hour">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+          <div className="absolute right-4 bottom-4 z-40">
+            <TimeOffsetControl offset={offset} />
           </div>
         </>
       )}
