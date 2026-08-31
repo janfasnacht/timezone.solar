@@ -1,4 +1,3 @@
-import { m, useReducedMotion } from 'motion/react'
 import { CardIcon, MapIcon } from '@/components/ViewIcons'
 import type { ViewMode } from '@/hooks/useUrlState'
 
@@ -18,8 +17,6 @@ const OPTIONS: { value: ViewMode; label: string; Icon: typeof CardIcon }[] = [
  * same result, so this is a parallel choice rather than a navigation step.
  */
 export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
-  const reduceMotion = useReducedMotion()
-
   return (
     <div
       role="group"
@@ -34,21 +31,12 @@ export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
             type="button"
             aria-pressed={active}
             onClick={() => onChange(value)}
-            className={`relative flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.75rem] font-medium transition-colors ${
-              active ? 'text-foreground' : 'text-muted-foreground/70 hover:text-foreground'
+            className={`flex w-[74px] cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-[0.75rem] font-medium transition-colors duration-200 ${
+              active ? 'bg-muted text-foreground' : 'text-muted-foreground/70 hover:text-foreground'
             }`}
           >
-            {active && (
-              <m.span
-                layoutId="view-toggle-indicator"
-                className="absolute inset-0 rounded-full bg-muted"
-                transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 420, damping: 34 }}
-              />
-            )}
-            <span className="relative flex items-center gap-1.5">
-              <Icon size={14} strokeWidth={active ? 1.6 : 1.2} />
-              {label}
-            </span>
+            <Icon size={14} strokeWidth={active ? 1.6 : 1.2} />
+            {label}
           </button>
         )
       })}

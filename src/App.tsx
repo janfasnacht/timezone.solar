@@ -157,6 +157,16 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result])
 
+  // Logo returns to a clean landing state, not merely a cleared query.
+  const handleGoHome = useCallback(() => {
+    handleClear()
+    setView('card')
+    if (window.location.pathname !== '/') {
+      history.pushState(null, '', '/')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
+  }, [handleClear, setView])
+
   const handleSubmit = useCallback((query: string) => {
     debouncedRef.current.cancel()
     setIsDebouncing(false)
@@ -234,10 +244,9 @@ function App() {
     ? { duration: 0 }
     : { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }
 
-  // Landing sits low and airy; the first keystroke lifts the header out of the way.
-  const headerPadTop = isActive
-    ? (isMobile ? '1.5vh' : '4vh')
-    : (isMobile ? '5vh' : '25vh')
+  // Card content starts below the chrome. Compact chrome is a single row; the
+  // landing stack only ever coexists with an empty card layer, so one value does.
+  const chromeHeight = isMobile ? '5.5rem' : '6rem'
 
   return (
     <LazyMotion features={loadMotionFeatures} strict>
@@ -268,107 +277,103 @@ function App() {
         ) : showMobileSettings ? (
           <MobileSettings />
         ) : (
-          <div className="page-glow relative flex h-full flex-col items-center bg-background">
-            {/* Shared header — one position rule for both views */}
-            <div
-              className="flex w-full max-w-[520px] flex-shrink-0 flex-col items-center px-4 transition-[padding-top] duration-[350ms] ease-out motion-reduce:transition-none md:px-[2rem]"
-              style={{ paddingTop: headerPadTop }}
-            >
-              {/* Logo */}
-              <div
-                className="mb-2 flex-shrink-0 transition-transform duration-[350ms] ease-out motion-reduce:transition-none md:mb-6"
-                style={{ transform: isActive ? 'scale(0.85)' : undefined }}
+          <div className="page-glow relative h-full w-full overflow-hidden bg-background">
+            {/* z-0 — map runs full bleed, continuing underneath the chrome */}
+            {mapMounted && (
+              <m.div
+                className="absolute inset-0 z-0"
+                initial={false}
+                animate={view === 'map' ? layerVisible : layerHidden}
+                transition={layerTransition}
+                style={{ pointerEvents: view === 'map' ? 'auto' : 'none' }}
+                inert={view !== 'map'}
               >
-                <SunDialLogo onClick={handleClear} />
-              </div>
+                <Suspense fallback={<div className="h-full w-full" />}>
+                  <MapView
+                    result={result}
+                    homeCity={homeCity}
+                    use24h={timeFormat === '24h'}
+                    hasQuery={currentInputValue.trim().length > 0}
+                    onCityClick={handleCityClick}
+                    previewCities={previewCities}
+                    isMobile={isMobile}
+                  />
+                </Suspense>
+              </m.div>
+            )}
 
-              {/* Search bar — the single input, identical in both views */}
-              <QueryInput
-                ref={inputRef}
-                className="w-full flex-shrink-0"
-                onSubmit={handleSubmit}
-                onClear={handleClear}
-                onValueChange={handleValueChange}
-                onRemoveQuery={removeQuery}
-                initialValue={inputValue}
-                placeholder={placeholder}
-                recentQueries={recentQueries}
-                isProcessing={isDebouncing}
-              />
-
-              {/* The parallel choice, right under the input. On mobile the bottom
-                  tab bar already fills this role, so it stays desktop-only. */}
-              {!isMobile && (
-                <div className="mt-3 flex-shrink-0">
-                  <ViewToggle view={view} onChange={setView} />
-                </div>
-              )}
-
-              {/* Error — belongs to the query, so it renders the same in both views */}
-              {error && (
-                <div className="mt-4 w-full flex-shrink-0">
-                  <ErrorDisplay error={error} onClear={handleClear} />
-                </div>
-              )}
-
-              {/* Landing prompt — card view only; the map's preview arc plays this role there */}
-              {isLanding && view === 'card' && (
-                <div className="mt-4 flex-shrink-0">
-                  <CityVibe
-                    fallbackFeelingWord={feelingWord}
-                    onClick={handleFeelingClick}
+            {/* z-10 — card, cleared of the chrome by a matching top pad */}
+            <m.div
+              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-6 md:px-[2rem]"
+              initial={false}
+              animate={view === 'card' ? layerVisible : layerHidden}
+              transition={layerTransition}
+              style={{ pointerEvents: view === 'card' ? 'auto' : 'none', paddingTop: chromeHeight }}
+              inert={view !== 'card'}
+            >
+              {result && (
+                <div className="mx-auto w-full max-w-[520px]">
+                  <FlippableCard
+                    result={result}
+                    isUsingCurrentTime={isUsingCurrentTime}
+                    matchType={matchType}
+                    onSwap={handleSwap}
+                    query={currentInputValue}
+                    use24h={timeFormat === '24h'}
                   />
                 </div>
               )}
-            </div>
+            </m.div>
 
-            {/* Result region — full width so the map is not boxed into the column.
-                Both layers stay mounted and crossfade, so neither loses its state. */}
-            <div className="relative w-full min-h-0 flex-1">
-              <m.div
-                className="absolute inset-0 overflow-y-auto px-4 pb-4 md:px-[2rem]"
-                initial={false}
-                animate={view === 'card' ? layerVisible : layerHidden}
-                transition={layerTransition}
-                style={{ pointerEvents: view === 'card' ? 'auto' : 'none' }}
-                inert={view !== 'card'}
-              >
-                {result && (
-                  <div className="mx-auto w-full max-w-[520px] pt-4 md:pt-8">
-                    <FlippableCard
-                      result={result}
-                      isUsingCurrentTime={isUsingCurrentTime}
-                      matchType={matchType}
-                      onSwap={handleSwap}
-                      query={currentInputValue}
-                      use24h={timeFormat === '24h'}
+            {/* z-20 — chrome. Scrim only once the map is behind it. */}
+            <div
+              className={`pointer-events-none absolute inset-x-0 top-0 z-20 transition-[padding-top] duration-[350ms] ease-out motion-reduce:transition-none ${
+                view === 'map' ? 'bg-gradient-to-b from-background via-background/85 to-transparent pb-10' : ''
+              }`}
+              style={{ paddingTop: isActive ? (isMobile ? '0.75rem' : '1.25rem') : (isMobile ? '5vh' : '22vh') }}
+            >
+              <div className="pointer-events-auto mx-auto flex w-full max-w-[820px] flex-wrap items-center justify-center gap-x-3 gap-y-2 px-4 md:px-[2rem]">
+                <m.div layout="position" transition={layerTransition} className={isActive ? 'order-1' : 'order-1 flex basis-full justify-center'}>
+                  <SunDialLogo onClick={handleGoHome} compact={isActive} />
+                </m.div>
+
+                {/* Width is identical in both states — only the position moves, so
+                    nothing inside the input is ever scaled. */}
+                <div className={isActive ? 'order-2 min-w-0 max-w-[520px] flex-1' : 'order-2 w-full max-w-[520px]'}>
+                  <QueryInput
+                    ref={inputRef}
+                    onSubmit={handleSubmit}
+                    onClear={handleClear}
+                    onValueChange={handleValueChange}
+                    onRemoveQuery={removeQuery}
+                    initialValue={inputValue}
+                    placeholder={placeholder}
+                    recentQueries={recentQueries}
+                    isProcessing={isDebouncing}
+                  />
+                </div>
+
+                {!isMobile && (
+                  <m.div layout="position" transition={layerTransition} className={isActive ? 'order-3' : 'order-3 basis-full flex justify-center'}>
+                    <ViewToggle view={view} onChange={setView} />
+                  </m.div>
+                )}
+
+                {error && (
+                  <div className="order-4 mx-auto w-full max-w-[520px] basis-full">
+                    <ErrorDisplay error={error} onClear={handleClear} />
+                  </div>
+                )}
+
+                {isLanding && view === 'card' && (
+                  <div className="order-5 flex basis-full justify-center">
+                    <CityVibe
+                      fallbackFeelingWord={feelingWord}
+                      onClick={handleFeelingClick}
                     />
                   </div>
                 )}
-              </m.div>
-
-              {mapMounted && (
-                <m.div
-                  className="absolute inset-0"
-                  initial={false}
-                  animate={view === 'map' ? layerVisible : layerHidden}
-                  transition={layerTransition}
-                  style={{ pointerEvents: view === 'map' ? 'auto' : 'none' }}
-                  inert={view !== 'map'}
-                >
-                  <Suspense fallback={<div className="h-full w-full" />}>
-                    <MapView
-                      result={result}
-                      homeCity={homeCity}
-                      use24h={timeFormat === '24h'}
-                      hasQuery={currentInputValue.trim().length > 0}
-                      onCityClick={handleCityClick}
-                      previewCities={previewCities}
-                      isMobile={isMobile}
-                    />
-                  </Suspense>
-                </m.div>
-              )}
+              </div>
             </div>
           </div>
         )}
