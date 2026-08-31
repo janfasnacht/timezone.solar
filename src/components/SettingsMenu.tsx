@@ -1,18 +1,7 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { usePreferences } from '@/hooks/usePreferences'
 import { searchCities } from '@/engine/resolver'
 import type { ThemePreference, TimeFormat } from '@/lib/preferences'
-
-interface SidebarProps {
-  open: boolean
-  onToggle: () => void
-  onClose: () => void
-  isMobile: boolean
-}
-
-const RAIL_WIDTH = 44
-const PANEL_WIDTH = 260
-const EXPANDED_WIDTH = RAIL_WIDTH + PANEL_WIDTH
 
 function SegmentedControl<T extends string>({
   options,
@@ -76,9 +65,8 @@ function GearIcon() {
   )
 }
 
-export { RAIL_WIDTH, EXPANDED_WIDTH }
 
-function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
+function SettingsPanel({ onClose }: { onClose: () => void }) {
   const { theme, timeFormat, homeCity, setTheme, setTimeFormat, setHomeCity } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
@@ -127,7 +115,7 @@ function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?:
   }
 
   return (
-    <div className="flex h-full flex-col" style={{ width: isMobile ? '100%' : PANEL_WIDTH }}>
+    <div className="flex max-h-[70vh] w-[280px] flex-col">
       {/* Main settings */}
       <div className="flex-1 overflow-y-auto px-5 pt-5 pb-4">
         <div className="space-y-5">
@@ -214,9 +202,8 @@ function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?:
           {/* Divider */}
           <div className="border-t border-border" />
 
-          {/* Keyboard shortcuts — hide on mobile where they're irrelevant */}
-          {!isMobile && (
-            <div>
+          {/* Keyboard shortcuts */}
+          <div>
               <p className="mb-3 text-[0.7rem] font-medium tracking-wide text-muted-foreground/40 uppercase">Shortcuts</p>
               <div className="space-y-2.5 text-[0.75rem]">
                 <div className="flex items-center justify-between">
@@ -244,8 +231,7 @@ function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?:
                   <Kbd>&uarr; &darr;</Kbd>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
 
@@ -263,100 +249,53 @@ function SidebarContent({ onClose, isMobile }: { onClose: () => void; isMobile?:
   )
 }
 
-export function Sidebar({ open, onToggle, onClose, isMobile }: SidebarProps) {
-  const touchStart = useRef({ x: 0, y: 0 })
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-  }, [])
+interface SettingsMenuProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    const dx = e.changedTouches[0].clientX - touchStart.current.x
-    const dy = e.changedTouches[0].clientY - touchStart.current.y
-    if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      onClose()
+/**
+ * Replaces the old desktop sidebar. Styled from the same tokens as the map's
+ * layers control so every floating control on the page speaks one language.
+ */
+export function SettingsMenu({ open, onOpenChange }: SettingsMenuProps) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onOpenChange(false)
     }
-  }, [onClose])
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onOpenChange(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+    }
+  }, [open, onOpenChange])
 
-  if (isMobile) {
-    return (
-      <>
-        {/* Floating gear button */}
-        <button
-          onClick={onToggle}
-          className="fixed top-3 left-3 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl bg-background/80 text-muted-foreground/50 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-        >
-          <GearIcon />
-        </button>
-
-        {/* Backdrop */}
-        <div
-          className={`fixed inset-0 z-40 bg-black/20 transition-opacity duration-200 ${
-            open ? 'opacity-100' : 'pointer-events-none opacity-0'
-          }`}
-          onClick={onClose}
-        />
-
-        {/* Overlay panel */}
-        <div
-          className={`fixed top-0 left-0 z-40 flex h-full w-[85vw] max-w-[300px] flex-col border-r border-border bg-background transition-transform duration-200 ease-out ${
-            open ? 'translate-x-0' : '-translate-x-full'
-          }`}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Header: close */}
-          <div className="flex flex-shrink-0 items-center justify-end px-4 pt-4">
-            <button
-              onClick={onClose}
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted hover:text-foreground"
-              aria-label="Close menu"
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" />
-              </svg>
-            </button>
-          </div>
-          <div className="min-h-0 flex-1">
-            <SidebarContent onClose={onClose} isMobile />
-          </div>
-        </div>
-      </>
-    )
-  }
-
-  // Desktop: rail + expanding panel
   return (
-    <div
-      className="fixed top-0 left-0 z-40 flex h-full"
-      style={{ width: open ? EXPANDED_WIDTH : RAIL_WIDTH }}
-    >
-      {/* Collapsed rail */}
-      <div
-        className="flex h-full flex-shrink-0 flex-col items-center justify-end border-r border-border bg-background py-4"
-        style={{ width: RAIL_WIDTH }}
+    <div ref={ref} className="relative">
+      {open && (
+        <div className="absolute top-12 right-0 overflow-hidden rounded-xl border border-border bg-surface/95 backdrop-blur-sm">
+          <SettingsPanel onClose={() => onOpenChange(false)} />
+        </div>
+      )}
+      <button
+        onClick={() => onOpenChange(!open)}
+        className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-sm transition-colors hover:text-foreground ${
+          open ? 'border-accent/40 text-accent' : 'text-muted-foreground'
+        }`}
+        aria-label={open ? 'Close settings' : 'Open settings'}
+        aria-expanded={open}
+        title="Settings"
       >
-        {/* Settings gear at bottom */}
-        <button
-          onClick={onToggle}
-          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-muted hover:text-foreground ${
-            open ? 'text-foreground' : 'text-muted-foreground/50'
-          }`}
-          aria-label={open ? 'Collapse settings' : 'Expand settings'}
-          title="Settings"
-        >
-          <GearIcon />
-        </button>
-      </div>
-
-      {/* Expanded panel */}
-      <div
-        className="h-full overflow-hidden border-r border-border bg-background transition-[width] duration-200 ease-out"
-        style={{ width: open ? PANEL_WIDTH : 0 }}
-      >
-        <SidebarContent onClose={onClose} />
-      </div>
+        <GearIcon />
+      </button>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { QueryInput } from '@/components/QueryInput'
 import { FlippableCard } from '@/components/FlippableCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
-import { Sidebar, RAIL_WIDTH, EXPANDED_WIDTH } from '@/components/Sidebar'
+import { SettingsMenu } from '@/components/SettingsMenu'
 import { MobileTabBar, type MobileTab } from '@/components/MobileTabBar'
 import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
@@ -46,12 +46,11 @@ function App() {
   const { timeFormat, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
   const shouldCanonicalizeRef = useRef(false)
-  const touchStart = useRef({ x: 0, y: 0 })
   const isMobile = useMediaQuery('(max-width: 767px)')
   const [mobileSettings, setMobileSettings] = useState(false)
   const reduceMotion = useReducedMotion()
@@ -78,7 +77,7 @@ function App() {
   }, [clear, replaceUrlQuery])
 
   const showExamples = useCallback(() => {
-    setSidebarOpen(false)
+    setSettingsOpen(false)
     handleClear()
     inputRef.current?.focus()
   }, [handleClear])
@@ -101,7 +100,7 @@ function App() {
     }
   }, [setView])
 
-  useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
+  useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
   const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   const isLanding = !result && !error
@@ -170,7 +169,7 @@ function App() {
   const handleSubmit = useCallback((query: string) => {
     debouncedRef.current.cancel()
     setIsDebouncing(false)
-    setSidebarOpen(false)
+    setSettingsOpen(false)
     setUrlQuery(query)
     setInputValue(query)
     setCurrentInputValue(query)
@@ -220,22 +219,6 @@ function App() {
     handleSubmit(cityName)
   }, [handleSubmit])
 
-  // Swipe gestures
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-  }, [])
-
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    const dx = e.changedTouches[0].clientX - touchStart.current.x
-    const dy = e.changedTouches[0].clientY - touchStart.current.y
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      if (dx > 0 && !sidebarOpen) setSidebarOpen(true)
-      if (dx < 0 && sidebarOpen) setSidebarOpen(false)
-    }
-  }, [sidebarOpen])
-
-  const mainOffset = isMobile ? 0 : sidebarOpen ? EXPANDED_WIDTH : RAIL_WIDTH
-
   // The view is the single source of truth; settings is the one screen that sits beside it.
   const mobileTab: MobileTab = mobileSettings ? 'settings' : view
   const showMobileSettings = isMobile && mobileSettings
@@ -250,26 +233,9 @@ function App() {
 
   return (
     <LazyMotion features={loadMotionFeatures} strict>
-    <div
-      className="h-dvh flex flex-col overflow-hidden"
-      onTouchStart={!isMobile ? handleTouchStart : undefined}
-      onTouchEnd={!isMobile ? handleTouchEnd : undefined}
-    >
-      {/* Desktop: sidebar (hidden on mobile — tabs replace it) */}
-      {!isMobile && (
-        <Sidebar
-          open={sidebarOpen}
-          onToggle={() => setSidebarOpen(!sidebarOpen)}
-          onClose={() => setSidebarOpen(false)}
-          isMobile={false}
-        />
-      )}
-
+    <div className="h-dvh flex flex-col overflow-hidden">
       {/* Main content */}
-      <div
-        className="flex-1 min-h-0 transition-[margin-left] duration-200 ease-out"
-        style={{ marginLeft: mainOffset }}
-      >
+      <div className="flex-1 min-h-0">
         {path === '/about' ? (
           <div className="h-full overflow-y-auto bg-background">
             <AboutPage onRunQuery={handleSubmit} />
@@ -278,6 +244,13 @@ function App() {
           <MobileSettings />
         ) : (
           <div className="page-glow relative h-full w-full overflow-hidden bg-background">
+            {/* Settings — same pill language as the map's layers control */}
+            {!isMobile && (
+              <div className="absolute top-4 right-4 z-30">
+                <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
+              </div>
+            )}
+
             {/* z-0 — map runs full bleed, continuing underneath the chrome */}
             {mapMounted && (
               <m.div
