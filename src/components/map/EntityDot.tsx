@@ -8,6 +8,10 @@ interface EntityDotProps {
   y: number
   role: EntityRole
   minor?: boolean
+  /** True when this entity is hovered — including via its label or hover card. */
+  hovered?: boolean
+  /** Transparent catchment radius; never overlaps a neighbour's half-distance. */
+  hitRadius?: number
   onHover: (entity: Entity | null) => void
   onClick: (entity: Entity) => void
 }
@@ -24,45 +28,66 @@ export function EntityDot({
   y,
   role,
   minor = false,
+  hovered = false,
+  hitRadius = 6,
   onHover,
   onClick,
 }: EntityDotProps) {
   const isActive = role !== 'none'
-  const opacity = isActive ? 1 : minor ? 0.25 : 0.5
+  const opacity = isActive || hovered ? 1 : minor ? 0.25 : 0.5
 
   const handlers = {
-    className: 'cursor-pointer transition-all duration-150 hover:opacity-100',
+    className: 'cursor-pointer transition-all duration-150',
     onMouseEnter: () => onHover(entity),
     onMouseLeave: () => onHover(null),
     onClick: () => onClick(entity),
   }
 
+  // Transparent catchment, drawn first so the visible mark sits on top of it.
+  const hitArea = (
+    <circle
+      cx={x}
+      cy={y}
+      r={hitRadius}
+      fill="transparent"
+      {...handlers}
+    />
+  )
+
   if (entity.kind === 'airport') {
     // Lucide Plane silhouette, filled (no stroke), centered on (x, y).
     // Filled solid so the marker reads at the same optical weight as the
     // city dots without an outline ringing the shape.
-    const size = isActive ? 14 : minor ? 9 : 11
+    const base = isActive ? 14 : minor ? 9 : 11
+    const size = hovered ? base * 1.45 : base
     const scale = size / 24
     return (
-      <g
-        {...handlers}
-        opacity={opacity}
-        transform={`translate(${x} ${y}) scale(${scale}) translate(-12 -12)`}
-      >
-        <path d={PLANE_PATH} fill="var(--color-accent)" />
-      </g>
+      <>
+        {hitArea}
+        <g
+          {...handlers}
+          opacity={opacity}
+          transform={`translate(${x} ${y}) scale(${scale}) translate(-12 -12)`}
+        >
+          <path d={PLANE_PATH} fill="var(--color-accent)" />
+        </g>
+      </>
     )
   }
 
-  const r = isActive ? 4.5 : minor ? 1 : 2.5
+  const base = isActive ? 4.5 : minor ? 1 : 2.5
+  const r = hovered ? base * 1.8 : base
   return (
-    <circle
-      cx={x}
-      cy={y}
-      r={r}
-      fill="var(--color-accent)"
-      opacity={opacity}
-      {...handlers}
-    />
+    <>
+      {hitArea}
+      <circle
+        cx={x}
+        cy={y}
+        r={r}
+        fill="var(--color-accent)"
+        opacity={opacity}
+        {...handlers}
+      />
+    </>
   )
 }
