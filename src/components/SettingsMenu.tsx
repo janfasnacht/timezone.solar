@@ -158,6 +158,7 @@ function SettingsPanel({ onClose, fullWidth = false }: { onClose: () => void; fu
           <SettingRow label="Time format">
             <SegmentedControl<TimeFormat>
               options={[
+                { label: 'System', value: 'system' },
                 { label: '12h', value: '12h' },
                 { label: '24h', value: '24h' },
               ]}

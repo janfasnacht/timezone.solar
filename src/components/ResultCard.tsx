@@ -19,8 +19,7 @@ interface ResultCardProps {
 }
 
 export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offsetMinutes = 0, onResetOffset }: ResultCardProps) {
-  const { timeFormat } = usePreferences()
-  const use24h = timeFormat === '24h'
+  const { use24h } = usePreferences()
   const sourceClock = useLiveClock(result.source.iana, use24h)
   const targetClock = useLiveClock(result.target.iana, use24h)
   const { source, target, offsetDifference, dayBoundary, dstNote } = result

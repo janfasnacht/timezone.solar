@@ -45,7 +45,7 @@ function App() {
   const { result, error, isUsingCurrentTime, matchType, runConversion, runCanonicalConversion, swapConversion, clear } = useConversion()
   const { queries: recentQueries, addQuery, removeQuery } = useRecentQueries()
   const { query: urlQuery, canonicalQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery, replaceWithCanonical, view, setView } = useUrlState()
-  const { timeFormat, homeCity } = usePreferences()
+  const { use24h, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -62,7 +62,7 @@ function App() {
   const [mapMounted, setMapMounted] = useState(view === 'map')
   useEffect(() => { if (view === 'map') setMapMounted(true) }, [view])
   const homeIana = homeCity?.iana ?? Intl.DateTimeFormat().resolvedOptions().timeZone
-  const offset = useTimeOffset(result, homeIana, timeFormat === '24h', isUsingCurrentTime)
+  const offset = useTimeOffset(result, homeIana, use24h, isUsingCurrentTime)
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -186,7 +186,7 @@ function App() {
     if (!result) return
     const targetCity = result.target.city
     const sourceCity = result.source.city
-    const timeKey = timeFormat === '24h' ? 'formattedTime24' : 'formattedTime12'
+    const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
     const targetTime = result.target[timeKey].toLowerCase().replace(/\s/g, '')
     const display = `${targetCity} ${targetTime} in ${sourceCity}`
     setInputValue(display)
@@ -194,7 +194,7 @@ function App() {
     shouldCanonicalizeRef.current = true
     swapConversion()
     // URL update is handled by the result effect above
-  }, [result, timeFormat, swapConversion])
+  }, [result, use24h, swapConversion])
 
   const handleValueChange = useCallback((value: string) => {
     setCurrentInputValue(value)
@@ -280,7 +280,7 @@ function App() {
                   <MapView
                     result={result}
                     homeCity={homeCity}
-                    use24h={timeFormat === '24h'}
+                    use24h={use24h}
                     offset={offset}
                     onCityClick={handleCityClick}
                     isMobile={isMobile}
@@ -326,7 +326,7 @@ function App() {
                   <ShareView
                     result={result}
                     query={currentInputValue}
-                    use24h={timeFormat === '24h'}
+                    use24h={use24h}
                   />
                 </div>
               )}
