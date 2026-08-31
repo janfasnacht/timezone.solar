@@ -102,12 +102,15 @@ function App() {
   }, [setView])
 
   useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
-  const { placeholder, feelingWord, getCurrentExample, advance: advanceExample } = useRotatingPlaceholder()
 
   const hasResult = Boolean(result)
   // Landing is a screen in its own right, not the card view rendered empty. It
   // holds while there is nothing to show and the map has not been opened.
   const isLandingScreen = !result && !error && view !== 'map'
+  // Examples cycle only while the landing screen is idle — not once you are
+  // typing, and never in a view where a suggestion would be noise.
+  const { placeholder, feelingWord, getCurrentExample, advance: advanceExample } =
+    useRotatingPlaceholder(isLandingScreen && !inputFocused && !currentInputValue)
   // The header lifts once there is something to show — never merely because you
   // typed. Map counts as content in its own right: WorldMap uses
   // preserveAspectRatio="slice", so a short container crops the world rather than
@@ -229,13 +232,9 @@ function App() {
     ? { duration: 0 }
     : { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }
 
-  // The chrome's top pad is the alignment authority: on desktop the settings
-  // pill is nudged down by half the difference between the input (~54px) and
-  // the pill (40px) so their centres line up with the search bar.
   const chromePadTop = isActive
     ? (isMobile ? '0.75rem' : '1.25rem')
     : (isMobile ? '5vh' : '22vh')
-  const settingsTop = isActive ? `calc(${chromePadTop} + 7px)` : '1rem'
 
   // Card content starts below the chrome. Compact chrome is a single row; the
   // landing stack only ever coexists with an empty card layer, so one value does.
@@ -256,7 +255,7 @@ function App() {
                 the right on desktop; part of the row on mobile, where there is no
                 spare width to overlay it. */}
             {!isMobile && (
-              <div className="absolute right-4 z-30" style={{ top: settingsTop }}>
+              <div className="absolute top-4 right-4 z-30">
                 <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
               </div>
             )}
@@ -332,13 +331,14 @@ function App() {
               )}
             </m.div>
 
-            {/* Time control — one fixed home, identical in card and map */}
-            {result && view === 'card' && (
+            {/* Time control — belongs to the result, not to any one rendering of
+                it, so it sits outside the fading layers and never animates. */}
+            {result && (
               <div
-                className="absolute right-4 z-20"
+                className="absolute right-4 z-40"
                 style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 5.25rem)' : '1rem' }}
               >
-                <TimeOffsetControl offset={offset} />
+                <TimeOffsetControl offset={offset} roomy={isMobile} />
               </div>
             )}
 
@@ -371,7 +371,7 @@ function App() {
                     onValueChange={handleValueChange}
                     onRemoveQuery={removeQuery}
                     initialValue={inputValue}
-                    placeholder={placeholder}
+                    placeholder={isLandingScreen ? placeholder : undefined}
                     recentQueries={recentQueries}
                     isProcessing={isDebouncing}
                     onFocusChange={setInputFocused}

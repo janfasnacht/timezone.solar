@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { getAllEntities, type AirportEntity, type CityEntity } from '@/engine/entities'
 
 // Time format templates — mix of 12h and 24h, various times
@@ -129,16 +129,24 @@ interface RotatingPlaceholder {
   advance: () => void
 }
 
-export function useRotatingPlaceholder(): RotatingPlaceholder {
+/**
+ * @param rotating whether examples should cycle. Only true on the landing
+ * screen: elsewhere a rotating placeholder is a suggestion nobody asked for,
+ * and it used to churn the map's preview along with it.
+ */
+export function useRotatingPlaceholder(rotating: boolean): RotatingPlaceholder {
   const [pool] = useState(generateExamples)
   const [index, setIndex] = useState(0)
 
-  // Deliberately not on a timer: a self-rotating placeholder churns the input,
-  // the vibe line and the map's preview arc every few seconds. The example only
-  // moves on when one is actually used.
   const advance = useCallback(() => {
     setIndex((i) => (i + 1) % pool.length)
   }, [pool])
+
+  useEffect(() => {
+    if (!rotating) return
+    const id = setInterval(advance, 6000)
+    return () => clearInterval(id)
+  }, [rotating, advance])
 
   // Pick a random vibe from the current target city's vibes
   const feelingWord = useMemo(() => {

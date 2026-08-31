@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
-import { TimeOffsetControl } from '@/components/TimeOffsetControl'
 import { MapLayersControl, type MapLayers } from '@/components/map/MapLayersControl'
 import type { TimeOffset } from '@/hooks/useTimeOffset'
 import { WorldMap, type MapConversion } from '@/components/map/WorldMap'
@@ -11,7 +10,7 @@ interface MapViewProps {
   result: ConversionResult | null
   homeCity: HomeCity | null
   use24h: boolean
-  /** Shared with the card view, so a nudge survives switching renderings. */
+  /** Read-only here: the control itself lives in App so it never fades. */
   offset: TimeOffset
   onCityClick: (cityName: string) => void
   isMobile?: boolean
@@ -82,18 +81,11 @@ export default function MapView({
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 4.75rem)' }}
         >
           <MapLayersControl layers={layers} onChange={updateLayers} roomy />
-          {/* Spacer */}
-          <div className="flex-1" />
-
-          <TimeOffsetControl offset={offset} roomy />
         </div>
       ) : (
         <>
           <div className="absolute bottom-4 left-4 z-40">
             <MapLayersControl layers={layers} onChange={updateLayers} />
-          </div>
-          <div className="absolute right-4 bottom-4 z-40">
-            <TimeOffsetControl offset={offset} />
           </div>
         </>
       )}

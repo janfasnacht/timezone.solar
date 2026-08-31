@@ -22,7 +22,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
   const { use24h } = usePreferences()
   const sourceClock = useLiveClock(result.source.iana, use24h)
   const targetClock = useLiveClock(result.target.iana, use24h)
-  const { source, target, offsetDifference, dayBoundary, dstNote } = result
+  const { source, target, offsetDifference, dayBoundary } = result
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
   const sourceLabel = formatEntityLabel(source.entitySlug, source.city)
   const targetLabel = formatEntityLabel(target.entitySlug, target.city)
@@ -159,11 +159,9 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
           )}
         </div>
 
-        {/* DST Note */}
-        {dstNote && (
-          <p className="mt-3 text-xs text-muted-foreground">{dstNote}</p>
-        )}
-
+        {/* No DST note: the abbreviation already carries it — EDT vs EST, BST
+            vs GMT. Only an upcoming transition is worth spelling out, which is
+            what dstWarning below does. */}
         {/* DST Warning */}
         {dstWarning && (
           <p className="mt-2 text-xs text-muted-foreground">{dstWarning}</p>

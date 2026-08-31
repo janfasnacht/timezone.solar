@@ -18,6 +18,21 @@ import { useTimezoneData } from '@/hooks/useTimezoneData'
 const WIDTH = 960
 const HEIGHT = 500
 
+/**
+ * The map runs full bleed *under* the chrome, so the top ~115px of it is always
+ * covered while the bottom is free. Centring the projection in the viewBox
+ * therefore centres it in the wrong box: the land ends up sitting high with dead
+ * space below. Nudging the projection down balances it in the region the reader
+ * can actually see, and spends the unused bottom margin instead of the covered
+ * top one.
+ *
+ * In viewBox units, the correction is (chromeHeight / 2) / scale, and with
+ * preserveAspectRatio="slice" the scale is containerHeight / HEIGHT. That works
+ * out to roughly 32 units at 900px tall and 38 at 760 — near enough to a
+ * constant that it isn't worth reprojecting on every resize.
+ */
+const CHROME_BALANCE = 34
+
 export interface MapConversion {
   sourceCity: string
   targetCity: string
@@ -63,7 +78,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const projection = useMemo(
     () =>
       geoNaturalEarth1()
-        .translate([WIDTH / 2, HEIGHT / 2])
+        .translate([WIDTH / 2, HEIGHT / 2 + CHROME_BALANCE])
         .scale(153),
     []
   )
