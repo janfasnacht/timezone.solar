@@ -48,6 +48,29 @@ function SettingRow({ label, children, inline }: { label: string; children: Reac
   )
 }
 
+function Disclosure({ label, children }: { label: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full cursor-pointer items-center justify-between py-1 text-[0.8rem] text-muted-foreground transition-colors hover:text-foreground"
+        aria-expanded={open}
+      >
+        {label}
+        <svg
+          width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+          className={`transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
+        >
+          <path d="M6 3l5 5-5 5" />
+        </svg>
+      </button>
+      {open && <div className="pt-2 pb-1">{children}</div>}
+    </div>
+  )
+}
+
 function Kbd({ children }: { children: React.ReactNode }) {
   return (
     <kbd className="inline-flex min-w-[1.5rem] items-center justify-center rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
@@ -66,7 +89,7 @@ function GearIcon() {
 }
 
 
-function SettingsPanel({ onClose }: { onClose: () => void }) {
+function SettingsPanel({ onClose, fullWidth = false }: { onClose: () => void; fullWidth?: boolean }) {
   const { theme, timeFormat, homeCity, setTheme, setTimeFormat, setHomeCity } = usePreferences()
 
   const [cityInput, setCityInput] = useState(homeCity?.city ?? '')
@@ -115,9 +138,8 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="flex max-h-[70vh] w-[280px] flex-col">
-      {/* Main settings */}
-      <div className="flex-1 overflow-y-auto px-5 pt-5 pb-4">
+    <div className={`flex flex-col ${fullWidth ? 'w-full' : 'w-[280px]'}`}>
+      <div className="px-5 pt-5 pb-4">
         <div className="space-y-5">
           {/* Theme */}
           <SettingRow label="Theme">
@@ -202,9 +224,8 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
           {/* Divider */}
           <div className="border-t border-border" />
 
-          {/* Keyboard shortcuts */}
-          <div>
-              <p className="mb-3 text-[0.7rem] font-medium tracking-wide text-muted-foreground/40 uppercase">Shortcuts</p>
+          {/* Shortcuts — collapsed by default so the panel fits without scrolling */}
+          <Disclosure label="Shortcuts">
               <div className="space-y-2.5 text-[0.75rem]">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Submit</span>
@@ -231,19 +252,18 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
                   <Kbd>&uarr; &darr;</Kbd>
                 </div>
               </div>
-          </div>
-        </div>
-      </div>
+          </Disclosure>
 
-      {/* Footer */}
-      <div className="space-y-4 border-t border-border px-5 py-4">
-        <a
-          href="/about"
-          onClick={handleAboutClick}
-          className="block text-[0.75rem] text-muted-foreground/50 transition-colors hover:text-foreground"
-        >
-          About & usage
-        </a>
+          <Disclosure label="About & usage">
+            <a
+              href="/about"
+              onClick={handleAboutClick}
+              className="block text-[0.75rem] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              How timezone.solar reads your query &rarr;
+            </a>
+          </Disclosure>
+        </div>
       </div>
     </div>
   )
@@ -253,13 +273,15 @@ function SettingsPanel({ onClose }: { onClose: () => void }) {
 interface SettingsMenuProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Mobile presents the same panel as a bottom sheet rather than a popover. */
+  asSheet?: boolean
 }
 
 /**
  * Replaces the old desktop sidebar. Styled from the same tokens as the map's
  * layers control so every floating control on the page speaks one language.
  */
-export function SettingsMenu({ open, onOpenChange }: SettingsMenuProps) {
+export function SettingsMenu({ open, onOpenChange, asSheet = false }: SettingsMenuProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -280,11 +302,18 @@ export function SettingsMenu({ open, onOpenChange }: SettingsMenuProps) {
 
   return (
     <div ref={ref} className="relative">
-      {open && (
-        <div className="absolute top-12 right-0 overflow-hidden rounded-xl border border-border bg-surface/95 backdrop-blur-sm">
+      {open && (asSheet ? (
+        <div
+          className="fixed inset-x-3 z-50 overflow-hidden rounded-2xl border border-border bg-surface/95 shadow-lg backdrop-blur-md"
+          style={{ bottom: 'calc(env(safe-area-inset-bottom) + 5.25rem)' }}
+        >
+          <SettingsPanel onClose={() => onOpenChange(false)} fullWidth />
+        </div>
+      ) : (
+        <div className="absolute top-12 right-0 overflow-hidden rounded-xl border border-border bg-surface/95 shadow-lg backdrop-blur-sm">
           <SettingsPanel onClose={() => onOpenChange(false)} />
         </div>
-      )}
+      ))}
       <button
         onClick={() => onOpenChange(!open)}
         className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-sm transition-colors hover:text-foreground ${

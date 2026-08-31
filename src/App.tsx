@@ -7,7 +7,6 @@ import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { SettingsMenu } from '@/components/SettingsMenu'
 import { MobileTabBar } from '@/components/MobileTabBar'
-import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { ViewToggle } from '@/components/ViewToggle'
@@ -55,7 +54,6 @@ function App() {
   const liveQueryRef = useRef('')
   const shouldCanonicalizeRef = useRef(false)
   const isMobile = useMediaQuery('(max-width: 767px)')
-  const [mobileSettings, setMobileSettings] = useState(false)
   const [inputFocused, setInputFocused] = useState(false)
   const [vibeHovered, setVibeHovered] = useState(false)
   const reduceMotion = useReducedMotion()
@@ -94,7 +92,7 @@ function App() {
   }, [view, setView])
 
   const handleMobileTabChange = useCallback((tab: ViewMode) => {
-    setMobileSettings(false)
+    setSettingsOpen(false)
     setView(tab)
     // Navigate away from /about when switching tabs
     if (window.location.pathname === '/about') {
@@ -223,7 +221,6 @@ function App() {
     handleSubmit(cityName)
   }, [handleSubmit])
 
-  const showMobileSettings = isMobile && mobileSettings
 
   const layerTransition = reduceMotion
     ? { duration: 0 }
@@ -250,8 +247,6 @@ function App() {
           <div className="h-full overflow-y-auto bg-background">
             <AboutPage onRunQuery={handleSubmit} />
           </div>
-        ) : showMobileSettings ? (
-          <MobileSettings />
         ) : (
           <div className="page-glow relative h-full w-full overflow-hidden bg-background">
             {/* Settings — same pill language as the map's layers control. Pinned to
@@ -380,7 +375,7 @@ function App() {
                   </m.div>
                 ) : (
                   <div className="order-3 flex-shrink-0">
-                    <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
+                    <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} asSheet />
                   </div>
                 )}
 
