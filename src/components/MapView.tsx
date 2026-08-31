@@ -1,10 +1,10 @@
-import { useMemo, useState, useRef, useEffect } from 'react'
-import { Layers } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
 import { TimeOffsetControl } from '@/components/TimeOffsetControl'
+import { MapLayersControl, type MapLayers } from '@/components/map/MapLayersControl'
 import { lookupEntity } from '@/engine/entities'
 import type { TimeOffset } from '@/hooks/useTimeOffset'
-import { WorldMap, type MapConversion, type CityDensity } from '@/components/map/WorldMap'
+import { WorldMap, type MapConversion } from '@/components/map/WorldMap'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'
 import type { PreviewCities } from '@/hooks/useRotatingPlaceholder'
@@ -33,24 +33,13 @@ export default function MapView({
   isMobile = false,
 }: MapViewProps) {
   const { offsetMinutes, displayTime } = offset
-  const [showGrid, setShowGrid] = useState(true)
-  const [showBorders, setShowBorders] = useState(false)
-  const [showTimezones, setShowTimezones] = useState(false)
-  const [cityDensity, setCityDensity] = useState<CityDensity>('main')
-  const [layersOpen, setLayersOpen] = useState(false)
-  const layersRef = useRef<HTMLDivElement>(null)
-
-  // Close layers panel on click outside
-  useEffect(() => {
-    if (!layersOpen) return
-    const handleClick = (e: MouseEvent) => {
-      if (layersRef.current && !layersRef.current.contains(e.target as Node)) {
-        setLayersOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [layersOpen])
+  const [layers, setLayers] = useState<MapLayers>({
+    showGrid: true,
+    showBorders: false,
+    showTimezones: false,
+    cityDensity: 'main',
+  })
+  const updateLayers = (next: Partial<MapLayers>) => setLayers((prev) => ({ ...prev, ...next }))
 
   const homeCityName = homeCity?.city ?? null
 
@@ -122,8 +111,6 @@ export default function MapView({
     }
   }, [result, hasQuery, previewCities, use24h, homeCityName])
 
-  const pillBase = 'backdrop-blur-sm border border-border rounded-full'
-
   return (
     <div className="h-full w-full relative">
       <WorldMap
@@ -132,50 +119,16 @@ export default function MapView({
         homeCity={homeCity}
         conversion={conversion ?? previewConversion}
         onCityClick={onCityClick}
-        showTimezones={showTimezones}
-        showBorders={showBorders}
-        showGrid={showGrid}
-        cityDensity={cityDensity}
+        showTimezones={layers.showTimezones}
+        showBorders={layers.showBorders}
+        showGrid={layers.showGrid}
+        cityDensity={layers.cityDensity}
       />
 
       {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
       {isMobile ? (
         <div className="absolute bottom-0 left-0 right-0 z-40 flex items-center gap-2 px-3 pb-2 pt-5 bg-gradient-to-t from-background/60 to-transparent">
-          {/* Layers button */}
-          <div ref={layersRef} className="relative">
-            {layersOpen && (
-              <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2.5 text-sm`}>
-                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((v) => !v)} className="accent-accent h-4 w-4" />
-                  Grid
-                </label>
-                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showBorders} onChange={() => setShowBorders((v) => !v)} className="accent-accent h-4 w-4" />
-                  Borders
-                </label>
-                <label className="flex items-center gap-2.5 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showTimezones} onChange={() => setShowTimezones((v) => !v)} className="accent-accent h-4 w-4" />
-                  Timezones
-                </label>
-                <div className="border-t border-border my-0.5" />
-                <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
-                {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
-                  <label key={level} className="flex items-center gap-2.5 cursor-pointer text-foreground">
-                    <input type="radio" name="cityDensity" checked={cityDensity === level} onChange={() => setCityDensity(level)} className="accent-accent h-4 w-4" />
-                    {label}
-                  </label>
-                ))}
-              </div>
-            )}
-            <button
-              onClick={() => setLayersOpen((v) => !v)}
-              className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
-              title="Map layers"
-            >
-              <Layers className="w-4 h-4" />
-            </button>
-          </div>
-
+          <MapLayersControl layers={layers} onChange={updateLayers} roomy />
           {/* Spacer */}
           <div className="flex-1" />
 
@@ -183,41 +136,9 @@ export default function MapView({
         </div>
       ) : (
         <>
-          {/* Layers panel — bottom left (desktop) */}
-          <div ref={layersRef} className="absolute bottom-4 left-4 z-40">
-            {layersOpen && (
-              <div className={`absolute bottom-12 left-0 ${pillBase} bg-surface/90 rounded-xl p-3 min-w-[160px] flex flex-col gap-2 text-sm`}>
-                <label className="flex items-center gap-2 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((v) => !v)} className="accent-accent" />
-                  Grid
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showBorders} onChange={() => setShowBorders((v) => !v)} className="accent-accent" />
-                  Borders
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-foreground">
-                  <input type="checkbox" checked={showTimezones} onChange={() => setShowTimezones((v) => !v)} className="accent-accent" />
-                  Timezones
-                </label>
-                <div className="border-t border-border my-0.5" />
-                <div className="text-muted-foreground text-xs font-medium mb-0.5">Cities</div>
-                {([['none', 'None'], ['main', 'Curated'], ['all', 'All']] as const).map(([level, label]) => (
-                  <label key={level} className="flex items-center gap-2 cursor-pointer text-foreground">
-                    <input type="radio" name="cityDensity" checked={cityDensity === level} onChange={() => setCityDensity(level)} className="accent-accent" />
-                    {label}
-                  </label>
-                ))}
-              </div>
-            )}
-            <button
-              onClick={() => setLayersOpen((v) => !v)}
-              className={`${pillBase} bg-surface/60 h-10 w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ${layersOpen ? 'border-accent/40 text-accent' : ''}`}
-              title="Map layers"
-            >
-              <Layers className="w-4 h-4" />
-            </button>
+          <div className="absolute bottom-4 left-4 z-40">
+            <MapLayersControl layers={layers} onChange={updateLayers} />
           </div>
-
           <div className="absolute right-4 bottom-4 z-40">
             <TimeOffsetControl offset={offset} />
           </div>
