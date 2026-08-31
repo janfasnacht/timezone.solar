@@ -105,7 +105,7 @@ function App() {
   }, [setView])
 
   useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
-  const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
+  const { placeholder, feelingWord, getCurrentExample, previewCities, advance: advanceExample } = useRotatingPlaceholder()
 
   const isLanding = !result && !error
   // The header lifts as soon as there is something to show. Map counts as content
@@ -217,7 +217,8 @@ function App() {
     setInputValue(example)
     setCurrentInputValue(example)
     handleSubmit(example)
-  }, [getCurrentExample, handleSubmit])
+    advanceExample()
+  }, [getCurrentExample, handleSubmit, advanceExample])
 
   const handleCityClick = useCallback((cityName: string) => {
     handleSubmit(cityName)
