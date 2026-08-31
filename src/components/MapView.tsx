@@ -1,10 +1,9 @@
-import { useMemo, useState, useCallback, useRef, useEffect, type RefObject } from 'react'
+import { useMemo, useState, useCallback, useRef, useEffect } from 'react'
 import {
   ChevronLeft,
   ChevronRight,
   Layers,
   RotateCcw,
-  X,
 } from 'lucide-react'
 import { DateTime } from 'luxon'
 import { useMinuteTick } from '@/hooks/useMinuteTick'
@@ -19,16 +18,10 @@ interface MapViewProps {
   result: ConversionResult | null
   homeCity: HomeCity | null
   use24h: boolean
-  query: string
-  onQueryChange: (value: string) => void
-  onSubmit: (query: string) => void
-  onClear: () => void
+  /** True while the shared QueryInput holds text — suppresses the idle preview arc. */
+  hasQuery: boolean
   onCityClick: (cityName: string) => void
-  onGoHome: () => void
-  placeholder: string
   previewCities: PreviewCities
-  isProcessing?: boolean
-  queryInputRef?: RefObject<HTMLInputElement | null>
   isMobile?: boolean
 }
 
@@ -36,16 +29,9 @@ export default function MapView({
   result,
   homeCity,
   use24h,
-  query,
-  onQueryChange,
-  onSubmit,
-  onClear,
+  hasQuery,
   onCityClick,
-  onGoHome,
-  placeholder,
   previewCities,
-  isProcessing = false,
-  queryInputRef: externalRef,
   isMobile = false,
 }: MapViewProps) {
   const liveTick = useMinuteTick()
@@ -57,8 +43,6 @@ export default function MapView({
   const layersRef = useRef<HTMLDivElement>(null)
   const [offsetMinutes, setOffsetMinutes] = useState(0)
   const [timeInput, setTimeInput] = useState('')
-  const internalRef = useRef<HTMLInputElement>(null)
-  const inputRef = externalRef ?? internalRef
 
   // Close layers panel on click outside
   useEffect(() => {
@@ -161,14 +145,6 @@ export default function MapView({
     }
   }, [timeInput, handleTimeSubmit])
 
-  const handleQueryKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && query.trim()) {
-      onSubmit(query.trim())
-    } else if (e.key === 'Escape') {
-      onClear()
-    }
-  }, [query, onSubmit, onClear])
-
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
 
   // Real conversion → map data (times adjust with nudge offset)
@@ -198,7 +174,7 @@ export default function MapView({
 
   // Preview: compute times from IANA timezones, use homeCity as implicit source
   const previewConversion: MapConversion | null = useMemo(() => {
-    if (result || query.trim()) return null
+    if (result || hasQuery) return null
     if (!previewCities.target) return null
 
     const targetEntity = lookupEntity(previewCities.target)
@@ -235,7 +211,7 @@ export default function MapView({
       offsetDifference: offset,
       isPreview: true,
     }
-  }, [result, query, previewCities, use24h, homeCityName])
+  }, [result, hasQuery, previewCities, use24h, homeCityName])
 
   const pillBase = 'backdrop-blur-sm border border-border rounded-full'
 
@@ -252,50 +228,6 @@ export default function MapView({
         showGrid={showGrid}
         cityDensity={cityDensity}
       />
-
-      {/* Top nav */}
-      <nav className={`absolute z-40 flex items-center gap-2 ${isMobile ? 'top-0 left-0 right-0 px-3 pt-4 pb-3 bg-gradient-to-b from-background/60 to-transparent' : 'top-3 left-3 right-3'}`}>
-        {/* Logo — hidden on mobile (tab bar handles navigation) */}
-        {!isMobile && (
-          <button
-            onClick={onGoHome}
-            className="flex items-center gap-2 px-1 h-10 text-foreground/70 hover:text-foreground transition-colors flex-shrink-0"
-          >
-            <div className="h-4 w-4 rounded-full bg-accent flex-shrink-0" />
-            <span className="hidden sm:inline font-serif text-sm">
-              <span className="not-italic font-semibold">timezone</span><span className="italic font-light text-muted-foreground">.solar</span>
-            </span>
-          </button>
-        )}
-
-        {/* Spacer — desktop only */}
-        {!isMobile && <div className="flex-1" />}
-
-        {/* Query input — full width on mobile */}
-        <div className={`${pillBase} bg-surface/60 h-10 flex items-center px-3 sm:px-4 gap-2 ${isMobile ? 'flex-1' : 'w-[300px] max-w-[40vw]'}`}>
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-            onKeyDown={handleQueryKeyDown}
-            placeholder={placeholder}
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground min-w-0"
-          />
-          {isProcessing && query.trim() && (
-            <span className="h-2 w-2 rounded-full bg-accent animate-pulse flex-shrink-0" />
-          )}
-          {query.trim() && (
-            <button
-              onClick={onClear}
-              className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1"
-              title="Clear"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-      </nav>
 
       {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
       {isMobile ? (

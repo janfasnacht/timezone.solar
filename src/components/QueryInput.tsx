@@ -4,6 +4,7 @@ import { RecentSearches } from '@/components/RecentSearches'
 
 interface QueryInputProps {
   ref?: React.Ref<HTMLInputElement>
+  className?: string
   onSubmit: (query: string) => void
   onClear: () => void
   onFocusChange?: (focused: boolean) => void
@@ -17,6 +18,7 @@ interface QueryInputProps {
 
 export function QueryInput({
   ref,
+  className,
   onSubmit,
   onClear,
   onFocusChange,
@@ -146,7 +148,7 @@ export function QueryInput({
   const showPlaceholder = !value && !isFocused && placeholder
 
   return (
-    <div className="relative">
+    <div className={`relative${className ? ` ${className}` : ''}`}>
       <input
         ref={ref ?? fallbackRef}
         type="text"

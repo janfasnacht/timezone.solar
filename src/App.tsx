@@ -100,6 +100,9 @@ function App() {
   const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   const isLanding = !result && !error
+  // Header position is driven by query activity alone — never by the view — so
+  // switching card <-> map leaves the input exactly where it is.
+  const isActive = Boolean(result || error || currentInputValue.trim())
 
   useEffect(() => {
     if (urlQuery) {
@@ -199,17 +202,6 @@ function App() {
     handleSubmit(cityName)
   }, [handleSubmit])
 
-  const handleGoHome = useCallback(() => {
-    setViewMode('card')
-    handleClear()
-  }, [handleClear])
-
-  // Map mode query change handler
-  const handleMapQueryChange = useCallback((value: string) => {
-    setCurrentInputValue(value)
-    handleValueChange(value)
-  }, [handleValueChange])
-
   // Swipe gestures
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
@@ -228,6 +220,11 @@ function App() {
 
   // On mobile, determine which screen to show based on tab
   const mobileScreen = isMobile ? mobileTab : null
+
+  // Landing sits low and airy; the first keystroke lifts the header out of the way.
+  const headerPadTop = isActive
+    ? (isMobile ? '1.5vh' : '4vh')
+    : (isMobile ? '5vh' : '25vh')
 
   return (
     <div
@@ -258,55 +255,44 @@ function App() {
           </div>
         ) : mobileScreen === 'settings' ? (
           <MobileSettings />
-        ) : viewMode === 'map' ? (
-          <div className="h-full bg-background">
-            <Suspense fallback={<div className="h-full bg-background" />}>
-              <MapView
-                result={result}
-                homeCity={homeCity}
-                use24h={timeFormat === '24h'}
-                query={currentInputValue}
-                onQueryChange={handleMapQueryChange}
-                onSubmit={handleSubmit}
-                onClear={handleClear}
-                onCityClick={handleCityClick}
-                onGoHome={handleGoHome}
-                placeholder={placeholder}
-                previewCities={previewCities}
-                isProcessing={isDebouncing}
-                queryInputRef={inputRef}
-                isMobile={isMobile}
-              />
-            </Suspense>
-          </div>
         ) : (
-          <div className="h-full bg-background">
-            <div className="page-glow relative mx-auto flex h-full max-w-[520px] flex-col items-center px-4 md:px-[2rem]">
-              {/* Spacer — compact on mobile to keep results above fold */}
-              <div className="h-[5vh] md:h-[25vh] flex-shrink-0" />
-
+          <div className="page-glow relative flex h-full flex-col items-center bg-background">
+            {/* Shared header — one position rule for both views */}
+            <div
+              className="flex w-full max-w-[520px] flex-shrink-0 flex-col items-center px-4 transition-[padding-top] duration-[350ms] ease-out md:px-[2rem]"
+              style={{ paddingTop: headerPadTop }}
+            >
               {/* Logo */}
-              <div className="mb-2 md:mb-6 flex-shrink-0">
+              <div
+                className="mb-2 flex-shrink-0 transition-transform duration-[350ms] ease-out md:mb-6"
+                style={{ transform: isActive ? 'scale(0.85)' : undefined }}
+              >
                 <SunDialLogo onClick={handleClear} />
               </div>
 
-              {/* Search bar */}
-              <div className="w-full flex-shrink-0">
-                <QueryInput
-                  ref={inputRef}
-                  onSubmit={handleSubmit}
-                  onClear={handleClear}
-                  onValueChange={handleValueChange}
-                  onRemoveQuery={removeQuery}
-                  initialValue={inputValue}
-                  placeholder={placeholder}
-                  recentQueries={recentQueries}
-                  isProcessing={isDebouncing}
-                />
-              </div>
+              {/* Search bar — the single input, identical in both views */}
+              <QueryInput
+                ref={inputRef}
+                className="w-full flex-shrink-0"
+                onSubmit={handleSubmit}
+                onClear={handleClear}
+                onValueChange={handleValueChange}
+                onRemoveQuery={removeQuery}
+                initialValue={inputValue}
+                placeholder={placeholder}
+                recentQueries={recentQueries}
+                isProcessing={isDebouncing}
+              />
 
-              {/* Landing */}
-              {isLanding && (
+              {/* Error — belongs to the query, so it renders the same in both views */}
+              {error && (
+                <div className="mt-4 w-full flex-shrink-0">
+                  <ErrorDisplay error={error} onClear={handleClear} />
+                </div>
+              )}
+
+              {/* Landing prompt — card view only; the map's preview arc plays this role there */}
+              {isLanding && viewMode === 'card' && (
                 <div className="mt-4 flex-shrink-0">
                   <CityVibe
                     fallbackFeelingWord={feelingWord}
@@ -314,31 +300,40 @@ function App() {
                   />
                 </div>
               )}
+            </div>
 
-              {/* Error */}
-              {error && (
-                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-4">
-                  <ErrorDisplay error={error} onClear={handleClear} />
-                </div>
-              )}
-
-              {/* Result card */}
-              {result && (
-                <div className="mt-4 md:mt-8 w-full flex-1 min-h-0 overflow-y-auto pb-4">
-                  <FlippableCard
+            {/* Result region — full width so the map is not boxed into the column */}
+            <div className="relative w-full min-h-0 flex-1">
+              {viewMode === 'map' ? (
+                <Suspense fallback={<div className="h-full w-full" />}>
+                  <MapView
                     result={result}
-                    isUsingCurrentTime={isUsingCurrentTime}
-                    matchType={matchType}
-                    onSwap={handleSwap}
-                    query={currentInputValue}
+                    homeCity={homeCity}
                     use24h={timeFormat === '24h'}
-                    onViewOnMap={() => {
-                      setViewMode('map')
-                      if (isMobile) setMobileTab('map')
-                    }}
+                    hasQuery={currentInputValue.trim().length > 0}
+                    onCityClick={handleCityClick}
+                    previewCities={previewCities}
+                    isMobile={isMobile}
                   />
+                </Suspense>
+              ) : result ? (
+                <div className="h-full overflow-y-auto px-4 pb-4 md:px-[2rem]">
+                  <div className="mx-auto w-full max-w-[520px] pt-4 md:pt-8">
+                    <FlippableCard
+                      result={result}
+                      isUsingCurrentTime={isUsingCurrentTime}
+                      matchType={matchType}
+                      onSwap={handleSwap}
+                      query={currentInputValue}
+                      use24h={timeFormat === '24h'}
+                      onViewOnMap={() => {
+                        setViewMode('map')
+                        if (isMobile) setMobileTab('map')
+                      }}
+                    />
+                  </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         )}
