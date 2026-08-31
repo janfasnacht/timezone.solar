@@ -22,7 +22,7 @@ export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
     <div
       role="group"
       aria-label="Result view"
-      className={`inline-flex items-center rounded-full border border-border bg-surface/60 p-0.5 backdrop-blur-sm${className ? ` ${className}` : ''}`}
+      className={`inline-flex h-10 items-center rounded-full border border-border bg-surface/60 p-1 backdrop-blur-sm${className ? ` ${className}` : ''}`}
     >
       {OPTIONS.map(({ value, label, Icon }) => {
         const active = view === value
@@ -32,7 +32,7 @@ export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
             type="button"
             aria-pressed={active}
             onClick={() => onChange(value)}
-            className={`flex w-[74px] cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-[0.75rem] font-medium transition-colors duration-200 ${
+            className={`flex h-8 w-[76px] cursor-pointer items-center justify-center gap-1.5 rounded-full text-[0.8rem] font-medium transition-colors duration-200 ${
               active ? 'bg-muted text-foreground' : 'text-muted-foreground/70 hover:text-foreground'
             }`}
           >

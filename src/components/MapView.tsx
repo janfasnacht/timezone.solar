@@ -77,7 +77,10 @@ export default function MapView({
 
       {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
       {isMobile ? (
-        <div className="absolute bottom-0 left-0 right-0 z-40 flex items-center gap-2 px-3 pb-2 pt-5 bg-gradient-to-t from-background/60 to-transparent">
+        <div
+          className="absolute right-0 bottom-0 left-0 z-40 flex items-center gap-2 bg-gradient-to-t from-background/60 to-transparent px-3 pt-5"
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 4.75rem)' }}
+        >
           <MapLayersControl layers={layers} onChange={updateLayers} roomy />
           {/* Spacer */}
           <div className="flex-1" />

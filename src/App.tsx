@@ -6,7 +6,7 @@ import { ShareView } from '@/components/ShareView'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { SettingsMenu } from '@/components/SettingsMenu'
-import { MobileTabBar, type MobileTab } from '@/components/MobileTabBar'
+import { MobileTabBar } from '@/components/MobileTabBar'
 import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
@@ -14,7 +14,7 @@ import { ViewToggle } from '@/components/ViewToggle'
 import { TimeOffsetControl } from '@/components/TimeOffsetControl'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
-import { useUrlState } from '@/hooks/useUrlState'
+import { useUrlState, type ViewMode } from '@/hooks/useUrlState'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
@@ -93,13 +93,9 @@ function App() {
     setView(view === 'card' ? 'map' : 'card')
   }, [view, setView])
 
-  const handleMobileTabChange = useCallback((tab: MobileTab) => {
-    if (tab === 'settings') {
-      setMobileSettings(true)
-    } else {
-      setMobileSettings(false)
-      setView(tab)
-    }
+  const handleMobileTabChange = useCallback((tab: ViewMode) => {
+    setMobileSettings(false)
+    setView(tab)
     // Navigate away from /about when switching tabs
     if (window.location.pathname === '/about') {
       history.pushState(null, '', '/')
@@ -227,13 +223,19 @@ function App() {
     handleSubmit(cityName)
   }, [handleSubmit])
 
-  // The view is the single source of truth; settings is the one screen that sits beside it.
-  const mobileTab: MobileTab = mobileSettings ? 'settings' : view
   const showMobileSettings = isMobile && mobileSettings
 
   const layerTransition = reduceMotion
     ? { duration: 0 }
     : { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }
+
+  // The chrome's top pad is the alignment authority: on desktop the settings
+  // pill is nudged down by half the difference between the input (~54px) and
+  // the pill (40px) so their centres line up with the search bar.
+  const chromePadTop = isActive
+    ? (isMobile ? '0.75rem' : '1.25rem')
+    : (isMobile ? '5vh' : '22vh')
+  const settingsTop = isActive ? `calc(${chromePadTop} + 7px)` : '1rem'
 
   // Card content starts below the chrome. Compact chrome is a single row; the
   // landing stack only ever coexists with an empty card layer, so one value does.
@@ -252,11 +254,18 @@ function App() {
           <MobileSettings />
         ) : (
           <div className="page-glow relative h-full w-full overflow-hidden bg-background">
-            {/* Settings — same pill language as the map's layers control */}
+            {/* Settings — same pill language as the map's layers control. Pinned to
+                the right on desktop; part of the row on mobile, where there is no
+                spare width to overlay it. */}
             {!isMobile && (
-              <div className="absolute top-4 right-4 z-30">
+              <div className="absolute right-4 z-30" style={{ top: settingsTop }}>
                 <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
               </div>
+            )}
+
+            {/* Mobile: floating view switcher over the surface */}
+            {isMobile && (
+              <MobileTabBar activeTab={view} onTabChange={handleMobileTabChange} />
             )}
 
             {/* z-0 — map runs full bleed, continuing underneath the chrome */}
@@ -327,7 +336,10 @@ function App() {
 
             {/* Time control — one fixed home, identical in card and map */}
             {result && view === 'card' && (
-              <div className="absolute right-4 bottom-4 z-20">
+              <div
+                className="absolute right-4 z-20"
+                style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 5.25rem)' : '1rem' }}
+              >
                 <TimeOffsetControl offset={offset} />
               </div>
             )}
@@ -337,9 +349,9 @@ function App() {
               className={`pointer-events-none absolute inset-x-0 top-0 z-20 transition-[padding-top] duration-[350ms] ease-out motion-reduce:transition-none ${
                 view === 'map' ? 'bg-gradient-to-b from-background via-background/85 to-transparent pb-10' : ''
               }`}
-              style={{ paddingTop: isActive ? (isMobile ? '0.75rem' : '1.25rem') : (isMobile ? '5vh' : '22vh') }}
+              style={{ paddingTop: chromePadTop }}
             >
-              <div className="pointer-events-auto mx-auto flex w-full max-w-[820px] flex-wrap items-center justify-center gap-x-3 gap-y-2 px-4 md:px-[2rem]">
+              <div className="pointer-events-auto mx-auto flex w-full max-w-[880px] flex-wrap items-center justify-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
                 <m.div layout="position" transition={layerTransition} className={isActive ? 'order-1' : 'order-1 flex basis-full justify-center'}>
                   <SunDialLogo onClick={handleGoHome} compact={isActive} />
                 </m.div>
@@ -362,10 +374,14 @@ function App() {
                   />
                 </div>
 
-                {!isMobile && (
+                {!isMobile ? (
                   <m.div layout="position" transition={layerTransition} className={isActive ? 'order-3' : 'order-3 basis-full flex justify-center'}>
                     <ViewToggle view={view} onChange={setView} />
                   </m.div>
+                ) : (
+                  <div className="order-3 flex-shrink-0">
+                    <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
+                  </div>
                 )}
 
                 {error && (
@@ -389,10 +405,6 @@ function App() {
         )}
       </div>
 
-      {/* Mobile: bottom tab bar */}
-      {isMobile && (
-        <MobileTabBar activeTab={mobileTab} onTabChange={handleMobileTabChange} />
-      )}
     </div>
     </LazyMotion>
   )
