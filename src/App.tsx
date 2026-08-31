@@ -261,8 +261,8 @@ function App() {
               </div>
             )}
 
-            {/* Mobile: floating view switcher over the surface */}
-            {isMobile && (
+            {/* Mobile: floating view switcher, once there is a result to switch between */}
+            {isMobile && hasResult && (
               <MobileTabBar activeTab={view} onTabChange={handleMobileTabChange} />
             )}
 
@@ -351,7 +351,7 @@ function App() {
               }`}
               style={{ paddingTop: chromePadTop }}
             >
-              <div className="pointer-events-auto mx-auto grid w-full grid-cols-[1fr_minmax(0,520px)_1fr] items-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
+              <div className="pointer-events-auto mx-auto grid w-full grid-cols-[minmax(2.75rem,1fr)_minmax(0,520px)_minmax(2.75rem,1fr)] items-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
                 {/* Logo: beside the input once active, above it on landing */}
                 <m.div
                   layout="position"
