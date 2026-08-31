@@ -3,7 +3,7 @@ import { Copy, Link, Download, Share2, Check, CalendarPlus, CalendarDays } from 
 import { getIconSlug, formatEntityLabel } from '@/engine/entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import { buildCanonicalUrl, buildOgImageUrl, formatCanonicalDisplay } from '@/lib/canonicalUrl'
-import { buildIcs, buildGoogleCalendarUrl, calendarTitle } from '@/lib/calendar'
+import { buildIcs, buildGoogleCalendarUrl, calendarFilename } from '@/lib/calendar'
 import type { ConversionResult } from '@/engine/types'
 
 interface ShareViewProps {
@@ -127,7 +127,7 @@ export function ShareView({ result, query, use24h }: ShareViewProps) {
     const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.download = `${calendarTitle(result).replace(/[/\\]/g, '-')}.ics`
+    link.download = `${calendarFilename(result).replace(/[/\\]/g, '-')}.ics`
     link.href = url
     link.click()
     URL.revokeObjectURL(url)
@@ -253,7 +253,7 @@ export function ShareView({ result, query, use24h }: ShareViewProps) {
                 <span className="min-w-0">
                   <span className="block text-[0.65rem] text-muted-foreground">Google Calendar</span>
                   <span className="block truncate font-mono text-[0.75rem] text-foreground">
-                    Open a prefilled event
+                    Open at this time, untitled
                   </span>
                 </span>
               </a>

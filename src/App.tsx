@@ -104,7 +104,10 @@ function App() {
   useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
   const { placeholder, feelingWord, getCurrentExample, advance: advanceExample } = useRotatingPlaceholder()
 
-  const isLanding = !result && !error
+  const hasResult = Boolean(result)
+  // Landing is a screen in its own right, not the card view rendered empty. It
+  // holds while there is nothing to show and the map has not been opened.
+  const isLandingScreen = !result && !error && view !== 'map'
   // The header lifts once there is something to show — never merely because you
   // typed. Map counts as content in its own right: WorldMap uses
   // preserveAspectRatio="slice", so a short container crops the world rather than
@@ -339,21 +342,28 @@ function App() {
               </div>
             )}
 
-            {/* z-20 — chrome. Scrim only once the map is behind it. */}
+            {/* z-20 — chrome. One grid in both states, so the centre column that
+                holds the input is the same 520px column the card sits in — that is
+                what keeps the search bar and the result optically aligned. */}
             <div
               className={`pointer-events-none absolute inset-x-0 top-0 z-20 transition-[padding-top] duration-[350ms] ease-out motion-reduce:transition-none ${
                 view === 'map' ? 'bg-gradient-to-b from-background via-background/85 to-transparent pb-10' : ''
               }`}
               style={{ paddingTop: chromePadTop }}
             >
-              <div className="pointer-events-auto mx-auto flex w-full max-w-[880px] flex-wrap items-center justify-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
-                <m.div layout="position" transition={layerTransition} className={isActive ? 'order-1' : 'order-1 flex basis-full justify-center'}>
+              <div className="pointer-events-auto mx-auto grid w-full grid-cols-[1fr_minmax(0,520px)_1fr] items-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
+                {/* Logo: beside the input once active, above it on landing */}
+                <m.div
+                  layout="position"
+                  transition={layerTransition}
+                  className={isActive ? 'col-start-1 row-start-1 justify-self-end' : 'col-start-2 row-start-1 justify-self-center'}
+                >
                   <SunDialLogo onClick={handleGoHome} compact={isActive} />
                 </m.div>
 
-                {/* Width is identical in both states — only the position moves, so
-                    nothing inside the input is ever scaled. */}
-                <div className={isActive ? 'order-2 min-w-0 max-w-[520px] flex-1' : 'order-2 w-full max-w-[520px]'}>
+                {/* Always the centre column, always 520px — never resized, so
+                    nothing inside it is ever scaled during the morph. */}
+                <div className={`col-start-2 ${isActive ? 'row-start-1' : 'row-start-2'}`}>
                   <QueryInput
                     ref={inputRef}
                     onSubmit={handleSubmit}
@@ -369,29 +379,49 @@ function App() {
                   />
                 </div>
 
-                {!isMobile ? (
-                  <m.div layout="position" transition={layerTransition} className={isActive ? 'order-3' : 'order-3 basis-full flex justify-center'}>
+                {/* The switcher only exists once there is a result to switch between */}
+                {!isMobile && hasResult && (
+                  <m.div
+                    layout="position"
+                    transition={layerTransition}
+                    className="col-start-3 row-start-1 justify-self-start"
+                  >
                     <ViewToggle view={view} onChange={setView} />
                   </m.div>
-                ) : (
-                  <div className="order-3 flex-shrink-0">
+                )}
+
+                {isMobile && (
+                  <div className={`col-start-3 justify-self-start ${isActive ? 'row-start-1' : 'row-start-2'}`}>
                     <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} asSheet />
                   </div>
                 )}
 
                 {error && (
-                  <div className="order-4 mx-auto w-full max-w-[520px] basis-full">
+                  <div className={`col-start-2 ${isActive ? 'row-start-2' : 'row-start-3'}`}>
                     <ErrorDisplay error={error} onClear={handleClear} />
                   </div>
                 )}
 
-                {isLanding && view === 'card' && !inputFocused && (
-                  <div className="order-5 flex basis-full justify-center">
+                {/* Landing extras — this screen is not the card view with nothing in
+                    it. Focusing the input fades these rather than unmounting them, so
+                    the layout never jumps while you are typing. */}
+                {isLandingScreen && (
+                  <div
+                    className={`col-start-2 row-start-3 flex flex-col items-center gap-2 transition-opacity duration-200 ${
+                      inputFocused ? 'pointer-events-none opacity-0' : 'opacity-100'
+                    }`}
+                  >
                     <CityVibe
                       fallbackFeelingWord={feelingWord}
                       onClick={handleFeelingClick}
                       onHoverChange={setVibeHovered}
                     />
+                    <button
+                      onClick={() => setView('map')}
+                      className="text-[0.8rem] text-muted-foreground/60 transition-colors hover:text-foreground"
+                    >
+                      or explore the map
+                    </button>
                   </div>
                 )}
               </div>

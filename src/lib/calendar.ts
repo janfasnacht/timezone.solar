@@ -15,8 +15,12 @@ export function calendarWindow(result: ConversionResult, durationMinutes = DEFAU
   return start && end ? { start, end } : null
 }
 
-export function calendarTitle(result: ConversionResult): string {
-  return `${result.source.city} → ${result.target.city}`
+/**
+ * Only used to name the downloaded file. The event itself carries no title:
+ * timezone.solar knows when your meeting is, not what it is about.
+ */
+export function calendarFilename(result: ConversionResult): string {
+  return `${result.source.city} to ${result.target.city}`
 }
 
 export function calendarDescription(result: ConversionResult, use24h: boolean, url: string): string {
@@ -56,7 +60,6 @@ export function buildIcs(
     `DTSTAMP:${stamp}`,
     `DTSTART:${window.start}`,
     `DTEND:${window.end}`,
-    `SUMMARY:${escapeIcsText(calendarTitle(result))}`,
     `DESCRIPTION:${escapeIcsText(calendarDescription(result, use24h, url))}`,
     `URL:${escapeIcsText(url)}`,
     'END:VEVENT',
@@ -72,9 +75,9 @@ export function buildGoogleCalendarUrl(
 ): string | null {
   const window = calendarWindow(result, durationMinutes)
   if (!window) return null
+  // No `text`: Google leaves the title empty for the user to fill in.
   const params = new URLSearchParams({
     action: 'TEMPLATE',
-    text: calendarTitle(result),
     dates: `${window.start}/${window.end}`,
     details: calendarDescription(result, use24h, url),
   })

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildIcs, buildGoogleCalendarUrl, calendarWindow, calendarTitle } from '@/lib/calendar'
+import { buildIcs, buildGoogleCalendarUrl, calendarWindow, calendarFilename } from '@/lib/calendar'
 import type { ConversionResult } from '@/engine/types'
 
 const result = {
@@ -71,9 +71,9 @@ describe('buildIcs', () => {
     expect(ics).not.toMatch(/DESCRIPTION:[^\r]*[^\\],/)
   })
 
-  it('names the event after both cities', () => {
-    expect(calendarTitle(result)).toBe('New York → London')
-    expect(ics).toContain('SUMMARY:New York → London')
+  it('leaves the event untitled — the app knows when, not what', () => {
+    expect(ics).not.toContain('SUMMARY')
+    expect(calendarFilename(result)).toBe('New York to London')
   })
 })
 
@@ -83,7 +83,7 @@ describe('buildGoogleCalendarUrl', () => {
     expect(url.origin + url.pathname).toBe('https://calendar.google.com/calendar/render')
     expect(url.searchParams.get('action')).toBe('TEMPLATE')
     expect(url.searchParams.get('dates')).toBe('20260831T190000Z/20260831T200000Z')
-    expect(url.searchParams.get('text')).toBe('New York → London')
+    expect(url.searchParams.has('text')).toBe(false)
   })
 
   it('returns null when the instant will not parse', () => {
