@@ -1,4 +1,4 @@
-import { CardIcon, MapIcon } from '@/components/ViewIcons'
+import { CardIcon, MapIcon, ShareIcon } from '@/components/ViewIcons'
 import type { ViewMode } from '@/hooks/useUrlState'
 
 export type MobileTab = ViewMode | 'settings'
@@ -21,6 +21,7 @@ export function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
   const tabs: { id: MobileTab; label: string; icon: (active: boolean) => React.ReactNode }[] = [
     { id: 'card', label: 'Convert', icon: (a) => <CardIcon size={20} strokeWidth={a ? 1.5 : 1.2} /> },
     { id: 'map', label: 'Map', icon: (a) => <MapIcon size={20} strokeWidth={a ? 1.5 : 1.2} /> },
+    { id: 'share', label: 'Share', icon: (a) => <ShareIcon size={20} strokeWidth={a ? 1.5 : 1.2} /> },
     { id: 'settings', label: 'Settings', icon: (a) => <GearIcon active={a} /> },
   ]
 

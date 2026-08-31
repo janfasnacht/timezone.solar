@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
 import { LazyMotion, m, useReducedMotion } from 'motion/react'
 import { QueryInput } from '@/components/QueryInput'
-import { FlippableCard } from '@/components/FlippableCard'
+import { ResultCard } from '@/components/ResultCard'
+import { ShareView } from '@/components/ShareView'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { SettingsMenu } from '@/components/SettingsMenu'
@@ -292,13 +293,11 @@ function App() {
             >
               {result && (
                 <div className="mx-auto w-full max-w-[520px]">
-                  <FlippableCard
+                  <ResultCard
                     result={result}
                     isUsingCurrentTime={isUsingCurrentTime}
                     matchType={matchType}
                     onSwap={handleSwap}
-                    query={currentInputValue}
-                    use24h={timeFormat === '24h'}
                     offsetMinutes={offset.offsetMinutes}
                     onResetOffset={offset.reset}
                   />
@@ -306,8 +305,28 @@ function App() {
               )}
             </m.div>
 
+            {/* z-10 — share, a peer of card and map rather than a card face */}
+            <m.div
+              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-6 md:px-[2rem]"
+              initial={false}
+              animate={view === 'share' ? layerVisible : layerHidden}
+              transition={layerTransition}
+              style={{ pointerEvents: view === 'share' ? 'auto' : 'none', paddingTop: chromeHeight }}
+              inert={view !== 'share'}
+            >
+              {result && (
+                <div className="mx-auto w-full max-w-[520px]">
+                  <ShareView
+                    result={result}
+                    query={currentInputValue}
+                    use24h={timeFormat === '24h'}
+                  />
+                </div>
+              )}
+            </m.div>
+
             {/* Time control — one fixed home, identical in card and map */}
-            {result && view !== 'map' && (
+            {result && view === 'card' && (
               <div className="absolute right-4 bottom-4 z-20">
                 <TimeOffsetControl offset={offset} />
               </div>

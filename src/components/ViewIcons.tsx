@@ -19,3 +19,14 @@ export function MapIcon({ size = 16, strokeWidth = 1.2 }: IconProps) {
     </svg>
   )
 }
+
+export function ShareIcon({ size = 16, strokeWidth = 1.2 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="3.5" r="1.8" />
+      <circle cx="4" cy="8" r="1.8" />
+      <circle cx="12" cy="12.5" r="1.8" />
+      <path d="M5.6 7.1 10.4 4.4M5.6 8.9l4.8 2.7" />
+    </svg>
+  )
+}

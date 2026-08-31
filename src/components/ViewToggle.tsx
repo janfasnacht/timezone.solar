@@ -1,4 +1,4 @@
-import { CardIcon, MapIcon } from '@/components/ViewIcons'
+import { CardIcon, MapIcon, ShareIcon } from '@/components/ViewIcons'
 import type { ViewMode } from '@/hooks/useUrlState'
 
 interface ViewToggleProps {
@@ -10,6 +10,7 @@ interface ViewToggleProps {
 const OPTIONS: { value: ViewMode; label: string; Icon: typeof CardIcon }[] = [
   { value: 'card', label: 'Card', Icon: CardIcon },
   { value: 'map', label: 'Map', Icon: MapIcon },
+  { value: 'share', label: 'Share', Icon: ShareIcon },
 ]
 
 /**

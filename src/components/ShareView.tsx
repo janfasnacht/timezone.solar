@@ -1,11 +1,12 @@
 import { useState, useCallback, useMemo } from 'react'
-import { Copy, Link, Download, Share2, Check } from 'lucide-react'
+import { Copy, Link, Download, Share2, Check, CalendarPlus, CalendarDays } from 'lucide-react'
 import { getIconSlug, formatEntityLabel } from '@/engine/entities'
 import { compactTime, formatDate } from '@/lib/shareUtils'
 import { buildCanonicalUrl, buildOgImageUrl, formatCanonicalDisplay } from '@/lib/canonicalUrl'
+import { buildIcs, buildGoogleCalendarUrl, calendarTitle } from '@/lib/calendar'
 import type { ConversionResult } from '@/engine/types'
 
-interface CardBackProps {
+interface ShareViewProps {
   result: ConversionResult
   query: string
   use24h: boolean
@@ -33,7 +34,7 @@ function CityIcon({ slug, size = '1.2rem' }: { slug: string; size?: string }) {
   )
 }
 
-export function CardBack({ result, query, use24h }: CardBackProps) {
+export function ShareView({ result, query, use24h }: ShareViewProps) {
   const [timeCopied, setTimeCopied] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -115,11 +116,28 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
     }
   }, [fetchOgImage, filename, shareUrl])
 
+  const googleCalendarUrl = useMemo(
+    () => buildGoogleCalendarUrl(result, use24h, shareUrl),
+    [result, use24h, shareUrl],
+  )
+
+  const handleDownloadIcs = useCallback(() => {
+    const ics = buildIcs(result, use24h, shareUrl)
+    if (!ics) return
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.download = `${calendarTitle(result).replace(/[/\\]/g, '-')}.ics`
+    link.href = url
+    link.click()
+    URL.revokeObjectURL(url)
+  }, [result, use24h, shareUrl])
+
   const sourceIconSlug = source.entitySlug ? getIconSlug(source.entitySlug) : null
   const targetIconSlug = target.entitySlug ? getIconSlug(target.entitySlug) : null
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface">
+    <div className="relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface py-5">
       {/* Top accent gradient — matches front card */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-surface via-accent-soft to-surface" />
 
@@ -203,6 +221,43 @@ export function CardBack({ result, query, use24h }: CardBackProps) {
                 </span>
               </span>
             </button>
+          )}
+
+          <div className="h-px bg-gradient-to-r from-surface via-border to-surface" />
+
+          {/* Calendar */}
+          <button onClick={handleDownloadIcs} className="group flex items-center gap-3 text-left transition-colors">
+            <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
+              <CalendarPlus size={14} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[0.65rem] text-muted-foreground">Add to calendar</span>
+              <span className="block truncate font-mono text-[0.75rem] text-foreground">
+                One hour from {target[timeKey]} (.ics)
+              </span>
+            </span>
+          </button>
+
+          {googleCalendarUrl && (
+            <>
+              <div className="h-px bg-gradient-to-r from-surface via-border to-surface" />
+              <a
+                href={googleCalendarUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 text-left transition-colors"
+              >
+                <span className="flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
+                  <CalendarDays size={14} />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[0.65rem] text-muted-foreground">Google Calendar</span>
+                  <span className="block truncate font-mono text-[0.75rem] text-foreground">
+                    Open a prefilled event
+                  </span>
+                </span>
+              </a>
+            </>
           )}
         </div>
       </div>
