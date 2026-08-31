@@ -11,10 +11,9 @@ interface FlippableCardProps {
   onSwap: () => void
   query: string
   use24h: boolean
-  onViewOnMap?: () => void
 }
 
-export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h, onViewOnMap }: FlippableCardProps) {
+export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, query, use24h }: FlippableCardProps) {
   const [flipped, setFlipped] = useState(false)
   const [prevResult, setPrevResult] = useState(result)
 
@@ -57,20 +56,6 @@ export function FlippableCard({ result, isUsingCurrentTime, matchType, onSwap, q
 
       {/* Action links below card */}
       <div className="mt-3 md:mt-3 flex items-center justify-center gap-4 text-[0.8rem] text-muted-foreground/50">
-        {onViewOnMap && (
-          <>
-            <button
-              onClick={onViewOnMap}
-              className="flex items-center gap-1.5 px-2 py-3 transition-colors hover:text-foreground"
-            >
-              View on map
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M1.5 3.5l4-1.5v10.5l-4 1.5V3.5zM5.5 2l5 2v10.5l-5-2V2zM10.5 4l4-1.5v10.5l-4 1.5V4z" />
-              </svg>
-            </button>
-            <span className="text-border">·</span>
-          </>
-        )}
         <button
           onClick={flipped ? flipToFront : flipToBack}
           className="flex items-center gap-1.5 px-2 py-3 transition-colors hover:text-foreground"

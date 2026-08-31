@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
+import { LazyMotion, m, useReducedMotion } from 'motion/react'
 import { QueryInput } from '@/components/QueryInput'
 import { FlippableCard } from '@/components/FlippableCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
@@ -8,6 +9,7 @@ import { MobileTabBar, type MobileTab } from '@/components/MobileTabBar'
 import { MobileSettings } from '@/components/MobileSettings'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
+import { ViewToggle } from '@/components/ViewToggle'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
 import { useUrlState } from '@/hooks/useUrlState'
@@ -31,31 +33,32 @@ function usePath() {
   return path
 }
 
-export type ViewMode = 'card' | 'map'
+const loadMotionFeatures = () => import('@/lib/motionFeatures').then(mod => mod.default)
+
+const layerVisible = { opacity: 1, scale: 1, visibility: 'visible' } as const
+const layerHidden = { opacity: 0, scale: 0.98, transitionEnd: { visibility: 'hidden' } } as const
 
 function App() {
   const path = usePath()
   const { result, error, isUsingCurrentTime, matchType, runConversion, runCanonicalConversion, swapConversion, clear } = useConversion()
   const { queries: recentQueries, addQuery, removeQuery } = useRecentQueries()
-  const { query: urlQuery, canonicalQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery, replaceWithCanonical } = useUrlState()
+  const { query: urlQuery, canonicalQuery, setQuery: setUrlQuery, replaceQuery: replaceUrlQuery, replaceWithCanonical, view, setView } = useUrlState()
   const { timeFormat, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [viewMode, setViewMode] = useState<ViewMode>(() => {
-    const params = new URLSearchParams(window.location.search)
-    return params.get('view') === 'map' ? 'map' : 'card'
-  })
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
   const shouldCanonicalizeRef = useRef(false)
   const touchStart = useRef({ x: 0, y: 0 })
   const isMobile = useMediaQuery('(max-width: 767px)')
-  const [mobileTab, setMobileTab] = useState<MobileTab>(() => {
-    const params = new URLSearchParams(window.location.search)
-    return params.get('view') === 'map' ? 'map' : 'card'
-  })
+  const [mobileSettings, setMobileSettings] = useState(false)
+  const reduceMotion = useReducedMotion()
+  // The map chunk is lazy; once it has been shown we keep it mounted so pan/zoom,
+  // layer toggles and the time nudge survive a trip through the card view.
+  const [mapMounted, setMapMounted] = useState(view === 'map')
+  useEffect(() => { if (view === 'map') setMapMounted(true) }, [view])
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -81,28 +84,33 @@ function App() {
   }, [handleClear])
 
   const toggleView = useCallback(() => {
-    setViewMode(v => v === 'card' ? 'map' : 'card')
-  }, [])
+    setView(view === 'card' ? 'map' : 'card')
+  }, [view, setView])
 
   const handleMobileTabChange = useCallback((tab: MobileTab) => {
-    setMobileTab(tab)
-    if (tab === 'card' || tab === 'map') {
-      setViewMode(tab)
+    if (tab === 'settings') {
+      setMobileSettings(true)
+    } else {
+      setMobileSettings(false)
+      setView(tab)
     }
     // Navigate away from /about when switching tabs
     if (window.location.pathname === '/about') {
       history.pushState(null, '', '/')
       window.dispatchEvent(new PopStateEvent('popstate'))
     }
-  }, [])
+  }, [setView])
 
   useKeyboardShortcuts(inputRef, sidebarOpen, setSidebarOpen, showExamples, handleClear, toggleView)
   const { placeholder, feelingWord, getCurrentExample, previewCities } = useRotatingPlaceholder(currentInputValue.length > 0)
 
   const isLanding = !result && !error
-  // Header position is driven by query activity alone — never by the view — so
-  // switching card <-> map leaves the input exactly where it is.
-  const isActive = Boolean(result || error || currentInputValue.trim())
+  // The header lifts as soon as there is something to show. Map counts as content
+  // in its own right: WorldMap uses preserveAspectRatio="slice", so a short
+  // container crops the world instead of shrinking it. Whenever a result exists
+  // both views are active, so toggling never moves the input — the only place the
+  // header travels is the empty landing state, where there is nothing to anchor.
+  const isActive = Boolean(result || error || currentInputValue.trim() || view === 'map')
 
   useEffect(() => {
     if (urlQuery) {
@@ -218,8 +226,13 @@ function App() {
 
   const mainOffset = isMobile ? 0 : sidebarOpen ? EXPANDED_WIDTH : RAIL_WIDTH
 
-  // On mobile, determine which screen to show based on tab
-  const mobileScreen = isMobile ? mobileTab : null
+  // The view is the single source of truth; settings is the one screen that sits beside it.
+  const mobileTab: MobileTab = mobileSettings ? 'settings' : view
+  const showMobileSettings = isMobile && mobileSettings
+
+  const layerTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }
 
   // Landing sits low and airy; the first keystroke lifts the header out of the way.
   const headerPadTop = isActive
@@ -227,6 +240,7 @@ function App() {
     : (isMobile ? '5vh' : '25vh')
 
   return (
+    <LazyMotion features={loadMotionFeatures} strict>
     <div
       className="h-dvh flex flex-col overflow-hidden"
       onTouchStart={!isMobile ? handleTouchStart : undefined}
@@ -239,8 +253,6 @@ function App() {
           onToggle={() => setSidebarOpen(!sidebarOpen)}
           onClose={() => setSidebarOpen(false)}
           isMobile={false}
-          viewMode={viewMode}
-          onViewChange={setViewMode}
         />
       )}
 
@@ -253,18 +265,18 @@ function App() {
           <div className="h-full overflow-y-auto bg-background">
             <AboutPage onRunQuery={handleSubmit} />
           </div>
-        ) : mobileScreen === 'settings' ? (
+        ) : showMobileSettings ? (
           <MobileSettings />
         ) : (
           <div className="page-glow relative flex h-full flex-col items-center bg-background">
             {/* Shared header — one position rule for both views */}
             <div
-              className="flex w-full max-w-[520px] flex-shrink-0 flex-col items-center px-4 transition-[padding-top] duration-[350ms] ease-out md:px-[2rem]"
+              className="flex w-full max-w-[520px] flex-shrink-0 flex-col items-center px-4 transition-[padding-top] duration-[350ms] ease-out motion-reduce:transition-none md:px-[2rem]"
               style={{ paddingTop: headerPadTop }}
             >
               {/* Logo */}
               <div
-                className="mb-2 flex-shrink-0 transition-transform duration-[350ms] ease-out md:mb-6"
+                className="mb-2 flex-shrink-0 transition-transform duration-[350ms] ease-out motion-reduce:transition-none md:mb-6"
                 style={{ transform: isActive ? 'scale(0.85)' : undefined }}
               >
                 <SunDialLogo onClick={handleClear} />
@@ -284,6 +296,14 @@ function App() {
                 isProcessing={isDebouncing}
               />
 
+              {/* The parallel choice, right under the input. On mobile the bottom
+                  tab bar already fills this role, so it stays desktop-only. */}
+              {!isMobile && (
+                <div className="mt-3 flex-shrink-0">
+                  <ViewToggle view={view} onChange={setView} />
+                </div>
+              )}
+
               {/* Error — belongs to the query, so it renders the same in both views */}
               {error && (
                 <div className="mt-4 w-full flex-shrink-0">
@@ -292,7 +312,7 @@ function App() {
               )}
 
               {/* Landing prompt — card view only; the map's preview arc plays this role there */}
-              {isLanding && viewMode === 'card' && (
+              {isLanding && view === 'card' && (
                 <div className="mt-4 flex-shrink-0">
                   <CityVibe
                     fallbackFeelingWord={feelingWord}
@@ -302,22 +322,18 @@ function App() {
               )}
             </div>
 
-            {/* Result region — full width so the map is not boxed into the column */}
+            {/* Result region — full width so the map is not boxed into the column.
+                Both layers stay mounted and crossfade, so neither loses its state. */}
             <div className="relative w-full min-h-0 flex-1">
-              {viewMode === 'map' ? (
-                <Suspense fallback={<div className="h-full w-full" />}>
-                  <MapView
-                    result={result}
-                    homeCity={homeCity}
-                    use24h={timeFormat === '24h'}
-                    hasQuery={currentInputValue.trim().length > 0}
-                    onCityClick={handleCityClick}
-                    previewCities={previewCities}
-                    isMobile={isMobile}
-                  />
-                </Suspense>
-              ) : result ? (
-                <div className="h-full overflow-y-auto px-4 pb-4 md:px-[2rem]">
+              <m.div
+                className="absolute inset-0 overflow-y-auto px-4 pb-4 md:px-[2rem]"
+                initial={false}
+                animate={view === 'card' ? layerVisible : layerHidden}
+                transition={layerTransition}
+                style={{ pointerEvents: view === 'card' ? 'auto' : 'none' }}
+                inert={view !== 'card'}
+              >
+                {result && (
                   <div className="mx-auto w-full max-w-[520px] pt-4 md:pt-8">
                     <FlippableCard
                       result={result}
@@ -326,14 +342,33 @@ function App() {
                       onSwap={handleSwap}
                       query={currentInputValue}
                       use24h={timeFormat === '24h'}
-                      onViewOnMap={() => {
-                        setViewMode('map')
-                        if (isMobile) setMobileTab('map')
-                      }}
                     />
                   </div>
-                </div>
-              ) : null}
+                )}
+              </m.div>
+
+              {mapMounted && (
+                <m.div
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={view === 'map' ? layerVisible : layerHidden}
+                  transition={layerTransition}
+                  style={{ pointerEvents: view === 'map' ? 'auto' : 'none' }}
+                  inert={view !== 'map'}
+                >
+                  <Suspense fallback={<div className="h-full w-full" />}>
+                    <MapView
+                      result={result}
+                      homeCity={homeCity}
+                      use24h={timeFormat === '24h'}
+                      hasQuery={currentInputValue.trim().length > 0}
+                      onCityClick={handleCityClick}
+                      previewCities={previewCities}
+                      isMobile={isMobile}
+                    />
+                  </Suspense>
+                </m.div>
+              )}
             </div>
           </div>
         )}
@@ -344,6 +379,7 @@ function App() {
         <MobileTabBar activeTab={mobileTab} onTabChange={handleMobileTabChange} />
       )}
     </div>
+    </LazyMotion>
   )
 }
 

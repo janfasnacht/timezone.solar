@@ -1,27 +1,11 @@
-import type { ViewMode } from '@/App'
+import { CardIcon, MapIcon } from '@/components/ViewIcons'
+import type { ViewMode } from '@/hooks/useUrlState'
 
 export type MobileTab = ViewMode | 'settings'
 
 interface MobileTabBarProps {
   activeTab: MobileTab
   onTabChange: (tab: MobileTab) => void
-}
-
-function CardIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={active ? '1.5' : '1.2'} strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="3" width="12" height="10" rx="1.5" />
-      <path d="M5 6.5h6M5 9h4" />
-    </svg>
-  )
-}
-
-function MapIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={active ? '1.5' : '1.2'} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M1.5 3.5l4-1.5v10.5l-4 1.5V3.5zM5.5 2l5 2v10.5l-5-2V2zM10.5 4l4-1.5v10.5l-4 1.5V4z" />
-    </svg>
-  )
 }
 
 function GearIcon({ active }: { active: boolean }) {
@@ -35,8 +19,8 @@ function GearIcon({ active }: { active: boolean }) {
 
 export function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
   const tabs: { id: MobileTab; label: string; icon: (active: boolean) => React.ReactNode }[] = [
-    { id: 'card', label: 'Convert', icon: (a) => <CardIcon active={a} /> },
-    { id: 'map', label: 'Map', icon: (a) => <MapIcon active={a} /> },
+    { id: 'card', label: 'Convert', icon: (a) => <CardIcon size={20} strokeWidth={a ? 1.5 : 1.2} /> },
+    { id: 'map', label: 'Map', icon: (a) => <MapIcon size={20} strokeWidth={a ? 1.5 : 1.2} /> },
     { id: 'settings', label: 'Settings', icon: (a) => <GearIcon active={a} /> },
   ]
 
