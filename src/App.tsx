@@ -63,7 +63,7 @@ function App() {
   const [mapMounted, setMapMounted] = useState(view === 'map')
   useEffect(() => { if (view === 'map') setMapMounted(true) }, [view])
   const homeIana = homeCity?.iana ?? Intl.DateTimeFormat().resolvedOptions().timeZone
-  const offset = useTimeOffset(result, homeIana, timeFormat === '24h')
+  const offset = useTimeOffset(result, homeIana, timeFormat === '24h', isUsingCurrentTime)
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -302,13 +302,16 @@ function App() {
                     offsetMinutes={offset.offsetMinutes}
                     onResetOffset={offset.reset}
                   />
-                  {/* Same stepper as the map's, so the control is reachable here too */}
-                  <div className="mt-4 flex justify-center">
-                    <TimeOffsetControl offset={offset} />
-                  </div>
                 </div>
               )}
             </m.div>
+
+            {/* Time control — one fixed home, identical in card and map */}
+            {result && view !== 'map' && (
+              <div className="absolute right-4 bottom-4 z-20">
+                <TimeOffsetControl offset={offset} />
+              </div>
+            )}
 
             {/* z-20 — chrome. Scrim only once the map is behind it. */}
             <div

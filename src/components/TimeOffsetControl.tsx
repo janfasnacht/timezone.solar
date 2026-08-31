@@ -13,7 +13,7 @@ interface TimeOffsetControlProps {
  * card, so a nudge is reachable and visible from either view.
  */
 export function TimeOffsetControl({ offset, roomy = false, className }: TimeOffsetControlProps) {
-  const { offsetMinutes, isOffset, timeInput, setTimeInput, submitTimeInput, nudge, reset, clockLabel } = offset
+  const { offsetMinutes, isOffset, tracksNow, timeInput, setTimeInput, submitTimeInput, nudge, reset, clockLabel } = offset
   const pad = roomy ? 'p-1.5' : 'p-1'
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -32,16 +32,20 @@ export function TimeOffsetControl({ offset, roomy = false, className }: TimeOffs
         <button
           onClick={reset}
           className="rounded-full p-1 text-accent transition-colors hover:bg-accent/10 hover:text-accent-foreground"
-          title="Reset to now"
+          title={tracksNow ? 'Back to now' : 'Back to the queried time'}
         >
           <RotateCcw className="h-3.5 w-3.5" />
         </button>
       )}
-      {isOffset && (
+      {isOffset ? (
         <span className="font-mono text-xs font-medium text-accent">
           {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h
         </span>
-      )}
+      ) : tracksNow ? (
+        <span className="font-mono text-[0.65rem] tracking-wide text-muted-foreground/70 uppercase" title="Tracking the current time">
+          now
+        </span>
+      ) : null}
       <div
         className={`flex h-10 items-center gap-0.5 rounded-full border border-border bg-surface/60 px-1.5 backdrop-blur-sm ${
           isOffset ? 'border-accent/40' : ''

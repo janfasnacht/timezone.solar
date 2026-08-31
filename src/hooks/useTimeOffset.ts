@@ -7,6 +7,8 @@ import type { ConversionResult } from '@/engine/types'
 export interface TimeOffset {
   offsetMinutes: number
   isOffset: boolean
+  /** The zero state is live "now" rather than a frozen instant. */
+  tracksNow: boolean
   timeInput: string
   setTimeInput: (value: string) => void
   /** Parses a typed time and turns it into an offset from now. */
@@ -27,6 +29,8 @@ export function useTimeOffset(
   result: ConversionResult | null,
   homeIana: string,
   use24h: boolean,
+  /** True when the query carried no explicit time, so "now" is the anchor. */
+  tracksNow = false,
 ): TimeOffset {
   const liveTick = useMinuteTick()
   const [offsetMinutes, setOffsetMinutes] = useState(0)
@@ -40,13 +44,15 @@ export function useTimeOffset(
     setTimeInput('')
   }
 
+  // A result carrying an explicit time is a fixed anchor. One that doesn't —
+  // "nyc to london" — should keep up with the clock if the page is left open.
   const baseTime = useMemo(() => {
-    if (result) {
+    if (result && !tracksNow) {
       const dt = DateTime.fromISO(result.sourceDateTime)
       if (dt.isValid) return dt.toJSDate()
     }
     return liveTick
-  }, [result, liveTick])
+  }, [result, tracksNow, liveTick])
 
   const displayTime = useMemo(() => {
     if (offsetMinutes === 0) return baseTime
@@ -103,6 +109,7 @@ export function useTimeOffset(
   return {
     offsetMinutes,
     isOffset: offsetMinutes !== 0,
+    tracksNow,
     timeInput,
     setTimeInput,
     submitTimeInput,
