@@ -2,23 +2,18 @@ import { useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
 import { TimeOffsetControl } from '@/components/TimeOffsetControl'
 import { MapLayersControl, type MapLayers } from '@/components/map/MapLayersControl'
-import { lookupEntity } from '@/engine/entities'
 import type { TimeOffset } from '@/hooks/useTimeOffset'
 import { WorldMap, type MapConversion } from '@/components/map/WorldMap'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'
-import type { PreviewCities } from '@/hooks/useRotatingPlaceholder'
 
 interface MapViewProps {
   result: ConversionResult | null
   homeCity: HomeCity | null
   use24h: boolean
-  /** True while the shared QueryInput holds text — suppresses the idle preview arc. */
-  hasQuery: boolean
   /** Shared with the card view, so a nudge survives switching renderings. */
   offset: TimeOffset
   onCityClick: (cityName: string) => void
-  previewCities: PreviewCities
   isMobile?: boolean
 }
 
@@ -26,10 +21,8 @@ export default function MapView({
   result,
   homeCity,
   use24h,
-  hasQuery,
   offset,
   onCityClick,
-  previewCities,
   isMobile = false,
 }: MapViewProps) {
   const { offsetMinutes, displayTime } = offset
@@ -40,8 +33,6 @@ export default function MapView({
     cityDensity: 'main',
   })
   const updateLayers = (next: Partial<MapLayers>) => setLayers((prev) => ({ ...prev, ...next }))
-
-  const homeCityName = homeCity?.city ?? null
 
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
 
@@ -70,54 +61,13 @@ export default function MapView({
     }
   }, [result, timeKey, offsetMinutes, use24h])
 
-  // Preview: compute times from IANA timezones, use homeCity as implicit source
-  const previewConversion: MapConversion | null = useMemo(() => {
-    if (result || hasQuery) return null
-    if (!previewCities.target) return null
-
-    const targetEntity = lookupEntity(previewCities.target)
-    if (!targetEntity) return null
-
-    const now = DateTime.now()
-    const targetTime = now.setZone(targetEntity.iana).toFormat(use24h ? 'HH:mm' : 'h:mm a')
-
-    // Use explicit source from example, or fall back to homeCity
-    const sourceName = previewCities.source ?? homeCityName
-    let sourceTime = ''
-    let sourceCity = ''
-    let offset = ''
-
-    if (sourceName) {
-      const sourceEntity = lookupEntity(sourceName)
-      if (sourceEntity) {
-        const diffH = (now.setZone(targetEntity.iana).offset - now.setZone(sourceEntity.iana).offset) / 60
-        // Same timezone → show target only, no arc/offset
-        if (diffH !== 0) {
-          sourceCity = sourceName
-          sourceTime = now.setZone(sourceEntity.iana).toFormat(use24h ? 'HH:mm' : 'h:mm a')
-          const sign = diffH >= 0 ? '+' : ''
-          offset = `${sign}${diffH}h`
-        }
-      }
-    }
-
-    return {
-      sourceCity,
-      targetCity: previewCities.target,
-      sourceTime,
-      targetTime,
-      offsetDifference: offset,
-      isPreview: true,
-    }
-  }, [result, hasQuery, previewCities, use24h, homeCityName])
-
   return (
     <div className="h-full w-full relative">
       <WorldMap
         now={displayTime}
         use24h={use24h}
         homeCity={homeCity}
-        conversion={conversion ?? previewConversion}
+        conversion={conversion}
         onCityClick={onCityClick}
         showTimezones={layers.showTimezones}
         showBorders={layers.showBorders}

@@ -5,9 +5,10 @@ interface CityVibeProps {
   entitySlug?: string
   fallbackFeelingWord: string
   onClick: () => void
+  onHoverChange?: (hovered: boolean) => void
 }
 
-export function CityVibe({ entitySlug, fallbackFeelingWord, onClick }: CityVibeProps) {
+export function CityVibe({ entitySlug, fallbackFeelingWord, onClick, onHoverChange }: CityVibeProps) {
   const [vibeIndex] = useState(() => Math.floor(Math.random() * 3))
 
   const word = useMemo(() => {
@@ -20,6 +21,10 @@ export function CityVibe({ entitySlug, fallbackFeelingWord, onClick }: CityVibeP
   return (
     <button
       onClick={onClick}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
+      onFocus={() => onHoverChange?.(true)}
+      onBlur={() => onHoverChange?.(false)}
       className="font-serif text-[0.95rem] font-normal italic text-muted-foreground transition-colors hover:text-foreground"
     >
       feeling {word}?

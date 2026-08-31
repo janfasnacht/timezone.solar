@@ -55,6 +55,8 @@ function App() {
   const shouldCanonicalizeRef = useRef(false)
   const isMobile = useMediaQuery('(max-width: 767px)')
   const [mobileSettings, setMobileSettings] = useState(false)
+  const [inputFocused, setInputFocused] = useState(false)
+  const [vibeHovered, setVibeHovered] = useState(false)
   const reduceMotion = useReducedMotion()
   // The map chunk is lazy; once it has been shown we keep it mounted so pan/zoom,
   // layer toggles and the time nudge survive a trip through the card view.
@@ -105,7 +107,7 @@ function App() {
   }, [setView])
 
   useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
-  const { placeholder, feelingWord, getCurrentExample, previewCities, advance: advanceExample } = useRotatingPlaceholder()
+  const { placeholder, feelingWord, getCurrentExample, advance: advanceExample } = useRotatingPlaceholder()
 
   const isLanding = !result && !error
   // The header lifts once there is something to show — never merely because you
@@ -271,10 +273,8 @@ function App() {
                     result={result}
                     homeCity={homeCity}
                     use24h={timeFormat === '24h'}
-                    hasQuery={currentInputValue.trim().length > 0}
                     offset={offset}
                     onCityClick={handleCityClick}
-                    previewCities={previewCities}
                     isMobile={isMobile}
                   />
                 </Suspense>
@@ -335,6 +335,8 @@ function App() {
                     placeholder={placeholder}
                     recentQueries={recentQueries}
                     isProcessing={isDebouncing}
+                    onFocusChange={setInputFocused}
+                    placeholderActive={vibeHovered}
                   />
                 </div>
 
@@ -350,11 +352,12 @@ function App() {
                   </div>
                 )}
 
-                {isLanding && view === 'card' && (
+                {isLanding && view === 'card' && !inputFocused && (
                   <div className="order-5 flex basis-full justify-center">
                     <CityVibe
                       fallbackFeelingWord={feelingWord}
                       onClick={handleFeelingClick}
+                      onHoverChange={setVibeHovered}
                     />
                   </div>
                 )}
