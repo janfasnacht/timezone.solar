@@ -11,6 +11,8 @@ interface EntityHoverCardProps {
   now: Date
   use24h: boolean
   homeCity: HomeCity | null
+  /** Keeps the dot lit while the cursor is on the card. */
+  onHoverChange?: (hovered: boolean) => void
 }
 
 export function EntityHoverCard({
@@ -21,6 +23,7 @@ export function EntityHoverCard({
   now,
   use24h,
   homeCity,
+  onHoverChange,
 }: EntityHoverCardProps) {
   const { localTime, offset } = useMemo(() => {
     const dt = DateTime.fromJSDate(now).setZone(entity.iana)
@@ -75,7 +78,9 @@ export function EntityHoverCard({
 
   return (
     <div
-      className="absolute pointer-events-none z-50"
+      className={`absolute z-50 ${onHoverChange ? 'pointer-events-auto' : 'pointer-events-none'}`}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
       style={{ left, top, width: cardWidth }}
     >
       <div className="bg-surface border border-border rounded-lg px-3 py-2 shadow-lg">

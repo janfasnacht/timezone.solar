@@ -160,6 +160,43 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     [entities, projection]
   )
 
+  // Each dot's transparent catchment is half the distance to its nearest
+  // neighbour, clamped — so two touching dots split the gap instead of one
+  // swallowing the other. Bucketed on a uniform grid to stay O(n) at
+  // cityDensity: 'all', where there are thousands of points.
+  const hitRadii = useMemo(() => {
+    const MAX = 12
+    const MIN = 3
+    const cell = MAX * 2
+    const buckets = new Map<string, number[]>()
+    projectedEntities.forEach((p, i) => {
+      const key = `${Math.floor(p.x / cell)}:${Math.floor(p.y / cell)}`
+      const bucket = buckets.get(key)
+      if (bucket) bucket.push(i)
+      else buckets.set(key, [i])
+    })
+
+    return projectedEntities.map((p, i) => {
+      const cx = Math.floor(p.x / cell)
+      const cy = Math.floor(p.y / cell)
+      let nearest = Infinity
+      for (let gx = cx - 1; gx <= cx + 1; gx++) {
+        for (let gy = cy - 1; gy <= cy + 1; gy++) {
+          const bucket = buckets.get(`${gx}:${gy}`)
+          if (!bucket) continue
+          for (const j of bucket) {
+            if (j === i) continue
+            const q = projectedEntities[j]
+            const d = Math.hypot(p.x - q.x, p.y - q.y)
+            if (d < nearest) nearest = d
+          }
+        }
+      }
+      if (!Number.isFinite(nearest)) return MAX
+      return Math.max(MIN, Math.min(MAX, nearest / 2))
+    })
+  }, [projectedEntities])
+
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
     const src = projectedEntities.find(
@@ -199,10 +236,22 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const svgRef = useRef<SVGSVGElement>(null)
   const [screenPos, setScreenPos] = useState<{ x: number; y: number } | null>(null)
+  // Hover intent: a card for an incidental dot waits, so sweeping the cursor
+  // across the map doesn't strobe cards. Source/target labels are already on
+  // screen and expand instantly.
+  const [settledEntity, setSettledEntity] = useState<Entity | null>(null)
+  const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(settleTimer.current), [])
 
   const handleHover = useCallback(
     (entity: Entity | null) => {
       setHoveredEntity(entity)
+      clearTimeout(settleTimer.current)
+      if (entity) {
+        settleTimer.current = setTimeout(() => setSettledEntity(entity), 220)
+      } else {
+        setSettledEntity(null)
+      }
       if (entity && svgRef.current && containerRef.current) {
         const projected = projectedEntities.find((c) => c.entity.slug === entity.slug)
         if (projected) {
@@ -494,7 +543,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         )}
 
         {/* Entity markers (cities and airports) */}
-        {projectedEntities.map(({ entity, x, y }) => (
+        {projectedEntities.map(({ entity, x, y }, i) => (
           <EntityDot
             key={entity.slug}
             entity={entity}
@@ -502,6 +551,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             y={y}
             role={getEntityRole(entity)}
             minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
+            hovered={hoveredEntity?.slug === entity.slug}
+            hitRadius={hitRadii[i]}
             onHover={handleHover}
             onClick={handleClick}
           />
@@ -519,6 +570,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
           variant={srcIsHovered ? 'expanded' : 'active'}
+          onHoverChange={(over) => handleHover(over ? pinnedLabels.src!.entity : null)}
           iana={pinnedLabels.src.entity.iana}
           country={pinnedLabels.src.entity.country}
           now={now}
@@ -536,6 +588,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
           variant={tgtIsHovered ? 'expanded' : 'active'}
+          onHoverChange={(over) => handleHover(over ? pinnedLabels.tgt!.entity : null)}
           iana={pinnedLabels.tgt.entity.iana}
           country={pinnedLabels.tgt.entity.country}
           now={now}
@@ -546,9 +599,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       </div>
 
       {/* Hover card for non-pinned entities only */}
-      {hoveredEntity && screenPos && !hoveredIsPinned && (
+      {settledEntity && hoveredEntity && screenPos && !hoveredIsPinned && (
         <EntityHoverCard
           entity={hoveredEntity}
+          onHoverChange={(over) => handleHover(over ? hoveredEntity : null)}
           x={screenPos.x}
           y={screenPos.y}
           containerRect={containerRect}

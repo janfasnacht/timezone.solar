@@ -19,6 +19,8 @@ interface PinnedCityLabelProps {
   now?: Date
   use24h?: boolean
   homeCity?: HomeCity | null
+  /** Lets the map treat hovering the label as hovering its dot. */
+  onHoverChange?: (hovered: boolean) => void
 }
 
 export function PinnedCityLabel({
@@ -35,6 +37,7 @@ export function PinnedCityLabel({
   now,
   use24h,
   homeCity,
+  onHoverChange,
 }: PinnedCityLabelProps) {
   const isExpanded = variant === 'expanded'
   const isPreview = variant === 'preview'
@@ -83,7 +86,9 @@ export function PinnedCityLabel({
 
   return (
     <div
-      className={`absolute pointer-events-none transition-all duration-300 ease-out ${isExpanded ? 'z-50' : 'z-30'}`}
+      className={`absolute transition-all duration-300 ease-out ${onHoverChange ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'} ${isExpanded ? 'z-50' : 'z-30'}`}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
       style={{
         left,
         top,
