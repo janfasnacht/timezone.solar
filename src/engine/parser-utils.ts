@@ -1,4 +1,4 @@
-import type { Token, DayOfWeek, DayOfWeekModifier } from './types'
+import type { Token, DayOfWeek, DayOfWeekModifier, AbsoluteDate } from './types'
 import { NAMED_TIMES } from './constants'
 
 const TIME_REGEX = /^(\d{1,2})([:.](\d{2}))?\s*(am|pm)?$/i
@@ -72,6 +72,136 @@ interface PreprocessResult {
   cleaned: string
   relativeMinutes: number | null
   dayOfWeek: DayOfWeekModifier | null
+  absoluteDate: AbsoluteDate | null
+}
+
+const MONTH_NAMES: Record<string, number> = {
+  january: 1, jan: 1,
+  february: 2, feb: 2,
+  march: 3, mar: 3,
+  april: 4, apr: 4,
+  may: 5,
+  june: 6, jun: 6,
+  july: 7, jul: 7,
+  august: 8, aug: 8,
+  september: 9, sep: 9, sept: 9,
+  october: 10, oct: 10,
+  november: 11, nov: 11,
+  december: 12, dec: 12,
+}
+
+const MONTH_PATTERN = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join('|')
+
+const ISO_DATE = /\b(\d{4})-(\d{2})-(\d{2})\b/
+/**
+ * Slash-separated only. `.` is a legitimate European date separator but also how
+ * plenty of people write "3.30pm", and a wrong date is worse than an unparsed
+ * one. ISO with dashes is handled above.
+ */
+const NUMERIC_DATE = /\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/
+
+let dayFirstOverride: boolean | null = null
+
+/** Test seam — pass null to go back to reading the environment. */
+export function setDayFirstForTests(value: boolean | null): void {
+  dayFirstOverride = value
+}
+
+/**
+ * Does this user write 14/03 or 3/14? Ask their locale rather than guess: the
+ * person typing is the one whose convention matters, and the link they share is
+ * canonicalised to an unambiguous form anyway.
+ */
+export function resolvesDayFirst(): boolean {
+  if (dayFirstOverride !== null) return dayFirstOverride
+  try {
+    const parts = new Intl.DateTimeFormat().formatToParts(new Date(2000, 0, 2))
+    const day = parts.findIndex((p) => p.type === 'day')
+    const month = parts.findIndex((p) => p.type === 'month')
+    if (day === -1 || month === -1) return true
+    return day < month
+  } catch {
+    return true
+  }
+}
+
+function expandYear(raw: string | undefined): number | null {
+  if (!raw) return null
+  const n = Number(raw)
+  return raw.length === 2 ? 2000 + n : n
+}
+const DAY_MONTH = new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${MONTH_PATTERN})\\b(?:,?\\s*(\\d{4}))?`, 'i')
+const MONTH_DAY = new RegExp(`\\b(${MONTH_PATTERN})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b(?:,?\\s*(\\d{4}))?`, 'i')
+
+function validDate(year: number | null, month: number, day: number): AbsoluteDate | null {
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null
+  return { type: 'date', year, month, day }
+}
+
+/**
+ * Pull a named calendar date out of the query before tokenizing, so month names
+ * never reach the location resolver. Month names collide with nothing in the
+ * entity registry — verified against every city, slug and IATA code — so a bare
+ * month word is safe to claim here.
+ *
+ * Numeric-only dates are deliberately not accepted beyond ISO: `3/14` means
+ * different days either side of the Atlantic, and this app's whole point is not
+ * guessing about that.
+ */
+export function extractAbsoluteDate(input: string): { cleaned: string; absoluteDate: AbsoluteDate | null } {
+  const iso = input.match(ISO_DATE)
+  if (iso) {
+    const date = validDate(Number(iso[1]), Number(iso[2]), Number(iso[3]))
+    if (date) return { cleaned: input.replace(ISO_DATE, ' ').replace(/\s+/g, ' ').trim(), absoluteDate: date }
+  }
+
+  // Numeric: unambiguous when one number can only be a day; otherwise the
+  // user's own locale decides.
+  const numeric = input.match(NUMERIC_DATE)
+  if (numeric) {
+    const a = Number(numeric[1])
+    const b = Number(numeric[2])
+    const year = expandYear(numeric[3])
+    let month: number
+    let dayNum: number
+    if (a > 12 && b <= 12) {
+      dayNum = a
+      month = b
+    } else if (b > 12 && a <= 12) {
+      month = a
+      dayNum = b
+    } else if (resolvesDayFirst()) {
+      dayNum = a
+      month = b
+    } else {
+      month = a
+      dayNum = b
+    }
+    const date = validDate(year, month, dayNum)
+    if (date) return { cleaned: input.replace(NUMERIC_DATE, ' ').replace(/\s+/g, ' ').trim(), absoluteDate: date }
+  }
+
+  const dayFirst = input.match(DAY_MONTH)
+  if (dayFirst) {
+    const date = validDate(
+      dayFirst[3] ? Number(dayFirst[3]) : null,
+      MONTH_NAMES[dayFirst[2].toLowerCase()],
+      Number(dayFirst[1]),
+    )
+    if (date) return { cleaned: input.replace(DAY_MONTH, ' ').replace(/\s+/g, ' ').trim(), absoluteDate: date }
+  }
+
+  const monthFirst = input.match(MONTH_DAY)
+  if (monthFirst) {
+    const date = validDate(
+      monthFirst[3] ? Number(monthFirst[3]) : null,
+      MONTH_NAMES[monthFirst[1].toLowerCase()],
+      Number(monthFirst[2]),
+    )
+    if (date) return { cleaned: input.replace(MONTH_DAY, ' ').replace(/\s+/g, ' ').trim(), absoluteDate: date }
+  }
+
+  return { cleaned: input, absoluteDate: null }
 }
 
 export function extractRelativeTime(input: string): RelativeTimeResult {
@@ -170,15 +300,33 @@ export function extractDayOfWeek(input: string): { cleaned: string; dayOfWeek: D
   return { cleaned: cleaned.replace(/\s+/g, ' ').trim(), dayOfWeek }
 }
 
+/**
+ * "5 pm" and "5 p.m." mean the same as "5pm". Without this the tokenizer reads
+ * the number alone and drops the meridiem, silently answering 5am — wrong by
+ * twelve hours, with nothing on screen to suggest it.
+ */
+export function normalizeMeridiem(input: string): string {
+  return input.replace(/(\d)\s+([ap])\.?\s?m\.?(?![a-z])/gi, (_m, digit: string, ap: string) =>
+    `${digit}${ap.toLowerCase()}m`,
+  )
+}
+
 export function preprocess(input: string): PreprocessResult {
   let cleaned = input
 
   // Strip trailing question mark
   cleaned = cleaned.replace(/\?+$/, '').trim()
 
+  // Join a number to a detached meridiem before anything tries to tokenize it
+  cleaned = normalizeMeridiem(cleaned)
+
   // Extract relative time expressions (before tokenization so "in" isn't eaten as connector)
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned)
   cleaned = afterRelative
+
+  // Extract a named date (before tokenization so month names don't become locations)
+  const { cleaned: afterDate, absoluteDate } = extractAbsoluteDate(cleaned)
+  cleaned = afterDate
 
   // Extract day-of-week tokens (before tokenization so they don't become locations)
   const { cleaned: afterDayOfWeek, dayOfWeek } = extractDayOfWeek(cleaned)
@@ -187,7 +335,7 @@ export function preprocess(input: string): PreprocessResult {
   // Strip standalone "now" (no-op — equivalent to no time specified)
   cleaned = cleaned.replace(/\bnow\b/gi, ' ').replace(/\s+/g, ' ').trim()
 
-  return { cleaned, relativeMinutes, dayOfWeek }
+  return { cleaned, relativeMinutes, dayOfWeek, absoluteDate }
 }
 
 // --- Post-tokenize cleanup ---

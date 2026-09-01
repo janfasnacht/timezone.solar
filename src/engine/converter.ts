@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import type { TimezoneInfo, ConversionResult, ConversionIntent, LocationRef, DayOfWeekModifier, DayOfWeek } from './types'
+import type { TimezoneInfo, ConversionResult, ConversionIntent, LocationRef, DayOfWeekModifier, DayOfWeek, AbsoluteDate } from './types'
 
 function buildTimezoneInfo(dt: DateTime, loc: LocationRef): TimezoneInfo {
   return {
@@ -39,6 +39,25 @@ function getDayBoundary(sourceDt: DateTime, targetDt: DateTime): ConversionResul
   if (diff === -1) return 'yesterday'
   if (diff > 0) return `+${diff} days`
   return `${diff} days`
+}
+
+/**
+ * Set a named calendar date, keeping the time of day already resolved. Without a
+ * year the query means "the next one" — so a date that has already passed this
+ * year rolls forward, which is what "the 14th of March" means in September.
+ */
+function applyAbsoluteDate(dt: DateTime, date: AbsoluteDate): DateTime {
+  if (date.year !== null) {
+    const exact = dt.set({ year: date.year, month: date.month, day: date.day })
+    return exact.isValid ? exact : dt
+  }
+
+  const thisYear = dt.set({ year: dt.year, month: date.month, day: date.day })
+  if (!thisYear.isValid) return dt
+  if (thisYear.startOf('day') >= dt.startOf('day')) return thisYear
+
+  const nextYear = dt.set({ year: dt.year + 1, month: date.month, day: date.day })
+  return nextYear.isValid ? nextYear : thisYear
 }
 
 function getDstNote(sourceDt: DateTime, targetDt: DateTime): string | null {
@@ -167,6 +186,8 @@ export function convert(intent: ConversionIntent): ConversionResult {
       // Day-of-week modifier — resolve to concrete date offset
       const offset = dayOfWeekOffset(dateModifier, sourceDt.weekday)
       sourceDt = sourceDt.plus({ days: offset })
+    } else if (typeof dateModifier === 'object' && dateModifier?.type === 'date') {
+      sourceDt = applyAbsoluteDate(sourceDt, dateModifier)
     } else {
       // No explicit modifier — temporal anchoring
       const nowInSource = now.setZone(source.iana)
@@ -191,6 +212,8 @@ export function convert(intent: ConversionIntent): ConversionResult {
     } else if (typeof dateModifier === 'object' && dateModifier?.type === 'day-of-week') {
       const offset = dayOfWeekOffset(dateModifier, sourceDt.weekday)
       sourceDt = sourceDt.plus({ days: offset })
+    } else if (typeof dateModifier === 'object' && dateModifier?.type === 'date') {
+      sourceDt = applyAbsoluteDate(sourceDt, dateModifier)
     }
   }
 
