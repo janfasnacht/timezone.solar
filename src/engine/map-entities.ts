@@ -125,6 +125,38 @@ export const MAP_CITY_SLUGS: ReadonlySet<string> = new Set([
   'wellington',
 ])
 
+
+/**
+ * The places that should win their space when the whole world is on screen.
+ *
+ * Deliberately not the most populous — this is a timezone app, so the axis is
+ * "a place you would coordinate a time across". That is why Lagos, Nairobi and
+ * Johannesburg are here and Dhaka and Karachi are not, and why the set is
+ * spread across regions rather than concentrated where the people are.
+ */
+export const ANCHOR_CITY_SLUGS: ReadonlySet<string> = new Set([
+  // North America
+  'new-york', 'los-angeles', 'chicago', 'san-francisco', 'toronto', 'vancouver',
+  'mexico-city',
+  // South America
+  'sao-paulo', 'buenos-aires', 'lima', 'bogota', 'santiago',
+  // Europe
+  'london', 'paris', 'berlin', 'madrid', 'rome', 'amsterdam', 'zurich',
+  'stockholm', 'warsaw', 'moscow', 'istanbul', 'lisbon', 'dublin',
+  // Africa
+  'cairo', 'lagos', 'nairobi', 'johannesburg', 'cape-town', 'casablanca',
+  'accra', 'addis-ababa', 'dar-es-salaam', 'algiers',
+  // Middle East
+  'dubai', 'riyadh', 'tel-aviv', 'tehran',
+  // South Asia
+  'mumbai', 'delhi',
+  // East and Southeast Asia
+  'tokyo', 'seoul', 'beijing', 'shanghai', 'hong-kong', 'singapore', 'bangkok',
+  'jakarta', 'manila', 'taipei',
+  // Oceania
+  'sydney', 'melbourne', 'auckland', 'perth',
+])
+
 /**
  * Look up an entity by name for map rendering, first from curated entities,
  * then from the city-timezones database as a fallback. Used for the source and

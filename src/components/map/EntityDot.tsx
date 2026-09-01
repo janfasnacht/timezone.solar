@@ -13,9 +13,9 @@ interface EntityDotProps {
   /** Transparent catchment radius; never overlaps a neighbour's half-distance. */
   hitRadius?: number
   /**
-   * Current map zoom. An ordinary dot is divided all the way back to a constant
-   * screen size, matching the labels beside it; source and target only partly,
-   * so they stay the emphasis they are meant to be.
+   * Current map zoom. Every measurement here is divided by it, so a marker and
+   * its catchment hold one size on screen and the emphasis between them keeps
+   * the ratio it has at rest.
    */
   zoom?: number
   onHover: (entity: Entity | null) => void
@@ -41,7 +41,9 @@ export function EntityDot({
   onClick,
 }: EntityDotProps) {
   const isActive = role !== 'none'
-  const damp = Math.pow(zoom, isActive || hovered ? 0.6 : 1)
+  // Source and target are already drawn large, and hovering one opens its card.
+  // Growing the mark as well is a third signal for the same thing.
+  const grows = hovered && !isActive
   const opacity = isActive || hovered ? 1 : minor ? 0.25 : 0.5
 
   const handlers = {
@@ -56,7 +58,7 @@ export function EntityDot({
     <circle
       cx={x}
       cy={y}
-      r={hitRadius}
+      r={hitRadius / zoom}
       fill="transparent"
       {...handlers}
     />
@@ -67,7 +69,7 @@ export function EntityDot({
     // Filled solid so the marker reads at the same optical weight as the
     // city dots without an outline ringing the shape.
     const base = isActive ? 14 : minor ? 9 : 11
-    const size = (hovered ? base * 1.45 : base) / damp
+    const size = (grows ? base * 1.45 : base) / zoom
     const scale = size / 24
     return (
       <>
@@ -84,7 +86,7 @@ export function EntityDot({
   }
 
   const base = isActive ? 4.5 : minor ? 1 : 2.5
-  const r = (hovered ? base * 1.8 : base) / damp
+  const r = (grows ? base * 1.8 : base) / zoom
   return (
     <>
       {hitArea}

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { getRankedMapEntities, selectSpaced, MINOR_RANK, type Box } from '@/engine/map-density'
 import { FAMILIAR_CITY_SLUGS } from '@/engine/familiar-cities'
-import { MAP_CITY_SLUGS } from '@/engine/map-entities'
+import { ANCHOR_CITY_SLUGS, MAP_CITY_SLUGS } from '@/engine/map-entities'
 
 interface Pt {
   id: string
@@ -40,6 +40,16 @@ describe('selectSpaced', () => {
       limit: 10,
     })
     expect(kept.map((p) => p.id)).toEqual(['visible'])
+  })
+
+  it('respects boxes claimed by an earlier pass', () => {
+    const pts: Pt[] = [{ id: 'a', x: 0, y: 0 }, { id: 'b', x: 40, y: 0 }]
+    const kept = selectSpaced(pts, {
+      boxFor: boxes(10),
+      limit: 10,
+      seed: [{ x: -5, y: -5, w: 10, h: 10 }],
+    })
+    expect(kept.map((p) => p.id)).toEqual(['b'])
   })
 
   it('stops at the limit', () => {
@@ -95,6 +105,20 @@ describe('getRankedMapEntities', () => {
 
   it('has no duplicate slugs', () => {
     expect(new Set(ranked.map((r) => r.entity.slug)).size).toBe(ranked.length)
+  })
+
+  it('every anchor exists in the registry and outranks a merely familiar city', () => {
+    for (const slug of ANCHOR_CITY_SLUGS) expect(bySlug.has(slug), slug).toBe(true)
+    // Karachi and Dhaka are more populous than Lagos; the anchor tier is what
+    // keeps this a timezone map rather than a population map.
+    expect(bySlug.get('lagos')!.rank).toBeGreaterThan(bySlug.get('karachi')!.rank)
+    expect(bySlug.get('nairobi')!.rank).toBeGreaterThan(bySlug.get('dhaka')!.rank)
+  })
+
+  it('ranks an airport by its parent city, not by whatever shares its name', () => {
+    const lhr = ranked.find((r) => r.entity.kind === 'airport' && r.entity.iata === 'LHR')!
+    const san = ranked.find((r) => r.entity.kind === 'airport' && r.entity.iata === 'SAN')!
+    expect(lhr.rank).toBeGreaterThan(san.rank)
   })
 
   it('ranks a familiar city above a curated one, and both above the tail', () => {

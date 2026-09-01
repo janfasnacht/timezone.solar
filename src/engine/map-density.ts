@@ -1,7 +1,7 @@
 import cityTimezones from 'city-timezones'
 import { getAllEntities, type Entity } from './entities'
 import { FAMILIAR_AIRPORT_IATA, FAMILIAR_CITY_SLUGS } from './familiar-cities'
-import { MAP_CITY_SLUGS } from './map-entities'
+import { ANCHOR_CITY_SLUGS, MAP_CITY_SLUGS } from './map-entities'
 import { normalize } from './resolver'
 
 /** A tier base picks the band; log-population orders within it. Bands are wide
@@ -12,6 +12,7 @@ export interface RankedEntity {
 }
 
 const TIER = {
+  anchorCity: 500,
   familiarCity: 400,
   mapCity: 300,
   curatedCity: 200,
@@ -54,16 +55,21 @@ function populationOf(name: string): number | undefined {
   return popByName.get(normalize(name))
 }
 
-function rankOf(entity: Entity): number {
+function rankOf(entity: Entity, cityNameBySlug: Map<string, string>): number {
   if (entity.kind === 'airport') {
     const base = FAMILIAR_AIRPORT_IATA.has(entity.iata) ? TIER.familiarAirport : TIER.airport
-    return base + popScore(populationOf(entity.displayName))
+    // An airport's pull is its city's. Matching on the field's own name picks up
+    // whatever unrelated town happens to share it — SAN outranking Heathrow.
+    const parent = entity.parentCitySlug ? cityNameBySlug.get(entity.parentCitySlug) : undefined
+    return base + popScore(populationOf(parent ?? entity.displayName))
   }
-  const base = FAMILIAR_CITY_SLUGS.has(entity.slug)
-    ? TIER.familiarCity
-    : MAP_CITY_SLUGS.has(entity.slug)
-      ? TIER.mapCity
-      : TIER.curatedCity
+  const base = ANCHOR_CITY_SLUGS.has(entity.slug)
+    ? TIER.anchorCity
+    : FAMILIAR_CITY_SLUGS.has(entity.slug)
+      ? TIER.familiarCity
+      : MAP_CITY_SLUGS.has(entity.slug)
+        ? TIER.mapCity
+        : TIER.curatedCity
   return base + popScore(populationOf(entity.displayName))
 }
 
@@ -74,7 +80,8 @@ export function getRankedMapEntities(): readonly RankedEntity[] {
   if (ranked) return ranked
   const curated = getAllEntities()
   const seen = new Set(curated.map((e) => e.slug))
-  const out: RankedEntity[] = curated.map((entity) => ({ entity, rank: rankOf(entity) }))
+  const cityNameBySlug = new Map(curated.map((e) => [e.slug, e.displayName]))
+  const out: RankedEntity[] = curated.map((entity) => ({ entity, rank: rankOf(entity, cityNameBySlug) }))
 
   for (const row of cityTimezones.cityMapping as CityRow[]) {
     const slug = row.city.toLowerCase().replace(/\s+/g, '-')
@@ -120,6 +127,8 @@ export interface SelectOptions<T> {
   /** The space this item claims, or null to drop it — also how the caller culls to the viewport. */
   boxFor: (item: T) => Box | null
   limit: number
+  /** Boxes already claimed by an earlier pass; candidates must clear these too. */
+  seed?: readonly Box[]
   /** Grid cell size; performance only, correctness holds at any value. */
   cell?: number
 }
@@ -134,7 +143,7 @@ export interface SelectOptions<T> {
  * queries only its own, so the test is exact regardless of `cell`.
  */
 export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions<T>): T[] {
-  const { boxFor, limit, cell = 32 } = options
+  const { boxFor, limit, seed, cell = 32 } = options
   if (limit <= 0) return []
 
   const grid = new Map<string, Box[]>()
@@ -147,6 +156,20 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
     const y1 = Math.floor((b.y + b.h) / cell)
     return { x0, x1, y0, y1 }
   }
+
+  const claim = (box: Box) => {
+    const { x0, x1, y0, y1 } = cellsOf(box)
+    for (let gx = x0; gx <= x1; gx++) {
+      for (let gy = y0; gy <= y1; gy++) {
+        const key = `${gx}:${gy}`
+        const bucket = grid.get(key)
+        if (bucket) bucket.push(box)
+        else grid.set(key, [box])
+      }
+    }
+  }
+
+  if (seed) for (const box of seed) claim(box)
 
   for (const item of candidates) {
     const box = boxFor(item)
@@ -170,14 +193,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
 
     accepted.push(item)
     if (accepted.length >= limit) break
-    for (let gx = x0; gx <= x1; gx++) {
-      for (let gy = y0; gy <= y1; gy++) {
-        const key = `${gx}:${gy}`
-        const bucket = grid.get(key)
-        if (bucket) bucket.push(box)
-        else grid.set(key, [box])
-      }
-    }
+    claim(box)
   }
 
   return accepted
