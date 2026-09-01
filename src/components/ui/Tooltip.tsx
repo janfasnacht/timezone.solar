@@ -23,10 +23,9 @@ const SIDE_CLASS: Record<Side, string> = {
 const HOVER_DELAY_MS = 400
 
 /**
- * The only floating surface besides the popover, and deliberately lighter in
- * weight because it is decorative rather than interactive. It names a control
- * and may teach its shortcut. It never contains an action — anything clickable
- * belongs in a popover.
+ * The only floating surface besides the popover, and lighter in weight because
+ * it is decorative rather than interactive: it names a control and may teach its
+ * shortcut. Never contains an action — anything clickable belongs in a popover.
  */
 export function Tooltip({ label, keys, side = 'top', children, className }: TooltipProps) {
   const [open, setOpen] = useState(false)

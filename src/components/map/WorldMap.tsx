@@ -126,10 +126,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const allMapEntities = useMemo(() => getAllMapEntities(), [])
   const mapSlugs = useMemo(() => new Set(baseMapEntities.map((c) => c.slug)), [baseMapEntities])
 
-  // Asking about the city you are already in is a legitimate query — "Zurich"
-  // from Zurich — and it used to blank the map entirely, because nulling the
-  // whole conversion took the pinned label and the highlighted dot with the
-  // arc. Only the arc is meaningless here, so only the arc is suppressed.
+  // Asking about the city you are in is a valid query. Only the arc is
+  // meaningless there, so the pin and label still render.
   const isSameCity = conversion
     ? normalize(conversion.sourceCity) === normalize(conversion.targetCity)
     : false
@@ -218,10 +216,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
-    // Compare through `normalize`, not `toLowerCase`. The resolver answers from
-    // the 86K city-timezones DB and returns "Zürich"; the curated entity is
-    // "Zurich". A plain lowercase compare never matched, so every city with a
-    // diacritic silently lost its pin, its label and its arc endpoint.
+    // `normalize`, not `toLowerCase`: the resolver may answer with a diacritic
+    // form ("Zürich") where the curated entity is ASCII ("Zurich").
     const src = projectedEntities.find(
       (c) => normalize(c.entity.displayName) === normalize(effectiveConversion.sourceCity)
     )
@@ -436,7 +432,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     })
 
     const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
-    // One place, one label — otherwise the two stack exactly on top of each other.
+    // One place, one label — two would stack exactly.
     const tgt = targetProjected && !isSameCity
       ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity }
       : null

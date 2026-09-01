@@ -20,11 +20,10 @@ const ICON_BUTTON =
 /**
  * The moment, and a way to move it by an hour.
  *
- * There is deliberately no picker here. Nudging edits the query rather than
- * holding shadow state, and the query is where a moment is *named* — the parser
- * understands `next friday`, `14 march`, `2026-03-14`. A second text field in
- * this pill would be a second search bar for the same sentence. So the search
- * bar names the moment and this pill adjusts it; that is the whole division.
+ * Nudging edits the query rather than holding separate state, so the search bar
+ * and the URL stay a complete description of what is shown. Naming a moment is
+ * the search bar's job — the parser takes `next friday`, `14 march`, ISO — which
+ * is why there is no picker here.
  */
 export function TimeControl({
   isLive,
@@ -36,8 +35,8 @@ export function TimeControl({
 }: TimeControlProps) {
   const time = anchor ? anchor.toFormat(use24h ? 'HH:mm' : 'h:mm a') : 'now'
 
-  // Nudging by an hour crosses midnight sooner or later, and a bare "23:00"
-  // that silently means tomorrow is worse than no read-out at all.
+  // Nudging crosses midnight sooner or later, and a bare "23:00" meaning
+  // tomorrow is worse than no read-out at all.
   const dayLabel = (() => {
     if (!anchor) return null
     const days = anchor.startOf('day').diff(DateTime.now().setZone(anchor.zone).startOf('day'), 'days').days

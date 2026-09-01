@@ -16,8 +16,7 @@ export function SunDialLogo({ onClick, compact = false }: SunDialLogoProps) {
           compact ? 'h-6 w-6' : 'mb-2 h-9 w-9 md:mb-4'
         }`}
       />
-      {/* Collapsed to zero in both axes: `text-[0]` is not a Tailwind class, so
-          the hidden wordmark was silently reserving its full width in the row. */}
+      {/* Collapses in both axes: width matters, the row is a sized grid track. */}
       <div
         className={`overflow-hidden whitespace-nowrap font-serif font-light italic text-muted-foreground transition-all duration-300 ${
           compact ? 'h-0 w-0 opacity-0' : 'h-auto w-auto text-[1.1rem] opacity-100'

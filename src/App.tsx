@@ -277,10 +277,9 @@ function App() {
           </div>
         ) : (
           <div className="page-glow relative h-full w-full overflow-hidden bg-background">
-            {/* Top right — where you are and what time it is there. Every answer on
-                this page is relative to it, so it is stated rather than hidden behind
-                a gear. Pinned to the corner, not to the search row, so it holds still
-                between landing and active. */}
+            {/* Top right — where you are and what time it is there. Pinned to the
+                corner rather than the search row, so it holds still between landing
+                and active. */}
             {!isMobile && (
               <div className="absolute top-4 right-4 z-50">
                 <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
@@ -351,9 +350,8 @@ function App() {
               )}
             </m.div>
 
-            {/* Mobile settings — bottom right, beside the switcher. A gear rather than
-                a segment in it: Card/Map/Share are peers that latch when pressed, and
-                this opens a panel instead, so it is not one of them. */}
+            {/* Mobile settings — beside the switcher, not a segment in it:
+                Card/Map/Share latch when pressed, this opens a panel. */}
             {isMobile && (
               <div
                 className="absolute right-4 z-50"
@@ -363,9 +361,8 @@ function App() {
               </div>
             )}
 
-            {/* The switcher belongs to the result, not to the question — so it sits
-                with the other result-level tools along the bottom edge, in the one
-                position that has room for it at every width. */}
+            {/* The switcher belongs to the result, not the question, so it sits with
+                the other result-level tools along the bottom edge. */}
             {hasResult && (
               <div
                 className="pointer-events-none absolute inset-x-0 z-40 flex justify-center"
@@ -446,8 +443,8 @@ function App() {
                       inputFocused ? 'pointer-events-none opacity-0' : 'opacity-100'
                     }`}
                   >
-                    {/* "or" is pinned to the centre column, so the map link never
-                        moves when the vibe's adjective changes length. */}
+                    {/* "or" is pinned to the centre column, so the map link holds
+                        still as the adjective changes length. */}
                     <div className="justify-self-end">
                       <CityVibe
                         fallbackFeelingWord={feelingWord}
@@ -455,9 +452,8 @@ function App() {
                         onHoverChange={setVibeHovered}
                       />
                     </div>
-                    {/* One voice — the card's serif-italic narration — so these read
-                        as two halves of a sentence. The break is the faint "or" and
-                        the space around it, not a second typeface. */}
+                    {/* One voice — the card's serif italic — so these read as two
+                        halves of a sentence, broken by the "or" and the space. */}
                     <span className="font-serif text-[0.95rem] italic text-muted-foreground/40" aria-hidden="true">or</span>
                     <button
                       onClick={() => setView('map')}

@@ -1,23 +1,12 @@
 /**
- * Cities recognisable enough that a reader sees the *grammar* of an example
- * rather than stopping to decode the place names.
+ * Cities recognisable enough that an example reads as a pattern rather than as
+ * two place names to decode.
  *
- * The rotating placeholder teaches five query shapes, but it drew uniformly
- * from all 325 curated cities, so it produced "8am Kuopio to Viana do Castelo"
- * — where the pattern is invisible behind the nouns.
+ * Curated rather than derived. The axis is "somewhere you would plausibly
+ * coordinate a time across" — business and travel hubs — which is neither
+ * population nor fame, and short enough to maintain by hand.
  *
- * Three signals already in the registry were measured as candidates. Having an
- * airport (309/325) and having an icon (281/325) discriminate nothing. Hand-written
- * aliases do (70/325) — a city only earns a colloquial short form if people say
- * it often — but the alias list was maintained ad hoc and misses Singapore, Hong
- * Kong, Mumbai, Barcelona, Zurich and others you would notice.
- *
- * So this is curated rather than derived. Wikipedia pageviews were the obvious
- * alternative and rank Chernobyl and Pompeii near the top; fame is not the axis.
- * The axis is *somewhere you would plausibly coordinate a time across*, which
- * means business and travel hubs, and that list is short enough to read.
- *
- * Invariant: every slug here must exist in the entity registry — see the test.
+ * Every slug must exist in the entity registry; see familiar-cities.test.ts.
  */
 export const FAMILIAR_CITY_SLUGS: ReadonlySet<string> = new Set([
   // North America
@@ -47,15 +36,11 @@ export const FAMILIAR_CITY_SLUGS: ReadonlySet<string> = new Set([
 ])
 
 /**
- * Airport codes recognisable on sight.
+ * Airport codes recognisable on sight. Exhaustive rather than weighted: a
+ * familiar city has dozens of minor fields, and an unknown three-letter code is
+ * noise where an unknown city name is at least a word.
  *
- * Restricting airports to *familiar parent cities* was not enough: a familiar
- * city has dozens of minor fields, which produced "1pm HIO to BXK" and
- * "6am HDH to VIY". An unrecognised city name is still a word you can read;
- * an unrecognised three-letter code is noise, so this list is exhaustive rather
- * than weighted — there is no charm in an obscure IATA code.
- *
- * Invariant: every code must exist in the airport registry — see the test.
+ * Every code must exist in the airport registry; see familiar-cities.test.ts.
  */
 export const FAMILIAR_AIRPORT_IATA: ReadonlySet<string> = new Set([
   // North America
@@ -78,9 +63,5 @@ export const FAMILIAR_AIRPORT_IATA: ReadonlySet<string> = new Set([
   'SYD', 'MEL', 'AKL',
 ])
 
-/**
- * Share of placeholder examples drawn from the familiar set. The remainder is
- * the long tail, kept deliberately: an occasional Viana do Castelo is the point
- * of a 325-city catalogue, it just cannot be the whole diet.
- */
+/** Share of placeholder examples drawn from the familiar set; the rest is the long tail. */
 export const FAMILIAR_SHARE = 0.85

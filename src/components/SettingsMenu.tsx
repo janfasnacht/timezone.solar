@@ -211,9 +211,9 @@ interface SettingsMenuProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   /**
-   * Mobile drops the clock — the phone's own status bar already shows the local
-   * time — and moves to the bottom row, where the thumb is. It gets its border
-   * back too: touch has no hover, so a target has to look like one.
+   * Mobile drops the clock, which the phone's status bar already shows, and
+   * moves to the bottom row within thumb reach. It keeps its border: touch has
+   * no hover, so a target has to look like one.
    */
   asButton?: boolean
 }
@@ -221,10 +221,9 @@ interface SettingsMenuProps {
 /**
  * Where you are, and the way into everything app-level.
  *
- * Deliberately quiet: it is *configuration*, and every view already carries the
- * clocks that answer the question. Rendered as a status line rather than a
- * control, it stays available without pulling the eye away from the result. It
- * is still one target — a display is never itself a switch.
+ * Quiet by design: this is configuration, and every view already carries the
+ * clocks that answer the question, so it reads as a status line. Still one
+ * target — a display is never itself a switch.
  */
 export function SettingsMenu({ open, onOpenChange, asButton = false }: SettingsMenuProps) {
   const { homeCity, use24h } = usePreferences()

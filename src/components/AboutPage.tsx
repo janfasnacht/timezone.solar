@@ -16,12 +16,8 @@ const EXAMPLES = [
 ]
 
 /**
- * One screen, on the landing screen's own grid — same top offset, same 520px
- * column, same centred logo, so nothing moves when you arrive here from there.
- *
- * Shortcuts are deliberately not listed. The current set needs redesigning
- * (backlog #12) and three of them are macOS-only, so documenting it would be
- * documenting a defect.
+ * Laid out on the landing screen's grid — same top offset, same 520px column,
+ * same centred logo — so nothing moves when you arrive here from there.
  */
 export function AboutPage({ onRunQuery }: AboutPageProps) {
   const runQuery = (query: string) => {

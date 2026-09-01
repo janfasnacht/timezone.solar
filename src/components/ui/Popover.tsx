@@ -19,12 +19,11 @@ const ANCHOR_CLASS: Record<Anchor, string> = {
 }
 
 /**
- * The one popover. Every panel that opens on click is this surface, at this
- * width — no sheets, no second width, no third radius. Mobile gets the same
- * panel, anchored differently rather than restyled.
+ * The one popover: every panel that opens on click is this surface, at this
+ * width, on both breakpoints — anchored differently rather than restyled.
  *
- * Opens on click, closes on outside-click and Escape. That is the whole
- * contract; anything that wants to teach rather than act is a Tooltip.
+ * Opens on click, closes on outside-click and Escape. Anything that names a
+ * control rather than acting on it is a Tooltip.
  */
 export function Popover({ open, onClose, anchor = 'top-right', trigger, children }: PopoverProps) {
   const ref = useRef<HTMLDivElement>(null)

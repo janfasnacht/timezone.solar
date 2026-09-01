@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { getAllEntities, type AirportEntity, type CityEntity } from '@/engine/entities'
 import { FAMILIAR_AIRPORT_IATA, FAMILIAR_CITY_SLUGS, FAMILIAR_SHARE } from '@/engine/familiar-cities'
 
-// Abbreviations people read on sight. Always the *source*, so the target stays
-// a city and can still supply a feeling word.
+// Abbreviations people read on sight. Always the source, so the target stays a
+// city and can still supply a feeling word.
 const ABBREVIATIONS = ['EST', 'PST', 'CST', 'GMT', 'CET', 'JST', 'IST', 'AEST', 'BST']
 
 const MONTHS = [
@@ -43,11 +43,7 @@ function pick<T>(arr: T[]): T {
 
 const isFamiliar = (c: { slug: string }) => FAMILIAR_CITY_SLUGS.has(c.slug)
 
-/**
- * How many opening examples are held to familiar places. A first impression of
- * "8am Kuopio to Viana do Castelo" spends the reader's attention on the nouns;
- * by the third example the pattern has landed and the long tail is charm.
- */
+/** Opening examples held to familiar places; the long tail starts after them. */
 const FAMILIAR_HEAD = 2
 
 type CityWithVibes = CityEntity & { vibes: string[] }
@@ -59,11 +55,9 @@ export interface GeneratedExample {
   familiar: boolean
 }
 
-// Build examples from city entities that have vibes. This rotation is the only
-// place the query language is taught, so the mix is a curriculum — kept close to
-// uniform, because ranking shapes by "obviousness" is a claim about readers that
-// we have no evidence for. The two plainest things a person can type lead only
-// slightly.
+// The rotation is the only place the query language is taught, so the mix is a
+// curriculum. Kept close to uniform: ranking shapes by how obvious they are is a
+// claim about readers we cannot check.
 //   "Chicago to New York"     — two places, no time         15%
 //   "Tokyo"                   — current time somewhere      15%
 //   "noon Tokyo to London"    — time city to city           15%
@@ -82,9 +76,7 @@ export function generateExamples(): GeneratedExample[] {
   // parent city's feeling-word vocabulary when an airport is the target.
   const cityVibesBySlug = new Map<string, string[]>()
   for (const c of cities) cityVibesBySlug.set(c.slug, c.vibes)
-  // Airport examples are held to codes people read on sight. Restricting to
-  // familiar parent *cities* was not enough — a familiar city has dozens of
-  // minor fields, which produced "1pm HIO to BXK".
+  // Airport examples are held to codes people read on sight.
   const airports = all.filter(
     (e): e is AirportEntity =>
       e.kind === 'airport' &&
@@ -94,9 +86,8 @@ export function generateExamples(): GeneratedExample[] {
   )
   const shuffledAirports = shuffle(airports)
 
-  // Mostly cities the reader knows, so the *pattern* is what stands out rather
-  // than the place names — but with the long tail still present, because an
-  // occasional Viana do Castelo is the point of a 325-city catalogue.
+  // Mostly cities the reader knows, so the pattern stands out rather than the
+  // place names, with the long tail still present.
   const familiar = cities.filter((c) => FAMILIAR_CITY_SLUGS.has(c.slug))
   const tail = cities.filter((c) => !FAMILIAR_CITY_SLUGS.has(c.slug))
   const tailCount = Math.round(familiar.length / FAMILIAR_SHARE - familiar.length)
@@ -109,8 +100,7 @@ export function generateExamples(): GeneratedExample[] {
     const roll = Math.random()
 
     if (roll < 0.15 && i + 1 < shuffled.length) {
-      // "Chicago to New York" — no time at all. Arguably the plainest thing a
-      // person types, and no example had ever shown it.
+      // "Chicago to New York" — no time at all.
       const src = shuffled[i]
       const tgt = shuffled[i + 1]
       examples.push({
@@ -120,8 +110,7 @@ export function generateExamples(): GeneratedExample[] {
       })
       i += 2
     } else if (roll < 0.27 && i + 1 < shuffled.length) {
-      // "14 march 3pm Berlin" / "2 april 9am Tokyo to Berlin" — absolute dates,
-      // taught in 1e726de and previously demonstrated nowhere.
+      // "14 march 3pm Berlin" / "2 april 9am Tokyo to Berlin"
       const tgt = shuffled[i]
       const time = pick(TIME_FORMATS)
       const withSource = Math.random() < 0.5 && i + 1 < shuffled.length
@@ -135,7 +124,7 @@ export function generateExamples(): GeneratedExample[] {
       })
       i += withSource ? 2 : 1
     } else if (roll < 0.37) {
-      // "in 2 hours in Berlin" — relative times, also never shown before.
+      // "in 2 hours in Berlin"
       const tgt = shuffled[i]
       examples.push({
         text: `${pick(RELATIVE_SPANS)} in ${tgt.displayName}`,
@@ -144,7 +133,8 @@ export function generateExamples(): GeneratedExample[] {
       })
       i += 1
     } else if (roll < 0.42) {
-      // "9am EST to Berlin" — the abbreviation layer, likewise unadvertised.
+      // "9am EST to Berlin" — abbreviation as the source, so the target is a
+      // city and can still supply a feeling word.
       const tgt = shuffled[i]
       const time = pick(TIME_FORMATS)
       examples.push({
@@ -217,8 +207,8 @@ export function generateExamples(): GeneratedExample[] {
   }
 
   const ordered = shuffle(examples)
-  // Pull a familiar example forward into any of the opening slots that drew from
-  // the tail, rather than filtering the tail out of them.
+  // Pull a familiar example forward into any opening slot that drew from the
+  // tail, rather than filtering the tail out of those slots.
   for (let slot = 0; slot < FAMILIAR_HEAD && slot < ordered.length; slot++) {
     if (ordered[slot].familiar) continue
     const swap = ordered.findIndex((e, j) => j >= FAMILIAR_HEAD && e.familiar)
@@ -237,11 +227,7 @@ interface RotatingPlaceholder {
   advance: () => void
 }
 
-/**
- * @param rotating whether examples should cycle. Only true on the landing
- * screen: elsewhere a rotating placeholder is a suggestion nobody asked for,
- * and it used to churn the map's preview along with it.
- */
+/** @param rotating whether examples cycle. Only true on the landing screen. */
 export function useRotatingPlaceholder(rotating: boolean): RotatingPlaceholder {
   const [pool] = useState(generateExamples)
   const [index, setIndex] = useState(0)
