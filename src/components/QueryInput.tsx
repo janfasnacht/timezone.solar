@@ -4,6 +4,7 @@ import { RecentSearches } from '@/components/RecentSearches'
 
 interface QueryInputProps {
   ref?: React.Ref<HTMLInputElement>
+  className?: string
   onSubmit: (query: string) => void
   onClear: () => void
   onFocusChange?: (focused: boolean) => void
@@ -13,10 +14,13 @@ interface QueryInputProps {
   placeholder?: string
   recentQueries?: string[]
   isProcessing?: boolean
+  /** Renders the placeholder as the query that would fire, not as a hint. */
+  placeholderActive?: boolean
 }
 
 export function QueryInput({
   ref,
+  className,
   onSubmit,
   onClear,
   onFocusChange,
@@ -26,6 +30,7 @@ export function QueryInput({
   placeholder,
   recentQueries = [],
   isProcessing = false,
+  placeholderActive = false,
 }: QueryInputProps) {
   const [value, setValue] = useState(initialValue ?? '')
   const [historyIndex, setHistoryIndex] = useState<number | null>(null)
@@ -146,7 +151,7 @@ export function QueryInput({
   const showPlaceholder = !value && !isFocused && placeholder
 
   return (
-    <div className="relative">
+    <div className={`relative${className ? ` ${className}` : ''}`}>
       <input
         ref={ref ?? fallbackRef}
         type="text"
@@ -165,7 +170,9 @@ export function QueryInput({
       />
       {showPlaceholder && (
         <span
-          className="pointer-events-none absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-base md:text-[1.05rem] text-muted-foreground transition-opacity duration-300"
+          className={`pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-base transition-colors duration-200 md:left-6 md:text-[1.05rem] ${
+            placeholderActive ? 'text-foreground' : 'text-muted-foreground'
+          }`}
           aria-hidden="true"
         >
           {placeholder}

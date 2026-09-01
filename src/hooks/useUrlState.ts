@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { parseCanonicalParams, type CanonicalQuery } from '@/lib/canonicalUrl'
 
-export type ViewMode = 'card' | 'map'
+export type ViewMode = 'card' | 'map' | 'share'
 
 function getQueryFromUrl(): string {
   const params = new URLSearchParams(window.location.search)
@@ -13,8 +13,8 @@ function getCanonicalFromUrl(): CanonicalQuery | null {
 }
 
 function getViewFromUrl(): ViewMode {
-  const params = new URLSearchParams(window.location.search)
-  return params.get('view') === 'map' ? 'map' : 'card'
+  const view = new URLSearchParams(window.location.search).get('view')
+  return view === 'map' || view === 'share' ? view : 'card'
 }
 
 function updateUrl(query: string, view: ViewMode, replace: boolean) {
@@ -29,10 +29,10 @@ function updateUrl(query: string, view: ViewMode, replace: boolean) {
   } else {
     url.searchParams.delete('q')
   }
-  if (view === 'map') {
-    url.searchParams.set('view', 'map')
-  } else {
+  if (view === 'card') {
     url.searchParams.delete('view')
+  } else {
+    url.searchParams.set('view', view)
   }
   if (replace) {
     history.replaceState(null, '', url.toString())
@@ -89,10 +89,10 @@ export function useUrlState() {
     params.forEach((v, k) => url.searchParams.set(k, v))
     // Preserve view
     const currentView = getViewFromUrl()
-    if (currentView === 'map') {
-      url.searchParams.set('view', 'map')
-    } else {
+    if (currentView === 'card') {
       url.searchParams.delete('view')
+    } else {
+      url.searchParams.set('view', currentView)
     }
     history.replaceState(null, '', url.toString())
     setQueryState('')
@@ -103,10 +103,10 @@ export function useUrlState() {
   const setView = useCallback((v: ViewMode) => {
     setViewState(v)
     const url = new URL(window.location.href)
-    if (v === 'map') {
-      url.searchParams.set('view', 'map')
-    } else {
+    if (v === 'card') {
       url.searchParams.delete('view')
+    } else {
+      url.searchParams.set('view', v)
     }
     history.replaceState(null, '', url.toString())
   }, [])
