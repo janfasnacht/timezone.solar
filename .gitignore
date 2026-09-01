@@ -33,8 +33,6 @@ dev/
 # Generated eval data (intermediate output)
 scripts/_generated/
 
-# Local working ledger — not for the repo
+# Local working notes — not for the repo
 BACKLOG.local.md
-
-# Chrome design system draft — for review, not the repo
 DESIGN.local.md
