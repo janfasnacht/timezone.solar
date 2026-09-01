@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Absolute dates in queries — `14 march`, `march 14`, ISO, and `14/03` read in
+  the browser's own date-part order
+- Share as a third view alongside Card and Map, with calendar export
+- Landing examples now teach the query language: nine shapes including dates,
+  relative times, abbreviations and bare `A to B`, drawn mostly from a curated
+  list of recognisable cities and airports
+
+### Changed
+
+- Chrome rebuilt on one vocabulary: a single popover surface, a single tooltip,
+  and one view switcher at the bottom centre on every screen size
+- Settings moved from the desktop sidebar into a quiet top-right cluster that
+  states where you are and what time it is there
+- Landing is its own screen rather than the card view rendered empty
+- The time control edits the query rather than holding separate state, so the
+  search bar and URL always describe what is shown
+- About rebuilt to a single screen and linked as Usage
+
+### Fixed
+
+- `5 pm` (with a space) parsed as 5 AM
+- Cities whose names carry diacritics lost their map pin, label and arc — the
+  resolver answers `Zürich` where the curated entity is `Zurich`
+- Asking about the city you are already in blanked the map entirely
+- The compact logo reserved invisible width in the header row
+
+### Removed
+
+- Desktop sidebar, mobile tab bar, and the flippable result card
+
 ## [1.3.0] - 2026-03-10
 
 ### Added
