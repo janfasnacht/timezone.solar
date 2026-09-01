@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
+import { DateTime } from 'luxon'
 import { LazyMotion, m, useReducedMotion } from 'motion/react'
 import { QueryInput } from '@/components/QueryInput'
 import { ResultCard } from '@/components/ResultCard'
@@ -10,7 +11,7 @@ import { MobileTabBar } from '@/components/MobileTabBar'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { ViewToggle } from '@/components/ViewToggle'
-import { TimeOffsetControl } from '@/components/TimeOffsetControl'
+import { TimeControl } from '@/components/TimeControl'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
 import { useUrlState, type ViewMode } from '@/hooks/useUrlState'
@@ -19,9 +20,9 @@ import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { useTimeOffset } from '@/hooks/useTimeOffset'
 import { createDebouncedCallback } from '@/lib/debounce'
 import { buildCanonicalParams } from '@/lib/canonicalUrl'
+import { whenPhrase } from '@/lib/whenPhrase'
 
 const MapView = lazy(() => import('@/components/MapView'))
 
@@ -48,12 +49,12 @@ function App() {
   const { use24h, homeCity } = usePreferences()
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   const [currentInputValue, setCurrentInputValue] = useState('')
-  const [settingsOpen, setSettingsOpen] = useState(false)
   const [isDebouncing, setIsDebouncing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const liveQueryRef = useRef('')
   const shouldCanonicalizeRef = useRef(false)
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [inputFocused, setInputFocused] = useState(false)
   const [vibeHovered, setVibeHovered] = useState(false)
   const reduceMotion = useReducedMotion()
@@ -61,8 +62,6 @@ function App() {
   // layer toggles and the time nudge survive a trip through the card view.
   const [mapMounted, setMapMounted] = useState(view === 'map')
   useEffect(() => { if (view === 'map') setMapMounted(true) }, [view])
-  const homeIana = homeCity?.iana ?? Intl.DateTimeFormat().resolvedOptions().timeZone
-  const offset = useTimeOffset(result, homeIana, use24h, isUsingCurrentTime)
   useDocumentTitle(result, currentInputValue)
 
   const debouncedRef = useRef(createDebouncedCallback(() => {
@@ -92,7 +91,6 @@ function App() {
   }, [view, setView])
 
   const handleMobileTabChange = useCallback((tab: ViewMode) => {
-    setSettingsOpen(false)
     setView(tab)
     // Navigate away from /about when switching tabs
     if (window.location.pathname === '/about') {
@@ -176,7 +174,6 @@ function App() {
   const handleSubmit = useCallback((query: string) => {
     debouncedRef.current.cancel()
     setIsDebouncing(false)
-    setSettingsOpen(false)
     setUrlQuery(query)
     setInputValue(query)
     setCurrentInputValue(query)
@@ -198,6 +195,35 @@ function App() {
     swapConversion()
     // URL update is handled by the result effect above
   }, [result, use24h, swapConversion])
+
+  /**
+   * Rebuild the query with a different time. Nudging is an edit to the question,
+   * not a lens over the answer — so it goes through the same pipeline as typing,
+   * and the search bar and URL stay a complete description of what is shown.
+   */
+  const applyTime = useCallback((time: string | null) => {
+    if (!result) return
+    // Reuse the words the user typed — editing the time shouldn't silently
+    // rewrite "nyc" as "New York".
+    const from = result.intent.source.input ?? result.source.city
+    const to = result.intent.target.input ?? result.target.city
+    const query = time ? `${time} ${from} to ${to}` : `${from} to ${to}`
+    setInputValue(query)
+    setCurrentInputValue(query)
+    shouldCanonicalizeRef.current = true
+    // Replace rather than push: a run of nudges shouldn't flood history.
+    replaceUrlQuery(query)
+    runConversion(query)
+  }, [result, replaceUrlQuery, runConversion])
+
+  const nudgeTime = useCallback((deltaMinutes: number) => {
+    if (!result) return
+    const next = DateTime.fromISO(result.sourceDateTime)
+      .setZone(result.source.iana)
+      .plus({ minutes: deltaMinutes })
+    if (!next.isValid) return
+    applyTime(whenPhrase(next, DateTime.now().setZone(result.source.iana), use24h))
+  }, [result, use24h, applyTime])
 
   const handleValueChange = useCallback((value: string) => {
     setCurrentInputValue(value)
@@ -231,6 +257,16 @@ function App() {
   const layerTransition = reduceMotion
     ? { duration: 0 }
     : { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }
+
+  // The instant the picker should open on, in the source zone. When the query
+  // named no time the answer is tracking the clock, so the picker must open on
+  // the live now — not on the instant the conversion happened to run.
+  const anchorDateTime = result
+    ? isUsingCurrentTime
+      ? DateTime.now().setZone(result.source.iana)
+      : DateTime.fromISO(result.sourceDateTime).setZone(result.source.iana)
+    : null
+
 
   const chromePadTop = isActive
     ? (isMobile ? '0.75rem' : '1.25rem')
@@ -280,7 +316,7 @@ function App() {
                     result={result}
                     homeCity={homeCity}
                     use24h={use24h}
-                    offset={offset}
+                    isLive={isUsingCurrentTime}
                     onCityClick={handleCityClick}
                     isMobile={isMobile}
                   />
@@ -304,8 +340,6 @@ function App() {
                     isUsingCurrentTime={isUsingCurrentTime}
                     matchType={matchType}
                     onSwap={handleSwap}
-                    offsetMinutes={offset.offsetMinutes}
-                    onResetOffset={offset.reset}
                   />
                 </div>
               )}
@@ -331,14 +365,21 @@ function App() {
               )}
             </m.div>
 
-            {/* Time control — belongs to the result, not to any one rendering of
-                it, so it sits outside the fading layers and never animates. */}
-            {result && (
+            {/* Time control — outside the fading layers, so it holds still when
+                you switch views, and has room here for more than a stepper. */}
+            {hasResult && (
               <div
                 className="absolute right-4 z-40"
                 style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 5.25rem)' : '1rem' }}
               >
-                <TimeOffsetControl offset={offset} roomy={isMobile} />
+                <TimeControl
+                  isLive={isUsingCurrentTime}
+                  onNudge={nudgeTime}
+                  onReset={() => applyTime(null)}
+                  anchor={anchorDateTime}
+                  use24h={use24h}
+                  roomy={isMobile}
+                />
               </div>
             )}
 
@@ -389,6 +430,9 @@ function App() {
                     <ViewToggle view={view} onChange={setView} />
                   </m.div>
                 )}
+
+
+
 
                 {isMobile && (
                   <div className={`col-start-3 justify-self-start ${isActive ? 'row-start-1' : 'row-start-2'}`}>

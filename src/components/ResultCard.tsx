@@ -13,12 +13,9 @@ interface ResultCardProps {
   isUsingCurrentTime: boolean
   matchType?: MatchType
   onSwap: () => void
-  /** Shared with the map view; shifts the displayed times when non-zero. */
-  offsetMinutes?: number
-  onResetOffset?: () => void
 }
 
-export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offsetMinutes = 0, onResetOffset }: ResultCardProps) {
+export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: ResultCardProps) {
   const { use24h } = usePreferences()
   const sourceClock = useLiveClock(result.source.iana, use24h)
   const targetClock = useLiveClock(result.target.iana, use24h)
@@ -27,22 +24,10 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
   const sourceLabel = formatEntityLabel(source.entitySlug, source.city)
   const targetLabel = formatEntityLabel(target.entitySlug, target.city)
 
-  // When the shared time stepper is off zero, both times move with it.
-  const shifted = useMemo(() => {
-    if (offsetMinutes === 0) return null
-    const fmt = use24h ? 'HH:mm' : 'h:mm a'
-    // fromISO normalises to the local zone, so each side is put back in its own.
-    const src = DateTime.fromISO(result.sourceDateTime).setZone(source.iana).plus({ minutes: offsetMinutes })
-    const tgt = DateTime.fromISO(result.targetDateTime).setZone(target.iana).plus({ minutes: offsetMinutes })
-    if (!src.isValid || !tgt.isValid) return null
-    return { source: src.toFormat(fmt), target: tgt.toFormat(fmt), targetDate: tgt.toFormat('EEE, MMM d') }
-  }, [result.sourceDateTime, result.targetDateTime, source.iana, target.iana, offsetMinutes, use24h])
-
   const targetDate = useMemo(() => {
-    if (shifted) return shifted.targetDate
     const dt = DateTime.fromISO(result.targetDateTime)
     return dt.isValid ? dt.toFormat('EEE, MMM d') : null
-  }, [result.targetDateTime, shifted])
+  }, [result.targetDateTime])
 
   const dstWarning = useMemo(() => {
     const ref = DateTime.fromISO(result.sourceDateTime)
@@ -50,8 +35,8 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
     return getDstWarning(source.iana, target.iana, ref)
   }, [source.iana, target.iana, result.sourceDateTime])
 
-  const sourceHeroTime = shifted?.source ?? (isUsingCurrentTime ? sourceClock : source[timeKey])
-  const targetHeroTime = shifted?.target ?? (isUsingCurrentTime ? targetClock : target[timeKey])
+  const sourceHeroTime = isUsingCurrentTime ? sourceClock : source[timeKey]
+  const targetHeroTime = isUsingCurrentTime ? targetClock : target[timeKey]
 
   // Split time and period (AM/PM) for the target hero display
   const targetTimeParts = useMemo(() => {
@@ -95,8 +80,9 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
           <div className="h-px flex-1 bg-gradient-to-r from-surface via-border to-surface" />
           <button
             onClick={onSwap}
-            className="flex items-center justify-center h-10 w-10 -m-2 text-muted-foreground transition-colors hover:text-accent"
+            className="-m-2 flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:text-accent"
             aria-label="Swap source and target"
+            title={`Swap — show ${targetLabel} time in ${sourceLabel}`}
           >
             <ArrowUpDown size={15} />
           </button>
@@ -134,15 +120,6 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap, offs
               <span className={normalChip}>
                 {targetDate}
               </span>
-            )}
-            {offsetMinutes !== 0 && (
-              <button
-                onClick={onResetOffset}
-                className={`${highlightChip} cursor-pointer transition-colors hover:border-accent`}
-                title="Reset to the original time"
-              >
-                {offsetMinutes > 0 ? '+' : ''}{Math.round(offsetMinutes / 60)}h nudged ·  ↺
-              </button>
             )}
             {matchType && matchType !== 'exact' && matchType !== 'none' && (
               <span className={normalChip} title={`Parser match: ${matchType}`}>
