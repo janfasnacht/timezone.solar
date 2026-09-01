@@ -35,3 +35,6 @@ scripts/_generated/
 
 # Local working ledger — not for the repo
 BACKLOG.local.md
+
+# Chrome design system draft — for review, not the repo
+DESIGN.local.md

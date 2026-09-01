@@ -7,14 +7,13 @@ import { ShareView } from '@/components/ShareView'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { SettingsMenu } from '@/components/SettingsMenu'
-import { MobileTabBar } from '@/components/MobileTabBar'
 import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { ViewToggle } from '@/components/ViewToggle'
 import { TimeControl } from '@/components/TimeControl'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
-import { useUrlState, type ViewMode } from '@/hooks/useUrlState'
+import { useUrlState } from '@/hooks/useUrlState'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useRotatingPlaceholder } from '@/hooks/useRotatingPlaceholder'
 import { usePreferences } from '@/hooks/usePreferences'
@@ -89,15 +88,6 @@ function App() {
   const toggleView = useCallback(() => {
     setView(view === 'card' ? 'map' : 'card')
   }, [view, setView])
-
-  const handleMobileTabChange = useCallback((tab: ViewMode) => {
-    setView(tab)
-    // Navigate away from /about when switching tabs
-    if (window.location.pathname === '/about') {
-      history.pushState(null, '', '/')
-      window.dispatchEvent(new PopStateEvent('popstate'))
-    }
-  }, [setView])
 
   useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
 
@@ -287,18 +277,14 @@ function App() {
           </div>
         ) : (
           <div className="page-glow relative h-full w-full overflow-hidden bg-background">
-            {/* Settings — same pill language as the map's layers control. Pinned to
-                the right on desktop; part of the row on mobile, where there is no
-                spare width to overlay it. */}
+            {/* Top right — where you are and what time it is there. Every answer on
+                this page is relative to it, so it is stated rather than hidden behind
+                a gear. Pinned to the corner, not to the search row, so it holds still
+                between landing and active. */}
             {!isMobile && (
-              <div className="absolute top-4 right-4 z-30">
+              <div className="absolute top-4 right-4 z-50">
                 <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} />
               </div>
-            )}
-
-            {/* Mobile: floating view switcher, once there is a result to switch between */}
-            {isMobile && hasResult && (
-              <MobileTabBar activeTab={view} onTabChange={handleMobileTabChange} />
             )}
 
             {/* z-0 — map runs full bleed, continuing underneath the chrome */}
@@ -326,7 +312,7 @@ function App() {
 
             {/* z-10 — card, cleared of the chrome by a matching top pad */}
             <m.div
-              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-6 md:px-[2rem]"
+              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-24 md:px-[2rem]"
               initial={false}
               animate={view === 'card' ? layerVisible : layerHidden}
               transition={layerTransition}
@@ -347,7 +333,7 @@ function App() {
 
             {/* z-10 — share, a peer of card and map rather than a card face */}
             <m.div
-              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-6 md:px-[2rem]"
+              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-24 md:px-[2rem]"
               initial={false}
               animate={view === 'share' ? layerVisible : layerHidden}
               transition={layerTransition}
@@ -365,12 +351,38 @@ function App() {
               )}
             </m.div>
 
+            {/* Mobile settings — bottom right, beside the switcher. A gear rather than
+                a segment in it: Card/Map/Share are peers that latch when pressed, and
+                this opens a panel instead, so it is not one of them. */}
+            {isMobile && (
+              <div
+                className="absolute right-4 z-50"
+                style={{ bottom: 'calc(env(safe-area-inset-bottom) + 0.75rem)' }}
+              >
+                <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} asButton />
+              </div>
+            )}
+
+            {/* The switcher belongs to the result, not to the question — so it sits
+                with the other result-level tools along the bottom edge, in the one
+                position that has room for it at every width. */}
+            {hasResult && (
+              <div
+                className="pointer-events-none absolute inset-x-0 z-40 flex justify-center"
+                style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 0.75rem)' : '1rem' }}
+              >
+                <div className="pointer-events-auto">
+                  <ViewToggle view={view} onChange={setView} />
+                </div>
+              </div>
+            )}
+
             {/* Time control — outside the fading layers, so it holds still when
                 you switch views, and has room here for more than a stepper. */}
             {hasResult && (
               <div
                 className="absolute right-4 z-40"
-                style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 5.25rem)' : '1rem' }}
+                style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 4rem)' : '1rem' }}
               >
                 <TimeControl
                   isLive={isUsingCurrentTime}
@@ -378,7 +390,6 @@ function App() {
                   onReset={() => applyTime(null)}
                   anchor={anchorDateTime}
                   use24h={use24h}
-                  roomy={isMobile}
                 />
               </div>
             )}
@@ -392,7 +403,7 @@ function App() {
               }`}
               style={{ paddingTop: chromePadTop }}
             >
-              <div className="pointer-events-auto mx-auto grid w-full grid-cols-[minmax(2.75rem,1fr)_minmax(0,520px)_minmax(2.75rem,1fr)] items-center gap-x-4 gap-y-3 px-4 md:px-[2rem]">
+              <div className="pointer-events-auto mx-auto grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-3 px-4 md:grid-cols-[minmax(2.75rem,1fr)_minmax(0,520px)_minmax(2.75rem,1fr)] md:gap-x-4 md:px-[2rem]">
                 {/* Logo: beside the input once active, above it on landing */}
                 <m.div
                   layout="position"
@@ -419,26 +430,6 @@ function App() {
                     placeholderActive={vibeHovered}
                   />
                 </div>
-
-                {/* The switcher only exists once there is a result to switch between */}
-                {!isMobile && hasResult && (
-                  <m.div
-                    layout="position"
-                    transition={layerTransition}
-                    className="col-start-3 row-start-1 justify-self-start"
-                  >
-                    <ViewToggle view={view} onChange={setView} />
-                  </m.div>
-                )}
-
-
-
-
-                {isMobile && (
-                  <div className={`col-start-3 justify-self-start ${isActive ? 'row-start-1' : 'row-start-2'}`}>
-                    <SettingsMenu open={settingsOpen} onOpenChange={setSettingsOpen} asSheet />
-                  </div>
-                )}
 
                 {error && (
                   <div className={`col-start-2 ${isActive ? 'row-start-2' : 'row-start-3'}`}>
