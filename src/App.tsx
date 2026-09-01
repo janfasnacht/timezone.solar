@@ -258,9 +258,11 @@ function App() {
     : null
 
 
+  // Landing sits a little above centre. A phone is tall and narrow, so the same
+  // fraction that centres the stack on a desktop leaves it near the top here.
   const chromePadTop = isActive
     ? (isMobile ? '0.75rem' : '1.25rem')
-    : (isMobile ? '5vh' : '22vh')
+    : (isMobile ? '28vh' : '22vh')
 
   // Card content starts below the chrome. Compact chrome is a single row; the
   // landing stack only ever coexists with an empty card layer, so one value does.

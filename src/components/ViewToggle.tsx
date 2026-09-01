@@ -20,7 +20,7 @@ const OPTIONS: { value: ViewMode; label: string; Icon: typeof CardIcon }[] = [
  */
 export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
   return (
-    <Tooltip label="Switch view" side="bottom" className="inline-block">
+    <Tooltip label="Switch view" side="top" className="inline-block">
     <div
       role="group"
       aria-label="Result view"
