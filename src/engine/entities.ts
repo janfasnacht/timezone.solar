@@ -4333,9 +4333,20 @@ export function getVibes(slug: string): string[] | null {
   return entity?.kind === 'city' ? entity.vibes : null
 }
 
+/**
+ * The icon that stands for a place. An airport borrows its parent city's icon —
+ * LAS is Las Vegas, and there is no reason for the share summary to fall back to
+ * nothing just because the query named the airport.
+ */
 export function getIconSlug(entitySlug: string): string | null {
   const entity = entityBySlug.get(entitySlug)
-  return entity?.kind === 'city' ? entity.iconSlug : null
+  if (!entity) return null
+  if (entity.kind === 'city') return entity.iconSlug
+  if (entity.parentCitySlug) {
+    const parent = entityBySlug.get(entity.parentCitySlug)
+    if (parent?.kind === 'city') return parent.iconSlug
+  }
+  return null
 }
 
 /**
