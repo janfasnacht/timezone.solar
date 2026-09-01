@@ -90693,6 +90693,108 @@ function mergeLocationTokens(tokens) {
   }
   return merged;
 }
+var MONTH_NAMES = {
+  january: 1,
+  jan: 1,
+  february: 2,
+  feb: 2,
+  march: 3,
+  mar: 3,
+  april: 4,
+  apr: 4,
+  may: 5,
+  june: 6,
+  jun: 6,
+  july: 7,
+  jul: 7,
+  august: 8,
+  aug: 8,
+  september: 9,
+  sep: 9,
+  sept: 9,
+  october: 10,
+  oct: 10,
+  november: 11,
+  nov: 11,
+  december: 12,
+  dec: 12
+};
+var MONTH_PATTERN = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join("|");
+var ISO_DATE = /\b(\d{4})-(\d{2})-(\d{2})\b/;
+var NUMERIC_DATE = /\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/;
+var dayFirstOverride = null;
+function resolvesDayFirst() {
+  if (dayFirstOverride !== null) return dayFirstOverride;
+  try {
+    const parts = new Intl.DateTimeFormat().formatToParts(new Date(2e3, 0, 2));
+    const day = parts.findIndex((p) => p.type === "day");
+    const month = parts.findIndex((p) => p.type === "month");
+    if (day === -1 || month === -1) return true;
+    return day < month;
+  } catch {
+    return true;
+  }
+}
+function expandYear(raw) {
+  if (!raw) return null;
+  const n2 = Number(raw);
+  return raw.length === 2 ? 2e3 + n2 : n2;
+}
+var DAY_MONTH = new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${MONTH_PATTERN})\\b(?:,?\\s*(\\d{4}))?`, "i");
+var MONTH_DAY = new RegExp(`\\b(${MONTH_PATTERN})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b(?:,?\\s*(\\d{4}))?`, "i");
+function validDate(year, month, day) {
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return { type: "date", year, month, day };
+}
+function extractAbsoluteDate(input) {
+  const iso = input.match(ISO_DATE);
+  if (iso) {
+    const date = validDate(Number(iso[1]), Number(iso[2]), Number(iso[3]));
+    if (date) return { cleaned: input.replace(ISO_DATE, " ").replace(/\s+/g, " ").trim(), absoluteDate: date };
+  }
+  const numeric = input.match(NUMERIC_DATE);
+  if (numeric) {
+    const a = Number(numeric[1]);
+    const b = Number(numeric[2]);
+    const year = expandYear(numeric[3]);
+    let month;
+    let dayNum;
+    if (a > 12 && b <= 12) {
+      dayNum = a;
+      month = b;
+    } else if (b > 12 && a <= 12) {
+      month = a;
+      dayNum = b;
+    } else if (resolvesDayFirst()) {
+      dayNum = a;
+      month = b;
+    } else {
+      month = a;
+      dayNum = b;
+    }
+    const date = validDate(year, month, dayNum);
+    if (date) return { cleaned: input.replace(NUMERIC_DATE, " ").replace(/\s+/g, " ").trim(), absoluteDate: date };
+  }
+  const dayFirst = input.match(DAY_MONTH);
+  if (dayFirst) {
+    const date = validDate(
+      dayFirst[3] ? Number(dayFirst[3]) : null,
+      MONTH_NAMES[dayFirst[2].toLowerCase()],
+      Number(dayFirst[1])
+    );
+    if (date) return { cleaned: input.replace(DAY_MONTH, " ").replace(/\s+/g, " ").trim(), absoluteDate: date };
+  }
+  const monthFirst = input.match(MONTH_DAY);
+  if (monthFirst) {
+    const date = validDate(
+      monthFirst[3] ? Number(monthFirst[3]) : null,
+      MONTH_NAMES[monthFirst[1].toLowerCase()],
+      Number(monthFirst[2])
+    );
+    if (date) return { cleaned: input.replace(MONTH_DAY, " ").replace(/\s+/g, " ").trim(), absoluteDate: date };
+  }
+  return { cleaned: input, absoluteDate: null };
+}
 function extractRelativeTime(input) {
   const compoundMatch = input.match(/\bin\s+(\d+)\s*h\s*(\d+)\s*m?\b/i);
   if (compoundMatch) {
@@ -90775,15 +90877,24 @@ function extractDayOfWeek(input) {
   cleaned = cleaned.replace(SHORT_DAYS_NO_SUN, " ");
   return { cleaned: cleaned.replace(/\s+/g, " ").trim(), dayOfWeek: dayOfWeek2 };
 }
+function normalizeMeridiem(input) {
+  return input.replace(
+    /(\d)\s+([ap])\.?\s?m\.?(?![a-z])/gi,
+    (_m, digit, ap) => `${digit}${ap.toLowerCase()}m`
+  );
+}
 function preprocess(input) {
   let cleaned = input;
   cleaned = cleaned.replace(/\?+$/, "").trim();
+  cleaned = normalizeMeridiem(cleaned);
   const { cleaned: afterRelative, relativeMinutes } = extractRelativeTime(cleaned);
   cleaned = afterRelative;
+  const { cleaned: afterDate, absoluteDate } = extractAbsoluteDate(cleaned);
+  cleaned = afterDate;
   const { cleaned: afterDayOfWeek, dayOfWeek: dayOfWeek2 } = extractDayOfWeek(cleaned);
   cleaned = afterDayOfWeek;
   cleaned = cleaned.replace(/\bnow\b/gi, " ").replace(/\s+/g, " ").trim();
-  return { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2 };
+  return { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2, absoluteDate };
 }
 function removeConnectorBeforeTime(tokens) {
   const result = [];
@@ -90963,7 +91074,7 @@ function greedyExtract(tokens) {
 function parse(input) {
   const raw = input.trim();
   if (!raw) return { parsed: null, matchType: "none", noiseCount: 0 };
-  const { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2 } = preprocess(raw);
+  const { cleaned, relativeMinutes, dayOfWeek: dayOfWeek2, absoluteDate } = preprocess(raw);
   if (!cleaned) return { parsed: null, matchType: "none", noiseCount: 0 };
   const allTokens = tokenize(cleaned);
   let dateModifier = null;
@@ -90974,6 +91085,9 @@ function parse(input) {
     }
     return true;
   });
+  if (!dateModifier && absoluteDate) {
+    dateModifier = absoluteDate;
+  }
   if (!dateModifier && dayOfWeek2) {
     dateModifier = dayOfWeek2;
   }
@@ -104223,6 +104337,17 @@ function getDayBoundary(sourceDt, targetDt) {
   if (diff2 > 0) return `+${diff2} days`;
   return `${diff2} days`;
 }
+function applyAbsoluteDate(dt, date) {
+  if (date.year !== null) {
+    const exact = dt.set({ year: date.year, month: date.month, day: date.day });
+    return exact.isValid ? exact : dt;
+  }
+  const thisYear = dt.set({ year: dt.year, month: date.month, day: date.day });
+  if (!thisYear.isValid) return dt;
+  if (thisYear.startOf("day") >= dt.startOf("day")) return thisYear;
+  const nextYear = dt.set({ year: dt.year + 1, month: date.month, day: date.day });
+  return nextYear.isValid ? nextYear : thisYear;
+}
 function getDstNote(sourceDt, targetDt) {
   const sourceInDst = sourceDt.isInDST;
   const targetInDst = targetDt.isInDST;
@@ -104280,6 +104405,8 @@ function convert(intent) {
     } else if (typeof dateModifier === "object" && dateModifier?.type === "day-of-week") {
       const offset2 = dayOfWeekOffset(dateModifier, sourceDt.weekday);
       sourceDt = sourceDt.plus({ days: offset2 });
+    } else if (typeof dateModifier === "object" && dateModifier?.type === "date") {
+      sourceDt = applyAbsoluteDate(sourceDt, dateModifier);
     } else {
       const nowInSource = now2.setZone(source.iana);
       if (sourceDt < nowInSource) {
@@ -104300,6 +104427,8 @@ function convert(intent) {
     } else if (typeof dateModifier === "object" && dateModifier?.type === "day-of-week") {
       const offset2 = dayOfWeekOffset(dateModifier, sourceDt.weekday);
       sourceDt = sourceDt.plus({ days: offset2 });
+    } else if (typeof dateModifier === "object" && dateModifier?.type === "date") {
+      sourceDt = applyAbsoluteDate(sourceDt, dateModifier);
     }
   }
   const targetDt = sourceDt.setZone(target.iana);
