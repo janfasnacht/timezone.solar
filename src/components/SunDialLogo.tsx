@@ -1,5 +1,3 @@
-import { Tooltip } from '@/components/ui/Tooltip'
-
 interface SunDialLogoProps {
   onClick: () => void
   /** Row mode: just the mark, wordmark cross-faded out. */
@@ -7,7 +5,7 @@ interface SunDialLogoProps {
 }
 
 export function SunDialLogo({ onClick, compact = false }: SunDialLogoProps) {
-  const button = (
+  return (
     <button
       onClick={onClick}
       className="group flex flex-col items-center"
@@ -29,7 +27,4 @@ export function SunDialLogo({ onClick, compact = false }: SunDialLogoProps) {
       </div>
     </button>
   )
-
-  // Only the compact mark needs naming; the full logo says what it is.
-  return compact ? <Tooltip label="Back to start" side="bottom">{button}</Tooltip> : button
 }

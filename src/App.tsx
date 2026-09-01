@@ -442,20 +442,28 @@ function App() {
                     the layout never jumps while you are typing. */}
                 {isLandingScreen && (
                   <div
-                    className={`col-start-2 row-start-3 flex flex-col items-center gap-2 transition-opacity duration-200 ${
+                    className={`col-start-2 row-start-3 mt-3 grid grid-cols-[1fr_auto_1fr] items-baseline gap-x-5 transition-opacity duration-200 ${
                       inputFocused ? 'pointer-events-none opacity-0' : 'opacity-100'
                     }`}
                   >
-                    <CityVibe
-                      fallbackFeelingWord={feelingWord}
-                      onClick={handleFeelingClick}
-                      onHoverChange={setVibeHovered}
-                    />
+                    {/* "or" is pinned to the centre column, so the map link never
+                        moves when the vibe's adjective changes length. */}
+                    <div className="justify-self-end">
+                      <CityVibe
+                        fallbackFeelingWord={feelingWord}
+                        onClick={handleFeelingClick}
+                        onHoverChange={setVibeHovered}
+                      />
+                    </div>
+                    {/* One voice — the card's serif-italic narration — so these read
+                        as two halves of a sentence. The break is the faint "or" and
+                        the space around it, not a second typeface. */}
+                    <span className="font-serif text-[0.95rem] italic text-muted-foreground/40" aria-hidden="true">or</span>
                     <button
                       onClick={() => setView('map')}
-                      className="text-[0.8rem] text-muted-foreground/60 transition-colors hover:text-foreground"
+                      className="cursor-pointer justify-self-start font-serif text-[0.95rem] italic text-muted-foreground transition-colors hover:text-accent"
                     >
-                      or explore the map
+                      explore the map
                     </button>
                   </div>
                 )}

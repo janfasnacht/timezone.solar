@@ -179,7 +179,7 @@ function SettingsPanel({ iana, detected, dropUp, onNavigate }: { iana: string; d
         }}
         className="text-[0.8rem] text-muted-foreground transition-colors hover:text-foreground"
       >
-        About
+        Usage
       </a>
     </div>
   )

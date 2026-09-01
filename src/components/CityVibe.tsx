@@ -25,7 +25,7 @@ export function CityVibe({ entitySlug, fallbackFeelingWord, onClick, onHoverChan
       onMouseLeave={() => onHoverChange?.(false)}
       onFocus={() => onHoverChange?.(true)}
       onBlur={() => onHoverChange?.(false)}
-      className="font-serif text-[0.95rem] font-normal italic text-muted-foreground transition-colors hover:text-foreground"
+      className="cursor-pointer font-serif text-[0.95rem] font-normal italic text-muted-foreground transition-colors hover:text-accent"
     >
       feeling {word}?
     </button>
