@@ -7,6 +7,7 @@ import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
 import { getMapEntities, getAllMapEntities, findEntityForMap } from '@/engine/map-entities'
+import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
 import { EntityDot, type EntityRole } from './EntityDot'
@@ -110,12 +111,15 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const allMapEntities = useMemo(() => getAllMapEntities(), [])
   const mapSlugs = useMemo(() => new Set(baseMapEntities.map((c) => c.slug)), [baseMapEntities])
 
-  // Same-city guard
+  // Asking about the city you are already in is a legitimate query — "Zurich"
+  // from Zurich — and it used to blank the map entirely, because nulling the
+  // whole conversion took the pinned label and the highlighted dot with the
+  // arc. Only the arc is meaningless here, so only the arc is suppressed.
   const isSameCity = conversion
-    ? conversion.sourceCity.toLowerCase() === conversion.targetCity.toLowerCase()
+    ? normalize(conversion.sourceCity) === normalize(conversion.targetCity)
     : false
 
-  const effectiveConversion = isSameCity ? null : conversion
+  const effectiveConversion = conversion
 
   // Merge dynamic source/target entities (cities or airports) into the base set
   const entities = useMemo(() => {
@@ -160,13 +164,54 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     [entities, projection]
   )
 
+  // Each dot's transparent catchment is half the distance to its nearest
+  // neighbour, clamped — so two touching dots split the gap instead of one
+  // swallowing the other. Bucketed on a uniform grid to stay O(n) at
+  // cityDensity: 'all', where there are thousands of points.
+  const hitRadii = useMemo(() => {
+    const MAX = 12
+    const MIN = 3
+    const cell = MAX * 2
+    const buckets = new Map<string, number[]>()
+    projectedEntities.forEach((p, i) => {
+      const key = `${Math.floor(p.x / cell)}:${Math.floor(p.y / cell)}`
+      const bucket = buckets.get(key)
+      if (bucket) bucket.push(i)
+      else buckets.set(key, [i])
+    })
+
+    return projectedEntities.map((p, i) => {
+      const cx = Math.floor(p.x / cell)
+      const cy = Math.floor(p.y / cell)
+      let nearest = Infinity
+      for (let gx = cx - 1; gx <= cx + 1; gx++) {
+        for (let gy = cy - 1; gy <= cy + 1; gy++) {
+          const bucket = buckets.get(`${gx}:${gy}`)
+          if (!bucket) continue
+          for (const j of bucket) {
+            if (j === i) continue
+            const q = projectedEntities[j]
+            const d = Math.hypot(p.x - q.x, p.y - q.y)
+            if (d < nearest) nearest = d
+          }
+        }
+      }
+      if (!Number.isFinite(nearest)) return MAX
+      return Math.max(MIN, Math.min(MAX, nearest / 2))
+    })
+  }, [projectedEntities])
+
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
+    // Compare through `normalize`, not `toLowerCase`. The resolver answers from
+    // the 86K city-timezones DB and returns "Zürich"; the curated entity is
+    // "Zurich". A plain lowercase compare never matched, so every city with a
+    // diacritic silently lost its pin, its label and its arc endpoint.
     const src = projectedEntities.find(
-      (c) => c.entity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase()
+      (c) => normalize(c.entity.displayName) === normalize(effectiveConversion.sourceCity)
     )
     const tgt = projectedEntities.find(
-      (c) => c.entity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
+      (c) => normalize(c.entity.displayName) === normalize(effectiveConversion.targetCity)
     )
     return { sourceProjected: src ?? null, targetProjected: tgt ?? null }
   }, [effectiveConversion, projectedEntities])
@@ -176,7 +221,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   // this scale (visibly polygonal). geoPath still handles antimeridian
   // splitting during projection so transpacific routes don't wrap across.
   const arcData = useMemo(() => {
-    if (!sourceProjected || !targetProjected) return null
+    if (!sourceProjected || !targetProjected || isSameCity) return null
     const a: [number, number] = [sourceProjected.entity.lng, sourceProjected.entity.lat]
     const b: [number, number] = [targetProjected.entity.lng, targetProjected.entity.lat]
     const interp = geoInterpolate(a, b)
@@ -195,14 +240,26 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     const midProjected = projection(interp(0.5))
     if (!midProjected) return null
     return { d, midX: midProjected[0], midY: midProjected[1] }
-  }, [sourceProjected, targetProjected, pathGenerator, projection])
+  }, [sourceProjected, targetProjected, isSameCity, pathGenerator, projection])
 
   const svgRef = useRef<SVGSVGElement>(null)
   const [screenPos, setScreenPos] = useState<{ x: number; y: number } | null>(null)
+  // Hover intent: a card for an incidental dot waits, so sweeping the cursor
+  // across the map doesn't strobe cards. Source/target labels are already on
+  // screen and expand instantly.
+  const [settledEntity, setSettledEntity] = useState<Entity | null>(null)
+  const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(settleTimer.current), [])
 
   const handleHover = useCallback(
     (entity: Entity | null) => {
       setHoveredEntity(entity)
+      clearTimeout(settleTimer.current)
+      if (entity) {
+        settleTimer.current = setTimeout(() => setSettledEntity(entity), 220)
+      } else {
+        setSettledEntity(null)
+      }
       if (entity && svgRef.current && containerRef.current) {
         const projected = projectedEntities.find((c) => c.entity.slug === entity.slug)
         if (projected) {
@@ -331,9 +388,9 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   function getEntityRole(entity: Entity): EntityRole {
     if (!effectiveConversion) return 'none'
-    const name = entity.displayName.toLowerCase()
-    if (name === effectiveConversion.sourceCity.toLowerCase()) return 'source'
-    if (name === effectiveConversion.targetCity.toLowerCase()) return 'target'
+    const name = normalize(entity.displayName)
+    if (name === normalize(effectiveConversion.sourceCity)) return 'source'
+    if (name === normalize(effectiveConversion.targetCity)) return 'target'
     return 'none'
   }
 
@@ -342,8 +399,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   // Check if hovered city is a pinned city (source or target)
   const hoveredIsPinned = hoveredEntity && effectiveConversion
-    ? hoveredEntity.displayName.toLowerCase() === effectiveConversion.sourceCity.toLowerCase() ||
-      hoveredEntity.displayName.toLowerCase() === effectiveConversion.targetCity.toLowerCase()
+    ? normalize(hoveredEntity.displayName) === normalize(effectiveConversion.sourceCity) ||
+      normalize(hoveredEntity.displayName) === normalize(effectiveConversion.targetCity)
     : false
 
   // Compute screen positions for pinned city labels
@@ -364,7 +421,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     })
 
     const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
-    const tgt = targetProjected ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity } : null
+    // One place, one label — otherwise the two stack exactly on top of each other.
+    const tgt = targetProjected && !isSameCity
+      ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity }
+      : null
 
     // Smart placement: if both exist, place them on opposite sides to avoid overlap
     let srcPlacement: 'above' | 'below' = 'above'
@@ -385,7 +445,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
     return { src, tgt, srcPlacement, tgtPlacement, containerWidth: vpW, containerHeight: vpH }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [effectiveConversion, sourceProjected, targetProjected, containerRect])
+  }, [effectiveConversion, sourceProjected, targetProjected, isSameCity, containerRect])
 
   // Determine variant for each pinned label
   const srcIsHovered = hoveredEntity && pinnedLabels?.src?.entity
@@ -494,7 +554,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         )}
 
         {/* Entity markers (cities and airports) */}
-        {projectedEntities.map(({ entity, x, y }) => (
+        {projectedEntities.map(({ entity, x, y }, i) => (
           <EntityDot
             key={entity.slug}
             entity={entity}
@@ -502,6 +562,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             y={y}
             role={getEntityRole(entity)}
             minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
+            hovered={hoveredEntity?.slug === entity.slug}
+            hitRadius={hitRadii[i]}
             onHover={handleHover}
             onClick={handleClick}
           />
@@ -519,6 +581,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
           variant={srcIsHovered ? 'expanded' : 'active'}
+          onHoverChange={(over) => handleHover(over ? pinnedLabels.src!.entity : null)}
           iana={pinnedLabels.src.entity.iana}
           country={pinnedLabels.src.entity.country}
           now={now}
@@ -536,6 +599,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
           variant={tgtIsHovered ? 'expanded' : 'active'}
+          onHoverChange={(over) => handleHover(over ? pinnedLabels.tgt!.entity : null)}
           iana={pinnedLabels.tgt.entity.iana}
           country={pinnedLabels.tgt.entity.country}
           now={now}
@@ -546,9 +610,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       </div>
 
       {/* Hover card for non-pinned entities only */}
-      {hoveredEntity && screenPos && !hoveredIsPinned && (
+      {settledEntity && hoveredEntity && screenPos && !hoveredIsPinned && (
         <EntityHoverCard
           entity={hoveredEntity}
+          onHoverChange={(over) => handleHover(over ? hoveredEntity : null)}
           x={screenPos.x}
           y={screenPos.y}
           containerRect={containerRect}
