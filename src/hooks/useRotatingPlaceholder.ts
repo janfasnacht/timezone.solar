@@ -1,5 +1,24 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { getAllEntities, type AirportEntity, type CityEntity } from '@/engine/entities'
+import { FAMILIAR_AIRPORT_IATA, FAMILIAR_CITY_SLUGS, FAMILIAR_SHARE } from '@/engine/familiar-cities'
+
+// Abbreviations people read on sight. Always the *source*, so the target stays
+// a city and can still supply a feeling word.
+const ABBREVIATIONS = ['EST', 'PST', 'CST', 'GMT', 'CET', 'JST', 'IST', 'AEST', 'BST']
+
+const MONTHS = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december',
+]
+
+const RELATIVE_SPANS = ['in 2 hours', 'in 3 hours', 'in 90 minutes', 'in 6 hours']
+
+/** Day 1–28 so no month/day pair is ever invalid. */
+function datePhrase(): string {
+  const day = 1 + Math.floor(Math.random() * 28)
+  const month = pick(MONTHS)
+  return Math.random() < 0.5 ? `${day} ${month}` : `${month} ${day}`
+}
 
 // Time format templates — mix of 12h and 24h, various times
 const TIME_FORMATS = [
@@ -22,21 +41,39 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+const isFamiliar = (c: { slug: string }) => FAMILIAR_CITY_SLUGS.has(c.slug)
+
+/**
+ * How many opening examples are held to familiar places. A first impression of
+ * "8am Kuopio to Viana do Castelo" spends the reader's attention on the nouns;
+ * by the third example the pattern has landed and the long tail is charm.
+ */
+const FAMILIAR_HEAD = 2
+
 type CityWithVibes = CityEntity & { vibes: string[] }
 
-interface GeneratedExample {
+export interface GeneratedExample {
   text: string
   targetVibes: string[]
+  /** Every place named is one a reader recognises. Gates the opening examples. */
+  familiar: boolean
 }
 
-// Build examples from city entities that have vibes
-// Patterns mirror the app's actual query modes:
-//   "Boston 6pm in LA"     — city time in city
-//   "noon Tokyo to London" — time city to city
-//   "3pm JFK to LHR"       — time IATA to IATA (airport pair)
-//   "6pm in Tokyo"         — time in city (from user's tz)
-//   "Tokyo"                — current time somewhere
-function generateExamples(): GeneratedExample[] {
+// Build examples from city entities that have vibes. This rotation is the only
+// place the query language is taught, so the mix is a curriculum — kept close to
+// uniform, because ranking shapes by "obviousness" is a claim about readers that
+// we have no evidence for. The two plainest things a person can type lead only
+// slightly.
+//   "Chicago to New York"     — two places, no time         15%
+//   "Tokyo"                   — current time somewhere      15%
+//   "noon Tokyo to London"    — time city to city           15%
+//   "6pm in Tokyo"            — time in city (user's tz)    12%
+//   "14 march 3pm Berlin"     — absolute date               12%
+//   "in 2 hours in Berlin"    — relative time               10%
+//   "3pm JFK to LHR"          — time IATA to IATA            8%
+//   "Boston 6pm in LA"        — city time in city            8%
+//   "9am EST to Berlin"       — timezone abbreviation         5%
+export function generateExamples(): GeneratedExample[] {
   const all = getAllEntities()
   const cities = all.filter((c): c is CityWithVibes =>
     c.kind === 'city' && c.vibes !== null && c.vibes.length > 0
@@ -45,13 +82,25 @@ function generateExamples(): GeneratedExample[] {
   // parent city's feeling-word vocabulary when an airport is the target.
   const cityVibesBySlug = new Map<string, string[]>()
   for (const c of cities) cityVibesBySlug.set(c.slug, c.vibes)
+  // Airport examples are held to codes people read on sight. Restricting to
+  // familiar parent *cities* was not enough — a familiar city has dozens of
+  // minor fields, which produced "1pm HIO to BXK".
   const airports = all.filter(
     (e): e is AirportEntity =>
-      e.kind === 'airport' && e.parentCitySlug !== null && cityVibesBySlug.has(e.parentCitySlug),
+      e.kind === 'airport' &&
+      e.parentCitySlug !== null &&
+      cityVibesBySlug.has(e.parentCitySlug) &&
+      FAMILIAR_AIRPORT_IATA.has(e.iata),
   )
   const shuffledAirports = shuffle(airports)
 
-  const shuffled = shuffle(cities)
+  // Mostly cities the reader knows, so the *pattern* is what stands out rather
+  // than the place names — but with the long tail still present, because an
+  // occasional Viana do Castelo is the point of a 325-city catalogue.
+  const familiar = cities.filter((c) => FAMILIAR_CITY_SLUGS.has(c.slug))
+  const tail = cities.filter((c) => !FAMILIAR_CITY_SLUGS.has(c.slug))
+  const tailCount = Math.round(familiar.length / FAMILIAR_SHARE - familiar.length)
+  const shuffled = shuffle([...familiar, ...shuffle(tail).slice(0, tailCount)])
   const examples: GeneratedExample[] = []
 
   let i = 0
@@ -59,7 +108,52 @@ function generateExamples(): GeneratedExample[] {
   while (i < shuffled.length) {
     const roll = Math.random()
 
-    if (roll < 0.30 && i + 1 < shuffled.length) {
+    if (roll < 0.15 && i + 1 < shuffled.length) {
+      // "Chicago to New York" — no time at all. Arguably the plainest thing a
+      // person types, and no example had ever shown it.
+      const src = shuffled[i]
+      const tgt = shuffled[i + 1]
+      examples.push({
+        text: `${src.displayName} to ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+        familiar: isFamiliar(src) && isFamiliar(tgt),
+      })
+      i += 2
+    } else if (roll < 0.27 && i + 1 < shuffled.length) {
+      // "14 march 3pm Berlin" / "2 april 9am Tokyo to Berlin" — absolute dates,
+      // taught in 1e726de and previously demonstrated nowhere.
+      const tgt = shuffled[i]
+      const time = pick(TIME_FORMATS)
+      const withSource = Math.random() < 0.5 && i + 1 < shuffled.length
+      const src = withSource ? shuffled[i + 1] : null
+      examples.push({
+        text: src
+          ? `${datePhrase()} ${time} ${src.displayName} to ${tgt.displayName}`
+          : `${datePhrase()} ${time} ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+        familiar: isFamiliar(tgt) && (!src || isFamiliar(src)),
+      })
+      i += withSource ? 2 : 1
+    } else if (roll < 0.37) {
+      // "in 2 hours in Berlin" — relative times, also never shown before.
+      const tgt = shuffled[i]
+      examples.push({
+        text: `${pick(RELATIVE_SPANS)} in ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+        familiar: isFamiliar(tgt),
+      })
+      i += 1
+    } else if (roll < 0.42) {
+      // "9am EST to Berlin" — the abbreviation layer, likewise unadvertised.
+      const tgt = shuffled[i]
+      const time = pick(TIME_FORMATS)
+      examples.push({
+        text: `${time} ${pick(ABBREVIATIONS)} to ${tgt.displayName}`,
+        targetVibes: tgt.vibes,
+        familiar: isFamiliar(tgt),
+      })
+      i += 1
+    } else if (roll < 0.50 && i + 1 < shuffled.length) {
       // "Boston 6pm in LA"
       const src = shuffled[i]
       const tgt = shuffled[i + 1]
@@ -67,9 +161,10 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${src.displayName} ${time} in ${tgt.displayName}`,
         targetVibes: tgt.vibes,
+        familiar: isFamiliar(src) && isFamiliar(tgt),
       })
       i += 2
-    } else if (roll < 0.55 && i + 1 < shuffled.length) {
+    } else if (roll < 0.65 && i + 1 < shuffled.length) {
       // "noon Tokyo to London"
       const src = shuffled[i]
       const tgt = shuffled[i + 1]
@@ -77,9 +172,10 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${time} ${src.displayName} to ${tgt.displayName}`,
         targetVibes: tgt.vibes,
+        familiar: isFamiliar(src) && isFamiliar(tgt),
       })
       i += 2
-    } else if (roll < 0.65 && airportIdx + 1 < shuffledAirports.length) {
+    } else if (roll < 0.73 && airportIdx + 1 < shuffledAirports.length) {
       // "3pm JFK to LHR" — airport pair, target's parent city supplies the vibes
       const src = shuffledAirports[airportIdx]
       let tgt = shuffledAirports[airportIdx + 1]
@@ -95,6 +191,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${time} ${src.displayName} to ${tgt.displayName}`,
         targetVibes: tgtVibes,
+        familiar: true, // airport codes are curated, with no long tail
       })
       airportIdx = probe + 1
     } else if (roll < 0.85) {
@@ -104,6 +201,7 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: `${time} in ${city.displayName}`,
         targetVibes: city.vibes,
+        familiar: isFamiliar(city),
       })
       i += 1
     } else {
@@ -112,12 +210,22 @@ function generateExamples(): GeneratedExample[] {
       examples.push({
         text: city.displayName,
         targetVibes: city.vibes,
+        familiar: isFamiliar(city),
       })
       i += 1
     }
   }
 
-  return shuffle(examples)
+  const ordered = shuffle(examples)
+  // Pull a familiar example forward into any of the opening slots that drew from
+  // the tail, rather than filtering the tail out of them.
+  for (let slot = 0; slot < FAMILIAR_HEAD && slot < ordered.length; slot++) {
+    if (ordered[slot].familiar) continue
+    const swap = ordered.findIndex((e, j) => j >= FAMILIAR_HEAD && e.familiar)
+    if (swap === -1) break
+    ;[ordered[slot], ordered[swap]] = [ordered[swap], ordered[slot]]
+  }
+  return ordered
 }
 
 interface RotatingPlaceholder {
