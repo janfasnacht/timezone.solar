@@ -25,6 +25,12 @@ export interface LocationRef {
   entitySlug?: string
   resolveMethod: 'entity' | 'alias' | 'state' | 'abbreviation' | 'city-db' | 'fuzzy'
   interpretedAs?: string
+  /**
+   * The words the user actually typed for this location ("nyc"). Absent when the
+   * query came from canonical URL params. Write-backs prefer this over
+   * displayName so editing a query doesn't quietly rewrite the user's own words.
+   */
+  input?: string
 }
 
 // --- ParsedQuery ---
@@ -37,7 +43,26 @@ export type DayOfWeekModifier = {
   anchor: 'next' | 'this' | 'last' | 'bare'
 }
 
-export type DateModifier = 'tomorrow' | 'yesterday' | 'today' | DayOfWeekModifier | null
+/**
+ * A calendar date named outright. `year` is null when the query didn't say one
+ * ("14 march"), in which case the converter picks the next occurrence.
+ */
+export type AbsoluteDate = {
+  type: 'date'
+  year: number | null
+  /** 1-12 */
+  month: number
+  /** 1-31 */
+  day: number
+}
+
+export type DateModifier =
+  | 'tomorrow'
+  | 'yesterday'
+  | 'today'
+  | DayOfWeekModifier
+  | AbsoluteDate
+  | null
 
 export interface ParsedQuery {
   sourceLocation: string | null

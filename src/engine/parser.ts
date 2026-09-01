@@ -139,7 +139,7 @@ export function parse(input: string): ParseResult {
   if (!raw) return { parsed: null, matchType: 'none', noiseCount: 0 }
 
   // Pre-process
-  const { cleaned, relativeMinutes, dayOfWeek } = preprocess(raw)
+  const { cleaned, relativeMinutes, dayOfWeek, absoluteDate } = preprocess(raw)
   if (!cleaned) return { parsed: null, matchType: 'none', noiseCount: 0 }
 
   // Tokenize with extended classifier
@@ -154,6 +154,12 @@ export function parse(input: string): ParseResult {
     }
     return true
   })
+  // A named date is more specific than a weekday, which is more specific than
+  // nothing — but an explicit today/tomorrow token still wins, as it did before.
+  if (!dateModifier && absoluteDate) {
+    dateModifier = absoluteDate
+  }
+
   if (!dateModifier && dayOfWeek) {
     dateModifier = dayOfWeek
   }
