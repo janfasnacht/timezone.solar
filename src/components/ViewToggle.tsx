@@ -1,4 +1,5 @@
 import { CardIcon, MapIcon, ShareIcon } from '@/components/ViewIcons'
+import { Tooltip } from '@/components/ui/Tooltip'
 import type { ViewMode } from '@/hooks/useUrlState'
 
 interface ViewToggleProps {
@@ -16,9 +17,13 @@ const OPTIONS: { value: ViewMode; label: string; Icon: typeof CardIcon }[] = [
 /**
  * The card/map choice, rendered next to the query input. Both options render the
  * same result, so this is a parallel choice rather than a navigation step.
+ *
+ * The tooltip names the control but teaches no key: ⌘M is metaKey-only, so it is
+ * dead on Linux and Windows. It comes back when the scheme does (backlog #12).
  */
 export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
   return (
+    <Tooltip label="Switch view" side="bottom" className="inline-block">
     <div
       role="group"
       aria-label="Result view"
@@ -42,5 +47,6 @@ export function ViewToggle({ view, onChange, className }: ViewToggleProps) {
         )
       })}
     </div>
+    </Tooltip>
   )
 }

@@ -69,20 +69,18 @@ export default function MapView({
         cityDensity={layers.cityDensity}
       />
 
-      {/* Bottom controls — on mobile: horizontal bar above tab bar; on desktop: corners */}
+      {/* Bottom-left is the view's own corner: tools that belong to the map. */}
       {isMobile ? (
         <div
           className="absolute right-0 bottom-0 left-0 z-40 flex items-center gap-2 bg-gradient-to-t from-background/60 to-transparent px-3 pt-5"
-          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 4.75rem)' }}
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 4rem)' }}
         >
-          <MapLayersControl layers={layers} onChange={updateLayers} roomy />
+          <MapLayersControl layers={layers} onChange={updateLayers} />
         </div>
       ) : (
-        <>
-          <div className="absolute bottom-4 left-4 z-40">
-            <MapLayersControl layers={layers} onChange={updateLayers} />
-          </div>
-        </>
+        <div className="absolute bottom-4 left-4 z-40">
+          <MapLayersControl layers={layers} onChange={updateLayers} />
+        </div>
       )}
     </div>
   )
