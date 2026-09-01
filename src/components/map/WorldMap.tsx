@@ -6,7 +6,8 @@ import type { Feature, LineString } from 'geojson'
 import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
-import { getMapEntities, getAllMapEntities, findEntityForMap } from '@/engine/map-entities'
+import { findEntityForMap } from '@/engine/map-entities'
+import { getRankedMapEntities, selectSpaced, MINOR_RANK } from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
@@ -14,6 +15,7 @@ import { EntityDot, type EntityRole } from './EntityDot'
 import { EntityHoverCard } from './EntityHoverCard'
 import { PinnedCityLabel } from './PinnedCityLabel'
 import { TimezoneOverlay } from './TimezoneOverlay'
+import { MapZoomControl } from './MapZoomControl'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
 
 const WIDTH = 960
@@ -21,6 +23,16 @@ const HEIGHT = 500
 
 /** Space kept above the map so northern land clears the search bar, in px. */
 const NORTH_HEADROOM_PX = 88
+
+export const MIN_ZOOM = 1
+export const MAX_ZOOM = 8
+
+/** Screen-space, so the on-screen count holds while zooming swaps big places for small. */
+const SOME_SPACING_PX = 26
+const SOME_LIMIT = 110
+
+const LABEL_PX = 10.5
+const LABEL_LIMIT = 18
 
 export interface MapConversion {
   sourceCity: string
@@ -31,7 +43,14 @@ export interface MapConversion {
   isPreview?: boolean
 }
 
-export type CityDensity = 'none' | 'main' | 'all'
+export type CityDensity = 'none' | 'some' | 'all'
+
+interface ProjectedEntity {
+  entity: Entity
+  rank: number
+  x: number
+  y: number
+}
 
 interface WorldMapProps {
   now: Date
@@ -43,9 +62,26 @@ interface WorldMapProps {
   showBorders?: boolean
   showGrid?: boolean
   cityDensity?: CityDensity
+  showAirports?: boolean
+  showCityLabels?: boolean
+  /** Touch already has pinch and pan; the zoom buttons are for the desktop. */
+  isMobile?: boolean
 }
 
-export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showTimezones = false, showBorders = false, showGrid = true, cityDensity = 'main' }: WorldMapProps) {
+export function WorldMap({
+  now,
+  use24h,
+  homeCity,
+  conversion,
+  onCityClick,
+  showTimezones = false,
+  showBorders = false,
+  showGrid = true,
+  cityDensity = 'some',
+  showAirports = false,
+  showCityLabels = true,
+  isMobile = false,
+}: WorldMapProps) {
   // Matches preserveAspectRatio="slice": the map fills the container and is
   // cropped, so a portrait screen has most of the world off to either side.
   const coverFor = useCallback(
@@ -153,10 +189,6 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const { data: tzData } = useTimezoneData(showTimezones)
 
-  const baseMapEntities = useMemo(() => getMapEntities(), [])
-  const allMapEntities = useMemo(() => getAllMapEntities(), [])
-  const mapSlugs = useMemo(() => new Set(baseMapEntities.map((c) => c.slug)), [baseMapEntities])
-
   // Asking about the city you are in is a valid query. Only the arc is
   // meaningless there, so the pin and label still render.
   const isSameCity = conversion
@@ -165,48 +197,122 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const effectiveConversion = conversion
 
-  // Merge dynamic source/target entities (cities or airports) into the base set
-  const entities = useMemo(() => {
-    if (cityDensity === 'none') {
-      // Still show source/target entities even in 'none' mode
-      if (!effectiveConversion) return []
-      const extras: Entity[] = []
-      for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
-        if (!name) continue
-        const entity = findEntityForMap(name)
-        if (entity) extras.push(entity)
-      }
-      return extras
-    }
+  const rankedPool = useMemo(() => {
+    const all = getRankedMapEntities()
+    return showAirports ? all : all.filter((r) => r.entity.kind !== 'airport')
+  }, [showAirports])
 
-    const base = cityDensity === 'all' ? allMapEntities : baseMapEntities
-    if (!effectiveConversion) return base
-    const slugs = new Set(base.map((c) => c.slug))
-    const extras: Entity[] = []
+  // Deliberately not keyed on the transform: pan/zoom only change which points
+  // are picked, so re-projecting thousands of coordinates per wheel tick buys nothing.
+  const projectedPool = useMemo(
+    () =>
+      rankedPool
+        .map(({ entity, rank }) => {
+          const point = projection([entity.lng, entity.lat])
+          if (!point) return null
+          return { entity, rank, x: point[0], y: point[1] }
+        })
+        .filter((p): p is ProjectedEntity => p !== null),
+    [rankedPool, projection]
+  )
+
+  /** Visible slice in frame units, plus screen pixels per frame unit. Density and
+   *  label sizes are picked in screen px and divided through `ppu`. */
+  const view = useMemo(() => {
+    if (!containerRect || !cover) return null
+    const { x: tx, y: ty, scale } = mapTransform
+    const left = (containerRect.width - frame.w * cover) / 2
+    const top = (containerRect.height - frame.h * cover) / 2
+    const toFrameX = (px: number) => frame.x + ((px - tx) / scale - left) / cover
+    const toFrameY = (py: number) => frame.y + ((py - ty) / scale - top) / cover
+    return {
+      ppu: cover * scale,
+      x0: toFrameX(0),
+      x1: toFrameX(containerRect.width),
+      y0: toFrameY(0),
+      y1: toFrameY(containerRect.height),
+    }
+  }, [containerRect, cover, frame, mapTransform])
+
+  // Drawn whatever the density pass decides.
+  const pinnedProjected = useMemo(() => {
+    if (!effectiveConversion) return []
+    const out: ProjectedEntity[] = []
+    const seen = new Set<string>()
     for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
       if (!name) continue
       const entity = findEntityForMap(name)
-      if (entity && !slugs.has(entity.slug)) {
-        extras.push(entity)
-        slugs.add(entity.slug)
-      }
+      if (!entity || seen.has(entity.slug)) continue
+      const point = projection([entity.lng, entity.lat])
+      if (!point) continue
+      seen.add(entity.slug)
+      out.push({ entity, rank: Infinity, x: point[0], y: point[1] })
     }
-    return extras.length > 0 ? [...base, ...extras] : base
-  }, [cityDensity, baseMapEntities, allMapEntities, effectiveConversion])
+    return out
+  }, [effectiveConversion, projection])
 
-  const projectedEntities = useMemo(
-    () =>
-      entities
-        .map((entity) => {
-          const point = projection([entity.lng, entity.lat])
-          if (!point) return null
-          return { entity, x: point[0], y: point[1] }
+  const projectedEntities = useMemo(() => {
+    if (cityDensity === 'none' || !view) return pinnedProjected
+
+    const pinned = new Set(pinnedProjected.map((p) => p.entity.slug))
+    const inView = (p: ProjectedEntity) =>
+      !pinned.has(p.entity.slug) &&
+      p.x >= view.x0 && p.x <= view.x1 && p.y >= view.y0 && p.y <= view.y1
+
+    // 'all' culls to the viewport but never thins; also what keeps a drag cheap
+    // with several thousand dots in the pool.
+    const selected =
+      cityDensity === 'all'
+        ? projectedPool.filter(inView)
+        : selectSpaced(projectedPool, {
+            limit: SOME_LIMIT,
+            cell: SOME_SPACING_PX / view.ppu,
+            boxFor: (p) => {
+              if (!inView(p)) return null
+              const half = SOME_SPACING_PX / view.ppu / 2
+              return { x: p.x - half, y: p.y - half, w: half * 2, h: half * 2 }
+            },
+          })
+
+    return pinnedProjected.length > 0 ? [...pinnedProjected, ...selected] : selected
+  }, [cityDensity, view, projectedPool, pinnedProjected])
+
+  /** Same greedy pass, using the text's own box, so two labels can never collide. */
+  const cityLabels = useMemo(() => {
+    if (!showCityLabels || !view || cityDensity === 'none') return []
+
+    const font = LABEL_PX / view.ppu
+    const gap = 5 / view.ppu
+    const padY = 2 / view.ppu
+    const pinned = new Set(pinnedProjected.map((p) => p.entity.slug))
+    // Rough advance width for the label font; only the collision test reads it.
+    const widthOf = (text: string) => text.length * font * 0.52
+
+    const placed = new Map<string, { text: string; x: number; y: number; anchor: 'start' | 'end' }>()
+
+    const chosen = selectSpaced(projectedEntities, {
+      limit: LABEL_LIMIT,
+      cell: Math.max(font * 8, 1e-6),
+      boxFor: (p) => {
+        // The pinned pair already carries a card with its name and time.
+        if (pinned.has(p.entity.slug)) return null
+        if (p.x < view.x0 || p.x > view.x1 || p.y < view.y0 || p.y > view.y1) return null
+        const text = p.entity.kind === 'airport' ? p.entity.iata : p.entity.displayName
+        const w = widthOf(text)
+        const flip = p.x + gap + w > view.x1
+        const left = flip ? p.x - gap - w : p.x + gap
+        placed.set(p.entity.slug, {
+          text,
+          x: flip ? p.x - gap : p.x + gap,
+          y: p.y + font * 0.36,
+          anchor: flip ? 'end' : 'start',
         })
-        .filter(
-          (c): c is { entity: Entity; x: number; y: number } => c !== null
-        ),
-    [entities, projection]
-  )
+        return { x: left, y: p.y - font * 0.5 - padY, w, h: font + padY * 2 }
+      },
+    })
+
+    return chosen.map((p) => ({ slug: p.entity.slug, font, ...placed.get(p.entity.slug)! }))
+  }, [showCityLabels, view, cityDensity, projectedEntities, pinnedProjected])
 
   // Each dot's transparent catchment is half the distance to its nearest
   // neighbour, clamped — so two touching dots split the gap instead of one
@@ -402,7 +508,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY
       )
-      const newScale = Math.max(1, Math.min(5, g.startScale * (dist / g.startDist)))
+      const newScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, g.startScale * (dist / g.startDist)))
       const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2
       const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2
       const rect = containerRef.current?.getBoundingClientRect()
@@ -443,8 +549,100 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     }
   }, [updateTransform])
 
+  /** Scale about a point in container coords, so what you point at stays put. */
+  const zoomAt = useCallback(
+    (factor: number, cx: number, cy: number) => {
+      const t = transformRef.current
+      const scale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, t.scale * factor))
+      if (scale === t.scale) return
+      const ratio = scale / t.scale
+      updateTransform({ scale, x: cx - (cx - t.x) * ratio, y: cy - (cy - t.y) * ratio })
+    },
+    [updateTransform]
+  )
+
+  const resetZoom = useCallback(
+    () => updateTransform({ x: 0, y: 0, scale: MIN_ZOOM }),
+    [updateTransform]
+  )
+
+  const stepZoom = useCallback(
+    (direction: number) => {
+      const el = containerRef.current
+      if (!el) return
+      zoomAt(direction > 0 ? 1.5 : 1 / 1.5, el.offsetWidth / 2, el.offsetHeight / 2)
+    },
+    [zoomAt]
+  )
+
+  // Native, not React: React's synthetic wheel listener is passive, so
+  // `preventDefault` there is a no-op and the page scrolls behind the map.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      const rect = el.getBoundingClientRect()
+      // Trackpad pinch arrives as ctrl+wheel with small deltas; line-mode is rows, not px.
+      const delta = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY
+      const factor = Math.exp(-delta * (e.ctrlKey ? 0.01 : 0.002))
+      zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top)
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [zoomAt])
+
+  const [dragging, setDragging] = useState(false)
+  // A drag that started on a dot must not also open that dot on release.
+  const draggedRef = useRef(false)
+
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.button !== 0) return
+      draggedRef.current = false
+      const startX = e.clientX
+      const startY = e.clientY
+      const { x: startTx, y: startTy } = transformRef.current
+
+      const onMove = (ev: MouseEvent) => {
+        const dx = ev.clientX - startX
+        const dy = ev.clientY - startY
+        if (!draggedRef.current && Math.abs(dx) < 4 && Math.abs(dy) < 4) return
+        if (!draggedRef.current) {
+          draggedRef.current = true
+          setDragging(true)
+        }
+        updateTransform({ x: startTx + dx, y: startTy + dy, scale: transformRef.current.scale })
+      }
+      const onUp = () => {
+        setDragging(false)
+        window.removeEventListener('mousemove', onMove)
+        window.removeEventListener('mouseup', onUp)
+      }
+      window.addEventListener('mousemove', onMove)
+      window.addEventListener('mouseup', onUp)
+    },
+    [updateTransform]
+  )
+
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      const el = containerRef.current
+      if (!el) return
+      // At the ceiling the same gesture is the way back out.
+      if (transformRef.current.scale >= MAX_ZOOM - 0.001) {
+        resetZoom()
+        return
+      }
+      const rect = el.getBoundingClientRect()
+      zoomAt(1.8, e.clientX - rect.left, e.clientY - rect.top)
+    },
+    [zoomAt, resetZoom]
+  )
+
   const handleClick = useCallback(
     (entity: Entity) => {
+      if (draggedRef.current) return
       if (onCityClick) {
         onCityClick(entity.displayName)
       } else {
@@ -524,7 +722,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       <div
-        className="relative w-full h-full"
+        className={`relative h-full w-full select-none ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
           transform: mapTransform.scale === 1 && mapTransform.x === 0 && mapTransform.y === 0
             ? undefined
@@ -535,6 +733,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         onTouchStart={handleMapTouchStart}
         onTouchMove={handleMapTouchMove}
         onTouchEnd={handleMapTouchEnd}
+        onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
       >
       <svg
         ref={svgRef}
@@ -621,7 +821,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         )}
 
         {/* Entity markers (cities and airports) */}
-        {projectedEntities.map(({ entity, x, y }, i) => (
+        {projectedEntities.map(({ entity, rank, x, y }, i) => (
           <EntityDot
             key={entity.slug}
             entity={entity}
@@ -629,12 +829,33 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             y={y}
             role={getEntityRole(entity)}
             zoom={mapTransform.scale}
-            minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
+            minor={cityDensity === 'all' && rank < MINOR_RANK}
             hovered={hoveredEntity?.slug === entity.slug}
             hitRadius={hitRadii[i]}
             onHover={handleHover}
             onClick={handleClick}
           />
+        ))}
+
+        {/* Font size divided by the zoom, so labels hold one size on screen. */}
+        {cityLabels.map((label) => (
+          <text
+            key={label.slug}
+            x={label.x}
+            y={label.y}
+            textAnchor={label.anchor}
+            fontSize={label.font}
+            fontFamily="var(--font-sans)"
+            fill="var(--color-foreground)"
+            stroke="var(--color-background)"
+            strokeWidth={label.font * 0.3}
+            strokeOpacity={0.65}
+            paintOrder="stroke"
+            opacity={0.75}
+            style={{ pointerEvents: 'none' }}
+          >
+            {label.text}
+          </text>
         ))}
       </svg>
 
@@ -678,6 +899,19 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         />
       )}
       </div>
+
+      {/* Above the layers button; bottom-right belongs to the time control. */}
+      {!isMobile && (
+        <div className="absolute bottom-16 left-4 z-40">
+          <MapZoomControl
+            zoom={mapTransform.scale}
+            min={MIN_ZOOM}
+            max={MAX_ZOOM}
+            onZoom={stepZoom}
+            onReset={resetZoom}
+          />
+        </div>
+      )}
 
       {/* Hover card for non-pinned entities only */}
       {settledEntity && hoveredEntity && screenPos && !hoveredIsPinned && (

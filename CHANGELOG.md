@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Zoom and pan the map with a mouse: wheel and trackpad pinch anchored on the
+  pointer, drag to pan, double-click to zoom in, and a `+ / − / reset` control
+  that reads the current level
+- City names on the map, thinned by zoom and by how crowded the view is, so
+  10–20 are readable at any moment and no two ever overlap
+- A layers toggle for city names, and airports as their own checkbox rather
+  than folded into the city density
+
+### Changed
+
+- Map city density is driven by zoom rather than by a fixed list — zooming in
+  reveals smaller places and zooming out drops them. "Curated" is now "Some",
+  which describes what you get rather than how the list was made
+- Map dots hold one size on screen as you zoom, instead of growing into blobs
+
 ### Fixed
 
 - The map could not be panned on touch, and did not fill the screen

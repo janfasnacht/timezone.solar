@@ -9,6 +9,8 @@ export interface MapLayers {
   showBorders: boolean
   showTimezones: boolean
   cityDensity: CityDensity
+  showCityLabels: boolean
+  showAirports: boolean
 }
 
 interface MapLayersControlProps {
@@ -16,9 +18,10 @@ interface MapLayersControlProps {
   onChange: (next: Partial<MapLayers>) => void
 }
 
+/** How many, not which: "Some" thins itself against the zoom. */
 const DENSITIES: [CityDensity, string][] = [
   ['none', 'None'],
-  ['main', 'Curated'],
+  ['some', 'Some'],
   ['all', 'All'],
 ]
 
@@ -62,6 +65,10 @@ export function MapLayersControl({ layers, onChange }: MapLayersControlProps) {
           <input type="checkbox" checked={layers.showTimezones} onChange={() => onChange({ showTimezones: !layers.showTimezones })} className="h-3.5 w-3.5 accent-accent" />
           Timezones
         </label>
+        <label className={ROW}>
+          <input type="checkbox" checked={layers.showAirports} onChange={() => onChange({ showAirports: !layers.showAirports })} className="h-3.5 w-3.5 accent-accent" />
+          Airports
+        </label>
         <div className="my-2 border-t border-border" />
         <span className="mb-1 text-[0.7rem] text-muted-foreground">Cities</span>
         {DENSITIES.map(([level, label]) => (
@@ -76,6 +83,16 @@ export function MapLayersControl({ layers, onChange }: MapLayersControlProps) {
             {label}
           </label>
         ))}
+        <label className={`${ROW} ${layers.cityDensity === 'none' ? 'opacity-40' : ''}`}>
+          <input
+            type="checkbox"
+            checked={layers.showCityLabels}
+            disabled={layers.cityDensity === 'none'}
+            onChange={() => onChange({ showCityLabels: !layers.showCityLabels })}
+            className="h-3.5 w-3.5 accent-accent"
+          />
+          Names
+        </label>
       </div>
     </Popover>
   )

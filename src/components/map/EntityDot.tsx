@@ -13,9 +13,9 @@ interface EntityDotProps {
   /** Transparent catchment radius; never overlaps a neighbour's half-distance. */
   hitRadius?: number
   /**
-   * Current map zoom. Source and target markers are drawn large to read at rest,
-   * which turns oversized once the map is scaled up, so their size is damped —
-   * partly, not fully, so they stay the emphasis they are meant to be.
+   * Current map zoom. An ordinary dot is divided all the way back to a constant
+   * screen size, matching the labels beside it; source and target only partly,
+   * so they stay the emphasis they are meant to be.
    */
   zoom?: number
   onHover: (entity: Entity | null) => void
@@ -41,7 +41,7 @@ export function EntityDot({
   onClick,
 }: EntityDotProps) {
   const isActive = role !== 'none'
-  const damp = isActive || hovered ? Math.pow(zoom, 0.6) : 1
+  const damp = Math.pow(zoom, isActive || hovered ? 0.6 : 1)
   const opacity = isActive || hovered ? 1 : minor ? 0.25 : 0.5
 
   const handlers = {

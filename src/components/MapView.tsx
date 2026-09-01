@@ -38,7 +38,9 @@ export default function MapView({
     showGrid: true,
     showBorders: false,
     showTimezones: false,
-    cityDensity: 'main',
+    cityDensity: 'some',
+    showCityLabels: true,
+    showAirports: false,
   })
   const updateLayers = (next: Partial<MapLayers>) => setLayers((prev) => ({ ...prev, ...next }))
 
@@ -67,6 +69,9 @@ export default function MapView({
         showBorders={layers.showBorders}
         showGrid={layers.showGrid}
         cityDensity={layers.cityDensity}
+        showCityLabels={layers.showCityLabels}
+        showAirports={layers.showAirports}
+        isMobile={isMobile}
       />
 
       {/* Bottom-left is the view's own corner: tools that belong to the map. */}

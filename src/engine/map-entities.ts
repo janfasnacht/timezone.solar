@@ -1,12 +1,14 @@
 import cityTimezones from 'city-timezones'
-import { getAllEntities, lookupEntity, type Entity } from './entities'
+import { lookupEntity, type Entity } from './entities'
 
 /**
- * Curated set of ~90 city slugs for the world map display.
+ * Curated set of ~90 city slugs that carry the world map.
  * Selected for geographic spread, timezone diversity, and global recognition.
- * No two dots should visually overlap at world-map scale.
+ *
+ * No longer a set the map draws verbatim — it is one rank tier feeding the
+ * density pass in `map-density.ts`, which decides what actually fits.
  */
-const MAP_CITY_SLUGS = new Set([
+export const MAP_CITY_SLUGS: ReadonlySet<string> = new Set([
   // North America
   'new-york',
   'los-angeles',
@@ -123,59 +125,10 @@ const MAP_CITY_SLUGS = new Set([
   'wellington',
 ])
 
-let cached: Entity[] | null = null
-let allCached: Entity[] | null = null
-
-export function getMapEntities(): Entity[] {
-  if (cached) return cached
-  cached = getAllEntities().filter((e) => MAP_CITY_SLUGS.has(e.slug))
-  return cached
-}
-
-/**
- * All cities from city-timezones DB (~7K), merged with curated entities.
- * Curated entities take priority for matching city names.
- */
-export function getAllMapEntities(): Entity[] {
-  if (allCached) return allCached
-  const curated = getAllEntities()
-  const curatedSlugs = new Set(curated.map((c) => c.slug))
-  const extras: Entity[] = []
-  const mapping = cityTimezones.cityMapping as Array<{
-    city: string
-    lat: number
-    lng: number
-    timezone: string
-    iso2: string
-    country: string
-  }>
-  const seenSlugs = new Set<string>()
-  for (const entry of mapping) {
-    const slug = entry.city.toLowerCase().replace(/\s+/g, '-')
-    if (curatedSlugs.has(slug) || seenSlugs.has(slug)) continue
-    seenSlugs.add(slug)
-    extras.push({
-      kind: 'city',
-      slug,
-      displayName: entry.city,
-      country: entry.country,
-      countryCode: entry.iso2,
-      iana: entry.timezone,
-      lat: entry.lat,
-      lng: entry.lng,
-      aliases: [],
-      wikidataId: null,
-      vibes: null,
-      iconSlug: null,
-    })
-  }
-  allCached = [...curated, ...extras]
-  return allCached
-}
-
 /**
  * Look up an entity by name for map rendering, first from curated entities,
- * then from the city-timezones database as a fallback.
+ * then from the city-timezones database as a fallback. Used for the source and
+ * target of a conversion, which are drawn whatever the density pass decides.
  */
 export function findEntityForMap(name: string): Entity | null {
   const entity = lookupEntity(name)
