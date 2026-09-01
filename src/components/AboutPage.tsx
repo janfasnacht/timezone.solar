@@ -1,77 +1,61 @@
-import { HelpExamples } from '@/components/HelpExamples'
 import { SunDialLogo } from '@/components/SunDialLogo'
+import { navigate } from '@/lib/navigate'
 
 interface AboutPageProps {
   onRunQuery: (query: string) => void
 }
 
-export function AboutPage({ onRunQuery }: AboutPageProps) {
-  const handleNavigateHome = () => {
-    history.pushState(null, '', '/')
-    window.dispatchEvent(new PopStateEvent('popstate'))
-  }
+/** Ordered simplest to hardest, so the range shows without being labelled. */
+const EXAMPLES = [
+  'Tokyo',
+  'JFK',
+  '6pm in Tokyo',
+  'noon Tokyo to London',
+  '14 march 3pm Berlin',
+  'in 2 hours',
+]
 
-  const handleRunQuery = (query: string) => {
-    history.pushState(null, '', `/?q=${encodeURIComponent(query)}`)
-    window.dispatchEvent(new PopStateEvent('popstate'))
+/**
+ * Laid out on the landing screen's grid — same top offset, same 520px column,
+ * same centred logo — so nothing moves when you arrive here from there.
+ */
+export function AboutPage({ onRunQuery }: AboutPageProps) {
+  const runQuery = (query: string) => {
+    navigate(`/?q=${encodeURIComponent(query)}`)
     onRunQuery(query)
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[520px] flex-col items-center px-4 md:px-[2rem]">
-      <div className="h-[4vh] md:h-[12vh] flex-shrink-0" />
+    <div className="mx-auto flex w-full max-w-[520px] flex-col items-center px-4 pt-[5vh] pb-10 text-center md:px-8 md:pt-[22vh]">
+      <SunDialLogo onClick={() => navigate('/')} />
 
-      {/* Logo */}
-      <div className="mb-4 md:mb-8 flex-shrink-0">
-        <SunDialLogo onClick={handleNavigateHome} />
+      <p className="mt-5 text-[0.85rem] leading-relaxed text-muted-foreground">
+        timezone.solar converts times between places from natural language.
+      </p>
+
+      <div className="mt-7 flex flex-wrap justify-center gap-1.5">
+        {EXAMPLES.map((ex) => (
+          <button
+            key={ex}
+            onClick={() => runQuery(ex)}
+            className="cursor-pointer rounded-lg border border-border bg-surface px-2.5 py-1 font-mono text-[0.75rem] text-muted-foreground transition-colors hover:border-accent/40 hover:text-foreground"
+          >
+            {ex}
+          </button>
+        ))}
       </div>
 
-      {/* About */}
-      <div className="w-full space-y-6">
-        <div>
-          <p className="text-[0.85rem] text-foreground/80">
-            <span className="font-semibold text-foreground">timezone</span>
-            <span className="font-semibold text-accent">.solar</span>
-            {' '}&mdash; natural language time conversion.
-          </p>
-          <p className="mt-2 text-[0.8rem] leading-relaxed text-foreground/60">
-            Type a city, a time, or both &mdash; and get an instant conversion.
-            No dropdowns, no picker widgets, just plain language.
-          </p>
-        </div>
-
-        {/* Examples */}
-        <div>
-          <p className="mb-3 text-[0.75rem] font-medium text-foreground/40">Try these</p>
-          <HelpExamples onRunQuery={handleRunQuery} />
-        </div>
-
-        {/* Attribution */}
-        <div className="border-t border-border pt-4 pb-8 space-y-1">
-          <p className="text-[0.7rem] text-foreground/30">
-            City icons by{' '}
-            <a
-              href="https://svgcities.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent/50 hover:text-accent hover:underline"
-            >
-              Studio Partdirector
-            </a>
-          </p>
-          <p className="text-[0.7rem] text-foreground/30">
-            Open source on{' '}
-            <a
-              href="https://github.com/janfasnacht/timezone.solar"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent/50 hover:text-accent hover:underline"
-            >
-              GitHub
-            </a>
-          </p>
-        </div>
-      </div>
+      <p className="mt-10 text-[0.7rem] leading-relaxed text-muted-foreground/60">
+        City icons by{' '}
+        <a href="https://svgcities.com/" target="_blank" rel="noopener noreferrer" className="text-accent/70 hover:text-accent">
+          Studio Partdirector
+        </a>
+        . The source is on{' '}
+        <a href="https://github.com/janfasnacht/timezone.solar" target="_blank" rel="noopener noreferrer" className="text-accent/70 hover:text-accent">
+          GitHub
+        </a>
+        .
+      </p>
     </div>
   )
 }

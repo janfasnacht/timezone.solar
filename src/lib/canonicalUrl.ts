@@ -23,6 +23,13 @@ const VALID_ANCHORS = ['next', 'this', 'last'] as const
 export function serializeDateModifier(mod: DateModifier): string | null {
   if (!mod) return null
   if (typeof mod === 'string') return mod // 'tomorrow' | 'yesterday' | 'today'
+  if (mod.type === 'date') {
+    const mm = String(mod.month).padStart(2, '0')
+    const dd = String(mod.day).padStart(2, '0')
+    // Year omitted when the query didn't name one, so the link keeps meaning
+    // "the next 14th of March" rather than freezing to a past year.
+    return mod.year ? `${mod.year}-${mm}-${dd}` : `${mm}-${dd}`
+  }
   // DayOfWeekModifier
   if (mod.anchor === 'bare') return mod.day
   return `${mod.anchor}-${mod.day}`
@@ -30,6 +37,15 @@ export function serializeDateModifier(mod: DateModifier): string | null {
 
 export function parseDateModifier(s: string): DateModifier {
   if (s === 'tomorrow' || s === 'yesterday' || s === 'today') return s
+
+  const withYear = s.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+  if (withYear) {
+    return { type: 'date', year: Number(withYear[1]), month: Number(withYear[2]), day: Number(withYear[3]) }
+  }
+  const noYear = s.match(/^(\d{2})-(\d{2})$/)
+  if (noYear) {
+    return { type: 'date', year: null, month: Number(noYear[1]), day: Number(noYear[2]) }
+  }
 
   // Try "anchor-day" format (e.g., "next-monday")
   const dashIdx = s.indexOf('-')

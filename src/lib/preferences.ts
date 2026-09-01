@@ -1,5 +1,20 @@
 export type ThemePreference = 'system' | 'light' | 'dark'
-export type TimeFormat = '12h' | '24h'
+export type TimeFormat = 'system' | '12h' | '24h'
+
+/**
+ * A 12-hour clock and the AM/PM marker are one axis, not two — a 12-hour clock
+ * without a marker is ambiguous, and a 24-hour clock never carries one. The axis
+ * that does vary independently is the default, which is regional: US browsers
+ * report hour12, Swiss ones don't. Read it rather than guess it; this needs no
+ * permission and no geolocation.
+ */
+export function resolveSystemTimeFormat(): '12h' | '24h' {
+  try {
+    return new Intl.DateTimeFormat().resolvedOptions().hour12 ? '12h' : '24h'
+  } catch {
+    return '12h'
+  }
+}
 export interface HomeCity {
   city: string
   iana: string
@@ -15,7 +30,7 @@ const STORAGE_KEY = 'tz-preferences'
 
 const DEFAULTS: Preferences = {
   theme: 'system',
-  timeFormat: '12h',
+  timeFormat: 'system',
   homeCity: null,
 }
 
@@ -29,7 +44,7 @@ function load(): Preferences {
     const parsed = JSON.parse(raw)
     return {
       theme: ['system', 'light', 'dark'].includes(parsed.theme) ? parsed.theme : DEFAULTS.theme,
-      timeFormat: ['12h', '24h'].includes(parsed.timeFormat) ? parsed.timeFormat : DEFAULTS.timeFormat,
+      timeFormat: ['system', '12h', '24h'].includes(parsed.timeFormat) ? parsed.timeFormat : DEFAULTS.timeFormat,
       homeCity: parsed.homeCity && parsed.homeCity.iana ? parsed.homeCity : DEFAULTS.homeCity,
     }
   } catch {

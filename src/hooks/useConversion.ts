@@ -148,8 +148,8 @@ export function useConversion(): UseConversionReturn {
 
     // Build intent and convert
     const intent: ConversionIntent = {
-      source,
-      target,
+      source: { ...source, input: parsed.sourceLocation ?? undefined },
+      target: { ...target, input: parsed.targetLocation },
       time: parsed.time,
       dateModifier: parsed.dateModifier,
     }
