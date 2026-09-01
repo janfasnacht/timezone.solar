@@ -19,20 +19,8 @@ import { useTimezoneData } from '@/hooks/useTimezoneData'
 const WIDTH = 960
 const HEIGHT = 500
 
-/**
- * The map runs full bleed *under* the chrome, so the top ~115px of it is always
- * covered while the bottom is free. Centring the projection in the viewBox
- * therefore centres it in the wrong box: the land ends up sitting high with dead
- * space below. Nudging the projection down balances it in the region the reader
- * can actually see, and spends the unused bottom margin instead of the covered
- * top one.
- *
- * In viewBox units, the correction is (chromeHeight / 2) / scale, and with
- * preserveAspectRatio="slice" the scale is containerHeight / HEIGHT. That works
- * out to roughly 32 units at 900px tall and 38 at 760 — near enough to a
- * constant that it isn't worth reprojecting on every resize.
- */
-const CHROME_BALANCE = 34
+/** Space kept above the map so northern land clears the search bar, in px. */
+const NORTH_HEADROOM_PX = 88
 
 export interface MapConversion {
   sourceCity: string
@@ -58,6 +46,13 @@ interface WorldMapProps {
 }
 
 export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showTimezones = false, showBorders = false, showGrid = true, cityDensity = 'main' }: WorldMapProps) {
+  // Matches preserveAspectRatio="slice": the map fills the container and is
+  // cropped, so a portrait screen has most of the world off to either side.
+  const coverFor = useCallback(
+    (vpW: number, vpH: number) => Math.max(vpW / frameRef.current.w, vpH / frameRef.current.h),
+    [],
+  )
+  const frameRef = useRef({ w: WIDTH, h: HEIGHT })
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
@@ -79,7 +74,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const projection = useMemo(
     () =>
       geoNaturalEarth1()
-        .translate([WIDTH / 2, HEIGHT / 2 + CHROME_BALANCE])
+        .translate([WIDTH / 2, HEIGHT / 2])
         .scale(153),
     []
   )
@@ -97,6 +92,42 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     () => pathGenerator(landGeoJson) || '',
     [pathGenerator, landGeoJson]
   )
+
+  /**
+   * The projection leaves empty margin inside the 960x500 frame, which showed as
+   * background above and below the map. Framing on the land's own bounds instead
+   * means the map reaches every edge of the screen.
+   *
+   * Except at the top, which gets a fixed strip back. The far south is empty
+   * ocean, so a flush bottom edge costs nothing — but Scandinavia, Greenland and
+   * Alaska sit right at the northern bound and would otherwise tuck under the
+   * search bar. The frame grows upward only, so the bottom stays flush.
+   */
+  const frame = useMemo(() => {
+    const [[x0, y0], [x1, y1]] = pathGenerator.bounds(landGeoJson)
+    const w = x1 - x0
+    const h = y1 - y0
+    // Headroom is a fixed number of screen pixels, so it clears the chrome at
+    // any viewport height rather than scaling with the map.
+    const vpH = containerRect?.height ?? 0
+    const pad = vpH > NORTH_HEADROOM_PX * 2 ? (h * NORTH_HEADROOM_PX) / (vpH - NORTH_HEADROOM_PX) : 0
+    return { x: x0, y: y0 - pad, w, h: h + pad }
+  }, [pathGenerator, landGeoJson, containerRect])
+  frameRef.current = frame
+
+  // The SVG is sized to the covered area rather than to the container, and
+  // centred with offsets. Rendering is identical at rest, but the element now
+  // genuinely extends past the viewport, so panning reveals map instead of
+  // sliding an already-clipped box off its own background.
+  const cover = containerRect ? coverFor(containerRect.width, containerRect.height) : null
+  const svgBox = cover && containerRect
+    ? {
+        width: frame.w * cover,
+        height: frame.h * cover,
+        left: (containerRect.width - frame.w * cover) / 2,
+        top: (containerRect.height - frame.h * cover) / 2,
+      }
+    : null
 
   const countriesGeoJson = useMemo(() => {
     const topo = countries110m as unknown as Topology<{
@@ -276,13 +307,9 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         if (projected) {
           const svgRect = svgRef.current.getBoundingClientRect()
           const cRect = containerRef.current.getBoundingClientRect()
-          const scaleX = svgRect.width / WIDTH
-          const scaleY = svgRect.height / HEIGHT
-          const offsetX = (cRect.width - svgRect.width) / 2
-          const offsetY = (cRect.height - svgRect.height) / 2
           setScreenPos({
-            x: projected.x * scaleX + offsetX,
-            y: projected.y * scaleY + offsetY,
+            x: svgRect.left - cRect.left + projected.x * (svgRect.width / WIDTH),
+            y: svgRect.top - cRect.top + projected.y * (svgRect.height / HEIGHT),
           })
           setContainerRect(cRect)
         }
@@ -305,10 +332,36 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   }, [])
 
   // Touch gesture handlers for pan/zoom
-  const updateTransform = useCallback((t: { x: number; y: number; scale: number }) => {
+  /**
+   * Keep the map covering the viewport. `preserveAspectRatio="slice"` already
+   * crops it, so at scale 1 a portrait screen has real content off both sides —
+   * panning there is meaningful, it just must not drag past the edge.
+   */
+  const clampTransform = useCallback((t: { x: number; y: number; scale: number }) => {
+    const el = containerRef.current
+    if (!el) return t
+    const vpW = el.offsetWidth
+    const vpH = el.offsetHeight
+    const cover = coverFor(vpW, vpH)
+    // transformOrigin is 0 0, so scaling alone drags content down and right.
+    // This is the translation that undoes that — the centre of the allowed range.
+    const midX = ((1 - t.scale) * vpW) / 2
+    const midY = ((1 - t.scale) * vpH) / 2
+    const { w, h } = frameRef.current
+    const rangeX = Math.max(0, (w * cover * t.scale - vpW) / 2)
+    const rangeY = Math.max(0, (h * cover * t.scale - vpH) / 2)
+    return {
+      scale: t.scale,
+      x: Math.max(midX - rangeX, Math.min(midX + rangeX, t.x)),
+      y: Math.max(midY - rangeY, Math.min(midY + rangeY, t.y)),
+    }
+  }, [coverFor])
+
+  const updateTransform = useCallback((raw: { x: number; y: number; scale: number }) => {
+    const t = clampTransform(raw)
     transformRef.current = t
     setMapTransform(t)
-  }, [])
+  }, [clampTransform])
 
   const handleMapTouchStart = useCallback((e: React.TouchEvent) => {
     const t = transformRef.current
@@ -370,8 +423,12 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   const handleMapTouchEnd = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 0) {
       const t = transformRef.current
-      if (t.scale <= 1.05) {
-        updateTransform({ x: 0, y: 0, scale: 1 })
+      // Settle the scale back to 1 but keep where the map was panned to: the
+      // pan is clamped to the crop, so it can never leave the viewport empty.
+      // Settle the scale back to 1 but keep where the map was panned to: the
+      // pan is clamped to the crop, so it can never leave the viewport empty.
+      if (t.scale <= 1.05 && t.scale !== 1) {
+        updateTransform({ x: t.x, y: t.y, scale: 1 })
       }
       gestureRef.current = { ...gestureRef.current, type: 'none', moved: false }
     } else if (e.touches.length === 1 && gestureRef.current.type === 'pinch') {
@@ -420,15 +477,13 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     // Use layout dimensions (unaffected by CSS transform) with slice-aware mapping
     const vpW = containerRef.current.offsetWidth
     const vpH = containerRef.current.offsetHeight
-    const sx = vpW / WIDTH
-    const sy = vpH / HEIGHT
-    const mapScale = Math.max(sx, sy) // preserveAspectRatio="xMidYMid slice"
-    const offsetX = (vpW - WIDTH * mapScale) / 2
-    const offsetY = (vpH - HEIGHT * mapScale) / 2
+    const mapScale = coverFor(vpW, vpH)
+    const offsetX = (vpW - frame.w * mapScale) / 2
+    const offsetY = (vpH - frame.h * mapScale) / 2
 
     const toScreen = (projected: { x: number; y: number }) => ({
-      x: projected.x * mapScale + offsetX,
-      y: projected.y * mapScale + offsetY,
+      x: (projected.x - frame.x) * mapScale + offsetX,
+      y: (projected.y - frame.y) * mapScale + offsetY,
     })
 
     const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
@@ -456,7 +511,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
     return { src, tgt, srcPlacement, tgtPlacement, containerWidth: vpW, containerHeight: vpH }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [effectiveConversion, sourceProjected, targetProjected, isSameCity, containerRect])
+  }, [effectiveConversion, sourceProjected, targetProjected, isSameCity, coverFor, frame, containerRect])
 
   // Determine variant for each pinned label
   const srcIsHovered = hoveredEntity && pinnedLabels?.src?.entity
@@ -483,11 +538,12 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       >
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        preserveAspectRatio="xMidYMid slice"
-        className="w-full h-full"
+        viewBox={`${frame.x} ${frame.y} ${frame.w} ${frame.h}`}
+        preserveAspectRatio="xMidYMid meet"
+        className={svgBox ? 'absolute' : 'w-full h-full'}
+        style={svgBox ?? undefined}
       >
-        <rect width={WIDTH} height={HEIGHT} fill="var(--color-background)" />
+        <rect x={frame.x} y={frame.y} width={frame.w} height={frame.h} fill="var(--color-background)" />
 
         {showGrid && (
           <path
@@ -572,6 +628,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             x={x}
             y={y}
             role={getEntityRole(entity)}
+            zoom={mapTransform.scale}
             minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
             hovered={hoveredEntity?.slug === entity.slug}
             hitRadius={hitRadii[i]}
@@ -591,6 +648,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
+          zoom={mapTransform.scale}
           variant={srcIsHovered ? 'expanded' : 'active'}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.src!.entity : null)}
           iana={pinnedLabels.src.entity.iana}
@@ -609,6 +667,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
+          zoom={mapTransform.scale}
           variant={tgtIsHovered ? 'expanded' : 'active'}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.tgt!.entity : null)}
           iana={pinnedLabels.tgt.entity.iana}

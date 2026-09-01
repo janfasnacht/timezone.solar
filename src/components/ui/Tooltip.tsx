@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useId } from 'react'
+import { useState, useRef, useEffect, useId, useSyncExternalStore } from 'react'
 
 type Side = 'top' | 'bottom' | 'left' | 'right'
 
@@ -22,12 +22,33 @@ const SIDE_CLASS: Record<Side, string> = {
 /** Hover has to be deliberate; keyboard focus is already deliberate. */
 const HOVER_DELAY_MS = 400
 
+const HOVER_QUERY = '(hover: hover) and (pointer: fine)'
+
+/**
+ * A tooltip is a pointer affordance. Touch has no hover, so a tap both opens and
+ * focuses the trigger, leaving the tip stuck until something else takes focus.
+ * Rather than paper over that, don't render one where there is no pointer —
+ * every control it names is either labelled or has an aria-label.
+ */
+function useHoverCapable() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(HOVER_QUERY)
+      mq.addEventListener('change', onChange)
+      return () => mq.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(HOVER_QUERY).matches,
+    () => true,
+  )
+}
+
 /**
  * The only floating surface besides the popover, and lighter in weight because
  * it is decorative rather than interactive: it names a control and may teach its
  * shortcut. Never contains an action — anything clickable belongs in a popover.
  */
 export function Tooltip({ label, keys, side = 'top', children, className }: TooltipProps) {
+  const hoverCapable = useHoverCapable()
   const [open, setOpen] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const id = useId()
@@ -50,6 +71,8 @@ export function Tooltip({ label, keys, side = 'top', children, className }: Tool
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [open])
+
+  if (!hoverCapable) return <>{children}</>
 
   return (
     <div

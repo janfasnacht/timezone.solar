@@ -21,6 +21,8 @@ interface PinnedCityLabelProps {
   homeCity?: HomeCity | null
   /** Lets the map treat hovering the label as hovering its dot. */
   onHoverChange?: (hovered: boolean) => void
+  /** Map zoom, cancelled out so the card keeps one size on screen. */
+  zoom?: number
 }
 
 export function PinnedCityLabel({
@@ -38,6 +40,7 @@ export function PinnedCityLabel({
   use24h,
   homeCity,
   onHoverChange,
+  zoom = 1,
 }: PinnedCityLabelProps) {
   const isExpanded = variant === 'expanded'
   const isPreview = variant === 'preview'
@@ -94,6 +97,10 @@ export function PinnedCityLabel({
         top,
         width: cardWidth,
         opacity: isPreview ? 0.5 : 1,
+        // Cancel the map's zoom, anchored on the edge that faces the dot, so the
+        // card holds one size on screen and its tip stays put.
+        transform: zoom === 1 ? undefined : `scale(${1 / zoom})`,
+        transformOrigin: placement === 'above' ? 'center bottom' : 'center top',
       }}
     >
       <div className={`bg-surface/80 backdrop-blur-sm border ${borderStyle} border-border rounded-lg ${shadow} ${isExpanded ? 'px-3 py-2' : 'px-2.5 py-1.5'}`}>
