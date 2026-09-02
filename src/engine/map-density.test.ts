@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getRankedMapEntities, selectSpaced, MINOR_RANK, type Box } from '@/engine/map-density'
+import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
 import { FAMILIAR_CITY_SLUGS } from '@/engine/familiar-cities'
 import { ANCHOR_CITY_SLUGS, MAP_CITY_SLUGS } from '@/engine/map-entities'
 
@@ -141,5 +141,52 @@ describe('getRankedMapEntities', () => {
 
   it('is cached, so a render never rebuilds 7K entries', () => {
     expect(getRankedMapEntities()).toBe(ranked)
+  })
+})
+
+describe('rankFloor', () => {
+  const ranked = getRankedMapEntities()
+  const eligible = (kind: 'city' | 'airport', t: number) =>
+    ranked.filter((r) => (kind === 'airport' ? r.entity.kind === 'airport' : r.entity.kind !== 'airport'))
+      .filter((r) => r.rank >= rankFloor(kind, t)).length
+
+  it('admits only curated places at the resting view', () => {
+    const bySlug = new Map(ranked.map((r) => [r.entity.slug, r]))
+    const floor = rankFloor('city', 0)
+    expect(bySlug.get('london')!.rank).toBeGreaterThanOrEqual(floor)
+    expect(bySlug.get('dar-es-salaam')!.rank).toBeGreaterThanOrEqual(floor)
+    // The city-timezones tail is what makes a world view read as noise.
+    const tail = ranked[ranked.length - 1]
+    expect(tail.rank).toBeLessThan(floor)
+  })
+
+  it('admits everything at full zoom, for both kinds', () => {
+    expect(rankFloor('city', 1)).toBe(0)
+    expect(rankFloor('airport', 1)).toBe(0)
+    expect(eligible('city', 1)).toBe(ranked.filter((r) => r.entity.kind !== 'airport').length)
+    expect(eligible('airport', 1)).toBe(ranked.filter((r) => r.entity.kind === 'airport').length)
+  })
+
+  it('never admits fewer places as you zoom in', () => {
+    for (const kind of ['city', 'airport'] as const) {
+      let previous = -1
+      for (let t = 0; t <= 1.0001; t += 0.05) {
+        const n = eligible(kind, t)
+        expect(n, `${kind} at t=${t.toFixed(2)}`).toBeGreaterThanOrEqual(previous)
+        previous = n
+      }
+    }
+  })
+
+  it('lets familiar airports through at rest, and the rest only later', () => {
+    const airports = ranked.filter((r) => r.entity.kind === 'airport')
+    const atRest = airports.filter((r) => r.rank >= rankFloor('airport', 0)).length
+    expect(atRest).toBeGreaterThan(30)
+    expect(atRest).toBeLessThan(airports.length)
+  })
+
+  it('clamps outside 0..1 rather than extrapolating', () => {
+    expect(rankFloor('city', -5)).toBe(rankFloor('city', 0))
+    expect(rankFloor('city', 99)).toBe(rankFloor('city', 1))
   })
 })

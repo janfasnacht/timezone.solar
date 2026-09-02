@@ -17,9 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Cities, airports and names each get their own None / Few / Auto / All scale in
+- Cities, airports and labels each get their own None / Few / Auto / All scale in
   the layers menu. Airports no longer ride along with the city density, and each
-  scale responds to zoom rather than being a fixed list
+  scale responds to zoom: the resting view names only well-known places, and at
+  full zoom Auto shows everything in view
 - Every mark on the map holds one size on screen as you zoom — dots, the arc and
   its offset, coastlines, borders, and the timezone tooltip
 - Hovering the source or target no longer enlarges its dot; the card it opens

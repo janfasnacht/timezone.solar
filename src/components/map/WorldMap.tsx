@@ -7,7 +7,7 @@ import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
 import { findEntityForMap } from '@/engine/map-entities'
-import { getRankedMapEntities, selectSpaced, MINOR_RANK, type Box } from '@/engine/map-density'
+import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
@@ -28,21 +28,22 @@ export const MIN_ZOOM = 1
 export const MAX_ZOOM = 8
 
 /**
- * Per-layer budgets. `spacingPx` and the label padding are screen-space, so the
- * on-screen count holds while zooming swaps big places for small ones.
+ * Per-layer budgets, interpolated across the zoom range. Each pair is
+ * [resting view, full zoom].
  *
- * `all` means all: no cap, no spacing, just a cull to what is on screen.
+ * Spacing runs to zero and the cap runs high, so at full zoom a layer stops
+ * thinning altogether and simply draws everything in view. Labels do not
+ * interpolate — twenty names is the most that stays readable at any zoom, so
+ * coming in swaps which twenty rather than adding more.
  */
 const BUDGET = {
   city: {
-    few: { spacingPx: 46, limit: 34 },
-    auto: { spacingPx: 26, limit: 110 },
-    all: { spacingPx: 0, limit: Infinity },
+    few: { spacingPx: [46, 14], limit: [38, 500] },
+    auto: { spacingPx: [24, 0], limit: [130, 2500] },
   },
   airport: {
-    few: { spacingPx: 46, limit: 14 },
-    auto: { spacingPx: 26, limit: 48 },
-    all: { spacingPx: 0, limit: Infinity },
+    few: { spacingPx: [46, 14], limit: [16, 250] },
+    auto: { spacingPx: [24, 0], limit: [60, 1200] },
   },
   label: {
     few: { padPx: 96, limit: 10 },
@@ -50,6 +51,8 @@ const BUDGET = {
     all: { padPx: 6, limit: Infinity },
   },
 } as const
+
+const lerp = (range: readonly [number, number], t: number) => range[0] + (range[1] - range[0]) * t
 
 const LABEL_PX = 10.5
 
@@ -254,6 +257,8 @@ export function WorldMap({
     const toFrameY = (py: number) => frame.y + ((py - ty) / scale - top) / cover
     return {
       ppu: cover * scale,
+      /** 0 at the resting view, 1 at full zoom — drives every budget below. */
+      t: (scale - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM),
       x0: toFrameX(0),
       x1: toFrameX(containerRect.width),
       y0: toFrameY(0),
@@ -287,39 +292,36 @@ export function WorldMap({
       p.x >= view.x0 && p.x <= view.x1 && p.y >= view.y0 && p.y <= view.y1
 
     /** One layer's pass. Returns the picks and the space they claimed. */
-    const pick = (
-      pool: readonly ProjectedEntity[],
-      density: Density,
-      budgets: { readonly spacingPx: number; readonly limit: number },
-      seed: Box[],
-    ) => {
-      if (density === 'none') return { picks: [] as ProjectedEntity[], boxes: [] as Box[] }
-      const half = budgets.spacingPx / view.ppu / 2
+    const pick = (pool: readonly ProjectedEntity[], kind: 'city' | 'airport', density: Density) => {
+      if (density === 'none') return { picks: [] as ProjectedEntity[] }
+
+      // 'all' is the end state the other tiers reach at full zoom: no floor, no
+      // spacing, no cap. It skips the grid, which is also what keeps a drag
+      // cheap with several thousand dots in the pool.
+      if (density === 'all') return { picks: pool.filter(inView) }
+
+      const budgets = BUDGET[kind][density]
+      const spacingPx = lerp(budgets.spacingPx, view.t)
+      const half = spacingPx / view.ppu / 2
       const boxOf = (p: ProjectedEntity): Box =>
         ({ x: p.x - half, y: p.y - half, w: half * 2, h: half * 2 })
-      // 'all' never thins, so it skips the grid entirely — which is also what
-      // keeps a drag cheap with several thousand dots in the pool.
-      const picks =
-        density === 'all'
-          ? pool.filter(inView)
-          : selectSpaced(pool, {
-              limit: budgets.limit,
-              cell: budgets.spacingPx / view.ppu,
-              seed,
-              boxFor: (p) => (inView(p) ? boxOf(p) : null),
-            })
-      return { picks, boxes: picks.map(boxOf) }
+
+      return {
+        picks: selectSpaced(pool, {
+          limit: Math.round(lerp(budgets.limit, view.t)),
+          cell: Math.max(spacingPx, 8) / view.ppu,
+          boxFor: (p) => (inView(p) ? boxOf(p) : null),
+        }),
+      }
     }
 
-    const cities = pick(cityPool, cityDensity, BUDGET.city[cityDensity === 'none' ? 'auto' : cityDensity], [])
-    // Airports are seeded with the cities' claims, so a plane never lands on a
-    // dot — but they draw from their own budget, so the toggle always shows.
-    const airports = pick(
-      airportPool,
-      airportDensity,
-      BUDGET.airport[airportDensity === 'none' ? 'auto' : airportDensity],
-      cities.boxes,
-    )
+    // The two layers space among themselves and not against each other. An
+    // airport sits on its city — JFK is sub-pixel from New York at world zoom —
+    // so any mutual clearance empties the airport layer entirely. The plane is a
+    // different mark drawn on top; letting it share the dot is the honest way to
+    // make the toggle mean what it says.
+    const cities = pick(cityPool, 'city', cityDensity)
+    const airports = pick(airportPool, 'airport', airportDensity)
 
     return [...pinnedProjected, ...cities.picks, ...airports.picks]
   }, [cityDensity, airportDensity, view, cityPool, airportPool, pinnedProjected])
@@ -354,6 +356,10 @@ export function WorldMap({
       boxFor: (p) => {
         // The pinned pair already carries a card with its name and time.
         if (pinned.has(p.entity.slug)) return null
+        // An unnamed dot is never "a city nobody has heard of" — only a named
+        // one is. So the eligibility floor lands here rather than on the dots,
+        // and the resting view names curated places only.
+        if (p.rank < rankFloor(p.entity.kind === 'airport' ? 'airport' : 'city', view.t)) return null
         if (p.x < view.x0 || p.x > view.x1 || p.y < view.y0 || p.y > view.y1) return null
         const text = p.entity.kind === 'airport' ? p.entity.iata : p.entity.displayName
         const w = widthOf(text)
@@ -978,7 +984,6 @@ export function WorldMap({
           <MapZoomControl
             zoom={mapTransform.scale}
             min={MIN_ZOOM}
-            max={MAX_ZOOM}
             onZoom={stepZoom}
             onReset={resetZoom}
           />

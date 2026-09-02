@@ -35,9 +35,14 @@ interface CityRow {
   country: string
 }
 
-/** log10, so a 20M city outranks a 20K one by ~3 rather than 1000x. */
+/**
+ * log10, so a 20M city outranks a 20K one by ~3 rather than 1000x.
+ *
+ * Floored at zero: a handful of DB rows carry a fractional population, and a
+ * negative score would drop a place below its own tier base.
+ */
 function popScore(pop: number | undefined): number {
-  return pop && pop > 0 ? Math.log10(pop) : 0
+  return pop && pop > 1 ? Math.log10(pop) : 0
 }
 
 let popByName: Map<string, number> | null = null
@@ -109,6 +114,28 @@ export function getRankedMapEntities(): readonly RankedEntity[] {
   out.sort((a, b) => b.rank - a.rank)
   ranked = out
   return ranked
+}
+
+/**
+ * The lowest rank worth drawing at a given zoom, where `t` runs 0 at the resting
+ * view to 1 at full zoom.
+ *
+ * Spacing alone decides *where* there is room; this decides *who is eligible for
+ * it*. Without it an empty quarter of the map fills with whatever tail city
+ * happens to sit there, and the world view reads as a list of places nobody
+ * asked about. So the whole world is curated-only, and the tail opens by
+ * population as you come in — 30M and up first, everything by the time you are
+ * all the way in.
+ */
+export function rankFloor(kind: 'city' | 'airport', t: number): number {
+  const clamped = Math.max(0, Math.min(1, t))
+  const CURATED_ONLY_UNTIL = 0.25
+  if (clamped < CURATED_ONLY_UNTIL) {
+    return kind === 'airport' ? TIER.familiarAirport : TIER.mapCity
+  }
+  // log10 of the population a tail city needs to earn a place, easing to zero.
+  const POP_CEILING = 7.5
+  return POP_CEILING * (1 - (clamped - CURATED_ONLY_UNTIL) / (1 - CURATED_ONLY_UNTIL))
 }
 
 /** Axis-aligned exclusion rectangle, top-left origin, caller's units. */

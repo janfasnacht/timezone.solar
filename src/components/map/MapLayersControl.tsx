@@ -68,7 +68,8 @@ function DensityScale({ label, value, onChange, disabled = false }: ScaleProps) 
 export function MapLayersControl({ layers, onChange }: MapLayersControlProps) {
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
-  // Nothing on the map to name once both place layers are off.
+  // Labels name whatever is drawn — cities and airports both — so they only go
+  // dead once there is nothing on the map at all.
   const nothingToLabel = layers.cityDensity === 'none' && layers.airportDensity === 'none'
 
   return (
@@ -104,7 +105,7 @@ export function MapLayersControl({ layers, onChange }: MapLayersControlProps) {
           onChange={(airportDensity) => onChange({ airportDensity })}
         />
         <DensityScale
-          label="Names"
+          label="Labels"
           value={layers.labelDensity}
           onChange={(labelDensity) => onChange({ labelDensity })}
           disabled={nothingToLabel}
