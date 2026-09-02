@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { DateTime } from 'luxon'
 import type { HomeCity } from '@/lib/preferences'
+import { PINNED_GAP, TOP_SAFE_PX } from './cardPlacement'
 
 type LabelVariant = 'preview' | 'active' | 'expanded'
 
@@ -21,8 +22,6 @@ interface PinnedCityLabelProps {
   homeCity?: HomeCity | null
   /** Lets the map treat hovering the label as hovering its dot. */
   onHoverChange?: (hovered: boolean) => void
-  /** Map zoom, cancelled out so the card keeps one size on screen. */
-  zoom?: number
 }
 
 export function PinnedCityLabel({
@@ -40,13 +39,12 @@ export function PinnedCityLabel({
   use24h,
   homeCity,
   onHoverChange,
-  zoom = 1,
 }: PinnedCityLabelProps) {
   const isExpanded = variant === 'expanded'
   const isPreview = variant === 'preview'
   const cardWidth = isExpanded ? 200 : 140
   const cardHeight = isExpanded ? 80 : 52
-  const gap = 10
+  const gap = PINNED_GAP
 
   // Compute offset string for expanded state
   const offsetStr = useMemo(() => {
@@ -72,12 +70,12 @@ export function PinnedCityLabel({
     return dt.toFormat(use24h ? 'HH:mm' : 'h:mm a')
   }, [isExpanded, iana, now, use24h, time])
 
-  // Vertical position
+  // Vertical position. Flipping below starts well down the viewport: the search
+  // bar floats over the top of the map, and a card tucked under it is worse than
+  // one on the other side of its dot.
   let top = placement === 'above' ? y - gap - cardHeight : y + gap
-
-  // Clamp vertical
-  if (top < 4) top = y + gap
-  if (top + cardHeight > containerHeight - 4) top = y - gap - cardHeight
+  if (top < TOP_SAFE_PX) top = y + gap
+  if (top + cardHeight > containerHeight - 8) top = y - gap - cardHeight
 
   // Horizontal: center on dot, clamp to edges
   let left = x - cardWidth / 2
@@ -92,16 +90,7 @@ export function PinnedCityLabel({
       className={`absolute transition-all duration-300 ease-out ${onHoverChange ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'} ${isExpanded ? 'z-50' : 'z-30'}`}
       onMouseEnter={() => onHoverChange?.(true)}
       onMouseLeave={() => onHoverChange?.(false)}
-      style={{
-        left,
-        top,
-        width: cardWidth,
-        opacity: isPreview ? 0.5 : 1,
-        // Cancel the map's zoom, anchored on the edge that faces the dot, so the
-        // card holds one size on screen and its tip stays put.
-        transform: zoom === 1 ? undefined : `scale(${1 / zoom})`,
-        transformOrigin: placement === 'above' ? 'center bottom' : 'center top',
-      }}
+      style={{ left, top, width: cardWidth, opacity: isPreview ? 0.5 : 1 }}
     >
       <div className={`bg-surface/80 backdrop-blur-sm border ${borderStyle} border-border rounded-lg ${shadow} ${isExpanded ? 'px-3 py-2' : 'px-2.5 py-1.5'}`}>
         <div className={`font-serif text-accent font-medium truncate ${isExpanded ? 'text-sm' : 'text-xs'}`}>

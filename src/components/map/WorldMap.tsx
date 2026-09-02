@@ -6,7 +6,8 @@ import type { Feature, LineString } from 'geojson'
 import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
-import { getMapEntities, getAllMapEntities, findEntityForMap } from '@/engine/map-entities'
+import { findEntityForMap } from '@/engine/map-entities'
+import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
@@ -14,6 +15,7 @@ import { EntityDot, type EntityRole } from './EntityDot'
 import { EntityHoverCard } from './EntityHoverCard'
 import { PinnedCityLabel } from './PinnedCityLabel'
 import { TimezoneOverlay } from './TimezoneOverlay'
+import { MapZoomControl } from './MapZoomControl'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
 
 const WIDTH = 960
@@ -21,6 +23,38 @@ const HEIGHT = 500
 
 /** Space kept above the map so northern land clears the search bar, in px. */
 const NORTH_HEADROOM_PX = 88
+
+export const MIN_ZOOM = 1
+export const MAX_ZOOM = 8
+
+/**
+ * Per-layer budgets, interpolated across the zoom range. Each pair is
+ * [resting view, full zoom].
+ *
+ * Spacing runs to zero and the cap runs high, so at full zoom a layer stops
+ * thinning altogether and simply draws everything in view. Labels do not
+ * interpolate — twenty names is the most that stays readable at any zoom, so
+ * coming in swaps which twenty rather than adding more.
+ */
+const BUDGET = {
+  city: {
+    few: { spacingPx: [46, 14], limit: [38, 500] },
+    auto: { spacingPx: [24, 0], limit: [130, 2500] },
+  },
+  airport: {
+    few: { spacingPx: [46, 14], limit: [16, 250] },
+    auto: { spacingPx: [24, 0], limit: [60, 1200] },
+  },
+  label: {
+    few: { padPx: 96, limit: 10 },
+    auto: { padPx: 64, limit: 20 },
+    all: { padPx: 6, limit: Infinity },
+  },
+} as const
+
+const lerp = (range: readonly [number, number], t: number) => range[0] + (range[1] - range[0]) * t
+
+const LABEL_PX = 10.5
 
 export interface MapConversion {
   sourceCity: string
@@ -31,7 +65,18 @@ export interface MapConversion {
   isPreview?: boolean
 }
 
-export type CityDensity = 'none' | 'main' | 'all'
+/**
+ * One scale for every place layer. `auto` is the zoom-driven default; `few` and
+ * `all` are the same machinery with a different budget, not a different mode.
+ */
+export type Density = 'none' | 'few' | 'auto' | 'all'
+
+interface ProjectedEntity {
+  entity: Entity
+  rank: number
+  x: number
+  y: number
+}
 
 interface WorldMapProps {
   now: Date
@@ -42,16 +87,37 @@ interface WorldMapProps {
   showTimezones?: boolean
   showBorders?: boolean
   showGrid?: boolean
-  cityDensity?: CityDensity
+  cityDensity?: Density
+  airportDensity?: Density
+  labelDensity?: Density
+  /** Touch already has pinch and pan; the zoom buttons are for the desktop. */
+  isMobile?: boolean
 }
 
-export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showTimezones = false, showBorders = false, showGrid = true, cityDensity = 'main' }: WorldMapProps) {
-  // Matches preserveAspectRatio="slice": the map fills the container and is
-  // cropped, so a portrait screen has most of the world off to either side.
-  const coverFor = useCallback(
-    (vpW: number, vpH: number) => Math.max(vpW / frameRef.current.w, vpH / frameRef.current.h),
-    [],
-  )
+/**
+ * Matches preserveAspectRatio="slice": the map fills the container and is
+ * cropped, so a portrait screen has most of the world off to either side.
+ */
+function coverOf(vpW: number, vpH: number, f: { w: number; h: number }) {
+  return Math.max(vpW / f.w, vpH / f.h)
+}
+
+export function WorldMap({
+  now,
+  use24h,
+  homeCity,
+  conversion,
+  onCityClick,
+  showTimezones = false,
+  showBorders = false,
+  showGrid = true,
+  cityDensity = 'auto',
+  airportDensity = 'none',
+  labelDensity = 'auto',
+  isMobile = false,
+}: WorldMapProps) {
+  // Only the gesture handlers read the frame outside render, so only they need
+  // the ref; everything during render uses `frame` itself.
   const frameRef = useRef({ w: WIDTH, h: HEIGHT })
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null)
@@ -113,13 +179,15 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     const pad = vpH > NORTH_HEADROOM_PX * 2 ? (h * NORTH_HEADROOM_PX) / (vpH - NORTH_HEADROOM_PX) : 0
     return { x: x0, y: y0 - pad, w, h: h + pad }
   }, [pathGenerator, landGeoJson, containerRect])
-  frameRef.current = frame
+  useEffect(() => {
+    frameRef.current = frame
+  }, [frame])
 
   // The SVG is sized to the covered area rather than to the container, and
   // centred with offsets. Rendering is identical at rest, but the element now
   // genuinely extends past the viewport, so panning reveals map instead of
   // sliding an already-clipped box off its own background.
-  const cover = containerRect ? coverFor(containerRect.width, containerRect.height) : null
+  const cover = containerRect ? coverOf(containerRect.width, containerRect.height, frame) : null
   const svgBox = cover && containerRect
     ? {
         width: frame.w * cover,
@@ -153,10 +221,6 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const { data: tzData } = useTimezoneData(showTimezones)
 
-  const baseMapEntities = useMemo(() => getMapEntities(), [])
-  const allMapEntities = useMemo(() => getAllMapEntities(), [])
-  const mapSlugs = useMemo(() => new Set(baseMapEntities.map((c) => c.slug)), [baseMapEntities])
-
   // Asking about the city you are in is a valid query. Only the arc is
   // meaningless there, so the pin and label still render.
   const isSameCity = conversion
@@ -165,48 +229,154 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   const effectiveConversion = conversion
 
-  // Merge dynamic source/target entities (cities or airports) into the base set
-  const entities = useMemo(() => {
-    if (cityDensity === 'none') {
-      // Still show source/target entities even in 'none' mode
-      if (!effectiveConversion) return []
-      const extras: Entity[] = []
-      for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
-        if (!name) continue
-        const entity = findEntityForMap(name)
-        if (entity) extras.push(entity)
-      }
-      return extras
+  // Deliberately not keyed on the transform: pan/zoom only change which points
+  // are picked, so re-projecting thousands of coordinates per wheel tick buys nothing.
+  // Split by kind because each layer draws from its own budget — folded into one
+  // pool the cities exhaust the cap before the walk ever reaches an airport.
+  const { cityPool, airportPool } = useMemo(() => {
+    const project = (r: { entity: Entity; rank: number }): ProjectedEntity | null => {
+      const point = projection([r.entity.lng, r.entity.lat])
+      return point ? { entity: r.entity, rank: r.rank, x: point[0], y: point[1] } : null
     }
+    const all = getRankedMapEntities()
+    const isProjected = (p: ProjectedEntity | null): p is ProjectedEntity => p !== null
+    return {
+      cityPool: all.filter((r) => r.entity.kind !== 'airport').map(project).filter(isProjected),
+      airportPool: all.filter((r) => r.entity.kind === 'airport').map(project).filter(isProjected),
+    }
+  }, [projection])
 
-    const base = cityDensity === 'all' ? allMapEntities : baseMapEntities
-    if (!effectiveConversion) return base
-    const slugs = new Set(base.map((c) => c.slug))
-    const extras: Entity[] = []
+  /** Visible slice in frame units, plus screen pixels per frame unit. Density and
+   *  label sizes are picked in screen px and divided through `ppu`. */
+  const view = useMemo(() => {
+    if (!containerRect || !cover) return null
+    const { x: tx, y: ty, scale } = mapTransform
+    const left = (containerRect.width - frame.w * cover) / 2
+    const top = (containerRect.height - frame.h * cover) / 2
+    const toFrameX = (px: number) => frame.x + ((px - tx) / scale - left) / cover
+    const toFrameY = (py: number) => frame.y + ((py - ty) / scale - top) / cover
+    return {
+      ppu: cover * scale,
+      /** 0 at the resting view, 1 at full zoom — drives every budget below. */
+      t: (scale - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM),
+      x0: toFrameX(0),
+      x1: toFrameX(containerRect.width),
+      y0: toFrameY(0),
+      y1: toFrameY(containerRect.height),
+    }
+  }, [containerRect, cover, frame, mapTransform])
+
+  // Drawn whatever the density pass decides.
+  const pinnedProjected = useMemo(() => {
+    if (!effectiveConversion) return []
+    const out: ProjectedEntity[] = []
+    const seen = new Set<string>()
     for (const name of [effectiveConversion.sourceCity, effectiveConversion.targetCity]) {
       if (!name) continue
       const entity = findEntityForMap(name)
-      if (entity && !slugs.has(entity.slug)) {
-        extras.push(entity)
-        slugs.add(entity.slug)
+      if (!entity || seen.has(entity.slug)) continue
+      const point = projection([entity.lng, entity.lat])
+      if (!point) continue
+      seen.add(entity.slug)
+      out.push({ entity, rank: Infinity, x: point[0], y: point[1] })
+    }
+    return out
+  }, [effectiveConversion, projection])
+
+  const projectedEntities = useMemo(() => {
+    if (!view) return pinnedProjected
+
+    const pinned = new Set(pinnedProjected.map((p) => p.entity.slug))
+    const inView = (p: ProjectedEntity) =>
+      !pinned.has(p.entity.slug) &&
+      p.x >= view.x0 && p.x <= view.x1 && p.y >= view.y0 && p.y <= view.y1
+
+    /** One layer's pass. Returns the picks and the space they claimed. */
+    const pick = (pool: readonly ProjectedEntity[], kind: 'city' | 'airport', density: Density) => {
+      if (density === 'none') return { picks: [] as ProjectedEntity[] }
+
+      // 'all' is the end state the other tiers reach at full zoom: no floor, no
+      // spacing, no cap. It skips the grid, which is also what keeps a drag
+      // cheap with several thousand dots in the pool.
+      if (density === 'all') return { picks: pool.filter(inView) }
+
+      const budgets = BUDGET[kind][density]
+      const spacingPx = lerp(budgets.spacingPx, view.t)
+      const half = spacingPx / view.ppu / 2
+      const boxOf = (p: ProjectedEntity): Box =>
+        ({ x: p.x - half, y: p.y - half, w: half * 2, h: half * 2 })
+
+      return {
+        picks: selectSpaced(pool, {
+          limit: Math.round(lerp(budgets.limit, view.t)),
+          cell: Math.max(spacingPx, 8) / view.ppu,
+          boxFor: (p) => (inView(p) ? boxOf(p) : null),
+        }),
       }
     }
-    return extras.length > 0 ? [...base, ...extras] : base
-  }, [cityDensity, baseMapEntities, allMapEntities, effectiveConversion])
 
-  const projectedEntities = useMemo(
-    () =>
-      entities
-        .map((entity) => {
-          const point = projection([entity.lng, entity.lat])
-          if (!point) return null
-          return { entity, x: point[0], y: point[1] }
+    // The two layers space among themselves and not against each other. An
+    // airport sits on its city — JFK is sub-pixel from New York at world zoom —
+    // so any mutual clearance empties the airport layer entirely. The plane is a
+    // different mark drawn on top; letting it share the dot is the honest way to
+    // make the toggle mean what it says.
+    const cities = pick(cityPool, 'city', cityDensity)
+    const airports = pick(airportPool, 'airport', airportDensity)
+
+    return [...pinnedProjected, ...cities.picks, ...airports.picks]
+  }, [cityDensity, airportDensity, view, cityPool, airportPool, pinnedProjected])
+
+  /**
+   * Same greedy pass on the text's own box, so two labels can never collide.
+   *
+   * The box is padded well beyond the glyphs. Without it the megacities clump —
+   * Mumbai, Delhi, Karachi and Dhaka all fit inside a few hundred kilometres and
+   * would take four of the slots, leaving Europe and Africa bare.
+   */
+  const cityLabels = useMemo(() => {
+    if (labelDensity === 'none' || !view) return []
+
+    const { padPx, limit } = BUDGET.label[labelDensity]
+    const font = LABEL_PX / view.ppu
+    const gap = 5 / view.ppu
+    const padX = padPx / view.ppu
+    // Deliberately not square. Labels are wide and short, so horizontal crowding
+    // is what makes them unreadable; matching padY to padX costs whole cities —
+    // at 0.45 Istanbul's box swallows Cairo.
+    const padY = (padPx * 0.32) / view.ppu
+    const pinned = new Set(pinnedProjected.map((p) => p.entity.slug))
+    // Rough advance width for the label font; only the collision test reads it.
+    const widthOf = (text: string) => text.length * font * 0.52
+
+    const placed = new Map<string, { text: string; x: number; y: number; anchor: 'start' | 'end' }>()
+
+    const chosen = selectSpaced(projectedEntities, {
+      limit,
+      cell: Math.max(padX, font * 8),
+      boxFor: (p) => {
+        // The pinned pair already carries a card with its name and time.
+        if (pinned.has(p.entity.slug)) return null
+        // An unnamed dot is never "a city nobody has heard of" — only a named
+        // one is. So the eligibility floor lands here rather than on the dots,
+        // and the resting view names curated places only.
+        if (p.rank < rankFloor(p.entity.kind === 'airport' ? 'airport' : 'city', view.t)) return null
+        if (p.x < view.x0 || p.x > view.x1 || p.y < view.y0 || p.y > view.y1) return null
+        const text = p.entity.kind === 'airport' ? p.entity.iata : p.entity.displayName
+        const w = widthOf(text)
+        const flip = p.x + gap + w > view.x1
+        const left = flip ? p.x - gap - w : p.x + gap
+        placed.set(p.entity.slug, {
+          text,
+          x: flip ? p.x - gap : p.x + gap,
+          y: p.y + font * 0.36,
+          anchor: flip ? 'end' : 'start',
         })
-        .filter(
-          (c): c is { entity: Entity; x: number; y: number } => c !== null
-        ),
-    [entities, projection]
-  )
+        return { x: left - padX / 2, y: p.y - font * 0.5 - padY, w: w + padX, h: font + padY * 2 }
+      },
+    })
+
+    return chosen.map((p) => ({ slug: p.entity.slug, font, ...placed.get(p.entity.slug)! }))
+  }, [labelDensity, view, projectedEntities, pinnedProjected])
 
   // Each dot's transparent catchment is half the distance to its nearest
   // neighbour, clamped — so two touching dots split the gap instead of one
@@ -285,7 +455,26 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   }, [sourceProjected, targetProjected, isSameCity, pathGenerator, projection])
 
   const svgRef = useRef<SVGSVGElement>(null)
-  const [screenPos, setScreenPos] = useState<{ x: number; y: number } | null>(null)
+
+  /**
+   * Frame units to container pixels, transform included — the exact inverse of
+   * `view`. Every HTML overlay is positioned through this and rendered outside
+   * the transformed wrapper, so its size and its gap from the dot are plain
+   * screen pixels at any zoom.
+   */
+  const toScreen = useCallback(
+    (p: { x: number; y: number }) => {
+      if (!containerRect || !cover) return null
+      const { x: tx, y: ty, scale } = mapTransform
+      const left = (containerRect.width - frame.w * cover) / 2
+      const top = (containerRect.height - frame.h * cover) / 2
+      return {
+        x: ((p.x - frame.x) * cover + left) * scale + tx,
+        y: ((p.y - frame.y) * cover + top) * scale + ty,
+      }
+    },
+    [containerRect, cover, frame, mapTransform]
+  )
   // Hover intent: a card for an incidental dot waits, so sweeping the cursor
   // across the map doesn't strobe cards. Source/target labels are already on
   // screen and expand instantly.
@@ -302,23 +491,20 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       } else {
         setSettledEntity(null)
       }
-      if (entity && svgRef.current && containerRef.current) {
-        const projected = projectedEntities.find((c) => c.entity.slug === entity.slug)
-        if (projected) {
-          const svgRect = svgRef.current.getBoundingClientRect()
-          const cRect = containerRef.current.getBoundingClientRect()
-          setScreenPos({
-            x: svgRect.left - cRect.left + projected.x * (svgRect.width / WIDTH),
-            y: svgRect.top - cRect.top + projected.y * (svgRect.height / HEIGHT),
-          })
-          setContainerRect(cRect)
-        }
-      } else {
-        setScreenPos(null)
+      if (entity && containerRef.current) {
+        setContainerRect(containerRef.current.getBoundingClientRect())
       }
     },
-    [projectedEntities]
+    []
   )
+
+  // Derived rather than captured on hover, so the card tracks its dot while the
+  // map is panned or zoomed underneath it.
+  const hoverPos = useMemo(() => {
+    if (!hoveredEntity) return null
+    const projected = projectedEntities.find((c) => c.entity.slug === hoveredEntity.slug)
+    return projected ? toScreen(projected) : null
+  }, [hoveredEntity, projectedEntities, toScreen])
 
   useEffect(() => {
     const handleResize = () => {
@@ -342,7 +528,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     if (!el) return t
     const vpW = el.offsetWidth
     const vpH = el.offsetHeight
-    const cover = coverFor(vpW, vpH)
+    const cover = coverOf(vpW, vpH, frameRef.current)
     // transformOrigin is 0 0, so scaling alone drags content down and right.
     // This is the translation that undoes that — the centre of the allowed range.
     const midX = ((1 - t.scale) * vpW) / 2
@@ -355,7 +541,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
       x: Math.max(midX - rangeX, Math.min(midX + rangeX, t.x)),
       y: Math.max(midY - rangeY, Math.min(midY + rangeY, t.y)),
     }
-  }, [coverFor])
+  }, [])
 
   const updateTransform = useCallback((raw: { x: number; y: number; scale: number }) => {
     const t = clampTransform(raw)
@@ -402,7 +588,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY
       )
-      const newScale = Math.max(1, Math.min(5, g.startScale * (dist / g.startDist)))
+      const newScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, g.startScale * (dist / g.startDist)))
       const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2
       const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2
       const rect = containerRef.current?.getBoundingClientRect()
@@ -443,8 +629,100 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     }
   }, [updateTransform])
 
+  /** Scale about a point in container coords, so what you point at stays put. */
+  const zoomAt = useCallback(
+    (factor: number, cx: number, cy: number) => {
+      const t = transformRef.current
+      const scale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, t.scale * factor))
+      if (scale === t.scale) return
+      const ratio = scale / t.scale
+      updateTransform({ scale, x: cx - (cx - t.x) * ratio, y: cy - (cy - t.y) * ratio })
+    },
+    [updateTransform]
+  )
+
+  const resetZoom = useCallback(
+    () => updateTransform({ x: 0, y: 0, scale: MIN_ZOOM }),
+    [updateTransform]
+  )
+
+  const stepZoom = useCallback(
+    (direction: number) => {
+      const el = containerRef.current
+      if (!el) return
+      zoomAt(direction > 0 ? 1.5 : 1 / 1.5, el.offsetWidth / 2, el.offsetHeight / 2)
+    },
+    [zoomAt]
+  )
+
+  // Native, not React: React's synthetic wheel listener is passive, so
+  // `preventDefault` there is a no-op and the page scrolls behind the map.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      const rect = el.getBoundingClientRect()
+      // Trackpad pinch arrives as ctrl+wheel with small deltas; line-mode is rows, not px.
+      const delta = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY
+      const factor = Math.exp(-delta * (e.ctrlKey ? 0.01 : 0.002))
+      zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top)
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [zoomAt])
+
+  const [dragging, setDragging] = useState(false)
+  // A drag that started on a dot must not also open that dot on release.
+  const draggedRef = useRef(false)
+
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.button !== 0) return
+      draggedRef.current = false
+      const startX = e.clientX
+      const startY = e.clientY
+      const { x: startTx, y: startTy } = transformRef.current
+
+      const onMove = (ev: MouseEvent) => {
+        const dx = ev.clientX - startX
+        const dy = ev.clientY - startY
+        if (!draggedRef.current && Math.abs(dx) < 4 && Math.abs(dy) < 4) return
+        if (!draggedRef.current) {
+          draggedRef.current = true
+          setDragging(true)
+        }
+        updateTransform({ x: startTx + dx, y: startTy + dy, scale: transformRef.current.scale })
+      }
+      const onUp = () => {
+        setDragging(false)
+        window.removeEventListener('mousemove', onMove)
+        window.removeEventListener('mouseup', onUp)
+      }
+      window.addEventListener('mousemove', onMove)
+      window.addEventListener('mouseup', onUp)
+    },
+    [updateTransform]
+  )
+
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      const el = containerRef.current
+      if (!el) return
+      // At the ceiling the same gesture is the way back out.
+      if (transformRef.current.scale >= MAX_ZOOM - 0.001) {
+        resetZoom()
+        return
+      }
+      const rect = el.getBoundingClientRect()
+      zoomAt(1.8, e.clientX - rect.left, e.clientY - rect.top)
+    },
+    [zoomAt, resetZoom]
+  )
+
   const handleClick = useCallback(
     (entity: Entity) => {
+      if (draggedRef.current) return
       if (onCityClick) {
         onCityClick(entity.displayName)
       } else {
@@ -462,6 +740,13 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     return 'none'
   }
 
+  /**
+   * Anything *sized* rather than *placed* divides this out. The wrapper's CSS
+   * transform scales stroke weight and type along with position, so without it
+   * a coastline becomes a band and a 9px tooltip becomes a 72px one at 8x.
+   */
+  const zoomInv = 1 / mapTransform.scale
+
   const arcOpacity = 0.45
   const labelOpacity = 0.75
 
@@ -473,23 +758,14 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
 
   // Compute screen positions for pinned city labels
   const pinnedLabels = useMemo(() => {
-    if (!effectiveConversion || !containerRef.current) return null
-    // Use layout dimensions (unaffected by CSS transform) with slice-aware mapping
-    const vpW = containerRef.current.offsetWidth
-    const vpH = containerRef.current.offsetHeight
-    const mapScale = coverFor(vpW, vpH)
-    const offsetX = (vpW - frame.w * mapScale) / 2
-    const offsetY = (vpH - frame.h * mapScale) / 2
+    if (!effectiveConversion || !containerRect) return null
+    const vpW = containerRect.width
+    const vpH = containerRect.height
 
-    const toScreen = (projected: { x: number; y: number }) => ({
-      x: (projected.x - frame.x) * mapScale + offsetX,
-      y: (projected.y - frame.y) * mapScale + offsetY,
-    })
-
-    const src = sourceProjected ? { ...toScreen(sourceProjected), city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
+    const src = sourceProjected ? { ...toScreen(sourceProjected)!, city: effectiveConversion.sourceCity, time: effectiveConversion.sourceTime, entity: sourceProjected.entity } : null
     // One place, one label — two would stack exactly.
     const tgt = targetProjected && !isSameCity
-      ? { ...toScreen(targetProjected), city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity }
+      ? { ...toScreen(targetProjected)!, city: effectiveConversion.targetCity, time: effectiveConversion.targetTime, entity: targetProjected.entity }
       : null
 
     // Smart placement: if both exist, place them on opposite sides to avoid overlap
@@ -510,8 +786,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
     }
 
     return { src, tgt, srcPlacement, tgtPlacement, containerWidth: vpW, containerHeight: vpH }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [effectiveConversion, sourceProjected, targetProjected, isSameCity, coverFor, frame, containerRect])
+  }, [effectiveConversion, sourceProjected, targetProjected, isSameCity, toScreen, containerRect])
 
   // Determine variant for each pinned label
   const srcIsHovered = hoveredEntity && pinnedLabels?.src?.entity
@@ -524,7 +799,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       <div
-        className="relative w-full h-full"
+        className={`relative h-full w-full select-none ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
           transform: mapTransform.scale === 1 && mapTransform.x === 0 && mapTransform.y === 0
             ? undefined
@@ -535,6 +810,8 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         onTouchStart={handleMapTouchStart}
         onTouchMove={handleMapTouchMove}
         onTouchEnd={handleMapTouchEnd}
+        onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
       >
       <svg
         ref={svgRef}
@@ -550,19 +827,19 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             d={graticulePath}
             fill="none"
             stroke="var(--color-border)"
-            strokeWidth={0.4}
+            strokeWidth={0.4 * zoomInv}
             strokeOpacity={0.7}
           />
         )}
 
-        <path d={landPath} fill="var(--color-muted)" stroke="var(--color-border)" strokeWidth={0.5} />
+        <path d={landPath} fill="var(--color-muted)" stroke="var(--color-border)" strokeWidth={0.5 * zoomInv} />
 
         {showBorders && (
           <path
             d={countriesPath}
             fill="none"
             stroke="var(--color-muted-foreground)"
-            strokeWidth={0.3}
+            strokeWidth={0.3 * zoomInv}
             strokeOpacity={0.5}
             style={{ pointerEvents: 'none' }}
           />
@@ -572,6 +849,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           <TimezoneOverlay
             data={tzData}
             pathGenerator={pathGenerator}
+            zoom={mapTransform.scale}
           />
         )}
 
@@ -582,14 +860,15 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           style={{ pointerEvents: 'none' }}
         />
 
-        {/* Great-circle connection arc */}
+        {/* Great-circle connection arc. Stroke and type are divided by the
+            zoom, so the line stays a line instead of becoming a band. */}
         {arcData && (
           <>
             <path
               d={arcData.d}
               fill="none"
               stroke="var(--color-accent)"
-              strokeWidth={3.5}
+              strokeWidth={3.5 * zoomInv}
               strokeOpacity={arcOpacity * 0.3}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -598,7 +877,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
               d={arcData.d}
               fill="none"
               stroke="var(--color-accent)"
-              strokeWidth={1.2}
+              strokeWidth={1.2 * zoomInv}
               strokeOpacity={arcOpacity}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -607,10 +886,10 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             {effectiveConversion && effectiveConversion.offsetDifference && (
               <text
                 x={arcData.midX}
-                y={arcData.midY - 5}
+                y={arcData.midY - 5 * zoomInv}
                 textAnchor="middle"
                 fill="var(--color-accent)"
-                fontSize={8}
+                fontSize={8 * zoomInv}
                 fontFamily="var(--font-mono)"
                 opacity={labelOpacity}
               >
@@ -621,7 +900,7 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
         )}
 
         {/* Entity markers (cities and airports) */}
-        {projectedEntities.map(({ entity, x, y }, i) => (
+        {projectedEntities.map(({ entity, rank, x, y }, i) => (
           <EntityDot
             key={entity.slug}
             entity={entity}
@@ -629,14 +908,37 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
             y={y}
             role={getEntityRole(entity)}
             zoom={mapTransform.scale}
-            minor={cityDensity === 'all' && !mapSlugs.has(entity.slug)}
+            minor={cityDensity === 'all' && rank < MINOR_RANK}
             hovered={hoveredEntity?.slug === entity.slug}
             hitRadius={hitRadii[i]}
             onHover={handleHover}
             onClick={handleClick}
           />
         ))}
+
+        {/* Font size divided by the zoom, so labels hold one size on screen. */}
+        {cityLabels.map((label) => (
+          <text
+            key={label.slug}
+            x={label.x}
+            y={label.y}
+            textAnchor={label.anchor}
+            fontSize={label.font}
+            fontFamily="var(--font-sans)"
+            fill="var(--color-foreground)"
+            stroke="var(--color-background)"
+            strokeWidth={label.font * 0.15}
+            strokeOpacity={0.5}
+            paintOrder="stroke"
+            opacity={0.75}
+            style={{ pointerEvents: 'none' }}
+          >
+            {label.text}
+          </text>
+        ))}
       </svg>
+
+      </div>
 
       {/* Pinned city labels for source/target — expand on hover */}
       {pinnedLabels?.src && pinnedLabels.src.city && pinnedLabels.src.time && (
@@ -648,7 +950,6 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
-          zoom={mapTransform.scale}
           variant={srcIsHovered ? 'expanded' : 'active'}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.src!.entity : null)}
           iana={pinnedLabels.src.entity.iana}
@@ -667,7 +968,6 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
-          zoom={mapTransform.scale}
           variant={tgtIsHovered ? 'expanded' : 'active'}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.tgt!.entity : null)}
           iana={pinnedLabels.tgt.entity.iana}
@@ -677,15 +977,26 @@ export function WorldMap({ now, use24h, homeCity, conversion, onCityClick, showT
           homeCity={homeCity}
         />
       )}
-      </div>
+
+      {/* Above the layers button; bottom-right belongs to the time control. */}
+      {!isMobile && (
+        <div className="absolute bottom-16 left-4 z-40">
+          <MapZoomControl
+            zoom={mapTransform.scale}
+            min={MIN_ZOOM}
+            onZoom={stepZoom}
+            onReset={resetZoom}
+          />
+        </div>
+      )}
 
       {/* Hover card for non-pinned entities only */}
-      {settledEntity && hoveredEntity && screenPos && !hoveredIsPinned && (
+      {settledEntity && hoveredEntity && hoverPos && !hoveredIsPinned && (
         <EntityHoverCard
           entity={hoveredEntity}
           onHoverChange={(over) => handleHover(over ? hoveredEntity : null)}
-          x={screenPos.x}
-          y={screenPos.y}
+          x={hoverPos.x}
+          y={hoverPos.y}
           containerRect={containerRect}
           now={now}
           use24h={use24h === true}

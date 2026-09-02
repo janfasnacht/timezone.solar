@@ -6,6 +6,9 @@ import type { GeoPath, GeoPermissibleObjects } from 'd3-geo'
 interface TimezoneOverlayProps {
   data: FeatureCollection<Geometry, GeoJsonProperties>
   pathGenerator: GeoPath<unknown, GeoPermissibleObjects>
+  /** Map zoom. The tooltip is drawn in map units, so every measurement on it
+   *  divides this out to hold one size on screen. */
+  zoom?: number
 }
 
 function getZoneColor(offsetMinutes: number): string {
@@ -32,6 +35,7 @@ interface MergedZone {
 export function TimezoneOverlay({
   data,
   pathGenerator,
+  zoom = 1,
 }: TimezoneOverlayProps) {
   const [hoveredOffset, setHoveredOffset] = useState<number | null>(null)
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null)
@@ -82,7 +86,9 @@ export function TimezoneOverlay({
   }, [])
 
   const tooltipLabel = hoveredOffset !== null ? formatOffset(hoveredOffset) : ''
-  const tooltipWidth = tooltipLabel.length * 6 + 16
+  const tooltipWidth = (tooltipLabel.length * 6 + 16) / zoom
+  const tooltipHeight = 20 / zoom
+  const gap = 10 / zoom
 
   return (
     <g className="timezone-overlay" style={{ transition: 'opacity 200ms ease-out' }}>
@@ -102,23 +108,23 @@ export function TimezoneOverlay({
       {hoveredOffset !== null && mousePos && (
         <g style={{ pointerEvents: 'none' }}>
           <rect
-            x={mousePos.x + 10}
-            y={mousePos.y - 10}
+            x={mousePos.x + gap}
+            y={mousePos.y - tooltipHeight / 2}
             width={tooltipWidth}
-            height={20}
-            rx={4}
+            height={tooltipHeight}
+            rx={4 / zoom}
             fill="var(--color-surface)"
             fillOpacity={0.92}
             stroke="var(--color-border)"
-            strokeWidth={0.5}
+            strokeWidth={0.5 / zoom}
           />
           <text
-            x={mousePos.x + 10 + tooltipWidth / 2}
+            x={mousePos.x + gap + tooltipWidth / 2}
             y={mousePos.y}
             textAnchor="middle"
             dominantBaseline="central"
             fill="var(--color-foreground)"
-            fontSize={9}
+            fontSize={9 / zoom}
             fontFamily="var(--font-mono)"
           >
             {tooltipLabel}

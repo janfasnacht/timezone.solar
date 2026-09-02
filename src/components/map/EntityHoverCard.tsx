@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { DateTime } from 'luxon'
 import { getEntityBySlug, type Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
+import { HOVER_GAP, TOP_SAFE_PX } from './cardPlacement'
 
 interface EntityHoverCardProps {
   entity: Entity
@@ -49,18 +50,14 @@ export function EntityHoverCard({
 
   if (!containerRect) return null
 
-  // Position the card above the dot, flipping if near edges
+  // Above the dot, flipping below well before the viewport edge: the search bar
+  // floats over the top of the map and would clip a card tucked under it.
   const cardWidth = 230
   const cardHeight = 104
-  const padding = 12
 
   let left = x - cardWidth / 2
-  let top = y - cardHeight - padding
-
-  // Flip below if too close to top
-  if (top < 8) {
-    top = y + padding
-  }
+  let top = y - cardHeight - HOVER_GAP
+  if (top < TOP_SAFE_PX) top = y + HOVER_GAP
 
   // Clamp horizontal
   if (left < 8) left = 8

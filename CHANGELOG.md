@@ -7,8 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Zoom and pan the map with a mouse: wheel and trackpad pinch anchored on the
+  pointer, drag to pan, double-click to zoom in, and a zoom control that reads
+  the current level
+- City and airport names on the map, thinned by zoom and by how crowded the view
+  is, and spread across regions rather than clustered where the population is
+
+### Changed
+
+- Cities, airports and labels each get their own None / Few / Auto / All scale in
+  the layers menu. Airports no longer ride along with the city density, and each
+  scale responds to zoom: the resting view names only well-known places, and at
+  full zoom Auto shows everything in view
+- Every mark on the map holds one size on screen as you zoom — dots, the arc and
+  its offset, coastlines, borders, and the timezone tooltip
+- Hovering the source or target no longer enlarges its dot; the card it opens
+  already says which one it is
+
 ### Fixed
 
+- Hover cards were positioned against the wrong viewBox, so they drifted further
+  from their dot the more you zoomed and flickered on far-northern cities. They
+  now track their dot while you pan and zoom, and flip below it early enough to
+  stay clear of the search bar
 - The map could not be panned on touch, and did not fill the screen
 - Tooltips no longer appear on touch devices, where they had no way to dismiss
 - The search box sat too high on the landing screen on phones
