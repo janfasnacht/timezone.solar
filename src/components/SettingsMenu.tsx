@@ -5,48 +5,9 @@ import { useLiveClock } from '@/hooks/useLiveClock'
 import { useMinuteTick } from '@/hooks/useMinuteTick'
 import { searchCities } from '@/engine/resolver'
 import { Popover } from '@/components/ui/Popover'
+import { MenuDivider, Segmented } from '@/components/ui/MenuControls'
 import { navigate } from '@/lib/navigate'
 import type { ThemePreference, TimeFormat } from '@/lib/preferences'
-
-/**
- * One row shape for every setting: a label, and the choices as the thing they
- * produce. You pick a clock by seeing the clock, not by reading "12h".
- */
-function Choice<T extends string>({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string
-  options: { label: React.ReactNode; value: T; title: string }[]
-  value: T
-  onChange: (v: T) => void
-}) {
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[0.8rem] text-muted-foreground">{label}</span>
-      <div className="inline-flex h-7 items-center rounded-lg border border-border p-0.5">
-        {options.map((opt) => (
-          <button
-            key={opt.value}
-            type="button"
-            aria-label={opt.title}
-            aria-pressed={value === opt.value}
-            onClick={() => onChange(opt.value)}
-            className={`flex h-6 cursor-pointer items-center justify-center rounded-md px-2 text-[0.8rem] transition-colors ${
-              value === opt.value
-                ? 'bg-accent text-accent-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 function SunIcon() {
   return (
@@ -82,7 +43,7 @@ function CityField({ detected, dropUp }: { detected: string; dropUp: boolean }) 
   }
 
   return (
-    <div>
+    <div className="mb-1">
       <div className="mb-1.5 flex items-center justify-between">
         <span className="text-[0.8rem] text-muted-foreground">Your city</span>
         {homeCity && (
@@ -114,7 +75,7 @@ function CityField({ detected, dropUp }: { detected: string; dropUp: boolean }) 
             }, 150)
           }}
           placeholder={detected}
-          className="h-8 w-full rounded-lg border border-border bg-background px-2.5 font-serif text-[0.95rem] text-accent outline-none transition-colors placeholder:font-sans placeholder:text-[0.8rem] placeholder:text-muted-foreground/50 focus:border-accent"
+          className="h-8 w-full rounded-lg border border-border bg-transparent px-2.5 font-serif text-[0.95rem] text-accent outline-none transition-colors placeholder:font-sans placeholder:text-[0.8rem] placeholder:text-muted-foreground/50 focus:border-accent"
         />
         {suggestions.length > 0 && (
           <div className={`absolute inset-x-0 z-10 overflow-hidden rounded-lg border border-border bg-surface shadow-lg ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}>
@@ -147,9 +108,9 @@ function SettingsPanel({ iana, detected, dropUp, onNavigate }: { iana: string; d
   const sample = DateTime.fromJSDate(now).setZone(iana)
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       <CityField detected={detected} dropUp={dropUp} />
-      <Choice<TimeFormat>
+      <Segmented<TimeFormat>
         label="Clock"
         options={[
           { label: 'Auto', value: 'system', title: 'Match my system' },
@@ -159,7 +120,7 @@ function SettingsPanel({ iana, detected, dropUp, onNavigate }: { iana: string; d
         value={timeFormat}
         onChange={setTimeFormat}
       />
-      <Choice<ThemePreference>
+      <Segmented<ThemePreference>
         label="Theme"
         options={[
           { label: 'Auto', value: 'system', title: 'Match my system' },
@@ -169,7 +130,7 @@ function SettingsPanel({ iana, detected, dropUp, onNavigate }: { iana: string; d
         value={theme}
         onChange={setTheme}
       />
-      <div className="border-t border-border" />
+      <MenuDivider />
       <a
         href="/about"
         onClick={(e) => {
