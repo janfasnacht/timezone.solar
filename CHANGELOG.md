@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Nudging the time backwards past the current moment wrote a bare time, which
+  was then read as tomorrow
 - `Asia/Kostanay` is not a zone; `Asia/Qostanay` is. Kostanay's card read
   "Invalid DateTime" and "-NaNh from New York"
 - Escape closed a popover and cleared the query with it. A menu that closes on
