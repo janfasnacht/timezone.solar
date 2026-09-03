@@ -138,6 +138,89 @@ export function rankFloor(kind: 'city' | 'airport', t: number): number {
   return POP_CEILING * (1 - (clamped - CURATED_ONLY_UNTIL) / (1 - CURATED_ONLY_UNTIL))
 }
 
+/**
+ * Catchment bounds in frame units at the resting view. The floor keeps a dot in
+ * a crowd reachable; the ceiling stops an isolated one claiming half an ocean.
+ */
+const HIT_MIN = 3
+const HIT_MAX = 12
+
+export interface DotIndex {
+  /** Catchment radius per point, in frame units at the resting view. */
+  radii: readonly number[]
+  /**
+   * The nearest point whose catchment covers (x, y), or -1. Coordinates are
+   * frame units; `zoom` divides the catchments so they hold one size on screen.
+   */
+  nearest(x: number, y: number, zoom: number): number
+}
+
+/**
+ * One spatial index for every dot on the map: how much room each one may claim,
+ * and which one a pointer is on.
+ *
+ * Each dot's catchment is half the distance to its nearest neighbour, so two
+ * touching dots split the gap instead of one swallowing the other. Bucketed on
+ * a uniform grid to stay O(n) at cityDensity 'all', where there are thousands
+ * of points — and queried the same way, because the dots are drawn as a handful
+ * of paths rather than one element each, so the browser cannot say which of
+ * them a pointer is over.
+ */
+export function indexDots(points: readonly { x: number; y: number }[]): DotIndex {
+  const cell = HIT_MAX * 2
+  const buckets = new Map<number, number[]>()
+  points.forEach((p, i) => {
+    const key = cellKey(Math.floor(p.x / cell), Math.floor(p.y / cell))
+    const bucket = buckets.get(key)
+    if (bucket) bucket.push(i)
+    else buckets.set(key, [i])
+  })
+
+  /** Walks the nine cells around a point; every catchment fits inside them. */
+  const around = (x: number, y: number, visit: (index: number) => void) => {
+    const cx = Math.floor(x / cell)
+    const cy = Math.floor(y / cell)
+    for (let gx = cx - 1; gx <= cx + 1; gx++) {
+      for (let gy = cy - 1; gy <= cy + 1; gy++) {
+        const bucket = buckets.get(cellKey(gx, gy))
+        if (bucket) for (const i of bucket) visit(i)
+      }
+    }
+  }
+
+  const radii = points.map((p, i) => {
+    let nearestSq = Infinity
+    around(p.x, p.y, (j) => {
+      if (j === i) return
+      const dx = p.x - points[j].x
+      const dy = p.y - points[j].y
+      const d = dx * dx + dy * dy
+      if (d < nearestSq) nearestSq = d
+    })
+    if (!Number.isFinite(nearestSq)) return HIT_MAX
+    return Math.max(HIT_MIN, Math.min(HIT_MAX, Math.sqrt(nearestSq) / 2))
+  })
+
+  return {
+    radii,
+    nearest(x, y, zoom) {
+      let best = -1
+      let bestSq = Infinity
+      around(x, y, (j) => {
+        const dx = x - points[j].x
+        const dy = y - points[j].y
+        const d = dx * dx + dy * dy
+        const r = radii[j] / zoom
+        if (d <= r * r && d < bestSq) {
+          bestSq = d
+          best = j
+        }
+      })
+      return best
+    },
+  }
+}
+
 /** Axis-aligned exclusion rectangle, top-left origin, caller's units. */
 export interface Box {
   x: number

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Zooming and panning the map holds a frame. With every layer switched on, a
   five-tick wheel zoom blocked the main thread for 8.2s; it is now under 0.2s
+- Switching cities or airports to All no longer stalls, and the All scale stops
+  at twenty thousand places in view
 
 ## [1.5.0] - 2026-09-03
 

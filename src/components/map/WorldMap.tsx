@@ -7,7 +7,14 @@ import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
 import { findEntityForMap } from '@/engine/map-entities'
-import { getRankedMapEntities, selectSpaced, rankFloor, cellKey, MINOR_RANK, type Box } from '@/engine/map-density'
+import {
+  getRankedMapEntities,
+  selectSpaced,
+  rankFloor,
+  indexDots,
+  MINOR_RANK,
+  type Box,
+} from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
@@ -73,6 +80,9 @@ const COMMIT_MAX_STALE_MS = 200
 const COMMIT_DRIFT = 0.12
 /** How far past the viewport edge the picks reach, as a fraction of the view. */
 const OVERSCAN = 0.15
+
+/** The most marks the 'all' scale will draw at once, whatever the pool holds. */
+const ALL_CEILING = 20000
 
 const IDENTITY = { x: 0, y: 0, scale: 1 }
 type Transform = typeof IDENTITY
@@ -351,10 +361,23 @@ export function WorldMap({
     const pick = (pool: readonly ProjectedEntity[], kind: 'city' | 'airport', density: Density) => {
       if (density === 'none') return { picks: [] as ProjectedEntity[] }
 
-      // 'all' is the end state the other tiers reach at full zoom: no floor, no
-      // spacing, no cap. It skips the grid, which is also what keeps a drag
-      // cheap with several thousand dots in the pool.
-      if (density === 'all') return { picks: pool.filter(inView) }
+      // 'all' is the end state the other tiers reach at full zoom: no floor and
+      // no spacing. It skips the grid, which is also what keeps a drag cheap
+      // with several thousand dots in the pool.
+      //
+      // The ceiling is not a budget, it is a stop. The pool is rank-sorted, so
+      // hitting it drops the least important places rather than a random slice
+      // — and it is well above what `city-timezones` can supply today, so it
+      // only bites if the dataset behind the map grows.
+      if (density === 'all') {
+        const picks: ProjectedEntity[] = []
+        for (const p of pool) {
+          if (!inView(p)) continue
+          picks.push(p)
+          if (picks.length >= ALL_CEILING) break
+        }
+        return { picks }
+      }
 
       const budgets = BUDGET[kind][density]
       const spacingPx = lerp(budgets.spacingPx, view.t)
@@ -437,44 +460,9 @@ export function WorldMap({
   /** Label size in map units at the resting view; the live zoom divides it down. */
   const labelUnits = LABEL_PX / (cover ?? 1)
 
-  // Each dot's transparent catchment is half the distance to its nearest
-  // neighbour, clamped — so two touching dots split the gap instead of one
-  // swallowing the other. Bucketed on a uniform grid to stay O(n) at
-  // cityDensity: 'all', where there are thousands of points.
-  const hitRadii = useMemo(() => {
-    const MAX = 12
-    const MIN = 3
-    const cell = MAX * 2
-    const buckets = new Map<number, number[]>()
-    projectedEntities.forEach((p, i) => {
-      const key = cellKey(Math.floor(p.x / cell), Math.floor(p.y / cell))
-      const bucket = buckets.get(key)
-      if (bucket) bucket.push(i)
-      else buckets.set(key, [i])
-    })
-
-    return projectedEntities.map((p, i) => {
-      const cx = Math.floor(p.x / cell)
-      const cy = Math.floor(p.y / cell)
-      let nearest = Infinity
-      for (let gx = cx - 1; gx <= cx + 1; gx++) {
-        for (let gy = cy - 1; gy <= cy + 1; gy++) {
-          const bucket = buckets.get(cellKey(gx, gy))
-          if (!bucket) continue
-          for (const j of bucket) {
-            if (j === i) continue
-            const q = projectedEntities[j]
-            const dx = p.x - q.x
-            const dy = p.y - q.y
-            const d = dx * dx + dy * dy
-            if (d < nearest) nearest = d
-          }
-        }
-      }
-      if (!Number.isFinite(nearest)) return MAX
-      return Math.max(MIN, Math.min(MAX, Math.sqrt(nearest) / 2))
-    })
-  }, [projectedEntities])
+  // How much room each dot may claim, and which one a pointer is on — the dots
+  // are drawn a few thousand to a path, so the browser cannot answer the second.
+  const dotIndex = useMemo(() => indexDots(projectedEntities), [projectedEntities])
 
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
@@ -982,7 +970,7 @@ export function WorldMap({
         {/* Entity markers (cities and airports) */}
         <EntityLayer
           entities={projectedEntities}
-          hitRadii={hitRadii}
+          index={dotIndex}
           roles={roles}
           hoveredSlug={hoveredEntity?.slug ?? null}
           minorBelow={cityDensity === 'all' ? MINOR_RANK : null}

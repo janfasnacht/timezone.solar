@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
+import {
+  getRankedMapEntities,
+  selectSpaced,
+  rankFloor,
+  indexDots,
+  MINOR_RANK,
+  type Box,
+} from '@/engine/map-density'
 import { FAMILIAR_CITY_SLUGS } from '@/engine/familiar-cities'
 import { ANCHOR_CITY_SLUGS, MAP_CITY_SLUGS } from '@/engine/map-entities'
 
@@ -188,5 +195,65 @@ describe('rankFloor', () => {
   it('clamps outside 0..1 rather than extrapolating', () => {
     expect(rankFloor('city', -5)).toBe(rankFloor('city', 0))
     expect(rankFloor('city', 99)).toBe(rankFloor('city', 1))
+  })
+})
+
+describe('indexDots', () => {
+  it('gives a dot half the distance to its nearest neighbour', () => {
+    const { radii } = indexDots([
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+    ])
+    expect(radii).toEqual([5, 5])
+  })
+
+  it('clamps a crowd up and a loner down', () => {
+    const crowded = indexDots([
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+    ])
+    // Two touching dots still reach 3, so neither becomes unpointable.
+    expect(crowded.radii).toEqual([3, 3])
+
+    const spread = indexDots([
+      { x: 0, y: 0 },
+      { x: 400, y: 0 },
+    ])
+    // And an isolated one stops at 12 rather than claiming half an ocean.
+    expect(spread.radii).toEqual([12, 12])
+  })
+
+  it('finds the dot under a point, and nothing beyond it', () => {
+    const index = indexDots([{ x: 100, y: 100 }])
+    expect(index.nearest(100, 100, 1)).toBe(0)
+    expect(index.nearest(111, 100, 1)).toBe(0)
+    expect(index.nearest(113, 100, 1)).toBe(-1)
+  })
+
+  it('picks the nearer of two dots whose catchments overlap', () => {
+    const index = indexDots([
+      { x: 0, y: 0 },
+      { x: 300, y: 0 },
+      { x: 306, y: 0 },
+    ])
+    expect(index.nearest(301, 0, 1)).toBe(1)
+    expect(index.nearest(305, 0, 1)).toBe(2)
+  })
+
+  it('shrinks catchments with the zoom, so they hold one size on screen', () => {
+    const index = indexDots([{ x: 100, y: 100 }])
+    expect(index.nearest(111, 100, 1)).toBe(0)
+    expect(index.nearest(111, 100, 4)).toBe(-1)
+    expect(index.nearest(102, 100, 4)).toBe(0)
+  })
+
+  it('reaches across grid cells rather than stopping at the boundary', () => {
+    // 24 units is the cell size, so these two sit in different buckets.
+    const index = indexDots([
+      { x: 23, y: 23 },
+      { x: 400, y: 400 },
+    ])
+    expect(index.radii[0]).toBe(12)
+    expect(index.nearest(25, 25, 1)).toBe(0)
   })
 })
