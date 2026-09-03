@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { claimKey } from '@/lib/keyClaim'
 
 type Anchor = 'top-right' | 'bottom-left' | 'bottom-right'
 
@@ -33,12 +34,18 @@ export function Popover({ open, onClose, anchor = 'top-right', trigger, children
     const onPointerDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose()
     }
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    // Capture, so the panel gets Escape before any global handler, and claims
+    // it — closing a popover is the whole of what that key press does.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      claimKey(e)
+      onClose()
+    }
     document.addEventListener('mousedown', onPointerDown)
-    document.addEventListener('keydown', onKey)
+    document.addEventListener('keydown', onKey, true)
     return () => {
       document.removeEventListener('mousedown', onPointerDown)
-      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('keydown', onKey, true)
     }
   }, [open, onClose])
 
