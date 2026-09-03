@@ -1,20 +1,11 @@
-/**
- * Shared placement constants for the two HTML cards on the map.
- *
- * Both are positioned in container pixels outside the map's transform, so these
- * are plain screen distances that hold at any zoom.
- */
+/** Screen distances for the map card, outside the map's transform. */
 
-/** Dot to the pinned source/target label. */
-export const PINNED_GAP = 14
+/** Dot to card. Rendered as padding on the wrapper, not empty space. */
+export const CARD_GAP = 12
 
-/** Dot to the hover card. A touch more than the pinned label — the card is
- *  larger, and the cursor is sitting on the dot. */
-export const HOVER_GAP = 18
+/** Both used for placement at either size, so resizing never moves the card. */
+export const CARD_MAX_WIDTH = 190
+export const CARD_MAX_HEIGHT = 96
 
-/**
- * A card may not be placed with its top above this. The search bar floats over
- * the top of the map, so anything higher is partly hidden — flip to the other
- * side of the dot well before the viewport edge.
- */
+/** The search bar floats over the top of the map; a card must not go under it. */
 export const TOP_SAFE_PX = 104

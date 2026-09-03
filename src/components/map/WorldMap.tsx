@@ -12,8 +12,7 @@ import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
 import { EntityDot, type EntityRole } from './EntityDot'
-import { EntityHoverCard } from './EntityHoverCard'
-import { PinnedCityLabel } from './PinnedCityLabel'
+import { EntityCard } from './EntityCard'
 import { TimezoneOverlay } from './TimezoneOverlay'
 import { MapZoomControl } from './MapZoomControl'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
@@ -475,24 +474,28 @@ export function WorldMap({
     },
     [containerRect, cover, frame, mapTransform]
   )
-  // Hover intent: a card for an incidental dot waits, so sweeping the cursor
-  // across the map doesn't strobe cards. Source/target labels are already on
-  // screen and expand instantly.
+  // Hover intent both ways: opening waits so sweeping the map doesn't strobe
+  // cards, closing waits so the cursor can reach the card it opened.
+  const OPEN_DELAY = 220
+  const CLOSE_DELAY = 160
   const [settledEntity, setSettledEntity] = useState<Entity | null>(null)
-  const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  useEffect(() => () => clearTimeout(settleTimer.current), [])
+  const hoverTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(hoverTimer.current), [])
 
   const handleHover = useCallback(
     (entity: Entity | null) => {
-      setHoveredEntity(entity)
-      clearTimeout(settleTimer.current)
+      clearTimeout(hoverTimer.current)
       if (entity) {
-        settleTimer.current = setTimeout(() => setSettledEntity(entity), 220)
+        setHoveredEntity(entity)
+        hoverTimer.current = setTimeout(() => setSettledEntity(entity), OPEN_DELAY)
+        if (containerRef.current) {
+          setContainerRect(containerRef.current.getBoundingClientRect())
+        }
       } else {
-        setSettledEntity(null)
-      }
-      if (entity && containerRef.current) {
-        setContainerRect(containerRef.current.getBoundingClientRect())
+        hoverTimer.current = setTimeout(() => {
+          setHoveredEntity(null)
+          setSettledEntity(null)
+        }, CLOSE_DELAY)
       }
     },
     []
@@ -940,40 +943,38 @@ export function WorldMap({
 
       </div>
 
-      {/* Pinned city labels for source/target — expand on hover */}
+      {/* Source and target keep their card on screen; pointing at one grows it.
+          Same component and anchor as any other dot's card, so clicking a dot
+          to convert it doesn't swap one card for another. */}
       {pinnedLabels?.src && pinnedLabels.src.city && pinnedLabels.src.time && (
-        <PinnedCityLabel
-          cityName={pinnedLabels.src.city}
-          time={pinnedLabels.src.time}
+        <EntityCard
+          entity={pinnedLabels.src.entity}
           x={pinnedLabels.src.x}
           y={pinnedLabels.src.y}
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.srcPlacement}
-          variant={srcIsHovered ? 'expanded' : 'active'}
+          size={srcIsHovered ? 'full' : 'compact'}
+          pinnedTime={pinnedLabels.src.time}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.src!.entity : null)}
-          iana={pinnedLabels.src.entity.iana}
-          country={pinnedLabels.src.entity.country}
           now={now}
-          use24h={use24h}
+          use24h={use24h === true}
           homeCity={homeCity}
         />
       )}
       {pinnedLabels?.tgt && pinnedLabels.tgt.city && pinnedLabels.tgt.time && (
-        <PinnedCityLabel
-          cityName={pinnedLabels.tgt.city}
-          time={pinnedLabels.tgt.time}
+        <EntityCard
+          entity={pinnedLabels.tgt.entity}
           x={pinnedLabels.tgt.x}
           y={pinnedLabels.tgt.y}
           containerWidth={pinnedLabels.containerWidth}
           containerHeight={pinnedLabels.containerHeight}
           placement={pinnedLabels.tgtPlacement}
-          variant={tgtIsHovered ? 'expanded' : 'active'}
+          size={tgtIsHovered ? 'full' : 'compact'}
+          pinnedTime={pinnedLabels.tgt.time}
           onHoverChange={(over) => handleHover(over ? pinnedLabels.tgt!.entity : null)}
-          iana={pinnedLabels.tgt.entity.iana}
-          country={pinnedLabels.tgt.entity.country}
           now={now}
-          use24h={use24h}
+          use24h={use24h === true}
           homeCity={homeCity}
         />
       )}
@@ -990,14 +991,17 @@ export function WorldMap({
         </div>
       )}
 
-      {/* Hover card for non-pinned entities only */}
-      {settledEntity && hoveredEntity && hoverPos && !hoveredIsPinned && (
-        <EntityHoverCard
+      {/* Any other dot, once the cursor has settled. */}
+      {settledEntity && hoveredEntity && hoverPos && containerRect && !hoveredIsPinned && (
+        <EntityCard
           entity={hoveredEntity}
-          onHoverChange={(over) => handleHover(over ? hoveredEntity : null)}
           x={hoverPos.x}
           y={hoverPos.y}
-          containerRect={containerRect}
+          containerWidth={containerRect.width}
+          containerHeight={containerRect.height}
+          placement="above"
+          size="full"
+          onHoverChange={(over) => handleHover(over ? hoveredEntity : null)}
           now={now}
           use24h={use24h === true}
           homeCity={homeCity}

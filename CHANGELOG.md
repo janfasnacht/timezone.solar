@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The source, target and hover cards on the map are one card in two sizes,
+  sized to their content and hanging from the dot rather than moving when they
+  resize. The country sits with the place name — "Rio de Janeiro, Brazil"
 - Share is a button beside the view switcher rather than a third view. Old
   `?view=share` links open the conversion on the card. It copies the whole
   conversion — "3:00 PM New York → 8:00 PM London" — rather than the target
@@ -40,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- A card on the map could not be reached with the mouse: leaving the dot closed
+  it before the cursor had crossed the gap
 - Nudging the time backwards past the current moment wrote a bare time, which
   was then read as tomorrow
 - `Asia/Kostanay` is not a zone; `Asia/Qostanay` is. Kostanay's card read
