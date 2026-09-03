@@ -146,6 +146,16 @@ export interface Box {
   h: number
 }
 
+/**
+ * One number for a cell, so a grid lookup doesn't allocate a string. Exact for
+ * any pair a double can hold apart — `|gy| < 2^20` and `|gx| < 2^31` — which is
+ * five hundred times the range these grids ever reach, since every coordinate
+ * is a projected point inside a thousand-unit frame.
+ */
+export function cellKey(gx: number, gy: number): number {
+  return gx * 2 ** 21 + gy
+}
+
 function intersects(a: Box, b: Box): boolean {
   return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
 }
@@ -173,7 +183,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
   const { boxFor, limit, seed, cell = 32 } = options
   if (limit <= 0) return []
 
-  const grid = new Map<string, Box[]>()
+  const grid = new Map<number, Box[]>()
   const accepted: T[] = []
 
   const cellsOf = (b: Box) => {
@@ -188,7 +198,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
     const { x0, x1, y0, y1 } = cellsOf(box)
     for (let gx = x0; gx <= x1; gx++) {
       for (let gy = y0; gy <= y1; gy++) {
-        const key = `${gx}:${gy}`
+        const key = cellKey(gx, gy)
         const bucket = grid.get(key)
         if (bucket) bucket.push(box)
         else grid.set(key, [box])
@@ -206,7 +216,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
     let blocked = false
     for (let gx = x0; gx <= x1 && !blocked; gx++) {
       for (let gy = y0; gy <= y1 && !blocked; gy++) {
-        const bucket = grid.get(`${gx}:${gy}`)
+        const bucket = grid.get(cellKey(gx, gy))
         if (!bucket) continue
         for (const other of bucket) {
           if (intersects(box, other)) {

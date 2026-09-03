@@ -7,7 +7,7 @@ import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
 import { findEntityForMap } from '@/engine/map-entities'
-import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
+import { getRankedMapEntities, selectSpaced, rankFloor, cellKey, MINOR_RANK, type Box } from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
@@ -445,9 +445,9 @@ export function WorldMap({
     const MAX = 12
     const MIN = 3
     const cell = MAX * 2
-    const buckets = new Map<string, number[]>()
+    const buckets = new Map<number, number[]>()
     projectedEntities.forEach((p, i) => {
-      const key = `${Math.floor(p.x / cell)}:${Math.floor(p.y / cell)}`
+      const key = cellKey(Math.floor(p.x / cell), Math.floor(p.y / cell))
       const bucket = buckets.get(key)
       if (bucket) bucket.push(i)
       else buckets.set(key, [i])
@@ -459,7 +459,7 @@ export function WorldMap({
       let nearest = Infinity
       for (let gx = cx - 1; gx <= cx + 1; gx++) {
         for (let gy = cy - 1; gy <= cy + 1; gy++) {
-          const bucket = buckets.get(`${gx}:${gy}`)
+          const bucket = buckets.get(cellKey(gx, gy))
           if (!bucket) continue
           for (const j of bucket) {
             if (j === i) continue
