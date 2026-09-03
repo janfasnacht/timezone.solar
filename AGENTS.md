@@ -57,7 +57,7 @@ Run a single test file: `npx vitest run src/engine/parser.test.ts`
 
 **timezone.solar** — a timezone conversion web app with natural language query parsing.
 
-**Stack:** React 19, TypeScript 5.9 (strict), Vite 7, Tailwind CSS 4, Luxon, city-timezones (86K+ cities)
+**Stack:** React 19, TypeScript 5.9 (strict), Vite 7, Tailwind CSS 4, Luxon, city-timezones (7.3K cities)
 
 ### Three-Layer Design
 
@@ -95,6 +95,13 @@ The engine is the core of the app and must stay framework-agnostic.
 
 - `src/engine/aliases.ts` — city abbreviations (NYC, SF), country→city mappings (Japan→Tokyo), US state→IANA mappings, informal regions (east coast, pacific time)
 - `src/engine/constants.ts` — timezone abbreviations (EST, PST, JST), connector words, named times (noon, midnight)
+
+## Third-party data
+
+`city-timezones` and `world-atlas` are pinned exactly, not on a caret range:
+they are datasets, and a minor bump changes the app's answers on install.
+`src/engine/city-count.test.ts` asserts the documented city count against what
+the package actually ships.
 
 ## Testing
 

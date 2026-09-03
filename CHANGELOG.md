@@ -21,6 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Switching cities or airports to All no longer stalls, and the All scale stops
   at twenty thousand places in view
 
+### Fixed
+
+- A misspelling still finds its city, but a coincidence no longer answers as
+  one: `Meroe` returned Kemerovo's time, `Iceland` returned Auckland's
+- Cities are found under their own name as well as their transliteration —
+  Bensonville answered with New York, Bodø with Dushanbe. Twenty-five more
+  places resolve, `Panama` among them
+- The README claimed 86,000+ cities; the package ships 7,329
+
 ## [1.5.0] - 2026-09-03
 
 ### Added

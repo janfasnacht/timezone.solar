@@ -33,15 +33,16 @@ export function normalize(input: string): string {
 
 const allCities = cityTimezones.cityMapping as unknown as CityEntry[]
 
+// Indexed under both of a row's names. 115 of them differ — Kashgar is filed
+// under "Kashi", Bensonville under "Bentol" — and on `city_ascii` alone the
+// other spelling is reachable only by a fuzzy guess.
 const normalizedCityMap = new Map<string, CityEntry[]>()
 for (const entry of allCities) {
-  const key = normalize(entry.city_ascii)
-  if (!key) continue
-  const existing = normalizedCityMap.get(key)
-  if (existing) {
-    existing.push(entry)
-  } else {
-    normalizedCityMap.set(key, [entry])
+  for (const key of new Set([normalize(entry.city_ascii), normalize(entry.city)])) {
+    if (!key) continue
+    const existing = normalizedCityMap.get(key)
+    if (existing) existing.push(entry)
+    else normalizedCityMap.set(key, [entry])
   }
 }
 // Sort each bucket by population descending
@@ -64,6 +65,37 @@ function getFuse(): Fuse<CityEntry> {
   }
   return fuseInstance
 }
+
+/**
+ * Damerau-Levenshtein: an adjacent swap counts as one edit, because a typed
+ * transposition is one slip.
+ */
+function editDistance(a: string, b: string): number {
+  const m = a.length
+  const n = b.length
+  const d: number[][] = Array.from({ length: m + 1 }, (_, i) => [i, ...new Array<number>(n).fill(0)])
+  for (let j = 0; j <= n; j++) d[0][j] = j
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost)
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1)
+      }
+    }
+  }
+  return d[m][n]
+}
+
+/**
+ * The most of an input that may differ from the name it fuzzy-matches.
+ *
+ * Fuse's own score does not separate a typo from a coincidence — `nyw york` for
+ * New York scores worse than `Meroe` for Kemerovo. Distance relative to what was
+ * typed does: real typos land under a fifth, `Meroe` lands at four fifths. Past
+ * this the match is offered as a suggestion rather than given as an answer.
+ */
+const FUZZY_MAX_EDIT_RATIO = 0.3
 
 // --- Cache ---
 
@@ -249,9 +281,18 @@ function resolveLocationUncached(
   const fuzzyResults = fuse.search(normalized)
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== undefined && fuzzyResults[0].score < 0.3) {
     const match = fuzzyResults[0].item
-    return {
-      primary: cityEntryToLocationRef(match, 'fuzzy'),
-      alternatives: [],
+    // Against both keys Fuse searched: a row's two names can be unrelated —
+    // Kashgar is filed under `city_ascii` "Kashi", Tucumán under "San Miguel
+    // de Tucuman" — and the match is only as far as the nearer of them.
+    const distance = Math.min(
+      editDistance(normalizedKey, normalize(match.city)),
+      editDistance(normalizedKey, normalize(match.city_ascii))
+    )
+    if (distance <= normalizedKey.length * FUZZY_MAX_EDIT_RATIO) {
+      return {
+        primary: cityEntryToLocationRef(match, 'fuzzy'),
+        alternatives: [],
+      }
     }
   }
 

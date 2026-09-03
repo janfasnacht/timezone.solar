@@ -7,7 +7,7 @@ Natural language timezone converter — results appear in shareable cards and a 
 ## Features
 
 - Natural language queries with noise-tolerant parser (`3pm NYC to London`, `tomorrow noon in Tokyo`)
-- 86,000+ cities with fuzzy search and disambiguation
+- 7,300+ cities with fuzzy search and disambiguation
 - Interactive world map with timezone overlays
 - Mobile-responsive with bottom tab navigation
 - Live-as-you-type conversion

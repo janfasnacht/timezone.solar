@@ -4261,7 +4261,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     iana: 'America/Panama',
     lat: 8.98,
     lng: -79.52,
-    aliases: [],
+    aliases: ['panama'],
     wikidataId: null,
     vibes: ['canal-fed', 'cosmopolitan', 'gleaming'],
     iconSlug: 'pa-panama',
