@@ -50,7 +50,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -73.98,
     aliases: ['nyc', 'ny'],
     wikidataId: null,
-    vibes: ['electric', 'hustling', 'bold'],
+    vibes: ['electric', 'hustling', 'sleepless'],
     iconSlug: 'us-new-york',
   },
   {
@@ -63,7 +63,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -118.18,
     aliases: ['la'],
     wikidataId: null,
-    vibes: ['laid-back', 'sun-kissed', 'dreamy'],
+    vibes: ['laid-back', 'screen-lit', 'dreamy'],
     iconSlug: 'us-los-angeles',
   },
   {
@@ -76,7 +76,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -87.75,
     aliases: ['chi'],
     wikidataId: null,
-    vibes: ['gritty', 'soulful', 'windswept'],
+    vibes: ['gritty', 'soulful', 'broad-shouldered'],
     iconSlug: 'us-chicago',
   },
   {
@@ -89,7 +89,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -122.46,
     aliases: ['sf', 'san fran'],
     wikidataId: null,
-    vibes: ['foggy', 'inventive', 'free-spirited'],
+    vibes: ['utopian', 'inventive', 'free-spirited'],
     iconSlug: 'us-san-francisco',
   },
   {
@@ -102,7 +102,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -71.07,
     aliases: ['bos'],
     wikidataId: null,
-    vibes: ['scholarly', 'scrappy', 'storied'],
+    vibes: ['scholarly', 'scrappy', 'revolutionary'],
     iconSlug: 'us-boston',
   },
   {
@@ -115,7 +115,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -80.22,
     aliases: ['mia'],
     wikidataId: null,
-    vibes: ['tropical', 'electric', 'vivid'],
+    vibes: ['art-deco', 'electric', 'vivid'],
     iconSlug: 'us-miami',
   },
   {
@@ -128,7 +128,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -122.34,
     aliases: ['sea'],
     wikidataId: null,
-    vibes: ['cozy', 'caffeinated', 'misty'],
+    vibes: ['cozy', 'caffeinated', 'evergreen'],
     iconSlug: 'us-seattle',
   },
   {
@@ -141,7 +141,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -104.98,
     aliases: ['den'],
     wikidataId: null,
-    vibes: ['alpine', 'outdoorsy', 'crisp'],
+    vibes: ['alpine', 'outdoorsy', 'mile-high'],
     iconSlug: 'us-denver',
   },
   {
@@ -154,7 +154,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -97.74,
     aliases: ['aus'],
     wikidataId: null,
-    vibes: ['weird', 'creative', 'hot'],
+    vibes: ['weird', 'creative', 'honky-tonk'],
     iconSlug: 'us-austin',
   },
   {
@@ -167,7 +167,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -122.68,
     aliases: ['pdx'],
     wikidataId: null,
-    vibes: ['quirky', 'rainy', 'chill'],
+    vibes: ['quirky', 'artisanal', 'chill'],
     iconSlug: null,
   },
   {
@@ -193,7 +193,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -95.34,
     aliases: ['hou'],
     wikidataId: null,
-    vibes: ['ambitious', 'sprawling', 'steamy'],
+    vibes: ['ambitious', 'sprawling', 'space-bound'],
     iconSlug: null,
   },
   {
@@ -206,7 +206,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -84.40,
     aliases: ['atl'],
     wikidataId: null,
-    vibes: ['southern', 'buzzing', 'warm'],
+    vibes: ['southern', 'buzzing', 'canopied'],
     iconSlug: 'us-atlanta',
   },
   {
@@ -232,7 +232,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -90.04,
     aliases: ['nola'],
     wikidataId: null,
-    vibes: ['sultry', 'soulful', 'festive'],
+    vibes: ['brass-loud', 'soulful', 'festive'],
     iconSlug: 'us-new-orleans',
   },
   {
@@ -271,7 +271,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -75.17,
     aliases: ['philly'],
     wikidataId: null,
-    vibes: ['scrappy', 'proud', 'historic'],
+    vibes: ['scrappy', 'proud', 'bell-cracked'],
     iconSlug: 'us-philadelphia',
   },
   {
@@ -284,7 +284,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -157.86,
     aliases: [],
     wikidataId: null,
-    vibes: ['aloha', 'breezy', 'golden'],
+    vibes: ['aloha', 'surf-worn', 'golden'],
     iconSlug: null,
   },
   {
@@ -310,7 +310,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -149.90,
     aliases: [],
     wikidataId: null,
-    vibes: ['wild', 'rugged', 'vast'],
+    vibes: ['wild', 'rugged', 'moose-crossed'],
     iconSlug: null,
   },
   {
@@ -336,7 +336,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -73.58,
     aliases: [],
     wikidataId: null,
-    vibes: ['bilingual', 'festive', 'artsy'],
+    vibes: ['bilingual', 'festive', 'spiral-staired'],
     iconSlug: null,
   },
   {
@@ -362,7 +362,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -99.13,
     aliases: ['cdmx', 'mexico'],
     wikidataId: null,
-    vibes: ['vibrant', 'colorful', 'ancient'],
+    vibes: ['vibrant', 'mural-painted', 'ancient'],
     iconSlug: null,
   },
   {
@@ -375,7 +375,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -106.65,
     aliases: [],
     wikidataId: null,
-    vibes: ['sun-baked', 'expansive', 'mystical'],
+    vibes: ['high-desert', 'expansive', 'mystical'],
     iconSlug: 'us-albuquerque',
   },
   {
@@ -414,7 +414,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -72.68,
     aliases: [],
     wikidataId: null,
-    vibes: ['nostalgic', 'quiet', 'weathered'],
+    vibes: ['nostalgic', 'insurance-built', 'weathered'],
     iconSlug: 'us-hartford',
   },
   {
@@ -427,7 +427,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -117.83,
     aliases: [],
     wikidataId: null,
-    vibes: ['polished', 'orderly', 'pristine'],
+    vibes: ['polished', 'master-planned', 'pristine'],
     iconSlug: 'us-irvine',
   },
   {
@@ -453,7 +453,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -112.07,
     aliases: [],
     wikidataId: null,
-    vibes: ['scorched', 'resilient', 'sprawling'],
+    vibes: ['saguaro-lined', 'resilient', 'sprawling'],
     iconSlug: 'us-phoenix',
   },
   {
@@ -479,7 +479,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -121.49,
     aliases: [],
     wikidataId: null,
-    vibes: ['laid-back', 'sunlit', 'easygoing'],
+    vibes: ['laid-back', 'farm-to-fork', 'easygoing'],
     iconSlug: 'us-sacramento',
   },
   {
@@ -492,7 +492,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -117.16,
     aliases: [],
     wikidataId: null,
-    vibes: ['breezy', 'sun-kissed', 'carefree'],
+    vibes: ['surf-slow', 'naval', 'carefree'],
     iconSlug: 'us-san-diego',
   },
   {
@@ -518,7 +518,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -75.70,
     aliases: [],
     wikidataId: null,
-    vibes: ['dignified', 'bilingual', 'crisp'],
+    vibes: ['dignified', 'bilingual', 'parliamentary'],
     iconSlug: 'ca-ottawa',
   },
   {
@@ -531,7 +531,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -103.35,
     aliases: [],
     wikidataId: null,
-    vibes: ['spirited', 'traditional', 'warm'],
+    vibes: ['spirited', 'traditional', 'mariachi-loud'],
     iconSlug: 'mx-guadalajara',
   },
   {
@@ -557,7 +557,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -66.11,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'salsa-ready', 'vibrant'],
+    vibes: ['fortressed', 'salsa-ready', 'vibrant'],
     iconSlug: 'pr-san-juan',
   },
 
@@ -585,7 +585,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -58.40,
     aliases: ['argentina'],
     wikidataId: null,
-    vibes: ['passionate', 'elegant', 'nocturnal'],
+    vibes: ['tango-stepped', 'elegant', 'nocturnal'],
     iconSlug: 'ar-buenos-aires',
   },
   {
@@ -598,7 +598,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -74.08,
     aliases: ['colombia'],
     wikidataId: null,
-    vibes: ['warm', 'lively', 'elevated'],
+    vibes: ['graffitied', 'lively', 'elevated'],
     iconSlug: 'co-bogota',
   },
   {
@@ -611,7 +611,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -77.05,
     aliases: ['peru'],
     wikidataId: null,
-    vibes: ['misty', 'flavorful', 'ancient'],
+    vibes: ['ceviche-sharp', 'flavorful', 'ancient'],
     iconSlug: 'pe-lima',
   },
   {
@@ -624,7 +624,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -70.67,
     aliases: ['chile'],
     wikidataId: null,
-    vibes: ['cosmopolitan', 'crisp', 'adventurous'],
+    vibes: ['cosmopolitan', 'andean', 'adventurous'],
     iconSlug: 'cl-santiago',
   },
   {
@@ -637,7 +637,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -64.18,
     aliases: [],
     wikidataId: null,
-    vibes: ['scholarly', 'passionate', 'rebellious'],
+    vibes: ['scholarly', 'jesuit-founded', 'rebellious'],
     iconSlug: 'ar-cordoba',
   },
   {
@@ -650,7 +650,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -68.31,
     aliases: [],
     wikidataId: null,
-    vibes: ['windswept', 'remote', 'adventurous'],
+    vibes: ['end-of-the-world', 'remote', 'adventurous'],
     iconSlug: 'ar-ushuaia',
   },
   {
@@ -676,7 +676,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -47.88,
     aliases: [],
     wikidataId: null,
-    vibes: ['modernist', 'planned', 'spacious'],
+    vibes: ['modernist', 'niemeyer-curved', 'spacious'],
     iconSlug: 'br-brasilia',
   },
   {
@@ -689,7 +689,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -43.17,
     aliases: [],
     wikidataId: null,
-    vibes: ['sensual', 'exuberant', 'sun-drenched'],
+    vibes: ['sensual', 'exuberant', 'samba-swayed'],
     iconSlug: 'br-rio-de-janeiro',
   },
   {
@@ -702,7 +702,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -71.62,
     aliases: [],
     wikidataId: null,
-    vibes: ['bohemian', 'colorful', 'hilly'],
+    vibes: ['bohemian', 'colorful', 'funicular-climbed'],
     iconSlug: 'cl-valparaiso',
   },
   {
@@ -715,7 +715,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -75.51,
     aliases: [],
     wikidataId: null,
-    vibes: ['sultry', 'colonial', 'festive'],
+    vibes: ['walled', 'colonial', 'festive'],
     iconSlug: 'co-cartagena',
   },
   {
@@ -728,7 +728,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -75.57,
     aliases: [],
     wikidataId: null,
-    vibes: ['transformed', 'innovative', 'springlike'],
+    vibes: ['transformed', 'innovative', 'cable-car-strung'],
     iconSlug: 'co-medellin',
   },
   {
@@ -741,7 +741,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -78.47,
     aliases: [],
     wikidataId: null,
-    vibes: ['elevated', 'colonial', 'crisp'],
+    vibes: ['elevated', 'colonial', 'volcano-ringed'],
     iconSlug: 'ec-quito',
   },
   {
@@ -767,7 +767,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -56.17,
     aliases: [],
     wikidataId: null,
-    vibes: ['relaxed', 'literary', 'coastal'],
+    vibes: ['relaxed', 'literary', 'rambla-walked'],
     iconSlug: 'uy-montevideo',
   },
   {
@@ -834,7 +834,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 8.55,
     aliases: ['switzerland'],
     wikidataId: null,
-    vibes: ['precise', 'pristine', 'alpine'],
+    vibes: ['precise', 'bank-quiet', 'alpine'],
     iconSlug: null,
   },
   {
@@ -847,7 +847,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 4.92,
     aliases: ['netherlands', 'holland'],
     wikidataId: null,
-    vibes: ['open-minded', 'breezy', 'candid'],
+    vibes: ['open-minded', 'bicycle-ruled', 'candid'],
     iconSlug: 'nl-amsterdam',
   },
   {
@@ -860,7 +860,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 12.48,
     aliases: ['italy'],
     wikidataId: null,
-    vibes: ['eternal', 'warm', 'dramatic'],
+    vibes: ['eternal', 'ruin-strewn', 'dramatic'],
     iconSlug: 'it-rome',
   },
   {
@@ -873,7 +873,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -3.68,
     aliases: ['spain'],
     wikidataId: null,
-    vibes: ['fiery', 'nocturnal', 'proud'],
+    vibes: ['fiery', 'nocturnal', 'prado-proud'],
     iconSlug: 'es-madrid',
   },
   {
@@ -886,7 +886,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -9.14,
     aliases: ['portugal'],
     wikidataId: null,
-    vibes: ['melancholic', 'sunny', 'soulful'],
+    vibes: ['melancholic', 'fado-hushed', 'soulful'],
     iconSlug: 'pt-lisbon',
   },
   {
@@ -912,7 +912,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 10.75,
     aliases: ['norway'],
     wikidataId: null,
-    vibes: ['rugged', 'quiet', 'pristine'],
+    vibes: ['rugged', 'fjord-headed', 'pristine'],
     iconSlug: 'no-oslo',
   },
   {
@@ -938,7 +938,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 24.93,
     aliases: ['finland'],
     wikidataId: null,
-    vibes: ['stoic', 'serene', 'luminous'],
+    vibes: ['stoic', 'design-minded', 'luminous'],
     iconSlug: 'fi-helsinki',
   },
   {
@@ -977,7 +977,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 21.00,
     aliases: ['poland'],
     wikidataId: null,
-    vibes: ['resilient', 'rising', 'spirited'],
+    vibes: ['brick-by-brick', 'rising', 'spirited'],
     iconSlug: 'pl-warsaw',
   },
   {
@@ -1003,7 +1003,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 23.73,
     aliases: ['greece'],
     wikidataId: null,
-    vibes: ['ancient', 'sun-drenched', 'philosophical'],
+    vibes: ['ancient', 'ruin-crowned', 'philosophical'],
     iconSlug: 'gr-athens',
   },
   {
@@ -1016,7 +1016,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 29.01,
     aliases: ['turkey'],
     wikidataId: null,
-    vibes: ['mystical', 'bustling', 'layered'],
+    vibes: ['mystical', 'two-continented', 'layered'],
     iconSlug: 'tr-istanbul',
   },
   {
@@ -1029,7 +1029,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 37.62,
     aliases: ['russia'],
     wikidataId: null,
-    vibes: ['imposing', 'wintry', 'grand'],
+    vibes: ['imposing', 'onion-domed', 'grand'],
     iconSlug: 'ru-moscow',
   },
   {
@@ -1042,7 +1042,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -6.25,
     aliases: ['ireland'],
     wikidataId: null,
-    vibes: ['convivial', 'witty', 'rainy'],
+    vibes: ['convivial', 'witty', 'pub-lit'],
     iconSlug: 'ie-dublin',
   },
   {
@@ -1055,7 +1055,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -3.22,
     aliases: ['scotland'],
     wikidataId: null,
-    vibes: ['moody', 'storied', 'misty'],
+    vibes: ['moody', 'storied', 'crag-topped'],
     iconSlug: 'gb-edinburgh',
   },
   {
@@ -1094,7 +1094,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 19.82,
     aliases: [],
     wikidataId: null,
-    vibes: ['colorful', 'scrappy', 'emerging'],
+    vibes: ['block-painted', 'scrappy', 'emerging'],
     iconSlug: 'al-tirana',
   },
   {
@@ -1107,7 +1107,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 49.87,
     aliases: [],
     wikidataId: null,
-    vibes: ['windy', 'oil-slicked', 'cosmopolitan'],
+    vibes: ['flame-towered', 'oil-slicked', 'cosmopolitan'],
     iconSlug: 'az-baku',
   },
   {
@@ -1198,7 +1198,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 33.04,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunny', 'beachfront', 'relaxed'],
+    vibes: ['carnival-loud', 'beachfront', 'relaxed'],
     iconSlug: 'cy-limassol',
   },
   {
@@ -1211,7 +1211,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 33.37,
     aliases: [],
     wikidataId: null,
-    vibes: ['divided', 'warm', 'liminal'],
+    vibes: ['divided', 'venetian-walled', 'liminal'],
     iconSlug: 'cy-nicosia',
   },
   {
@@ -1289,7 +1289,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 11.03,
     aliases: [],
     wikidataId: null,
-    vibes: ['floral', 'medieval', 'gentle'],
+    vibes: ['floral', 'bridge-housed', 'gentle'],
     iconSlug: 'de-erfurt',
   },
   {
@@ -1315,7 +1315,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 7.85,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunny', 'eco-conscious', 'youthful'],
+    vibes: ['black-forest-edged', 'eco-conscious', 'youthful'],
     iconSlug: 'de-freiburg',
   },
   {
@@ -1328,7 +1328,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 8.68,
     aliases: [],
     wikidataId: null,
-    vibes: ['studious', 'small-town', 'unpretentious'],
+    vibes: ['studious', 'small-town', 'seminar-quiet'],
     iconSlug: 'de-giessen',
   },
   {
@@ -1341,7 +1341,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 9.99,
     aliases: [],
     wikidataId: null,
-    vibes: ['maritime', 'liberal', 'rainy'],
+    vibes: ['maritime', 'liberal', 'warehouse-red'],
     iconSlug: 'de-hamburg',
   },
   {
@@ -1354,7 +1354,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 8.40,
     aliases: [],
     wikidataId: null,
-    vibes: ['planned', 'sunny', 'cultured'],
+    vibes: ['planned', 'fan-shaped', 'cultured'],
     iconSlug: 'de-karlsruhe',
   },
   {
@@ -1393,7 +1393,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 11.08,
     aliases: [],
     wikidataId: null,
-    vibes: ['medieval', 'contemplative', 'historic'],
+    vibes: ['medieval', 'contemplative', 'lebkuchen-spiced'],
     iconSlug: 'de-nuremberg',
   },
   {
@@ -1445,7 +1445,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 2.17,
     aliases: [],
     wikidataId: null,
-    vibes: ['sensual', 'modernist', 'rebellious'],
+    vibes: ['gaudi-drawn', 'modernist', 'rebellious'],
     iconSlug: 'es-barcelona',
   },
   {
@@ -1458,7 +1458,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -4.78,
     aliases: [],
     wikidataId: null,
-    vibes: ['moorish', 'scorching', 'contemplative'],
+    vibes: ['moorish', 'patio-flowered', 'contemplative'],
     iconSlug: 'es-cordoba',
   },
   {
@@ -1471,7 +1471,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -8.40,
     aliases: [],
     wikidataId: null,
-    vibes: ['windswept', 'maritime', 'galician'],
+    vibes: ['lighthouse-topped', 'maritime', 'galician'],
     iconSlug: 'es-coruna',
   },
   {
@@ -1510,7 +1510,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -4.42,
     aliases: [],
     wikidataId: null,
-    vibes: ['sun-soaked', 'coastal', 'breezy'],
+    vibes: ['picasso-proud', 'coastal', 'promenaded'],
     iconSlug: 'es-malaga',
   },
   {
@@ -1523,7 +1523,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -8.54,
     aliases: [],
     wikidataId: null,
-    vibes: ['pilgrim-weary', 'sacred', 'misty'],
+    vibes: ['pilgrim-weary', 'sacred', 'granite-grey'],
     iconSlug: 'es-santiago-de-compostela',
   },
   {
@@ -1536,7 +1536,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -0.38,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunlit', 'orange-scented', 'modern'],
+    vibes: ['paella-born', 'orange-scented', 'modern'],
     iconSlug: 'es-valencia',
   },
   {
@@ -1549,7 +1549,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -8.72,
     aliases: [],
     wikidataId: null,
-    vibes: ['rainy', 'maritime', 'industrial'],
+    vibes: ['trawler-busy', 'maritime', 'industrial'],
     iconSlug: 'es-vigo',
   },
   {
@@ -1588,7 +1588,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 3.88,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunny', 'youthful', 'mediterranean'],
+    vibes: ['student-thronged', 'youthful', 'mediterranean'],
     iconSlug: 'fr-montpellier',
   },
   {
@@ -1601,7 +1601,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -1.68,
     aliases: [],
     wikidataId: null,
-    vibes: ['rainy', 'breton', 'studious'],
+    vibes: ['half-timbered', 'breton', 'studious'],
     iconSlug: 'fr-rennes',
   },
   {
@@ -1627,7 +1627,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -2.24,
     aliases: [],
     wikidataId: null,
-    vibes: ['rainy', 'musical', 'gritty'],
+    vibes: ['post-punk', 'musical', 'gritty'],
     iconSlug: 'gb-manchester',
   },
   {
@@ -1640,7 +1640,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 41.63,
     aliases: [],
     wikidataId: null,
-    vibes: ['subtropical', 'casino-lit', 'humid'],
+    vibes: ['palm-lined', 'casino-lit', 'eccentric'],
     iconSlug: 'ge-batumi',
   },
   {
@@ -1679,7 +1679,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 19.04,
     aliases: [],
     wikidataId: null,
-    vibes: ['thermal', 'melancholic', 'grand'],
+    vibes: ['thermal', 'melancholic', 'ruin-barred'],
     iconSlug: 'hu-budapest',
   },
   {
@@ -1705,7 +1705,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 20.15,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunny', 'paprika-scented', 'peaceful'],
+    vibes: ['boulevarded', 'paprika-scented', 'peaceful'],
     iconSlug: 'hu-szeged',
   },
   {
@@ -1718,7 +1718,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -18.09,
     aliases: [],
     wikidataId: null,
-    vibes: ['northern', 'stark', 'cozy'],
+    vibes: ['northern', 'heart-lit', 'cozy'],
     iconSlug: 'is-akureyri',
   },
   {
@@ -1783,7 +1783,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 13.35,
     aliases: [],
     wikidataId: null,
-    vibes: ['chaotic', 'spicy', 'sun-beaten'],
+    vibes: ['chaotic', 'spicy', 'arab-norman'],
     iconSlug: 'it-palermo',
   },
   {
@@ -1809,7 +1809,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 17.24,
     aliases: [],
     wikidataId: null,
-    vibes: ['maritime', 'industrial', 'salty'],
+    vibes: ['maritime', 'industrial', 'mussel-farmed'],
     iconSlug: 'it-taranto',
   },
   {
@@ -1861,7 +1861,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 25.28,
     aliases: [],
     wikidataId: null,
-    vibes: ['baroque', 'bohemian', 'resilient'],
+    vibes: ['baroque', 'bohemian', 'courtyarded'],
     iconSlug: 'lt-vilnius',
   },
   {
@@ -1939,7 +1939,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 18.54,
     aliases: [],
     wikidataId: null,
-    vibes: ['floral', 'sunny', 'coastal'],
+    vibes: ['floral', 'stair-stepped', 'coastal'],
     iconSlug: 'me-herceg-novi',
   },
   {
@@ -1952,7 +1952,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 19.26,
     aliases: [],
     wikidataId: null,
-    vibes: ['concrete', 'functional', 'sunny'],
+    vibes: ['concrete', 'functional', 'confluent'],
     iconSlug: 'me-podgorica',
   },
   {
@@ -1978,7 +1978,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 14.51,
     aliases: [],
     wikidataId: null,
-    vibes: ['honey-stoned', 'fortified', 'sunlit'],
+    vibes: ['honey-stoned', 'fortified', 'balconied'],
     iconSlug: 'mt-valletta',
   },
   {
@@ -2056,7 +2056,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 16.93,
     aliases: [],
     wikidataId: null,
-    vibes: ['mercantile', 'colorful', 'proud'],
+    vibes: ['mercantile', 'goat-clocked', 'proud'],
     iconSlug: 'pl-poznan',
   },
   {
@@ -2069,7 +2069,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 15.53,
     aliases: [],
     wikidataId: null,
-    vibes: ['small-town', 'quiet', 'faithful'],
+    vibes: ['small-town', 'statue-shadowed', 'faithful'],
     iconSlug: 'pl-swiebodzin',
   },
   {
@@ -2121,7 +2121,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -8.43,
     aliases: [],
     wikidataId: null,
-    vibes: ['baroque', 'youthful', 'faithful'],
+    vibes: ['baroque', 'youthful', 'stairway-climbed'],
     iconSlug: 'pt-braga',
   },
   {
@@ -2134,7 +2134,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -7.47,
     aliases: [],
     wikidataId: null,
-    vibes: ['thermal', 'fortified', 'provincial'],
+    vibes: ['thermal', 'fortified', 'roman-bridged'],
     iconSlug: 'pt-chaves',
   },
   {
@@ -2212,7 +2212,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -8.83,
     aliases: [],
     wikidataId: null,
-    vibes: ['folkloric', 'maritime', 'traditional'],
+    vibes: ['folkloric', 'maritime', 'filigree-worked'],
     iconSlug: 'pt-viana-do-castelo',
   },
   {
@@ -2225,7 +2225,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -7.74,
     aliases: [],
     wikidataId: null,
-    vibes: ['thermal', 'mountainous', 'peaceful'],
+    vibes: ['thermal', 'mountainous', 'vineyard-terraced'],
     iconSlug: 'pt-vila-real',
   },
   {
@@ -2264,7 +2264,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 19.66,
     aliases: [],
     wikidataId: null,
-    vibes: ['art-nouveau', 'multicultural', 'provincial'],
+    vibes: ['art-nouveau', 'multicultural', 'tile-fronted'],
     iconSlug: 'rs-subotica',
   },
   {
@@ -2277,7 +2277,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 33.07,
     aliases: [],
     wikidataId: null,
-    vibes: ['polar', 'darkened', 'hardy'],
+    vibes: ['arctic-ported', 'darkened', 'hardy'],
     iconSlug: 'ru-murmansk',
   },
   {
@@ -2290,7 +2290,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 30.32,
     aliases: [],
     wikidataId: null,
-    vibes: ['imperial', 'melancholic', 'grand'],
+    vibes: ['imperial', 'melancholic', 'white-nighted'],
     iconSlug: null,
   },
   {
@@ -2303,7 +2303,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 37.62,
     aliases: [],
     wikidataId: null,
-    vibes: ['stoic', 'industrial', 'resilient'],
+    vibes: ['stoic', 'industrial', 'samovar-made'],
     iconSlug: 'ru-tula',
   },
   {
@@ -2316,7 +2316,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 129.73,
     aliases: [],
     wikidataId: null,
-    vibes: ['frozen', 'isolated', 'extreme'],
+    vibes: ['diamond-rich', 'isolated', 'extreme'],
     iconSlug: 'ru-yakutsk',
   },
   {
@@ -2342,7 +2342,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 17.11,
     aliases: [],
     wikidataId: null,
-    vibes: ['quiet', 'unassuming', 'emerging'],
+    vibes: ['castle-hilled', 'unassuming', 'emerging'],
     iconSlug: 'sk-bratislava',
   },
   {
@@ -2355,7 +2355,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 12.45,
     aliases: [],
     wikidataId: null,
-    vibes: ['serene', 'timeless', 'elevated'],
+    vibes: ['serene', 'three-towered', 'elevated'],
     iconSlug: 'sm-san-marino',
   },
   {
@@ -2368,7 +2368,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 30.52,
     aliases: [],
     wikidataId: null,
-    vibes: ['golden', 'spirited', 'ancient'],
+    vibes: ['chestnut-lined', 'spirited', 'ancient'],
     iconSlug: 'ua-kyiv',
   },
   {
@@ -2381,7 +2381,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 30.73,
     aliases: [],
     wikidataId: null,
-    vibes: ['witty', 'cosmopolitan', 'breezy'],
+    vibes: ['witty', 'cosmopolitan', 'opera-proud'],
     iconSlug: 'ua-odessa',
   },
   {
@@ -2394,7 +2394,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -2.98,
     aliases: [],
     wikidataId: null,
-    vibes: ['gritty', 'musical', 'proud'],
+    vibes: ['gritty', 'musical', 'beat-born'],
     iconSlug: 'uk-liverpool',
   },
   {
@@ -2420,7 +2420,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 21.17,
     aliases: [],
     wikidataId: null,
-    vibes: ['youthful', 'defiant', 'raw'],
+    vibes: ['newborn', 'defiant', 'raw'],
     iconSlug: 'xk-pristina',
   },
 
@@ -2435,7 +2435,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 31.25,
     aliases: ['egypt'],
     wikidataId: null,
-    vibes: ['ancient', 'chaotic', 'timeless'],
+    vibes: ['ancient', 'chaotic', 'minaret-spiked'],
     iconSlug: 'eg-cairo',
   },
   {
@@ -2448,7 +2448,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 28.03,
     aliases: ['south africa'],
     wikidataId: null,
-    vibes: ['ambitious', 'golden', 'resilient'],
+    vibes: ['ambitious', 'reef-mined', 'resilient'],
     iconSlug: null,
   },
   {
@@ -2461,7 +2461,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 18.43,
     aliases: [],
     wikidataId: null,
-    vibes: ['stunning', 'breezy', 'wild'],
+    vibes: ['stunning', 'table-shadowed', 'wild'],
     iconSlug: 'za-cape-town',
   },
   {
@@ -2487,7 +2487,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 36.82,
     aliases: ['kenya'],
     wikidataId: null,
-    vibes: ['enterprising', 'sunny', 'rising'],
+    vibes: ['enterprising', 'matatu-loud', 'rising'],
     iconSlug: 'ke-nairobi',
   },
   {
@@ -2500,7 +2500,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -1.52,
     aliases: [],
     wikidataId: null,
-    vibes: ['dusty', 'warm', 'resilient'],
+    vibes: ['dusty', 'moped-swarmed', 'resilient'],
     iconSlug: 'bf-ouagadougou',
   },
   {
@@ -2513,7 +2513,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 39.04,
     aliases: [],
     wikidataId: null,
-    vibes: ['mystical', 'devotional', 'ancient'],
+    vibes: ['mystical', 'devotional', 'rock-hewn'],
     iconSlug: 'et-lalibela',
   },
   {
@@ -2539,7 +2539,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -0.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['vibrant', 'welcoming', 'humid'],
+    vibes: ['vibrant', 'welcoming', 'highlife-loud'],
     iconSlug: 'gh-accra',
   },
   {
@@ -2552,7 +2552,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -4.01,
     aliases: [],
     wikidataId: null,
-    vibes: ['dynamic', 'tropical', 'ambitious'],
+    vibes: ['dynamic', 'lagoon-split', 'ambitious'],
     iconSlug: null,
   },
   {
@@ -2578,7 +2578,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 27.48,
     aliases: [],
     wikidataId: null,
-    vibes: ['windswept', 'rugged', 'quiet'],
+    vibes: ['blanket-wrapped', 'rugged', 'quiet'],
     iconSlug: 'ls-maseru',
   },
   {
@@ -2604,7 +2604,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -7.59,
     aliases: [],
     wikidataId: null,
-    vibes: ['bustling', 'cinematic', 'salty'],
+    vibes: ['white-housed', 'cinematic', 'salty'],
     iconSlug: 'ma-casablanca',
   },
   {
@@ -2617,7 +2617,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -5.00,
     aliases: [],
     wikidataId: null,
-    vibes: ['labyrinthine', 'ancient', 'aromatic'],
+    vibes: ['labyrinthine', 'tannery-dyed', 'aromatic'],
     iconSlug: 'ma-fez',
   },
   {
@@ -2656,7 +2656,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 32.58,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'rhythmic', 'languid'],
+    vibes: ['acacia-lined', 'rhythmic', 'languid'],
     iconSlug: 'mz-maputo',
   },
   {
@@ -2669,7 +2669,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 17.08,
     aliases: [],
     wikidataId: null,
-    vibes: ['crisp', 'spacious', 'sunlit'],
+    vibes: ['german-tinged', 'spacious', 'wide-streeted'],
     iconSlug: 'na-windhoek',
   },
   {
@@ -2695,7 +2695,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -17.44,
     aliases: [],
     wikidataId: null,
-    vibes: ['colorful', 'musical', 'coastal'],
+    vibes: ['baobab-shaded', 'musical', 'coastal'],
     iconSlug: 'sn-dakar',
   },
   {
@@ -2708,7 +2708,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 39.28,
     aliases: [],
     wikidataId: null,
-    vibes: ['humid', 'bustling', 'swahili'],
+    vibes: ['dhow-dotted', 'bustling', 'swahili'],
     iconSlug: null,
   },
   {
@@ -2721,7 +2721,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 39.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['spiced', 'turquoise', 'timeless'],
+    vibes: ['clove-scented', 'turquoise', 'timeless'],
     iconSlug: 'tz-zanzibar',
   },
   {
@@ -2734,7 +2734,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 10.17,
     aliases: [],
     wikidataId: null,
-    vibes: ['mediterranean', 'refined', 'layered'],
+    vibes: ['mediterranean', 'refined', 'medina-wound'],
     iconSlug: 'tn-tunis',
   },
   {
@@ -2747,7 +2747,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 32.58,
     aliases: [],
     wikidataId: null,
-    vibes: ['green', 'hilly', 'lively'],
+    vibes: ['green', 'boda-boda-quick', 'lively'],
     iconSlug: null,
   },
   {
@@ -2760,7 +2760,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 28.32,
     aliases: [],
     wikidataId: null,
-    vibes: ['warm', 'dusty', 'easy-going'],
+    vibes: ['copper-funded', 'dusty', 'easy-going'],
     iconSlug: null,
   },
   {
@@ -2801,7 +2801,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 46.77,
     aliases: ['saudi arabia'],
     wikidataId: null,
-    vibes: ['vast', 'ambitious', 'scorching'],
+    vibes: ['vast', 'ambitious', 'mud-brick-rooted'],
     iconSlug: 'sa-riyadh',
   },
   {
@@ -2814,7 +2814,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 35.21,
     aliases: ['israel'],
     wikidataId: null,
-    vibes: ['sacred', 'ancient', 'layered'],
+    vibes: ['sacred', 'ancient', 'thrice-holy'],
     iconSlug: 'il-jerusalem',
   },
   {
@@ -2840,7 +2840,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 50.59,
     aliases: [],
     wikidataId: null,
-    vibes: ['cosmopolitan', 'balmy', 'relaxed'],
+    vibes: ['cosmopolitan', 'pearl-diving', 'relaxed'],
     iconSlug: 'bh-manama',
   },
   {
@@ -2853,7 +2853,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 34.99,
     aliases: [],
     wikidataId: null,
-    vibes: ['terraced', 'diverse', 'breezy'],
+    vibes: ['terraced', 'diverse', 'carmel-climbing'],
     iconSlug: 'il-haifa',
   },
   {
@@ -2866,7 +2866,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 34.78,
     aliases: [],
     wikidataId: null,
-    vibes: ['hedonistic', 'sun-drenched', 'electric'],
+    vibes: ['hedonistic', 'bauhaus-white', 'electric'],
     iconSlug: 'il-tel-aviv',
   },
   {
@@ -2905,7 +2905,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 51.68,
     aliases: [],
     wikidataId: null,
-    vibes: ['turquoise', 'poetic', 'elegant'],
+    vibes: ['turquoise', 'poetic', 'half-the-world'],
     iconSlug: 'ir-isfahan',
   },
   {
@@ -2931,7 +2931,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 51.39,
     aliases: [],
     wikidataId: null,
-    vibes: ['mountainous', 'dynamic', 'sprawling'],
+    vibes: ['alborz-backed', 'dynamic', 'sprawling'],
     iconSlug: 'ir-tehran',
   },
   {
@@ -2957,7 +2957,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 47.99,
     aliases: [],
     wikidataId: null,
-    vibes: ['gleaming', 'modern', 'sweltering'],
+    vibes: ['gleaming', 'modern', 'tower-crowned'],
     iconSlug: 'kw-kuwait',
   },
   {
@@ -2996,7 +2996,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 51.53,
     aliases: [],
     wikidataId: null,
-    vibes: ['gleaming', 'ambitious', 'modern'],
+    vibes: ['gleaming', 'ambitious', 'corniche-curved'],
     iconSlug: 'qa-doha',
   },
   {
@@ -3009,7 +3009,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 39.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['humid', 'cosmopolitan', 'gateway-like'],
+    vibes: ['coral-built', 'cosmopolitan', 'gateway-like'],
     iconSlug: null,
   },
 
@@ -3037,7 +3037,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 135.46,
     aliases: [],
     wikidataId: null,
-    vibes: ['playful', 'flavorful', 'neon'],
+    vibes: ['playful', 'comedy-quick', 'neon'],
     iconSlug: null,
   },
   {
@@ -3076,7 +3076,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 116.39,
     aliases: [],
     wikidataId: null,
-    vibes: ['imperial', 'vast', 'storied'],
+    vibes: ['imperial', 'vast', 'hutong-threaded'],
     iconSlug: 'cn-beijing',
   },
   {
@@ -3115,7 +3115,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 100.52,
     aliases: ['bkk', 'thailand'],
     wikidataId: null,
-    vibes: ['steamy', 'chaotic', 'golden'],
+    vibes: ['street-stall-lit', 'chaotic', 'golden'],
     iconSlug: null,
   },
   {
@@ -3141,7 +3141,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 77.23,
     aliases: [],
     wikidataId: null,
-    vibes: ['spicy', 'historic', 'vibrant'],
+    vibes: ['spicy', 'seven-citied', 'vibrant'],
     iconSlug: 'in-delhi',
   },
   {
@@ -3154,7 +3154,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 66.99,
     aliases: ['pakistan'],
     wikidataId: null,
-    vibes: ['gritty', 'sprawling', 'spirited'],
+    vibes: ['gritty', 'sprawling', 'biryani-scented'],
     iconSlug: 'pk-karachi',
   },
   {
@@ -3167,7 +3167,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 90.41,
     aliases: ['bangladesh'],
     wikidataId: null,
-    vibes: ['dense', 'lively', 'colorful'],
+    vibes: ['dense', 'lively', 'rickshaw-painted'],
     iconSlug: 'bd-dhaka',
   },
   {
@@ -3180,7 +3180,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 106.70,
     aliases: ['vietnam'],
     wikidataId: null,
-    vibes: ['buzzing', 'aromatic', 'warm'],
+    vibes: ['buzzing', 'aromatic', 'coffee-strong'],
     iconSlug: null,
   },
   {
@@ -3193,7 +3193,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 106.83,
     aliases: ['indonesia'],
     wikidataId: null,
-    vibes: ['tropical', 'sprawling', 'lively'],
+    vibes: ['traffic-snarled', 'sprawling', 'lively'],
     iconSlug: null,
   },
   {
@@ -3206,7 +3206,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 101.70,
     aliases: ['malaysia'],
     wikidataId: null,
-    vibes: ['gleaming', 'tropical', 'diverse'],
+    vibes: ['gleaming', 'twin-towered', 'diverse'],
     iconSlug: 'my-kuala-lumpur',
   },
   {
@@ -3219,7 +3219,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 120.98,
     aliases: ['philippines'],
     wikidataId: null,
-    vibes: ['cheerful', 'resilient', 'warm'],
+    vibes: ['cheerful', 'resilient', 'jeepney-bright'],
     iconSlug: 'ph-manila',
   },
   {
@@ -3245,7 +3245,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 85.32,
     aliases: [],
     wikidataId: null,
-    vibes: ['spiritual', 'high', 'serene'],
+    vibes: ['spiritual', 'high', 'prayer-flagged'],
     iconSlug: 'np-kathmandu',
   },
   {
@@ -3271,7 +3271,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 114.32,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'quiet', 'industrial'],
+    vibes: ['oil-built', 'quiet', 'industrial'],
     iconSlug: 'bn-seria',
   },
   {
@@ -3297,7 +3297,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 104.07,
     aliases: [],
     wikidataId: null,
-    vibes: ['spicy', 'laid-back', 'misty'],
+    vibes: ['spicy', 'laid-back', 'teahouse-slow'],
     iconSlug: 'cn-chengdu',
   },
   {
@@ -3310,7 +3310,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 112.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['historic', 'riverside', 'tranquil'],
+    vibes: ['wall-ringed', 'riverside', 'tranquil'],
     iconSlug: 'cn-jingzhou',
   },
   {
@@ -3336,7 +3336,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 114.06,
     aliases: [],
     wikidataId: null,
-    vibes: ['ambitious', 'innovative', 'frenetic'],
+    vibes: ['overnight-built', 'innovative', 'frenetic'],
     iconSlug: null,
   },
   {
@@ -3349,7 +3349,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 113.26,
     aliases: [],
     wikidataId: null,
-    vibes: ['steamy', 'mercantile', 'bold'],
+    vibes: ['dim-sum-early', 'mercantile', 'bold'],
     iconSlug: null,
   },
   {
@@ -3362,7 +3362,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 106.55,
     aliases: [],
     wikidataId: null,
-    vibes: ['fiery', 'foggy', 'sprawling'],
+    vibes: ['fiery', 'cliff-stacked', 'sprawling'],
     iconSlug: null,
   },
   {
@@ -3375,7 +3375,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 114.31,
     aliases: [],
     wikidataId: null,
-    vibes: ['riverside', 'industrial', 'hot'],
+    vibes: ['riverside', 'industrial', 'yangtze-split'],
     iconSlug: null,
   },
   {
@@ -3388,7 +3388,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 115.22,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'spiritual', 'languid'],
+    vibes: ['temple-dotted', 'spiritual', 'languid'],
     iconSlug: 'id-denpasar',
   },
   {
@@ -3401,7 +3401,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 112.75,
     aliases: [],
     wikidataId: null,
-    vibes: ['hot', 'gritty', 'industrial'],
+    vibes: ['heroic', 'gritty', 'industrial'],
     iconSlug: null,
   },
   {
@@ -3414,7 +3414,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 78.02,
     aliases: [],
     wikidataId: null,
-    vibes: ['monumental', 'hazy', 'timeless'],
+    vibes: ['monumental', 'marble-inlaid', 'timeless'],
     iconSlug: 'in-agra',
   },
   {
@@ -3427,7 +3427,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 88.36,
     aliases: [],
     wikidataId: null,
-    vibes: ['literary', 'humid', 'intense'],
+    vibes: ['literary', 'tram-rattled', 'intense'],
     iconSlug: null,
   },
   {
@@ -3440,7 +3440,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 77.59,
     aliases: [],
     wikidataId: null,
-    vibes: ['cosmopolitan', 'temperate', 'innovative'],
+    vibes: ['cosmopolitan', 'code-fuelled', 'innovative'],
     iconSlug: null,
   },
   {
@@ -3453,7 +3453,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 80.27,
     aliases: [],
     wikidataId: null,
-    vibes: ['hot', 'traditional', 'coastal'],
+    vibes: ['carnatic', 'traditional', 'coastal'],
     iconSlug: null,
   },
   {
@@ -3479,7 +3479,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 135.77,
     aliases: [],
     wikidataId: null,
-    vibes: ['tranquil', 'refined', 'timeless'],
+    vibes: ['tranquil', 'refined', 'moss-gardened'],
     iconSlug: 'jp-kyoto',
   },
   {
@@ -3492,7 +3492,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 135.80,
     aliases: [],
     wikidataId: null,
-    vibes: ['gentle', 'sacred', 'serene'],
+    vibes: ['gentle', 'sacred', 'deer-roamed'],
     iconSlug: 'jp-nara',
   },
   {
@@ -3505,7 +3505,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 136.91,
     aliases: [],
     wikidataId: null,
-    vibes: ['snowy', 'rustic', 'traditional'],
+    vibes: ['thatched', 'rustic', 'traditional'],
     iconSlug: 'jp-shirakawa-go',
   },
   {
@@ -3518,7 +3518,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 103.50,
     aliases: [],
     wikidataId: null,
-    vibes: ['beachy', 'laid-back', 'tropical'],
+    vibes: ['beachy', 'laid-back', 'half-built'],
     iconSlug: 'kh-sihanoukville',
   },
   {
@@ -3531,7 +3531,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 104.92,
     aliases: [],
     wikidataId: null,
-    vibes: ['humid', 'chaotic', 'emerging'],
+    vibes: ['mekong-met', 'chaotic', 'emerging'],
     iconSlug: null,
   },
   {
@@ -3544,7 +3544,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 74.59,
     aliases: [],
     wikidataId: null,
-    vibes: ['soviet', 'mountainous', 'fresh'],
+    vibes: ['soviet', 'poplar-lined', 'fresh'],
     iconSlug: 'kg-bishkek',
   },
   {
@@ -3570,7 +3570,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 129.08,
     aliases: [],
     wikidataId: null,
-    vibes: ['coastal', 'breezy', 'relaxed'],
+    vibes: ['coastal', 'fish-market-loud', 'relaxed'],
     iconSlug: null,
   },
   {
@@ -3596,7 +3596,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 71.43,
     aliases: [],
     wikidataId: null,
-    vibes: ['futuristic', 'windswept', 'ambitious'],
+    vibes: ['futuristic', 'steppe-planted', 'ambitious'],
     iconSlug: 'kz-astana',
   },
   {
@@ -3604,12 +3604,12 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     displayName: 'Kostanay',
     country: 'Kazakhstan',
     countryCode: 'KZ',
-    iana: 'Asia/Kostanay',
+    iana: 'Asia/Qostanay',
     lat: 53.21,
     lng: 63.63,
     aliases: [],
     wikidataId: null,
-    vibes: ['provincial', 'vast', 'quiet'],
+    vibes: ['provincial', 'wheat-belted', 'quiet'],
     iconSlug: 'kz-kostanay',
   },
   {
@@ -3622,7 +3622,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 70.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['pine-scented', 'lakeside', 'peaceful'],
+    vibes: ['pine-scented', 'lakeside', 'sanatorium-slow'],
     iconSlug: 'kz-schuchinsk',
   },
   {
@@ -3648,7 +3648,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 102.13,
     aliases: [],
     wikidataId: null,
-    vibes: ['golden', 'tranquil', 'spiritual'],
+    vibes: ['golden', 'alms-walked', 'spiritual'],
     iconSlug: 'la-luang-prabang',
   },
   {
@@ -3661,7 +3661,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 94.86,
     aliases: [],
     wikidataId: null,
-    vibes: ['mystical', 'ancient', 'dusty'],
+    vibes: ['mystical', 'ancient', 'temple-strewn'],
     iconSlug: 'mm-bagan',
   },
   {
@@ -3674,7 +3674,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 96.20,
     aliases: [],
     wikidataId: null,
-    vibes: ['golden', 'humid', 'timeless'],
+    vibes: ['golden', 'teak-shuttered', 'timeless'],
     iconSlug: null,
   },
   {
@@ -3700,7 +3700,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 110.34,
     aliases: [],
     wikidataId: null,
-    vibes: ['riverside', 'laid-back', 'tropical'],
+    vibes: ['riverside', 'laid-back', 'cat-named'],
     iconSlug: 'my-kuching',
   },
   {
@@ -3713,7 +3713,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 73.04,
     aliases: [],
     wikidataId: null,
-    vibes: ['green', 'planned', 'serene'],
+    vibes: ['green', 'planned', 'margalla-backed'],
     iconSlug: 'pk-islamabad',
   },
   {
@@ -3726,7 +3726,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 74.35,
     aliases: [],
     wikidataId: null,
-    vibes: ['vibrant', 'historic', 'spicy'],
+    vibes: ['vibrant', 'mughal-gardened', 'spicy'],
     iconSlug: null,
   },
   {
@@ -3739,7 +3739,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 123.89,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'festive', 'coastal'],
+    vibes: ['lechon-proud', 'festive', 'coastal'],
     iconSlug: 'ph-cebu',
   },
   {
@@ -3765,7 +3765,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 79.85,
     aliases: [],
     wikidataId: null,
-    vibes: ['humid', 'colonial', 'bustling'],
+    vibes: ['cinnamon-traded', 'colonial', 'bustling'],
     iconSlug: null,
   },
   {
@@ -3778,7 +3778,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 100.88,
     aliases: [],
     wikidataId: null,
-    vibes: ['neon', 'beachy', 'hedonistic'],
+    vibes: ['jet-ski-loud', 'beachy', 'hedonistic'],
     iconSlug: 'th-pattaya',
   },
   {
@@ -3791,7 +3791,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 68.77,
     aliases: [],
     wikidataId: null,
-    vibes: ['mountainous', 'soviet', 'leafy'],
+    vibes: ['monday-named', 'soviet', 'leafy'],
     iconSlug: 'tj-dushanbe',
   },
   {
@@ -3804,7 +3804,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 125.57,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'emerging', 'coastal'],
+    vibes: ['independence-proud', 'emerging', 'coastal'],
     iconSlug: 'tl-dili',
   },
   {
@@ -3830,7 +3830,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 59.60,
     aliases: [],
     wikidataId: null,
-    vibes: ['remote', 'dusty', 'stark'],
+    vibes: ['desert-museumed', 'dusty', 'stark'],
     iconSlug: 'uz-nukus',
   },
   {
@@ -3843,7 +3843,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 69.28,
     aliases: [],
     wikidataId: null,
-    vibes: ['soviet', 'sunny', 'spacious'],
+    vibes: ['soviet', 'metro-muraled', 'spacious'],
     iconSlug: 'uz-tashkent',
   },
   {
@@ -3856,7 +3856,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 105.85,
     aliases: [],
     wikidataId: null,
-    vibes: ['motorbike-buzzing', 'aromatic', 'humid'],
+    vibes: ['motorbike-buzzing', 'aromatic', 'old-quartered'],
     iconSlug: 'vn-hanoi',
   },
   {
@@ -3869,7 +3869,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 107.08,
     aliases: [],
     wikidataId: null,
-    vibes: ['breezy', 'coastal', 'relaxed'],
+    vibes: ['rig-supplied', 'coastal', 'relaxed'],
     iconSlug: 'vn-vung-tau',
   },
 
@@ -3884,7 +3884,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 151.19,
     aliases: ['australia'],
     wikidataId: null,
-    vibes: ['sunny', 'sparkling', 'coastal'],
+    vibes: ['harbour-shaped', 'sparkling', 'coastal'],
     iconSlug: 'au-sydney',
   },
   {
@@ -3897,7 +3897,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 144.98,
     aliases: [],
     wikidataId: null,
-    vibes: ['artsy', 'caffeinated', 'eclectic'],
+    vibes: ['laneway-hidden', 'caffeinated', 'eclectic'],
     iconSlug: 'au-melbourne',
   },
   {
@@ -3910,7 +3910,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 174.76,
     aliases: ['new zealand', 'nz'],
     wikidataId: null,
-    vibes: ['adventurous', 'green', 'fresh'],
+    vibes: ['sail-crowded', 'green', 'fresh'],
     iconSlug: null,
   },
   {
@@ -3949,7 +3949,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 115.86,
     aliases: [],
     wikidataId: null,
-    vibes: ['sunny', 'isolated', 'relaxed'],
+    vibes: ['swan-rivered', 'isolated', 'relaxed'],
     iconSlug: 'au-perth',
   },
   {
@@ -3962,7 +3962,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 178.44,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'humid', 'island-time'],
+    vibes: ['market-loud', 'verandaed', 'island-time'],
     iconSlug: 'fj-suva',
   },
   {
@@ -3988,7 +3988,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 57.50,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'bustling', 'creole'],
+    vibes: ['sugar-traded', 'bustling', 'creole'],
     iconSlug: 'mu-port-louis',
   },
   {
@@ -4014,7 +4014,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 174.78,
     aliases: [],
     wikidataId: null,
-    vibes: ['windy', 'creative', 'caffeinated'],
+    vibes: ['hill-hugged', 'creative', 'caffeinated'],
     iconSlug: 'nz-wellington',
   },
   {
@@ -4027,7 +4027,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 159.96,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'quiet', 'emerging'],
+    vibes: ['war-marked', 'quiet', 'emerging'],
     iconSlug: 'sb-honiara',
   },
   {
@@ -4066,7 +4066,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: 168.32,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'volcanic', 'laid-back'],
+    vibes: ['kava-slow', 'volcanic', 'laid-back'],
     iconSlug: 'vu-port-vila',
   },
   {
@@ -4079,7 +4079,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -171.76,
     aliases: [],
     wikidataId: null,
-    vibes: ['warm', 'polynesian', 'unhurried'],
+    vibes: ['sunday-quiet', 'polynesian', 'unhurried'],
     iconSlug: 'ws-apia',
   },
 
@@ -4094,7 +4094,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -61.84,
     aliases: [],
     wikidataId: null,
-    vibes: ['turquoise', 'colonial', 'breezy'],
+    vibes: ['turquoise', 'colonial', 'cricket-mad'],
     iconSlug: 'ag-saint-john',
   },
   {
@@ -4107,7 +4107,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -77.35,
     aliases: [],
     wikidataId: null,
-    vibes: ['turquoise', 'resort', 'tropical'],
+    vibes: ['turquoise', 'resort', 'cruise-docked'],
     iconSlug: 'bs-nassau',
   },
   {
@@ -4133,7 +4133,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -84.22,
     aliases: [],
     wikidataId: null,
-    vibes: ['tropical', 'verdant', 'volcanic'],
+    vibes: ['coffee-farmed', 'verdant', 'volcanic'],
     iconSlug: 'cr-alajuela',
   },
   {
@@ -4146,7 +4146,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -82.37,
     aliases: [],
     wikidataId: null,
-    vibes: ['nostalgic', 'sultry', 'rhythmic'],
+    vibes: ['nostalgic', 'peeling-grand', 'rhythmic'],
     iconSlug: 'cu-havana',
   },
   {
@@ -4159,7 +4159,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -68.94,
     aliases: [],
     wikidataId: null,
-    vibes: ['pastel', 'breezy', 'dutch-tinged'],
+    vibes: ['pastel', 'pontoon-bridged', 'dutch-tinged'],
     iconSlug: 'cw-willemstadt',
   },
   {
@@ -4172,7 +4172,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -61.75,
     aliases: [],
     wikidataId: null,
-    vibes: ['colonial', 'cobblestoned', 'volcanic'],
+    vibes: ['horseshoe-harboured', 'cobblestoned', 'volcanic'],
     iconSlug: 'gd-st-george',
   },
   {
@@ -4185,7 +4185,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -90.73,
     aliases: [],
     wikidataId: null,
-    vibes: ['colonial', 'volcanic', 'cobblestoned'],
+    vibes: ['earthquake-hushed', 'volcanic', 'cobblestoned'],
     iconSlug: 'gt-antigua',
   },
   {
@@ -4198,7 +4198,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -58.16,
     aliases: [],
     wikidataId: null,
-    vibes: ['wooden', 'tropical', 'colonial'],
+    vibes: ['wooden', 'sea-walled', 'colonial'],
     iconSlug: 'gy-georgetown',
   },
   {
@@ -4211,7 +4211,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -87.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['mountainous', 'chaotic', 'resilient'],
+    vibes: ['silver-hilled', 'chaotic', 'resilient'],
     iconSlug: 'hn-tegucigalpa',
   },
   {
@@ -4224,7 +4224,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -72.34,
     aliases: [],
     wikidataId: null,
-    vibes: ['vibrant', 'resilient', 'intense'],
+    vibes: ['vibrant', 'resilient', 'gingerbread-housed'],
     iconSlug: 'ht-port-au-prince',
   },
   {
@@ -4237,7 +4237,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -61.06,
     aliases: [],
     wikidataId: null,
-    vibes: ['volcanic', 'lush', 'dramatic'],
+    vibes: ['piton-framed', 'lush', 'dramatic'],
     iconSlug: 'lc-soufriere',
   },
   {
@@ -4250,7 +4250,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -85.96,
     aliases: [],
     wikidataId: null,
-    vibes: ['colonial', 'lakeside', 'colorful'],
+    vibes: ['horse-carted', 'lakeside', 'colorful'],
     iconSlug: 'ni-granada',
   },
   {
@@ -4263,7 +4263,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -79.52,
     aliases: [],
     wikidataId: null,
-    vibes: ['humid', 'cosmopolitan', 'gleaming'],
+    vibes: ['canal-fed', 'cosmopolitan', 'gleaming'],
     iconSlug: 'pa-panama',
   },
   {
@@ -4276,7 +4276,7 @@ const CITY_DATA: readonly Omit<CityEntity, 'kind'>[] = [
     lng: -89.19,
     aliases: [],
     wikidataId: null,
-    vibes: ['vibrant', 'resilient', 'volcanic'],
+    vibes: ['pupusa-fed', 'resilient', 'volcanic'],
     iconSlug: 'sv-san-salvador',
   },
 ]
