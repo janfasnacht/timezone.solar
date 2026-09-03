@@ -97705,9 +97705,23 @@ function cityEntriesToResolveResult(entries, resolveMethod, kind = "city") {
     alternatives: entries.slice(1).map((e) => cityEntryToLocationRef(e, resolveMethod, kind))
   };
 }
+var UTC_OFFSET_RE = /^(?:utc|gmt)([+-])(\d{1,2})(?::?([0-5]\d))?$/;
+function parseUtcOffset(input) {
+  const match2 = input.toLowerCase().replace(/\s+/g, "").match(UTC_OFFSET_RE);
+  if (!match2) return null;
+  const [, sign, hourText, minuteText] = match2;
+  const hours = Number(hourText);
+  const minutes = minuteText ? Number(minuteText) : 0;
+  const limit = sign === "-" ? 12 : 14;
+  if (hours > limit || hours === limit && minutes > 0) return null;
+  const label = `UTC${sign}${hours}${minutes ? `:${String(minutes).padStart(2, "0")}` : ""}`;
+  return { iana: label, displayName: label, kind: "timezone", resolveMethod: "utc-offset" };
+}
 function resolveLocation(input) {
   const trimmed = input.trim();
   if (!trimmed) return null;
+  const offset2 = parseUtcOffset(trimmed);
+  if (offset2) return { primary: offset2, alternatives: [] };
   const normalized = trimmed.toLowerCase();
   const normalizedKey = normalize(trimmed);
   const cached = cacheGet(normalizedKey);

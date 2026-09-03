@@ -27,6 +27,8 @@ const METHOD_SCORES: Record<LocationRef['resolveMethod'], number> = {
   'alias': 1.0,
   'state': 1.0,
   'abbreviation': 0.9,
+  // An offset is not a guess about what someone meant; it is what they typed.
+  'utc-offset': 1.0,
   'city-db': 0.9,
   'fuzzy': 0.7,
 }

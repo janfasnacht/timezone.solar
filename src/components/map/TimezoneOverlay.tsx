@@ -1,6 +1,6 @@
 import { memo, useMemo, useState, useCallback } from 'react'
 import { IANAZone } from 'luxon'
-import type { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson'
+import type { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson'
 import type { GeoPath, GeoPermissibleObjects } from 'd3-geo'
 
 type TzData = FeatureCollection<Geometry, GeoJsonProperties>
@@ -11,6 +11,16 @@ interface TimezoneOverlayProps {
   /** Map zoom. The tooltip is drawn in map units, so every measurement on it
    *  divides this out to hold one size on screen. */
   zoom?: number
+  /** Zones the query named outright rather than by place. Their bands are lit,
+   *  the rest fall back, and each carries the answer the card would have. */
+  highlight?: readonly HighlightedZone[]
+}
+
+export interface HighlightedZone {
+  /** Offset from UTC in minutes — how the layer groups its shapes. */
+  offset: number
+  /** What the band says: the zone and its time. */
+  label: string
 }
 
 function getZoneColor(offsetMinutes: number): string {
@@ -54,18 +64,33 @@ interface MergedZone {
   d: string
   fill: string
   offset: number
+  /** Kept so a lit band can be measured for its label; unused otherwise. */
+  features: Feature[]
 }
 
 interface BandsProps {
   zones: readonly MergedZone[]
   hoveredOffset: number | null
+  highlight: readonly HighlightedZone[]
   onMove: (offset: number, e: React.MouseEvent<SVGPathElement>) => void
   onLeave: () => void
 }
 
+const LIT = 0.42
+const HOVERED = 0.25
+const RESTING = 0.1
+/** What the rest of the world falls back to once one band is the answer. */
+const BESIDE_LIT = 0.05
+
 /** One path per offset, and the map's largest geometry — kept out of the
  *  gesture's render path so a wheel tick doesn't touch it. */
-const Bands = memo(function Bands({ zones, hoveredOffset, onMove, onLeave }: BandsProps) {
+const Bands = memo(function Bands({ zones, hoveredOffset, highlight, onMove, onLeave }: BandsProps) {
+  const anyLit = highlight.length > 0
+  const opacityOf = (offset: number) => {
+    if (highlight.some((h) => h.offset === offset)) return LIT
+    if (hoveredOffset === offset) return HOVERED
+    return anyLit ? BESIDE_LIT : RESTING
+  }
   return (
     <>
       {zones.map(({ d, fill, offset }) => (
@@ -73,7 +98,7 @@ const Bands = memo(function Bands({ zones, hoveredOffset, onMove, onLeave }: Ban
           key={offset}
           d={d}
           fill={fill}
-          fillOpacity={hoveredOffset === offset ? 0.25 : 0.1}
+          fillOpacity={opacityOf(offset)}
           stroke="none"
           style={{ transition: 'fill-opacity 150ms', cursor: 'crosshair' }}
           onMouseMove={(e) => onMove(offset, e)}
@@ -84,31 +109,34 @@ const Bands = memo(function Bands({ zones, hoveredOffset, onMove, onLeave }: Ban
   )
 })
 
-export function TimezoneOverlay({ data, pathGenerator, zoom = 1 }: TimezoneOverlayProps) {
+const NO_HIGHLIGHT: readonly HighlightedZone[] = []
+
+export function TimezoneOverlay({
+  data,
+  pathGenerator,
+  zoom = 1,
+  highlight = NO_HIGHLIGHT,
+}: TimezoneOverlayProps) {
   const [hoveredOffset, setHoveredOffset] = useState<number | null>(null)
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null)
 
   const mergedZones = useMemo(() => {
     const offsets = offsetsFor(data)
-    const byOffset = new Map<number, string[]>()
+    const byOffset = new Map<number, { paths: string[]; features: Feature[] }>()
     for (const feat of data.features) {
       const tzid = feat.properties?.tzid as string | undefined
       const offset = tzid ? offsets.get(tzid) : undefined
       if (offset === undefined) continue
       const d = pathGenerator(feat as GeoPermissibleObjects)
-      if (d) {
-        const paths = byOffset.get(offset) ?? []
-        paths.push(d)
-        byOffset.set(offset, paths)
-      }
+      if (!d) continue
+      const bucket = byOffset.get(offset) ?? { paths: [], features: [] }
+      bucket.paths.push(d)
+      bucket.features.push(feat)
+      byOffset.set(offset, bucket)
     }
     const zones: MergedZone[] = []
-    for (const [offset, paths] of byOffset) {
-      zones.push({
-        d: paths.join(' '),
-        fill: getZoneColor(offset),
-        offset,
-      })
+    for (const [offset, { paths, features }] of byOffset) {
+      zones.push({ d: paths.join(' '), fill: getZoneColor(offset), offset, features })
     }
     return zones
   }, [data, pathGenerator])
@@ -134,6 +162,26 @@ export function TimezoneOverlay({ data, pathGenerator, zoom = 1 }: TimezoneOverl
     setMousePos(null)
   }, [])
 
+  /**
+   * The card view names the zone and its time; on the map the band has to. On
+   * the area-weighted centre, so the label lands on the mainland rather than
+   * halfway to whichever island shares the offset. Measured only when lit.
+   */
+  const litLabels = useMemo(
+    () =>
+      highlight.flatMap((zone) => {
+        const band = mergedZones.find((z) => z.offset === zone.offset)
+        if (!band) return []
+        const at = pathGenerator.centroid({
+          type: 'FeatureCollection',
+          features: band.features,
+        } as unknown as GeoPermissibleObjects)
+        if (!Number.isFinite(at[0]) || !Number.isFinite(at[1])) return []
+        return [{ ...zone, at }]
+      }),
+    [highlight, mergedZones, pathGenerator]
+  )
+
   const tooltipLabel = hoveredOffset !== null ? formatOffset(hoveredOffset) : ''
   const tooltipWidth = (tooltipLabel.length * 6 + 16) / zoom
   const tooltipHeight = 20 / zoom
@@ -144,9 +192,42 @@ export function TimezoneOverlay({ data, pathGenerator, zoom = 1 }: TimezoneOverl
       <Bands
         zones={mergedZones}
         hoveredOffset={hoveredOffset}
+        highlight={highlight}
         onMove={handleMouseMove}
         onLeave={handleMouseLeave}
       />
+
+      {litLabels.map(({ offset, label, at }) => {
+        const width = (label.length * 6 + 18) / zoom
+        const height = 22 / zoom
+        return (
+          <g key={offset} style={{ pointerEvents: 'none' }}>
+            <rect
+              x={at[0] - width / 2}
+              y={at[1] - height / 2}
+              width={width}
+              height={height}
+              rx={5 / zoom}
+              fill="var(--color-surface)"
+              fillOpacity={0.94}
+              stroke="var(--color-accent)"
+              strokeOpacity={0.5}
+              strokeWidth={0.6 / zoom}
+            />
+            <text
+              x={at[0]}
+              y={at[1]}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="var(--color-foreground)"
+              fontSize={9.5 / zoom}
+              fontFamily="var(--font-mono)"
+            >
+              {label}
+            </text>
+          </g>
+        )
+      })}
 
       {hoveredOffset !== null && mousePos && (
         <g style={{ pointerEvents: 'none' }}>

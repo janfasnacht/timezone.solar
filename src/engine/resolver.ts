@@ -109,11 +109,42 @@ function cityEntriesToResolveResult(entries: CityEntry[], resolveMethod: Locatio
   }
 }
 
+// --- UTC offsets ---
+
+/** `utc-2`, `UTC+5:30`, `gmt+0530`, and the same with a space before the sign. */
+const UTC_OFFSET_RE = /^(?:utc|gmt)([+-])(\d{1,2})(?::?([0-5]\d))?$/
+
+/**
+ * An offset names a zone outright, so it resolves to itself. Luxon reads
+ * `UTC±H[:MM]` as a fixed-offset zone, which makes the canonical spelling
+ * usable as the `iana` field — there is no Etc/GMT name for the half-hour and
+ * quarter-hour offsets, and the Etc ones invert the sign.
+ */
+export function parseUtcOffset(input: string): LocationRef | null {
+  const match = input.toLowerCase().replace(/\s+/g, '').match(UTC_OFFSET_RE)
+  if (!match) return null
+
+  const [, sign, hourText, minuteText] = match
+  const hours = Number(hourText)
+  const minutes = minuteText ? Number(minuteText) : 0
+  // The real ones run from -12 to +14. Past that it is a typo, not a zone.
+  const limit = sign === '-' ? 12 : 14
+  if (hours > limit || (hours === limit && minutes > 0)) return null
+
+  const label = `UTC${sign}${hours}${minutes ? `:${String(minutes).padStart(2, '0')}` : ''}`
+  return { iana: label, displayName: label, kind: 'timezone', resolveMethod: 'utc-offset' }
+}
+
 // --- Main resolver ---
 
 export function resolveLocation(input: string): ResolveResult | null {
   const trimmed = input.trim()
   if (!trimmed) return null
+
+  // Ahead of the cache, because `normalize` strips the sign and the colon:
+  // `utc+5:30` and `utc-5:30` would otherwise share a key.
+  const offset = parseUtcOffset(trimmed)
+  if (offset) return { primary: offset, alternatives: [] }
 
   const normalized = trimmed.toLowerCase()
   const normalizedKey = normalize(trimmed)

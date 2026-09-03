@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { resolveLocation, getSuggestion } from './resolver'
+import { convert } from './converter'
 
 describe('resolver', () => {
   // --- Aliases ---
@@ -137,6 +138,64 @@ describe('resolver', () => {
       const result = resolveLocation('aest')
       expect(result?.primary.iana).toBe('Australia/Sydney')
       expect(result?.primary.resolveMethod).toBe('abbreviation')
+    })
+  })
+
+  // --- UTC offsets ---
+
+  describe('UTC offsets', () => {
+    it('resolves utc-2 to the zone itself', () => {
+      const result = resolveLocation('utc-2')
+      expect(result?.primary.iana).toBe('UTC-2')
+      expect(result?.primary.displayName).toBe('UTC-2')
+      expect(result?.primary.kind).toBe('timezone')
+      expect(result?.primary.resolveMethod).toBe('utc-offset')
+    })
+
+    it('keeps the minutes of a half-hour offset', () => {
+      expect(resolveLocation('UTC+5:30')?.primary.iana).toBe('UTC+5:30')
+      expect(resolveLocation('utc+0530')?.primary.iana).toBe('UTC+5:30')
+      expect(resolveLocation('utc+2:45')?.primary.iana).toBe('UTC+2:45')
+    })
+
+    it('reads gmt as a synonym for utc', () => {
+      expect(resolveLocation('gmt+3')?.primary.iana).toBe('UTC+3')
+      expect(resolveLocation('GMT-0530')?.primary.iana).toBe('UTC-5:30')
+    })
+
+    it('tolerates a space before the sign', () => {
+      expect(resolveLocation('utc +2')?.primary.iana).toBe('UTC+2')
+    })
+
+    it('tells the two signs apart', () => {
+      // `normalize` drops both the sign and the colon, so these would share a
+      // cache key if the offset layer ran behind it.
+      expect(resolveLocation('utc+5:30')?.primary.iana).toBe('UTC+5:30')
+      expect(resolveLocation('utc-5:30')?.primary.iana).toBe('UTC-5:30')
+    })
+
+    it('leaves bare utc and gmt to the abbreviation layer', () => {
+      expect(resolveLocation('utc')?.primary.resolveMethod).toBe('abbreviation')
+      expect(resolveLocation('gmt')?.primary.iana).toBe('Europe/London')
+    })
+
+    it('rejects offsets no zone has', () => {
+      expect(resolveLocation('utc+15')).toBeNull()
+      expect(resolveLocation('utc-13')).toBeNull()
+      expect(resolveLocation('utc+5:99')).toBeNull()
+    })
+
+    it('converts through a fixed offset', () => {
+      const source = resolveLocation('utc-2')!.primary
+      const target = resolveLocation('utc+5:30')!.primary
+      const result = convert({
+        source,
+        target,
+        time: { type: 'absolute', hour: 15, minute: 0 },
+        dateModifier: null,
+      })
+      expect(result.target.formattedTime24).toBe('22:30')
+      expect(result.offsetDifference).toBe('+7h 30m')
     })
   })
 

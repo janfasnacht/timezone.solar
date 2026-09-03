@@ -17,6 +17,7 @@ function shortInputGating(input: string, result: ResolveResult): boolean {
   if (input.length > 3) return true
   const method = result.primary.resolveMethod
   if (method === 'entity' || method === 'state' || method === 'abbreviation') return true
+  if (method === 'utc-offset') return true
   if (method === 'city-db' && isKnownEntity(input)) return true
   return false
 }

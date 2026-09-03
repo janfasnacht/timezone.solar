@@ -22,7 +22,7 @@ import { type EntityRole } from './EntityDot'
 import { EntityLayer, LabelLayer, type PlacedLabel, type ProjectedEntity } from './EntityLayer'
 import { BaseLayers, TerminatorLayer } from './BaseLayers'
 import { EntityCard } from './EntityCard'
-import { TimezoneOverlay } from './TimezoneOverlay'
+import { TimezoneOverlay, type HighlightedZone } from './TimezoneOverlay'
 import { MapZoomControl } from './MapZoomControl'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
 import { useDetailedGeography } from '@/hooks/useDetailedGeography'
@@ -119,9 +119,13 @@ interface WorldMapProps {
   cityDensity?: Density
   airportDensity?: Density
   labelDensity?: Density
+  /** Zones the query named outright rather than by place, lit on the map. */
+  highlightZones?: readonly HighlightedZone[]
   /** Touch already has pinch and pan; the zoom buttons are for the desktop. */
   isMobile?: boolean
 }
+
+const NO_HIGHLIGHT: readonly HighlightedZone[] = []
 
 /**
  * Matches preserveAspectRatio="slice": the map fills the container and is
@@ -143,6 +147,7 @@ export function WorldMap({
   cityDensity = 'auto',
   airportDensity = 'none',
   labelDensity = 'auto',
+  highlightZones = NO_HIGHLIGHT,
   isMobile = false,
 }: WorldMapProps) {
   // Only the gesture handlers read the frame outside render, so only they need
@@ -931,7 +936,12 @@ export function WorldMap({
         />
 
         {tzData && (
-          <TimezoneOverlay data={tzData} pathGenerator={pathGenerator} zoom={live.scale} />
+          <TimezoneOverlay
+            data={tzData}
+            pathGenerator={pathGenerator}
+            zoom={live.scale}
+            highlight={highlightZones}
+          />
         )}
 
         <TerminatorLayer d={terminatorPath} />
