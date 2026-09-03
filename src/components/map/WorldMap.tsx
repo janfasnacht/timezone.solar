@@ -7,11 +7,20 @@ import land110m from 'world-atlas/land-110m.json'
 import countries110m from 'world-atlas/countries-110m.json'
 import { getSolarTerminator } from '@/engine/solar'
 import { findEntityForMap } from '@/engine/map-entities'
-import { getRankedMapEntities, selectSpaced, rankFloor, MINOR_RANK, type Box } from '@/engine/map-density'
+import {
+  getRankedMapEntities,
+  selectSpaced,
+  rankFloor,
+  indexDots,
+  MINOR_RANK,
+  type Box,
+} from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
-import { EntityDot, type EntityRole } from './EntityDot'
+import { type EntityRole } from './EntityDot'
+import { EntityLayer, LabelLayer, type PlacedLabel, type ProjectedEntity } from './EntityLayer'
+import { BaseLayers, TerminatorLayer } from './BaseLayers'
 import { EntityCard } from './EntityCard'
 import { TimezoneOverlay } from './TimezoneOverlay'
 import { MapZoomControl } from './MapZoomControl'
@@ -55,6 +64,26 @@ const lerp = (range: readonly [number, number], t: number) => range[0] + (range[
 
 const LABEL_PX = 10.5
 
+/**
+ * Pan and zoom run at two speeds: the transform follows the gesture frame by
+ * frame, the density pass waits for the map to hold still. Its picks are
+ * briefly stale, so they reach past the viewport edge and a gesture that
+ * travels further than the overscan pays for a re-layout mid-flight.
+ */
+const COMMIT_IDLE_MS = 110
+/** Longest a continuous gesture may run on stale picks. */
+const COMMIT_MAX_STALE_MS = 200
+/** Fraction of the viewport a gesture may travel before forcing the pass. */
+const COMMIT_DRIFT = 0.12
+/** How far past the viewport edge the picks reach, as a fraction of the view. */
+const OVERSCAN = 0.15
+
+/** The most marks the 'all' scale will draw at once, whatever the pool holds. */
+const ALL_CEILING = 20000
+
+const IDENTITY = { x: 0, y: 0, scale: 1 }
+type Transform = typeof IDENTITY
+
 export interface MapConversion {
   sourceCity: string
   targetCity: string
@@ -69,13 +98,6 @@ export interface MapConversion {
  * `all` are the same machinery with a different budget, not a different mode.
  */
 export type Density = 'none' | 'few' | 'auto' | 'all'
-
-interface ProjectedEntity {
-  entity: Entity
-  rank: number
-  x: number
-  y: number
-}
 
 interface WorldMapProps {
   now: Date
@@ -121,10 +143,34 @@ export function WorldMap({
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
+  const vpH = containerRect?.height ?? 0
 
-  // Pan/zoom state for touch gestures
-  const [mapTransform, setMapTransform] = useState({ x: 0, y: 0, scale: 1 })
-  const transformRef = useRef({ x: 0, y: 0, scale: 1 })
+  /**
+   * Only publishes a rect that differs. `getBoundingClientRect` returns a fresh
+   * object every call, and this one is upstream of the density pass.
+   */
+  const syncRect = useCallback(() => {
+    const el = containerRef.current
+    if (!el) return
+    const next = el.getBoundingClientRect()
+    setContainerRect((prev) =>
+      prev && prev.width === next.width && prev.height === next.height &&
+      prev.left === next.left && prev.top === next.top
+        ? prev
+        : next
+    )
+  }, [])
+
+  // Pan/zoom state for touch gestures. `live` is what the map is drawn at;
+  // `committed` is the last view the density pass ran for. They are equal
+  // whenever the map is at rest.
+  const [live, setLive] = useState<Transform>(IDENTITY)
+  const [committed, setCommitted] = useState<Transform>(IDENTITY)
+  const transformRef = useRef<Transform>(IDENTITY)
+  const committedRef = useRef<Transform>(IDENTITY)
+  const committedAtRef = useRef(0)
+  const liveFrameRef = useRef(0)
+  const commitTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
   const gestureRef = useRef<{
     type: 'none' | 'pan' | 'pinch'
     moved: boolean
@@ -174,10 +220,9 @@ export function WorldMap({
     const h = y1 - y0
     // Headroom is a fixed number of screen pixels, so it clears the chrome at
     // any viewport height rather than scaling with the map.
-    const vpH = containerRect?.height ?? 0
     const pad = vpH > NORTH_HEADROOM_PX * 2 ? (h * NORTH_HEADROOM_PX) / (vpH - NORTH_HEADROOM_PX) : 0
     return { x: x0, y: y0 - pad, w, h: h + pad }
-  }, [pathGenerator, landGeoJson, containerRect])
+  }, [pathGenerator, landGeoJson, vpH])
   useEffect(() => {
     frameRef.current = frame
   }, [frame])
@@ -246,24 +291,40 @@ export function WorldMap({
   }, [projection])
 
   /** Visible slice in frame units, plus screen pixels per frame unit. Density and
-   *  label sizes are picked in screen px and divided through `ppu`. */
+   *  label sizes are picked in screen px and divided through `ppu`.
+   *
+   *  Keyed on the committed transform, not the live one: this is the input to
+   *  the density pass, and that pass runs once the map has settled. */
   const view = useMemo(() => {
     if (!containerRect || !cover) return null
-    const { x: tx, y: ty, scale } = mapTransform
+    const { x: tx, y: ty, scale } = committed
     const left = (containerRect.width - frame.w * cover) / 2
     const top = (containerRect.height - frame.h * cover) / 2
     const toFrameX = (px: number) => frame.x + ((px - tx) / scale - left) / cover
     const toFrameY = (py: number) => frame.y + ((py - ty) / scale - top) / cover
+    const x0 = toFrameX(0)
+    const x1 = toFrameX(containerRect.width)
+    const y0 = toFrameY(0)
+    const y1 = toFrameY(containerRect.height)
     return {
       ppu: cover * scale,
       /** 0 at the resting view, 1 at full zoom — drives every budget below. */
       t: (scale - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM),
-      x0: toFrameX(0),
-      x1: toFrameX(containerRect.width),
-      y0: toFrameY(0),
-      y1: toFrameY(containerRect.height),
+      x0,
+      x1,
+      y0,
+      y1,
+      /** Dots are picked past the edge so a pan has something to reveal while
+       *  the next pass is still pending. Labels are not: their budget is a
+       *  count, and spending it off-screen would empty the visible map. */
+      cull: {
+        x0: x0 - (x1 - x0) * OVERSCAN,
+        x1: x1 + (x1 - x0) * OVERSCAN,
+        y0: y0 - (y1 - y0) * OVERSCAN,
+        y1: y1 + (y1 - y0) * OVERSCAN,
+      },
     }
-  }, [containerRect, cover, frame, mapTransform])
+  }, [containerRect, cover, frame, committed])
 
   // Drawn whatever the density pass decides.
   const pinnedProjected = useMemo(() => {
@@ -286,18 +347,27 @@ export function WorldMap({
     if (!view) return pinnedProjected
 
     const pinned = new Set(pinnedProjected.map((p) => p.entity.slug))
+    const { cull } = view
     const inView = (p: ProjectedEntity) =>
       !pinned.has(p.entity.slug) &&
-      p.x >= view.x0 && p.x <= view.x1 && p.y >= view.y0 && p.y <= view.y1
+      p.x >= cull.x0 && p.x <= cull.x1 && p.y >= cull.y0 && p.y <= cull.y1
 
     /** One layer's pass. Returns the picks and the space they claimed. */
     const pick = (pool: readonly ProjectedEntity[], kind: 'city' | 'airport', density: Density) => {
       if (density === 'none') return { picks: [] as ProjectedEntity[] }
 
-      // 'all' is the end state the other tiers reach at full zoom: no floor, no
-      // spacing, no cap. It skips the grid, which is also what keeps a drag
-      // cheap with several thousand dots in the pool.
-      if (density === 'all') return { picks: pool.filter(inView) }
+      // 'all' is the end state the other tiers reach at full zoom: no floor and
+      // no spacing. The ceiling is a stop, not a budget — the pool is
+      // rank-sorted, so hitting it drops the least important places.
+      if (density === 'all') {
+        const picks: ProjectedEntity[] = []
+        for (const p of pool) {
+          if (!inView(p)) continue
+          picks.push(p)
+          if (picks.length >= ALL_CEILING) break
+        }
+        return { picks }
+      }
 
       const budgets = BUDGET[kind][density]
       const spacingPx = lerp(budgets.spacingPx, view.t)
@@ -332,7 +402,7 @@ export function WorldMap({
    * Mumbai, Delhi, Karachi and Dhaka all fit inside a few hundred kilometres and
    * would take four of the slots, leaving Europe and Africa bare.
    */
-  const cityLabels = useMemo(() => {
+  const cityLabels = useMemo<PlacedLabel[]>(() => {
     if (labelDensity === 'none' || !view) return []
 
     const { padPx, limit } = BUDGET.label[labelDensity]
@@ -347,7 +417,7 @@ export function WorldMap({
     // Rough advance width for the label font; only the collision test reads it.
     const widthOf = (text: string) => text.length * font * 0.52
 
-    const placed = new Map<string, { text: string; x: number; y: number; anchor: 'start' | 'end' }>()
+    const placed = new Map<string, Omit<PlacedLabel, 'slug'>>()
 
     const chosen = selectSpaced(projectedEntities, {
       limit,
@@ -374,45 +444,15 @@ export function WorldMap({
       },
     })
 
-    return chosen.map((p) => ({ slug: p.entity.slug, font, ...placed.get(p.entity.slug)! }))
+    return chosen.map((p) => ({ slug: p.entity.slug, ...placed.get(p.entity.slug)! }))
   }, [labelDensity, view, projectedEntities, pinnedProjected])
 
-  // Each dot's transparent catchment is half the distance to its nearest
-  // neighbour, clamped — so two touching dots split the gap instead of one
-  // swallowing the other. Bucketed on a uniform grid to stay O(n) at
-  // cityDensity: 'all', where there are thousands of points.
-  const hitRadii = useMemo(() => {
-    const MAX = 12
-    const MIN = 3
-    const cell = MAX * 2
-    const buckets = new Map<string, number[]>()
-    projectedEntities.forEach((p, i) => {
-      const key = `${Math.floor(p.x / cell)}:${Math.floor(p.y / cell)}`
-      const bucket = buckets.get(key)
-      if (bucket) bucket.push(i)
-      else buckets.set(key, [i])
-    })
+  /** Label size in map units at the resting view; the live zoom divides it down. */
+  const labelUnits = LABEL_PX / (cover ?? 1)
 
-    return projectedEntities.map((p, i) => {
-      const cx = Math.floor(p.x / cell)
-      const cy = Math.floor(p.y / cell)
-      let nearest = Infinity
-      for (let gx = cx - 1; gx <= cx + 1; gx++) {
-        for (let gy = cy - 1; gy <= cy + 1; gy++) {
-          const bucket = buckets.get(`${gx}:${gy}`)
-          if (!bucket) continue
-          for (const j of bucket) {
-            if (j === i) continue
-            const q = projectedEntities[j]
-            const d = Math.hypot(p.x - q.x, p.y - q.y)
-            if (d < nearest) nearest = d
-          }
-        }
-      }
-      if (!Number.isFinite(nearest)) return MAX
-      return Math.max(MIN, Math.min(MAX, nearest / 2))
-    })
-  }, [projectedEntities])
+  // How much room each dot may claim, and which one a pointer is on — the dots
+  // are drawn a few thousand to a path, so the browser cannot answer the second.
+  const dotIndex = useMemo(() => indexDots(projectedEntities), [projectedEntities])
 
   const { sourceProjected, targetProjected } = useMemo(() => {
     if (!effectiveConversion) return { sourceProjected: null, targetProjected: null }
@@ -464,7 +504,7 @@ export function WorldMap({
   const toScreen = useCallback(
     (p: { x: number; y: number }) => {
       if (!containerRect || !cover) return null
-      const { x: tx, y: ty, scale } = mapTransform
+      const { x: tx, y: ty, scale } = live
       const left = (containerRect.width - frame.w * cover) / 2
       const top = (containerRect.height - frame.h * cover) / 2
       return {
@@ -472,7 +512,7 @@ export function WorldMap({
         y: ((p.y - frame.y) * cover + top) * scale + ty,
       }
     },
-    [containerRect, cover, frame, mapTransform]
+    [containerRect, cover, frame, live]
   )
   // Hover intent both ways: opening waits so sweeping the map doesn't strobe
   // cards, closing waits so the cursor can reach the card it opened.
@@ -488,9 +528,7 @@ export function WorldMap({
       if (entity) {
         setHoveredEntity(entity)
         hoverTimer.current = setTimeout(() => setSettledEntity(entity), OPEN_DELAY)
-        if (containerRef.current) {
-          setContainerRect(containerRef.current.getBoundingClientRect())
-        }
+        syncRect()
       } else {
         hoverTimer.current = setTimeout(() => {
           setHoveredEntity(null)
@@ -498,7 +536,7 @@ export function WorldMap({
         }, CLOSE_DELAY)
       }
     },
-    []
+    [syncRect]
   )
 
   // Derived rather than captured on hover, so the card tracks its dot while the
@@ -510,15 +548,10 @@ export function WorldMap({
   }, [hoveredEntity, projectedEntities, toScreen])
 
   useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        setContainerRect(containerRef.current.getBoundingClientRect())
-      }
-    }
-    window.addEventListener('resize', handleResize)
-    handleResize()
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    window.addEventListener('resize', syncRect)
+    syncRect()
+    return () => window.removeEventListener('resize', syncRect)
+  }, [syncRect])
 
   // Touch gesture handlers for pan/zoom
   /**
@@ -546,11 +579,51 @@ export function WorldMap({
     }
   }, [])
 
-  const updateTransform = useCallback((raw: { x: number; y: number; scale: number }) => {
+  /** Runs the density pass for wherever the map is now. */
+  const commit = useCallback(() => {
+    clearTimeout(commitTimerRef.current)
+    committedRef.current = transformRef.current
+    committedAtRef.current = performance.now()
+    setCommitted(transformRef.current)
+  }, [])
+
+  const updateTransform = useCallback((raw: Transform) => {
     const t = clampTransform(raw)
     transformRef.current = t
-    setMapTransform(t)
-  }, [clampTransform])
+
+    // One repaint per frame however fast the wheel or the finger reports.
+    if (!liveFrameRef.current) {
+      liveFrameRef.current = requestAnimationFrame(() => {
+        liveFrameRef.current = 0
+        setLive(transformRef.current)
+      })
+    }
+
+    // The density pass waits for the map to hold still, unless the gesture has
+    // travelled past the overscan or has been running on stale picks too long.
+    const el = containerRef.current
+    const c = committedRef.current
+    const driftX = el ? el.offsetWidth * COMMIT_DRIFT : Infinity
+    const driftY = el ? el.offsetHeight * COMMIT_DRIFT : Infinity
+    if (
+      Math.abs(t.x - c.x) > driftX ||
+      Math.abs(t.y - c.y) > driftY ||
+      performance.now() - committedAtRef.current > COMMIT_MAX_STALE_MS
+    ) {
+      commit()
+      return
+    }
+    clearTimeout(commitTimerRef.current)
+    commitTimerRef.current = setTimeout(commit, COMMIT_IDLE_MS)
+  }, [clampTransform, commit])
+
+  useEffect(
+    () => () => {
+      clearTimeout(commitTimerRef.current)
+      if (liveFrameRef.current) cancelAnimationFrame(liveFrameRef.current)
+    },
+    []
+  )
 
   const handleMapTouchStart = useCallback((e: React.TouchEvent) => {
     const t = transformRef.current
@@ -735,20 +808,24 @@ export function WorldMap({
     [onCityClick]
   )
 
-  function getEntityRole(entity: Entity): EntityRole {
-    if (!effectiveConversion) return 'none'
-    const name = normalize(entity.displayName)
-    if (name === normalize(effectiveConversion.sourceCity)) return 'source'
-    if (name === normalize(effectiveConversion.targetCity)) return 'target'
-    return 'none'
-  }
+  // Two entries, looked up by slug — cheaper than normalizing a name per dot.
+  const roles = useMemo(() => {
+    const bySlug = new Map<string, EntityRole>()
+    if (sourceProjected) bySlug.set(sourceProjected.entity.slug, 'source')
+    if (targetProjected) bySlug.set(targetProjected.entity.slug, 'target')
+    return bySlug
+  }, [sourceProjected, targetProjected])
 
   /**
    * Anything *sized* rather than *placed* divides this out. The wrapper's CSS
    * transform scales stroke weight and type along with position, so without it
    * a coastline becomes a band and a 9px tooltip becomes a 72px one at 8x.
+   *
+   * Only the marks that can be counted follow the live scale — the coastline,
+   * the graticule, the arc, twenty labels, one tooltip. The dots take the
+   * settled scale, since there are thousands of them.
    */
-  const zoomInv = 1 / mapTransform.scale
+  const zoomInv = 1 / live.scale
 
   const arcOpacity = 0.45
   const labelOpacity = 0.75
@@ -804,9 +881,9 @@ export function WorldMap({
       <div
         className={`relative h-full w-full select-none ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
-          transform: mapTransform.scale === 1 && mapTransform.x === 0 && mapTransform.y === 0
+          transform: live.scale === 1 && live.x === 0 && live.y === 0
             ? undefined
-            : `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
+            : `translate(${live.x}px, ${live.y}px) scale(${live.scale})`,
           transformOrigin: '0 0',
           touchAction: 'none',
         }}
@@ -823,45 +900,21 @@ export function WorldMap({
         className={svgBox ? 'absolute' : 'w-full h-full'}
         style={svgBox ?? undefined}
       >
-        <rect x={frame.x} y={frame.y} width={frame.w} height={frame.h} fill="var(--color-background)" />
-
-        {showGrid && (
-          <path
-            d={graticulePath}
-            fill="none"
-            stroke="var(--color-border)"
-            strokeWidth={0.4 * zoomInv}
-            strokeOpacity={0.7}
-          />
-        )}
-
-        <path d={landPath} fill="var(--color-muted)" stroke="var(--color-border)" strokeWidth={0.5 * zoomInv} />
-
-        {showBorders && (
-          <path
-            d={countriesPath}
-            fill="none"
-            stroke="var(--color-muted-foreground)"
-            strokeWidth={0.3 * zoomInv}
-            strokeOpacity={0.5}
-            style={{ pointerEvents: 'none' }}
-          />
-        )}
+        <BaseLayers
+          frame={frame}
+          zoom={live.scale}
+          landPath={landPath}
+          countriesPath={countriesPath}
+          graticulePath={graticulePath}
+          showGrid={showGrid}
+          showBorders={showBorders}
+        />
 
         {tzData && (
-          <TimezoneOverlay
-            data={tzData}
-            pathGenerator={pathGenerator}
-            zoom={mapTransform.scale}
-          />
+          <TimezoneOverlay data={tzData} pathGenerator={pathGenerator} zoom={live.scale} />
         )}
 
-        <path
-          d={terminatorPath}
-          fill="rgba(0, 0, 0, 0.25)"
-          className="dark:fill-[rgba(0,0,0,0.4)]"
-          style={{ pointerEvents: 'none' }}
-        />
+        <TerminatorLayer d={terminatorPath} />
 
         {/* Great-circle connection arc. Stroke and type are divided by the
             zoom, so the line stays a line instead of becoming a band. */}
@@ -903,42 +956,18 @@ export function WorldMap({
         )}
 
         {/* Entity markers (cities and airports) */}
-        {projectedEntities.map(({ entity, rank, x, y }, i) => (
-          <EntityDot
-            key={entity.slug}
-            entity={entity}
-            x={x}
-            y={y}
-            role={getEntityRole(entity)}
-            zoom={mapTransform.scale}
-            minor={cityDensity === 'all' && rank < MINOR_RANK}
-            hovered={hoveredEntity?.slug === entity.slug}
-            hitRadius={hitRadii[i]}
-            onHover={handleHover}
-            onClick={handleClick}
-          />
-        ))}
+        <EntityLayer
+          entities={projectedEntities}
+          index={dotIndex}
+          roles={roles}
+          hoveredSlug={hoveredEntity?.slug ?? null}
+          minorBelow={cityDensity === 'all' ? MINOR_RANK : null}
+          zoom={committed.scale}
+          onHover={handleHover}
+          onClick={handleClick}
+        />
 
-        {/* Font size divided by the zoom, so labels hold one size on screen. */}
-        {cityLabels.map((label) => (
-          <text
-            key={label.slug}
-            x={label.x}
-            y={label.y}
-            textAnchor={label.anchor}
-            fontSize={label.font}
-            fontFamily="var(--font-sans)"
-            fill="var(--color-foreground)"
-            stroke="var(--color-background)"
-            strokeWidth={label.font * 0.15}
-            strokeOpacity={0.5}
-            paintOrder="stroke"
-            opacity={0.75}
-            style={{ pointerEvents: 'none' }}
-          >
-            {label.text}
-          </text>
-        ))}
+        <LabelLayer labels={cityLabels} font={labelUnits * zoomInv} />
       </svg>
 
       </div>
@@ -983,7 +1012,7 @@ export function WorldMap({
       {!isMobile && (
         <div className="absolute bottom-16 left-4 z-40">
           <MapZoomControl
-            zoom={mapTransform.scale}
+            zoom={live.scale}
             min={MIN_ZOOM}
             onZoom={stepZoom}
             onReset={resetZoom}

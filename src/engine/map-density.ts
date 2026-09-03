@@ -138,12 +138,101 @@ export function rankFloor(kind: 'city' | 'airport', t: number): number {
   return POP_CEILING * (1 - (clamped - CURATED_ONLY_UNTIL) / (1 - CURATED_ONLY_UNTIL))
 }
 
+/**
+ * Catchment bounds in frame units at the resting view. The floor keeps a dot in
+ * a crowd reachable; the ceiling stops an isolated one claiming half an ocean.
+ */
+const HIT_MIN = 3
+const HIT_MAX = 12
+
+export interface DotIndex {
+  /** Catchment radius per point, in frame units at the resting view. */
+  radii: readonly number[]
+  /**
+   * The nearest point whose catchment covers (x, y), or -1. Coordinates are
+   * frame units; `zoom` divides the catchments so they hold one size on screen.
+   */
+  nearest(x: number, y: number, zoom: number): number
+}
+
+/**
+ * How much room each dot may claim, and which one a pointer is on. The second
+ * is the layer's job rather than the browser's, because the dots are drawn a
+ * few thousand to a path.
+ *
+ * A catchment is half the distance to the nearest neighbour, so two touching
+ * dots split the gap instead of one swallowing the other. Bucketed on a uniform
+ * grid to stay O(n) at cityDensity 'all'.
+ */
+export function indexDots(points: readonly { x: number; y: number }[]): DotIndex {
+  const cell = HIT_MAX * 2
+  const buckets = new Map<number, number[]>()
+  points.forEach((p, i) => {
+    const key = cellKey(Math.floor(p.x / cell), Math.floor(p.y / cell))
+    const bucket = buckets.get(key)
+    if (bucket) bucket.push(i)
+    else buckets.set(key, [i])
+  })
+
+  /** Walks the nine cells around a point; every catchment fits inside them. */
+  const around = (x: number, y: number, visit: (index: number) => void) => {
+    const cx = Math.floor(x / cell)
+    const cy = Math.floor(y / cell)
+    for (let gx = cx - 1; gx <= cx + 1; gx++) {
+      for (let gy = cy - 1; gy <= cy + 1; gy++) {
+        const bucket = buckets.get(cellKey(gx, gy))
+        if (bucket) for (const i of bucket) visit(i)
+      }
+    }
+  }
+
+  const radii = points.map((p, i) => {
+    let nearestSq = Infinity
+    around(p.x, p.y, (j) => {
+      if (j === i) return
+      const dx = p.x - points[j].x
+      const dy = p.y - points[j].y
+      const d = dx * dx + dy * dy
+      if (d < nearestSq) nearestSq = d
+    })
+    if (!Number.isFinite(nearestSq)) return HIT_MAX
+    return Math.max(HIT_MIN, Math.min(HIT_MAX, Math.sqrt(nearestSq) / 2))
+  })
+
+  return {
+    radii,
+    nearest(x, y, zoom) {
+      let best = -1
+      let bestSq = Infinity
+      around(x, y, (j) => {
+        const dx = x - points[j].x
+        const dy = y - points[j].y
+        const d = dx * dx + dy * dy
+        const r = radii[j] / zoom
+        if (d <= r * r && d < bestSq) {
+          bestSq = d
+          best = j
+        }
+      })
+      return best
+    },
+  }
+}
+
 /** Axis-aligned exclusion rectangle, top-left origin, caller's units. */
 export interface Box {
   x: number
   y: number
   w: number
   h: number
+}
+
+/**
+ * One number for a cell, so a grid lookup doesn't allocate a string. Exact while
+ * `|gy| < 2^20`, which every grid here clears by three orders of magnitude.
+ */
+export function cellKey(gx: number, gy: number): number {
+  return gx * 2 ** 21 + gy
 }
 
 function intersects(a: Box, b: Box): boolean {
@@ -173,7 +262,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
   const { boxFor, limit, seed, cell = 32 } = options
   if (limit <= 0) return []
 
-  const grid = new Map<string, Box[]>()
+  const grid = new Map<number, Box[]>()
   const accepted: T[] = []
 
   const cellsOf = (b: Box) => {
@@ -188,7 +277,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
     const { x0, x1, y0, y1 } = cellsOf(box)
     for (let gx = x0; gx <= x1; gx++) {
       for (let gy = y0; gy <= y1; gy++) {
-        const key = `${gx}:${gy}`
+        const key = cellKey(gx, gy)
         const bucket = grid.get(key)
         if (bucket) bucket.push(box)
         else grid.set(key, [box])
@@ -206,7 +295,7 @@ export function selectSpaced<T>(candidates: readonly T[], options: SelectOptions
     let blocked = false
     for (let gx = x0; gx <= x1 && !blocked; gx++) {
       for (let gy = y0; gy <= y1 && !blocked; gy++) {
-        const bucket = grid.get(`${gx}:${gy}`)
+        const bucket = grid.get(cellKey(gx, gy))
         if (!bucket) continue
         for (const other of bucket) {
           if (intersects(box, other)) {

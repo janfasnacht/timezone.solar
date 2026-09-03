@@ -26,6 +26,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "bench": "vitest bench",
+    "perf:map": "node scripts/map-perf.mjs",
     "eval:generate": "tsx --env-file=.env.local scripts/generate-eval-queries.ts",
     "eval:compile": "tsx scripts/compile-eval-fixture.ts",
     "eval": "vitest run --config vitest.eval.config.ts",
