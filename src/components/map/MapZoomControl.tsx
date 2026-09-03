@@ -10,7 +10,7 @@ interface MapZoomControlProps {
 }
 
 const ICON_BUTTON =
-  'flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground'
+  'flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground'
 
 /**
  * The zoom, and a way to move it a step at a time — the same shape as the time
@@ -35,7 +35,7 @@ export function MapZoomControl({ zoom, min, onZoom, onReset }: MapZoomControlPro
           onClick={onReset}
           aria-label={atRest ? 'Zoom level' : 'Reset zoom'}
           className={`flex h-7 min-w-[2.9rem] cursor-pointer items-center justify-center rounded-full px-1 font-mono text-sm leading-none font-medium transition-colors ${
-            atRest ? 'text-muted-foreground' : 'text-foreground hover:bg-surface-hover'
+            atRest ? 'text-muted-foreground' : 'text-foreground hover:bg-muted'
           }`}
         >
           {zoom.toFixed(1)}×

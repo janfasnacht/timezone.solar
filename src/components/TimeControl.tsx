@@ -15,7 +15,7 @@ interface TimeControlProps {
 }
 
 const ICON_BUTTON =
-  'flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground'
+  'flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground'
 
 /**
  * The moment, and a way to move it by an hour.

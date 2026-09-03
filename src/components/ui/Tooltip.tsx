@@ -87,7 +87,7 @@ export function Tooltip({ label, keys, side = 'top', children, className }: Tool
         <div
           id={id}
           role="tooltip"
-          className={`pointer-events-none absolute z-50 flex w-max items-center gap-1.5 whitespace-nowrap rounded-md border border-border bg-surface/95 px-2 py-1 text-[0.7rem] text-muted-foreground shadow-sm backdrop-blur-sm ${SIDE_CLASS[side]}`}
+          className={`pointer-events-none absolute z-50 flex w-max items-center gap-1.5 whitespace-nowrap rounded-md border border-border bg-surface px-2 py-1 text-[0.7rem] text-muted-foreground shadow-sm backdrop-blur-sm ${SIDE_CLASS[side]}`}
         >
           {label}
           {keys && (
