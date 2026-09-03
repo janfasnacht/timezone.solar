@@ -25,6 +25,7 @@ import { EntityCard } from './EntityCard'
 import { TimezoneOverlay } from './TimezoneOverlay'
 import { MapZoomControl } from './MapZoomControl'
 import { useTimezoneData } from '@/hooks/useTimezoneData'
+import { useDetailedGeography } from '@/hooks/useDetailedGeography'
 
 const WIDTH = 960
 const HEIGHT = 500
@@ -83,6 +84,13 @@ const ALL_CEILING = 20000
 
 const IDENTITY = { x: 0, y: 0, scale: 1 }
 type Transform = typeof IDENTITY
+
+/**
+ * Where 110m stops being good enough. Below this the coarse coastline is
+ * indistinguishable from the fine one; above it the steps along a shoreline
+ * start to read, so that is when the finer copy is worth fetching.
+ */
+const DETAIL_ZOOM = 1.25
 
 export interface MapConversion {
   sourceCity: string
@@ -199,9 +207,14 @@ export function WorldMap({
     return feature(topo, topo.objects.land)
   }, [])
 
+  // Once fetched the finer geometry stays, so zooming back out doesn't undo it.
+  const [wantsDetail, setWantsDetail] = useState(false)
+  const detailedLand = useDetailedGeography('land', wantsDetail)
+  const detailedCountries = useDetailedGeography('countries', wantsDetail && showBorders)
+
   const landPath = useMemo(
-    () => pathGenerator(landGeoJson) || '',
-    [pathGenerator, landGeoJson]
+    () => pathGenerator(detailedLand ?? landGeoJson) || '',
+    [pathGenerator, landGeoJson, detailedLand]
   )
 
   /**
@@ -213,6 +226,10 @@ export function WorldMap({
    * ocean, so a flush bottom edge costs nothing — but Scandinavia, Greenland and
    * Alaska sit right at the northern bound and would otherwise tuck under the
    * search bar. The frame grows upward only, so the bottom stays flush.
+   *
+   * Always measured on the 110m land, never on the finer copy: the two disagree
+   * by a couple of units at the antimeridian, and reframing on arrival would
+   * shift the whole map under whatever you were looking at.
    */
   const frame = useMemo(() => {
     const [[x0, y0], [x1, y1]] = pathGenerator.bounds(landGeoJson)
@@ -249,8 +266,8 @@ export function WorldMap({
   }, [])
 
   const countriesPath = useMemo(
-    () => pathGenerator(countriesGeoJson) || '',
-    [pathGenerator, countriesGeoJson]
+    () => pathGenerator(detailedCountries ?? countriesGeoJson) || '',
+    [pathGenerator, countriesGeoJson, detailedCountries]
   )
 
   const graticulePath = useMemo(
@@ -590,6 +607,9 @@ export function WorldMap({
   const updateTransform = useCallback((raw: Transform) => {
     const t = clampTransform(raw)
     transformRef.current = t
+
+    // First time in past the threshold, start fetching the finer coastline.
+    if (t.scale > DETAIL_ZOOM) setWantsDetail(true)
 
     // One repaint per frame however fast the wheel or the finger reports.
     if (!liveFrameRef.current) {

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Coastlines and borders sharpen when you zoom in. The map opens on the coarse
+  outline as before and fetches the finer one in the background
+
 ### Changed
 
 - Zooming and panning the map holds a frame. With every layer switched on, a
