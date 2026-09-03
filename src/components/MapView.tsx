@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { MapLayersControl, type MapLayers } from '@/components/map/MapLayersControl'
 import { useMinuteTick } from '@/hooks/useMinuteTick'
 import { WorldMap, type MapConversion } from '@/components/map/WorldMap'
+import type { HighlightedZone } from '@/components/map/TimezoneOverlay'
 import type { ConversionResult } from '@/engine/types'
 import type { HomeCity } from '@/lib/preferences'
 
@@ -46,6 +47,39 @@ export default function MapView({
 
   const timeKey = use24h ? 'formattedTime24' : 'formattedTime12'
 
+  /**
+   * A query that named an offset rather than a place has no dot to put on the
+   * map — the answer is a band of the world, so it carries its own label. The
+   * offset is in minutes, which is how the timezone layer groups its shapes.
+   */
+  const highlightZones = useMemo(() => {
+    const zones: HighlightedZone[] = []
+    if (!result) return zones
+    const sides = [
+      [result.intent.source, result.sourceDateTime, result.source[timeKey]],
+      [result.intent.target, result.targetDateTime, result.target[timeKey]],
+    ] as const
+    for (const [ref, iso, time] of sides) {
+      if (ref.resolveMethod !== 'utc-offset') continue
+      const dt = DateTime.fromISO(iso, { setZone: true })
+      if (!dt.isValid || zones.some((z) => z.offset === dt.offset)) continue
+      zones.push({ offset: dt.offset, label: `${ref.displayName}  ${time}` })
+    }
+    return zones
+  }, [result, timeKey])
+
+  // Switching the layer on rather than forcing it on: a new band opens the layer,
+  // and in between the toggle is the user's again. Adjusted during render rather
+  // than in an effect, so the first paint already has the band.
+  const highlightKey = highlightZones.map((z) => z.offset).join(',')
+  const [openedFor, setOpenedFor] = useState('')
+  if (highlightKey !== openedFor) {
+    setOpenedFor(highlightKey)
+    if (highlightKey) {
+      setLayers((prev) => (prev.showTimezones ? prev : { ...prev, showTimezones: true }))
+    }
+  }
+
   const conversion: MapConversion | null = useMemo(() => {
     if (!result) return null
     return {
@@ -71,6 +105,7 @@ export default function MapView({
         cityDensity={layers.cityDensity}
         airportDensity={layers.airportDensity}
         labelDensity={layers.labelDensity}
+        highlightZones={highlightZones}
         isMobile={isMobile}
       />
 

@@ -23,7 +23,7 @@ export interface LocationRef {
   kind: LocationKind
   country?: string
   entitySlug?: string
-  resolveMethod: 'entity' | 'alias' | 'state' | 'abbreviation' | 'city-db' | 'fuzzy'
+  resolveMethod: 'entity' | 'alias' | 'state' | 'abbreviation' | 'utc-offset' | 'city-db' | 'fuzzy'
   interpretedAs?: string
   /**
    * The words the user actually typed for this location ("nyc"). Absent when the

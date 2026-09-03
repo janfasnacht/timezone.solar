@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `utc-2`, `UTC+5:30` and `gmt+3` resolve to the zone itself. On the map the
+  timezone layer comes on and that band lights up with its time
 - Coastlines and borders sharpen when you zoom in. The map opens on the coarse
   outline as before and fetches the finer one in the background
 
