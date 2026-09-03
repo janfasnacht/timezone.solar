@@ -20,8 +20,9 @@ import { usePreferences } from '@/hooks/usePreferences'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { createDebouncedCallback } from '@/lib/debounce'
+import type { ConversionResult } from '@/engine/types'
 import { buildCanonicalParams } from '@/lib/canonicalUrl'
-import { whenPhrase } from '@/lib/whenPhrase'
+import { verifiedWhenPhrase } from '@/lib/whenPhrase'
 
 const MapView = lazy(() => import('@/components/MapView'))
 
@@ -36,6 +37,14 @@ function usePath() {
 }
 
 const loadMotionFeatures = () => import('@/lib/motionFeatures').then(mod => mod.default)
+
+/** The words the user typed, so editing a time doesn't rewrite "nyc" as "New York". */
+function queryWords(result: ConversionResult) {
+  return {
+    from: result.intent.source.input ?? result.source.city,
+    to: result.intent.target.input ?? result.target.city,
+  }
+}
 
 const layerVisible = { opacity: 1, scale: 1, visibility: 'visible' } as const
 const layerHidden = { opacity: 0, scale: 0.98, transitionEnd: { visibility: 'hidden' } } as const
@@ -193,10 +202,7 @@ function App() {
    */
   const applyTime = useCallback((time: string | null) => {
     if (!result) return
-    // Reuse the words the user typed — editing the time shouldn't silently
-    // rewrite "nyc" as "New York".
-    const from = result.intent.source.input ?? result.source.city
-    const to = result.intent.target.input ?? result.target.city
+    const { from, to } = queryWords(result)
     const query = time ? `${time} ${from} to ${to}` : `${from} to ${to}`
     setInputValue(query)
     setCurrentInputValue(query)
@@ -212,7 +218,19 @@ function App() {
       .setZone(result.source.iana)
       .plus({ minutes: deltaMinutes })
     if (!next.isValid) return
-    applyTime(whenPhrase(next, DateTime.now().setZone(result.source.iana), use24h))
+    // Re-parsed before it is written, so a nudge back past now says "today"
+    // rather than quietly meaning tomorrow.
+    const { from, to } = queryWords(result)
+    applyTime(
+      verifiedWhenPhrase(
+        next,
+        DateTime.now().setZone(result.source.iana),
+        use24h,
+        from,
+        to,
+        result.source.iana,
+      ),
+    )
   }, [result, use24h, applyTime])
 
   const handleValueChange = useCallback((value: string) => {
