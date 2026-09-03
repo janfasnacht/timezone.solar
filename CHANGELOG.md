@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Share is a button beside the view switcher rather than a third view. Old
+  `?view=share` links open the conversion on the card. It copies the whole
+  conversion — "3:00 PM New York → 8:00 PM London" — rather than the target
+  time alone
 - City vibe words describe character rather than weather. `tropical`, `sunny`
   and `humid` are gone, and every city carries at least one word used nowhere
   else — 207 edits across 325 cities

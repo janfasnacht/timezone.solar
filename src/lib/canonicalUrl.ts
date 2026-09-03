@@ -141,22 +141,7 @@ export function buildCanonicalUrl(result: ConversionResult, query: string, view?
   return url.toString()
 }
 
-/**
- * Build OG image URL, preferring canonical params when available.
- */
-export function buildOgImageUrl(result: ConversionResult, query: string, use24h: boolean): string {
-  const canonical = buildCanonicalParams(result)
-  if (canonical) {
-    let url = `/api/og?${canonical.toString()}`
-    if (use24h) url += '&fmt=24h'
-    return url
-  }
-  return `/api/og?q=${encodeURIComponent(query)}&src=${encodeURIComponent(result.source.iana)}${use24h ? '&fmt=24h' : ''}`
-}
-
-/**
- * Display-friendly canonical URL for the CardBack link label.
- */
+/** Display-friendly canonical URL, for the share menu's link row. */
 export function formatCanonicalDisplay(result: ConversionResult, query: string): string {
   const canonical = buildCanonicalParams(result)
   if (!canonical) return `timezone.solar?q=${query}`

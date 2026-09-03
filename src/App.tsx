@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { LazyMotion, m, useReducedMotion } from 'motion/react'
 import { QueryInput } from '@/components/QueryInput'
 import { ResultCard } from '@/components/ResultCard'
-import { ShareView } from '@/components/ShareView'
+import { ShareMenu } from '@/components/ShareMenu'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
 import { CityVibe } from '@/components/CityVibe'
 import { SettingsMenu } from '@/components/SettingsMenu'
@@ -350,28 +350,8 @@ function App() {
               )}
             </m.div>
 
-            {/* z-10 — share, a peer of card and map rather than a card face */}
-            <m.div
-              className="absolute inset-0 z-10 overflow-y-auto px-4 pb-24 md:px-[2rem]"
-              initial={false}
-              animate={view === 'share' ? layerVisible : layerHidden}
-              transition={layerTransition}
-              style={{ pointerEvents: view === 'share' ? 'auto' : 'none', paddingTop: chromeHeight }}
-              inert={view !== 'share'}
-            >
-              {result && (
-                <div className="mx-auto w-full max-w-[520px]">
-                  <ShareView
-                    result={result}
-                    query={currentInputValue}
-                    use24h={use24h}
-                  />
-                </div>
-              )}
-            </m.div>
-
             {/* Mobile settings — beside the switcher, not a segment in it:
-                Card/Map/Share latch when pressed, this opens a panel. */}
+                Card/Map latch when pressed, this opens a panel. */}
             {isMobile && (
               <div
                 className="absolute right-4 z-50"
@@ -382,14 +362,20 @@ function App() {
             )}
 
             {/* The switcher belongs to the result, not the question, so it sits with
-                the other result-level tools along the bottom edge. */}
+                the other result-level tools along the bottom edge. Above the time
+                control: z-40 there caps the share popover, which opens over it. */}
             {hasResult && (
               <div
-                className="pointer-events-none absolute inset-x-0 z-40 flex justify-center"
+                className="pointer-events-none absolute inset-x-0 z-50 flex justify-center"
                 style={{ bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 0.75rem)' : '1rem' }}
               >
-                <div className="pointer-events-auto">
+                {/* A peer of the switcher, not a segment in it: the two views are
+                    readings of the conversion, sharing is done to it. */}
+                <div className="pointer-events-auto flex items-center gap-2">
                   <ViewToggle view={view} onChange={setView} />
+                  {result && (
+                    <ShareMenu result={result} query={currentInputValue} use24h={use24h} />
+                  )}
                 </div>
               </div>
             )}

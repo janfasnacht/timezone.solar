@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { compactTime, formatDate } from '@/lib/shareUtils'
+import { compactTime, formatDate, conversionText } from '@/lib/shareUtils'
+import type { ConversionResult } from '@/engine/types'
 
 describe('compactTime', () => {
   describe('12h format', () => {
@@ -64,5 +65,54 @@ describe('formatDate', () => {
 
   it('returns empty string for empty input', () => {
     expect(formatDate('')).toBe('')
+  })
+})
+
+describe('conversionText', () => {
+  const result = {
+    source: {
+      city: 'New York',
+      country: 'USA',
+      iana: 'America/New_York',
+      abbreviation: 'EDT',
+      offsetFromUTC: '-04:00',
+      formattedTime12: '3:00 PM',
+      formattedTime24: '15:00',
+    },
+    target: {
+      city: 'London',
+      country: 'United Kingdom',
+      iana: 'Europe/London',
+      abbreviation: 'BST',
+      offsetFromUTC: '+01:00',
+      formattedTime12: '8:00 PM',
+      formattedTime24: '20:00',
+    },
+    sourceDateTime: '2026-08-31T15:00:00.000-04:00',
+    targetDateTime: '2026-08-31T20:00:00.000+01:00',
+    offsetDifference: '+5h',
+    dayBoundary: 'same day',
+  } as unknown as ConversionResult
+
+  it('carries both places, in the order they were asked about', () => {
+    expect(conversionText(result, false)).toBe('3:00 PM New York → 8:00 PM London')
+  })
+
+  it('follows the clock format', () => {
+    expect(conversionText(result, true)).toBe('15:00 New York → 20:00 London')
+  })
+
+  it('says nothing about the day when both are on it', () => {
+    expect(conversionText(result, false)).not.toMatch(/Mon|Tue|Wed|Thu|Fri|Sat|Sun/)
+  })
+
+  it('names the weekday once the two fall on different days', () => {
+    const overnight = {
+      ...result,
+      target: { ...result.target, formattedTime12: '4:00 AM' },
+      targetDateTime: '2026-09-01T04:00:00.000+01:00',
+      dayBoundary: 'next day',
+    } as unknown as ConversionResult
+    expect(conversionText(overnight, false)).toBe('3:00 PM Mon New York → 4:00 AM Tue London')
   })
 })
