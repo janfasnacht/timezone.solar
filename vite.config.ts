@@ -27,6 +27,9 @@ function ogDevPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), ogDevPlugin()],
+  server: {
+    allowedHosts: process.env.AMP_ORB ? true : undefined,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

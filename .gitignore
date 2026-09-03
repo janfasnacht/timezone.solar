@@ -27,6 +27,9 @@ dist-ssr
 # Vercel
 .vercel
 
+# Generated Amp portal state
+.amp/portals/
+
 # Development notes (not for public repo)
 dev/
 
