@@ -65,13 +65,10 @@ const lerp = (range: readonly [number, number], t: number) => range[0] + (range[
 const LABEL_PX = 10.5
 
 /**
- * Pan and zoom run at two speeds. The transform itself follows the gesture
- * frame by frame; the density pass — which walks the whole entity pool and
- * re-renders every dot and label — waits for the map to hold still.
- *
- * Waiting means the picks are briefly stale, so they reach past the viewport
- * edge and a gesture that travels further than that overscan pays for a
- * re-layout mid-flight rather than showing a bare edge.
+ * Pan and zoom run at two speeds: the transform follows the gesture frame by
+ * frame, the density pass waits for the map to hold still. Its picks are
+ * briefly stale, so they reach past the viewport edge and a gesture that
+ * travels further than the overscan pays for a re-layout mid-flight.
  */
 const COMMIT_IDLE_MS = 110
 /** Longest a continuous gesture may run on stale picks. */
@@ -149,10 +146,8 @@ export function WorldMap({
   const vpH = containerRect?.height ?? 0
 
   /**
-   * Only publishes a rect that actually differs. `getBoundingClientRect` hands
-   * back a fresh object every call, and this one is upstream of the frame, the
-   * view and the density pass — so re-setting an identical rect on every hover
-   * meant re-picking every dot on the map.
+   * Only publishes a rect that differs. `getBoundingClientRect` returns a fresh
+   * object every call, and this one is upstream of the density pass.
    */
   const syncRect = useCallback(() => {
     const el = containerRef.current
@@ -362,13 +357,8 @@ export function WorldMap({
       if (density === 'none') return { picks: [] as ProjectedEntity[] }
 
       // 'all' is the end state the other tiers reach at full zoom: no floor and
-      // no spacing. It skips the grid, which is also what keeps a drag cheap
-      // with several thousand dots in the pool.
-      //
-      // The ceiling is not a budget, it is a stop. The pool is rank-sorted, so
-      // hitting it drops the least important places rather than a random slice
-      // — and it is well above what `city-timezones` can supply today, so it
-      // only bites if the dataset behind the map grows.
+      // no spacing. The ceiling is a stop, not a budget — the pool is
+      // rank-sorted, so hitting it drops the least important places.
       if (density === 'all') {
         const picks: ProjectedEntity[] = []
         for (const p of pool) {
@@ -818,8 +808,7 @@ export function WorldMap({
     [onCityClick]
   )
 
-  // Two entries, looked up by slug. Asking each dot to normalize its own name
-  // meant several thousand string passes per render at cityDensity 'all'.
+  // Two entries, looked up by slug — cheaper than normalizing a name per dot.
   const roles = useMemo(() => {
     const bySlug = new Map<string, EntityRole>()
     if (sourceProjected) bySlug.set(sourceProjected.entity.slug, 'source')
@@ -832,10 +821,9 @@ export function WorldMap({
    * transform scales stroke weight and type along with position, so without it
    * a coastline becomes a band and a 9px tooltip becomes a 72px one at 8x.
    *
-   * Only the handful of marks that can be counted follow the live scale — the
-   * coastline, the graticule, the arc, twenty labels, one tooltip. The dots run
-   * off the settled scale instead: there are thousands of them, and re-sizing
-   * them mid-gesture is what made a wheel tick cost a second.
+   * Only the marks that can be counted follow the live scale — the coastline,
+   * the graticule, the arc, twenty labels, one tooltip. The dots take the
+   * settled scale, since there are thousands of them.
    */
   const zoomInv = 1 / live.scale
 

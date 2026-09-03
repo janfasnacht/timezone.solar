@@ -156,15 +156,13 @@ export interface DotIndex {
 }
 
 /**
- * One spatial index for every dot on the map: how much room each one may claim,
- * and which one a pointer is on.
+ * How much room each dot may claim, and which one a pointer is on. The second
+ * is the layer's job rather than the browser's, because the dots are drawn a
+ * few thousand to a path.
  *
- * Each dot's catchment is half the distance to its nearest neighbour, so two
- * touching dots split the gap instead of one swallowing the other. Bucketed on
- * a uniform grid to stay O(n) at cityDensity 'all', where there are thousands
- * of points — and queried the same way, because the dots are drawn as a handful
- * of paths rather than one element each, so the browser cannot say which of
- * them a pointer is over.
+ * A catchment is half the distance to the nearest neighbour, so two touching
+ * dots split the gap instead of one swallowing the other. Bucketed on a uniform
+ * grid to stay O(n) at cityDensity 'all'.
  */
 export function indexDots(points: readonly { x: number; y: number }[]): DotIndex {
   const cell = HIT_MAX * 2
@@ -230,10 +228,8 @@ export interface Box {
 }
 
 /**
- * One number for a cell, so a grid lookup doesn't allocate a string. Exact for
- * any pair a double can hold apart — `|gy| < 2^20` and `|gx| < 2^31` — which is
- * five hundred times the range these grids ever reach, since every coordinate
- * is a projected point inside a thousand-unit frame.
+ * One number for a cell, so a grid lookup doesn't allocate a string. Exact while
+ * `|gy| < 2^20`, which every grid here clears by three orders of magnitude.
  */
 export function cellKey(gx: number, gy: number): number {
   return gx * 2 ** 21 + gy

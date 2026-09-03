@@ -12,12 +12,9 @@ interface BaseLayersProps {
 }
 
 /**
- * The basemap: everything whose geometry is fixed by the projection rather than
- * by the view. Only the stroke weights follow the gesture, and there are three
- * of them — memoising keeps the rest of a re-render off the path geometry.
- *
- * The timezone bands are drawn between this and the terminator, which is why
- * the night side is a component of its own rather than the last child here.
+ * Everything whose geometry is fixed by the projection rather than by the view;
+ * only the stroke weights follow the gesture. The timezone bands go between
+ * this and the terminator, so the night side is its own component.
  */
 export const BaseLayers = memo(function BaseLayers({
   frame,

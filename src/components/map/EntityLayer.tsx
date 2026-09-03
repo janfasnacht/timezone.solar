@@ -36,16 +36,9 @@ interface Bulk {
 }
 
 /**
- * The plain dots, drawn as one path each rather than one element each.
- *
- * A zero-length subpath with a round cap is a dot, so a whole tier of the map
- * is a single `d` string. At cityDensity 'all' that is the difference between
- * eight thousand React elements and two: measured on the raw DOM alone the same
- * dots cost 65-105ms as circles and 4-10ms as a path, and the React side of it
- * was several times that again.
- *
- * The cost is that the browser can no longer say which dot a pointer is over,
- * so the layer does it — see `catchments` below.
+ * A zero-length subpath with a round cap is a dot, so a whole tier of the map is
+ * one `d` string rather than one element per place. The cost is that the browser
+ * can no longer say which dot a pointer is over — see `buildCatchments`.
  */
 function buildBulk(
   entities: readonly ProjectedEntity[],
@@ -75,11 +68,9 @@ function buildBulk(
 
 /**
  * Transparent strokes wide enough to catch a pointer, one path per whole-unit
- * catchment radius — ten at most, since the radii are clamped to 3..12.
- *
- * The browser still decides whether the pointer is near any dot at all, which
- * is what keeps the timezone layer's own hover working in the gaps. Which dot
- * it is comes from the index.
+ * radius. The browser still decides whether the pointer is near any dot at all,
+ * which keeps the timezone layer's own hover working in the gaps; which dot it
+ * is comes from the index.
  */
 function buildCatchments(entities: readonly ProjectedEntity[], radii: readonly number[]) {
   const byRadius = new Map<number, string[]>()
@@ -120,10 +111,9 @@ export const EntityLayer = memo(function EntityLayer({
     return out
   }, [entities, roles, hoveredSlug])
 
-  // Only the query's own dots are cut out of the bulk paths. The hovered one is
-  // left in and drawn over: its own mark is nearly twice the radius and fully
-  // opaque, so it covers what is underneath — and rebuilding a path of several
-  // thousand dots on every pointer move would cost more than it saves.
+  // Only the query's own dots are cut out. The hovered one is left in and drawn
+  // over — its mark is wider and opaque — so a pointer move never rebuilds the
+  // path.
   const bulk = useMemo(
     () => buildBulk(entities, new Set(roles.keys()), minorBelow, zoom),
     [entities, roles, minorBelow, zoom]
@@ -147,9 +137,8 @@ export const EntityLayer = memo(function EntityLayer({
     [entities, index, zoom]
   )
 
-  // A change of dot is reported, not every pointer move: the card's open and
-  // close delays upstream are timers, and restarting them on each move would
-  // mean a card that never opens.
+  // A change of dot, not every pointer move: the card's open delay upstream is a
+  // timer, and restarting it on each move means a card that never opens.
   const handleMove = useCallback(
     (e: React.MouseEvent<SVGPathElement>) => {
       const entity = entityAt(e)

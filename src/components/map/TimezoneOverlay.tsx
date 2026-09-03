@@ -29,10 +29,9 @@ function formatOffset(minutes: number): string {
 }
 
 /**
- * An offset doesn't depend on the projection and costs an Intl formatter to
- * work out, so the four hundred of them are resolved once per dataset rather
- * than alongside the paths. A zone the tz database doesn't have is dropped
- * rather than grouped under a bogus offset.
+ * An offset costs an Intl formatter to work out and doesn't depend on the
+ * projection, so the four hundred are resolved once per dataset rather than
+ * alongside the paths. A zone the tz database lacks is dropped, not guessed.
  */
 const offsetCache = new WeakMap<TzData, Map<string, number>>()
 
