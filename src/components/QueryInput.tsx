@@ -162,7 +162,7 @@ export function QueryInput({
         onBlur={handleBlur}
         className="w-full rounded-full border border-border bg-surface px-4 md:px-6 py-3 md:py-3.5 pr-12 md:pr-14 text-base md:text-[1.05rem] text-foreground transition-colors focus:border-accent focus:outline-none"
         onFocusCapture={(e) => {
-          e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-glow-strong)'
+          e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-accent-soft)'
         }}
         onBlurCapture={(e) => {
           e.currentTarget.style.boxShadow = ''

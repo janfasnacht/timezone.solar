@@ -33,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Escape closed a popover and cleared the query with it. A menu that closes on
   Escape now spends the key press
+- Hover states in dark mode did nothing: the muted colour was identical to the
+  surface it sat on, so the city suggestions, the view switcher and the recent
+  searches all highlighted invisibly
 - Hover cards were positioned against the wrong viewBox, so they drifted further
   from their dot the more you zoomed and flickered on far-northern cities. They
   now track their dot while you pan and zoom, and flip below it early enough to

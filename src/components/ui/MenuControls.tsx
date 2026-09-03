@@ -49,7 +49,7 @@ export function Segmented<T extends string>({
             onClick={() => onChange(opt.value)}
             className={`flex h-6 cursor-pointer items-center justify-center rounded-md px-2 text-[0.8rem] transition-colors disabled:cursor-default ${
               value === opt.value
-                ? 'bg-accent text-accent-foreground'
+                ? 'bg-accent-soft text-accent'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -82,13 +82,13 @@ export function Switch({
       />
       <span
         aria-hidden
-        className={`flex h-5 w-9 shrink-0 items-center rounded-full border p-0.5 transition-colors duration-100 peer-focus-visible:ring-2 peer-focus-visible:ring-ring ${
-          checked ? 'border-accent bg-accent' : 'border-border bg-transparent'
+        className={`flex h-5 w-9 shrink-0 items-center rounded-full border p-0.5 transition-colors duration-100 peer-focus-visible:ring-2 peer-focus-visible:ring-accent ${
+          checked ? 'border-accent-border bg-accent-soft' : 'border-border bg-transparent'
         }`}
       >
         <span
           className={`h-3.5 w-3.5 rounded-full transition-transform duration-100 ${
-            checked ? 'translate-x-4 bg-accent-foreground' : 'translate-x-0 bg-muted-foreground'
+            checked ? 'translate-x-4 bg-accent' : 'translate-x-0 bg-muted-foreground'
           }`}
         />
       </span>

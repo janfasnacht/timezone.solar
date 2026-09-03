@@ -12,7 +12,7 @@ export function SunDialLogo({ onClick, compact = false }: SunDialLogoProps) {
       aria-label="Back to start — timezone.solar"
     >
       <div
-        className={`rounded-full bg-accent shadow-[0_0_30px_var(--color-glow-strong),0_0_60px_var(--color-glow)] transition-all duration-300 group-hover:bg-accent-text group-hover:shadow-[0_0_45px_var(--color-glow-strong),0_0_90px_var(--color-glow)] ${
+        className={`rounded-full bg-accent shadow-[0_0_30px_var(--color-accent-soft),0_0_60px_var(--color-glow)] transition-all duration-300 group-hover:bg-accent-text group-hover:shadow-[0_0_45px_var(--color-accent-soft),0_0_90px_var(--color-glow)] ${
           compact ? 'h-6 w-6' : 'mb-2 h-9 w-9 md:mb-4'
         }`}
       />

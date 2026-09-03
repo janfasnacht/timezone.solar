@@ -49,7 +49,7 @@ export function ResultCard({ result, isUsingCurrentTime, matchType, onSwap }: Re
   const isNotSameDay = dayBoundary !== 'same day'
 
   // Highlight style for offset chip and non-same-day chip (per mockup C)
-  const highlightChip = 'rounded-[6px] border border-tomorrow-border bg-glow-strong px-[0.6rem] py-[0.3rem] font-mono text-[0.75rem] text-accent'
+  const highlightChip = 'rounded-[6px] border border-accent-border bg-accent-soft px-[0.6rem] py-[0.3rem] font-mono text-[0.75rem] text-accent'
   const normalChip = 'rounded-[6px] border border-border bg-surface px-[0.6rem] py-[0.3rem] font-mono text-[0.75rem] text-muted-foreground'
 
   return (

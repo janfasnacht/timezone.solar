@@ -54,7 +54,7 @@ export function Popover({ open, onClose, anchor = 'top-right', trigger, children
       {trigger}
       {open && (
         <div
-          className={`absolute z-50 w-[260px] rounded-xl border border-border bg-surface/95 p-3 shadow-lg backdrop-blur-sm ${ANCHOR_CLASS[anchor]}`}
+          className={`absolute z-50 w-[260px] rounded-xl border border-border bg-surface p-3 shadow-lg ${ANCHOR_CLASS[anchor]}`}
         >
           {children}
         </div>

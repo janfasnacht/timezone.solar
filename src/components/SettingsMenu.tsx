@@ -75,7 +75,7 @@ function CityField({ detected, dropUp }: { detected: string; dropUp: boolean }) 
             }, 150)
           }}
           placeholder={detected}
-          className="h-8 w-full rounded-lg border border-border bg-surface-hover px-2.5 font-serif text-[0.95rem] text-accent outline-none transition-colors placeholder:font-sans placeholder:text-[0.8rem] placeholder:text-muted-foreground/50 focus:border-accent"
+          className="h-8 w-full rounded-lg border border-border bg-transparent px-2.5 font-serif text-[0.95rem] text-accent outline-none transition-colors placeholder:font-sans placeholder:text-[0.8rem] placeholder:text-muted-foreground/50 focus:border-accent"
         />
         {suggestions.length > 0 && (
           <div className={`absolute inset-x-0 z-10 overflow-hidden rounded-lg border border-border bg-surface shadow-lg ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}>
