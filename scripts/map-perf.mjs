@@ -7,12 +7,21 @@
  * quiet frames, not on the second animation frame, so pushing a re-layout into
  * a later task shows up here rather than hiding from the measurement.
  *
+ *   npm i --no-save playwright && npx playwright install chromium
  *   npm run build && npm run perf:map
  *
- * Needs a Chromium: `npx playwright install chromium`.
+ * Playwright is deliberately not a dependency — it is a local measuring tool,
+ * and CI has no use for it or for the browser it downloads.
  */
-import { chromium } from 'playwright'
 import { spawn } from 'node:child_process'
+
+const { chromium } = await import('playwright').catch(() => {
+  console.error(
+    'playwright is not installed. It is not a dependency of this repo:\n' +
+      '  npm i --no-save playwright && npx playwright install chromium'
+  )
+  process.exit(1)
+})
 
 const PORT = process.env.PERF_PORT ?? '4183'
 const BASE = process.env.PERF_BASE_URL ?? `http://localhost:${PORT}`

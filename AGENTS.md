@@ -43,8 +43,13 @@ npm run bench        # Run performance benchmarks (vitest bench)
 npm run perf:map     # Map interaction cost, driven in Chromium (needs a build)
 ```
 
-`perf:map` drives the production build, so run `npm run build` first. It needs a
-browser once: `npx playwright install chromium`.
+`perf:map` drives the production build, so run `npm run build` first. Playwright
+is not a dependency — it is a local tool and CI has no use for the browser it
+downloads — so install it unsaved when you need it:
+
+```bash
+npm i --no-save playwright && npx playwright install chromium
+```
 
 Run a single test file: `npx vitest run src/engine/parser.test.ts`
 
