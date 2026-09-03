@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   its offset, coastlines, borders, and the timezone tooltip
 - Hovering the source or target no longer enlarges its dot; the card it opens
   already says which one it is
+- Tooltips only name controls that are not already named. The view switcher, the
+  zoom stepper and the zoom read-out at rest have lost theirs
 - The settings and map layers menus now share one set of controls: the same rows,
   the same segmented choices and the same switches, sized and worded alike. The
   home-city field is a shade lighter and no longer reads as a hole in the panel
