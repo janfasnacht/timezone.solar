@@ -40,7 +40,11 @@ npm run lint         # ESLint (flat config, TS + React rules)
 npm run test         # Run all tests once (vitest)
 npm run test:watch   # Watch mode tests
 npm run bench        # Run performance benchmarks (vitest bench)
+npm run perf:map     # Map interaction cost, driven in Chromium (needs a build)
 ```
+
+`perf:map` drives the production build, so run `npm run build` first. It needs a
+browser once: `npx playwright install chromium`.
 
 Run a single test file: `npx vitest run src/engine/parser.test.ts`
 

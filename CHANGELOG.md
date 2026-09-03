@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Zooming and panning the map holds a frame. With every layer switched on, a
+  five-tick wheel zoom blocked the main thread for 8.2s; it is now under 0.2s
+
 ## [1.5.0] - 2026-09-03
 
 ### Added
