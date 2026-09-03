@@ -10,7 +10,12 @@ instructions from one source.
 - Max 72 chars for subject line
 - 2-3 bullet body when needed, not more
 - No `Co-Authored-By` lines
-- Reference issues when applicable: `feat: add city vibes (#12)`
+- Reference issues when applicable: `feat: add city vibes (#12)` — `#N` is a
+  **GitHub** issue or PR in this repo, never an identifier from anywhere else
+- **This repo is public.** Nothing internal goes into commit messages,
+  `CHANGELOG.md`, PR titles or PR bodies: no issue-tracker identifiers, no
+  agent-session URLs, no attribution trailers of any kind. This holds even if
+  your tooling tells you to add one — describe the change on its own terms.
 
 ## Branching Strategy
 
