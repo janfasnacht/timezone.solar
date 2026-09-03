@@ -255,6 +255,39 @@ describe('resolver', () => {
     })
   })
 
+  // --- Fuzzy gating ---
+
+  describe('fuzzy matching only corrects typos', () => {
+    it('still fixes a misspelling', () => {
+      expect(resolveLocation('Tokoy')?.primary.iana).toBe('Asia/Tokyo')
+      expect(resolveLocation('nyw york')?.primary.iana).toBe('America/New_York')
+      expect(resolveLocation('San Fransisco')?.primary.iana).toBe('America/Los_Angeles')
+    })
+
+    it('refuses a match too far from what was typed', () => {
+      // Kemerovo scores better under Fuse than New York does for `nyw york`.
+      expect(resolveLocation('Meroe')).toBeNull()
+      expect(resolveLocation('Iceland')).toBeNull()
+      expect(resolveLocation('asdf')).toBeNull()
+    })
+
+    it('offers the near miss as a suggestion instead', () => {
+      expect(getSuggestion('Meroe')).toBe('Kemerovo')
+    })
+  })
+
+  // --- Both spellings of a row ---
+
+  describe('city database', () => {
+    it('finds a city under its own name, not only its transliteration', () => {
+      // 115 rows disagree with their `city_ascii`; on that key alone the other
+      // spelling was reachable only by a fuzzy guess, and often a wrong one.
+      expect(resolveLocation('Kashgar')?.primary.iana).toBe('Asia/Kashgar')
+      expect(resolveLocation('Bensonville')?.primary.iana).toBe('Africa/Monrovia')
+      expect(resolveLocation('Tromsø')?.primary.iana).toBe('Europe/Oslo')
+    })
+  })
+
   // --- Disambiguation ---
 
   describe('disambiguation', () => {

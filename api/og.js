@@ -97598,7 +97598,7 @@ var CITY_DATA = [
     iana: "America/Panama",
     lat: 8.98,
     lng: -79.52,
-    aliases: [],
+    aliases: ["panama"],
     wikidataId: null,
     vibes: ["canal-fed", "cosmopolitan", "gleaming"],
     iconSlug: "pa-panama"
@@ -97648,13 +97648,11 @@ function normalize(input) {
 var allCities = import_city_timezones.default.cityMapping;
 var normalizedCityMap = /* @__PURE__ */ new Map();
 for (const entry of allCities) {
-  const key = normalize(entry.city_ascii);
-  if (!key) continue;
-  const existing = normalizedCityMap.get(key);
-  if (existing) {
-    existing.push(entry);
-  } else {
-    normalizedCityMap.set(key, [entry]);
+  for (const key of /* @__PURE__ */ new Set([normalize(entry.city_ascii), normalize(entry.city)])) {
+    if (!key) continue;
+    const existing = normalizedCityMap.get(key);
+    if (existing) existing.push(entry);
+    else normalizedCityMap.set(key, [entry]);
   }
 }
 for (const entries of normalizedCityMap.values()) {
@@ -97672,6 +97670,23 @@ function getFuse() {
   }
   return fuseInstance;
 }
+function editDistance(a, b) {
+  const m = a.length;
+  const n2 = b.length;
+  const d = Array.from({ length: m + 1 }, (_, i) => [i, ...new Array(n2).fill(0)]);
+  for (let j = 0; j <= n2; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n2; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+    }
+  }
+  return d[m][n2];
+}
+var FUZZY_MAX_EDIT_RATIO = 0.3;
 var CACHE_MAX = 500;
 var resolveCache = /* @__PURE__ */ new Map();
 function cacheGet(key) {
@@ -97802,10 +97817,16 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   const fuzzyResults = fuse.search(normalized);
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== void 0 && fuzzyResults[0].score < 0.3) {
     const match2 = fuzzyResults[0].item;
-    return {
-      primary: cityEntryToLocationRef(match2, "fuzzy"),
-      alternatives: []
-    };
+    const distance = Math.min(
+      editDistance(normalizedKey, normalize(match2.city)),
+      editDistance(normalizedKey, normalize(match2.city_ascii))
+    );
+    if (distance <= normalizedKey.length * FUZZY_MAX_EDIT_RATIO) {
+      return {
+        primary: cityEntryToLocationRef(match2, "fuzzy"),
+        alternatives: []
+      };
+    }
   }
   return null;
 }
