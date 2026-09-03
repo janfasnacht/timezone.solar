@@ -89,7 +89,7 @@ function App() {
     setView(view === 'card' ? 'map' : 'card')
   }, [view, setView])
 
-  useKeyboardShortcuts(inputRef, settingsOpen, setSettingsOpen, showExamples, handleClear, toggleView)
+  useKeyboardShortcuts(inputRef, setSettingsOpen, showExamples, handleClear, toggleView)
 
   const hasResult = Boolean(result)
   // Landing is a screen in its own right, not the card view rendered empty. It

@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Escape closed a popover and cleared the query with it. A menu that closes on
+  Escape now spends the key press
 - Hover cards were positioned against the wrong viewBox, so they drifted further
   from their dot the more you zoomed and flickered on far-northern cities. They
   now track their dot while you pan and zoom, and flip below it early enough to
