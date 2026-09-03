@@ -95,3 +95,54 @@ export function Switch({
     </label>
   )
 }
+
+/**
+ * A row that acts when pressed rather than holding a setting. `hint` is the one
+ * detail worth knowing first — a file extension, a copied confirmation. Renders
+ * as a link when `href` is given, so it stays middle-clickable.
+ */
+export function MenuAction({
+  icon,
+  label,
+  hint,
+  title,
+  onClick,
+  href,
+  disabled = false,
+}: {
+  icon: React.ReactNode
+  label: React.ReactNode
+  hint?: string
+  title?: string
+  onClick?: () => void
+  href?: string
+  disabled?: boolean
+}) {
+  const inner = (
+    <>
+      <span className="flex w-4 shrink-0 justify-center text-muted-foreground transition-colors group-hover:text-foreground">
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1 truncate text-[0.8rem] text-foreground">{label}</span>
+      {hint && (
+        <span className="shrink-0 font-mono text-[0.7rem] text-muted-foreground">{hint}</span>
+      )}
+    </>
+  )
+
+  const className =
+    'group flex min-h-8 w-full cursor-pointer items-center gap-2.5 rounded-md py-1 text-left transition-colors hover:bg-muted disabled:cursor-default disabled:opacity-40'
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" title={title} className={className}>
+        {inner}
+      </a>
+    )
+  }
+  return (
+    <button type="button" onClick={onClick} disabled={disabled} title={title} className={className}>
+      {inner}
+    </button>
+  )
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { parseCanonicalParams, type CanonicalQuery } from '@/lib/canonicalUrl'
 
-export type ViewMode = 'card' | 'map' | 'share'
+export type ViewMode = 'card' | 'map'
 
 function getQueryFromUrl(): string {
   const params = new URLSearchParams(window.location.search)
@@ -14,7 +14,8 @@ function getCanonicalFromUrl(): CanonicalQuery | null {
 
 function getViewFromUrl(): ViewMode {
   const view = new URLSearchParams(window.location.search).get('view')
-  return view === 'map' || view === 'share' ? view : 'card'
+  // `?view=share` was a third view. An old link opens on the card.
+  return view === 'map' ? view : 'card'
 }
 
 function updateUrl(query: string, view: ViewMode, replace: boolean) {
