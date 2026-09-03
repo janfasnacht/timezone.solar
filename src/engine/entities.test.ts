@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { lookupEntity, getEntityBySlug, getAllEntities, formatEntityLabel } from './entities'
+import { DateTime } from 'luxon'
 import { TZ_ABBREVIATIONS } from './constants'
+import { US_STATE_TIMEZONES } from './aliases'
 import { resolveLocation } from './resolver'
 
 describe('entities', () => {
@@ -163,7 +165,7 @@ describe('entities', () => {
       const ny = getEntityBySlug('new-york')
       expect(ny?.kind).toBe('city')
       if (ny?.kind !== 'city') throw new Error('expected city')
-      expect(ny.vibes).toEqual(['electric', 'hustling', 'bold'])
+      expect(ny.vibes).toEqual(['electric', 'hustling', 'sleepless'])
       expect(ny.aliases).toEqual(['nyc', 'ny'])
       expect(ny.iconSlug).toBe('us-new-york')
 
@@ -294,4 +296,27 @@ describe('entities', () => {
       expect(formatEntityLabel('does-not-exist', 'fb')).toBe('fb')
     })
   })
+})
+
+/**
+ * A zone name missing from the tz database doesn't throw — Luxon returns an
+ * invalid DateTime and the UI renders "Invalid DateTime". Checked against the
+ * runtime's own tz data so a typo fails here rather than on the map.
+ */
+describe('every zone the app can name is a real zone', () => {
+  const check = (label: string, zones: Iterable<[string, string]>) => {
+    it(label, () => {
+      const bad = [...zones]
+        .filter(([, iana]) => !DateTime.now().setZone(iana).isValid)
+        .map(([name, iana]) => `${name} -> ${iana}`)
+      expect(bad).toEqual([])
+    })
+  }
+
+  check(
+    'entity registry',
+    getAllEntities().map((e) => [e.slug, e.iana] as [string, string]),
+  )
+  check('timezone abbreviations', Object.entries(TZ_ABBREVIATIONS))
+  check('US state mappings', Object.entries(US_STATE_TIMEZONES))
 })
