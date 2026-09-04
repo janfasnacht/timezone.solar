@@ -41,18 +41,26 @@ export function parseTimeToken(value: string): TimeValueInternal | null {
   return null
 }
 
+/**
+ * Join neighbouring LOCATION tokens into one multi-word name, but only when they
+ * were neighbours in the input — noise removal closes gaps. Tokens with no index
+ * count as adjacent.
+ */
 export function mergeLocationTokens(tokens: Token[]): Token[] {
   const merged: Token[] = []
 
   for (const token of tokens) {
-    if (
-      token.type === 'LOCATION' &&
-      merged.length > 0 &&
-      merged[merged.length - 1].type === 'LOCATION'
-    ) {
-      const prev = merged[merged.length - 1]
+    const prev = merged[merged.length - 1]
+    const adjacent =
+      prev === undefined ||
+      prev.endIndex === undefined ||
+      token.index === undefined ||
+      token.index === prev.endIndex + 1
+
+    if (token.type === 'LOCATION' && prev?.type === 'LOCATION' && adjacent) {
       prev.value = `${prev.value} ${token.value}`
       prev.raw = `${prev.raw} ${token.raw}`
+      prev.endIndex = token.endIndex ?? token.index
     } else {
       merged.push({ ...token })
     }

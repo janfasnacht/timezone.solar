@@ -4,6 +4,10 @@ export interface Token {
   type: TokenType
   value: string
   raw: string
+  /** Position in the input, before noise was dropped — see mergeLocationTokens. */
+  index?: number
+  /** Last position covered, once a merge has widened the token. */
+  endIndex?: number
 }
 
 // --- TimeRef: discriminated union replacing TimeValue + relativeMinutes ---

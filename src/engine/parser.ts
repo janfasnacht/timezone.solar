@@ -8,6 +8,7 @@ import {
   stripLeadingConnectors,
 } from './parser-utils'
 import { classifyToken, type TokenTypeExtended } from './noise-words'
+import { CITY_ALIASES, US_STATE_TIMEZONES } from './aliases'
 import type { MatchType } from './confidence'
 
 export type { MatchType } from './confidence'
@@ -22,14 +23,44 @@ interface ExtendedToken {
   type: TokenTypeExtended
   value: string
   raw: string
+  index: number
+  endIndex?: number
+}
+
+/**
+ * Multi-word alias keys, longest first, matched ahead of classification so
+ * `Eastern Time` survives it — `Time` on its own is a noise word. Derived from
+ * the alias tables, so a new phrase is only added there.
+ */
+const ALIAS_PHRASES: string[][] = [...Object.keys(CITY_ALIASES), ...Object.keys(US_STATE_TIMEZONES)]
+  .filter((key) => key.includes(' '))
+  .map((key) => key.split(' '))
+  .sort((a, b) => b.length - a.length)
+
+function matchAliasPhrase(parts: string[], from: number): number {
+  for (const phrase of ALIAS_PHRASES) {
+    if (from + phrase.length > parts.length) continue
+    let hit = true
+    for (let i = 0; i < phrase.length; i++) {
+      if (parts[from + i].toLowerCase() !== phrase[i]) { hit = false; break }
+    }
+    if (hit) return phrase.length
+  }
+  return 0
 }
 
 function tokenize(input: string): ExtendedToken[] {
-  const parts = input.trim().split(/\s+/)
+  const parts = input.trim().split(/\s+/).filter(Boolean)
   const tokens: ExtendedToken[] = []
-  for (const part of parts) {
-    if (!part) continue
-    tokens.push({ type: classifyToken(part), value: part, raw: part })
+  for (let i = 0; i < parts.length; i++) {
+    const span = matchAliasPhrase(parts, i)
+    if (span > 0) {
+      const value = parts.slice(i, i + span).join(' ')
+      tokens.push({ type: 'LOCATION', value, raw: value, index: i, endIndex: i + span - 1 })
+      i += span - 1
+      continue
+    }
+    tokens.push({ type: classifyToken(parts[i]), value: parts[i], raw: parts[i], index: i })
   }
   return tokens
 }
@@ -39,6 +70,8 @@ function toBaseTokens(tokens: ExtendedToken[]): Token[] {
     type: t.type as Token['type'],
     value: t.value,
     raw: t.raw,
+    index: t.index,
+    endIndex: t.endIndex ?? t.index,
   }))
 }
 
@@ -192,25 +225,6 @@ export function parse(input: string): ParseResult {
       parsed: buildParsedQuery(greedyResult, relativeMinutes, dateModifier),
       matchType: 'greedy',
       noiseCount,
-    }
-  }
-
-  // Pass 3: if signal has no locations, promote noise tokens to locations
-  if (noiseTokens.length > 0 && signalTokens.every((t) => t.type !== 'LOCATION')) {
-    const promoted = afterDateMod.map((t): ExtendedToken =>
-      t.type === 'NOISE' ? { ...t, type: 'LOCATION' } : t
-    )
-    const promotedSignal = promoted.filter((t) => t.type !== 'NOISE')
-    const promotedBase = toBaseTokens(promotedSignal)
-    const promotedMerged = mergeLocationTokens(promotedBase)
-    const promotedCleaned = stripLeadingConnectors(removeConnectorBeforeTime(promotedMerged))
-    const promotedPattern = tryPatternMatch(promotedCleaned)
-    if (promotedPattern) {
-      return {
-        parsed: buildParsedQuery(promotedPattern, relativeMinutes, dateModifier),
-        matchType: 'promoted',
-        noiseCount,
-      }
     }
   }
 
