@@ -11,6 +11,19 @@ Thanks for your interest in contributing to timezone.solar!
 5. Commit with [conventional commits](https://www.conventionalcommits.org/): `feat: add city vibes`
 6. Push and open a PR to `main`
 
+## Commands
+
+```bash
+npm run dev          # Vite dev server with HMR
+npm run build        # TypeScript check + production build
+npm run test         # Run all tests
+npm run lint         # ESLint
+npm run eval         # Parser accuracy against the query fixture
+npm run bench        # Engine benchmarks
+```
+
+**Stack:** React 19, TypeScript 5.9 (strict), Vite 7, Tailwind CSS 4, Luxon, D3 for the map.
+
 ## Commit Format
 
 Use conventional commit prefixes:
