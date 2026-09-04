@@ -71,9 +71,9 @@ The engine is the core of the app and must stay framework-agnostic.
 
 ### Engine Pipeline: Parser → Resolver → Converter
 
-**Parser** (`src/engine/parser.ts`): Tokenizes natural language queries into structured `ParsedQuery`. Supports 13 query patterns (e.g., `"3pm NYC to London"`, `"Tokyo"`, `"in 2 hours in Berlin"`). Pre-processes relative time expressions, then classifies tokens as TIME/LOCATION/CONNECTOR/DATE_MODIFIER and matches against known patterns.
+**Parser** (`src/engine/parser.ts`): Tokenizes natural language queries into structured `ParsedQuery`. Supports 13 query patterns (e.g., `"3pm NYC to London"`, `"Tokyo"`, `"in 2 hours in Berlin"`). Pre-processes relative time and dates, then classifies tokens as TIME/LOCATION/CONNECTOR/DATE_MODIFIER/NOISE and matches against known patterns, falling back to a greedy first-and-last extraction. Multi-word alias keys (`Eastern Time`) are matched ahead of classification; noise is dropped, and adjacent LOCATION tokens merge only if they were adjacent in the input.
 
-**Resolver** (`src/engine/resolver.ts`): Maps location strings to IANA timezones via a 5-layer pipeline: custom aliases → US states → TZ abbreviations → city-timezones DB (normalized O(1) lookup) → Fuse.js fuzzy search (lazy-initialized). Returns primary match + alternatives for ambiguous cities (Portland OR/ME). Uses FIFO cache (500 entries).
+**Resolver** (`src/engine/resolver.ts`): Maps location strings to IANA timezones. A UTC offset (`utc+5:30`) resolves to itself ahead of the cache; otherwise a 6-layer pipeline: curated entities (cities and airports) → custom aliases → US states → TZ abbreviations → city-timezones DB (normalized O(1) lookup, keyed on both of a row's names) → Fuse.js fuzzy search (lazy, pool capped at pop > 100k). A fuzzy hit must also pass an edit-distance ratio, and a noise word never gets one. Returns primary match + alternatives for ambiguous cities (Portland OR/ME). Uses FIFO cache (500 entries).
 
 **Converter** (`src/engine/converter.ts`): Luxon-based time math between two resolved timezones. Handles DST, temporal anchoring (auto-advances to tomorrow if specified time has passed), date modifiers, day boundary detection, and swap.
 

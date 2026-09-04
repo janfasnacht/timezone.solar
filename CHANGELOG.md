@@ -32,7 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cities are found under their own name as well as their transliteration —
   Bensonville answered with New York, Bodø with Dushanbe. Twenty-five more
   places resolve, `Panama` among them
-- The README claimed 86,000+ cities; the package ships 7,329
+- The README claimed 86,000+ cities; the package ships 7,329. The page's own
+  description and share previews still said 86K, and now quote no figure at all
 
 ## [1.5.0] - 2026-09-03
 
