@@ -1,6 +1,6 @@
 import type { LocationRef } from './types'
 
-export type MatchType = 'exact' | 'exact-noisy' | 'greedy' | 'promoted' | 'none'
+export type MatchType = 'exact' | 'exact-noisy' | 'greedy' | 'none'
 
 export interface ParseConfidenceInput {
   matchType: MatchType
@@ -15,8 +15,6 @@ export function parseConfidence(input: ParseConfidenceInput): number {
       return Math.max(0, 1.0 - 0.02 * input.noiseCount)
     case 'greedy':
       return Math.max(0, 0.9 - 0.02 * input.noiseCount)
-    case 'promoted':
-      return 0.1
     case 'none':
       return 0.0
   }

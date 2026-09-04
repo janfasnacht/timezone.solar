@@ -3413,16 +3413,18 @@
     "id": 206,
     "input": "3pm to to London",
     "expectedSource": null,
-    "expectedTarget": null,
+    "expectedTarget": "London",
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
     },
     "expectedDateModifier": null,
-    "expectedTier": 3,
+    "expectedTier": 2,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Doubled connector — a typo, not a refusal",
     "set": "realistic",
     "persona": "chaos",
     "split": "dev"
@@ -4003,14 +4005,14 @@
     "id": 240,
     "input": "eastern time",
     "expectedSource": null,
-    "expectedTarget": "eastern",
+    "expectedTarget": "eastern time",
     "expectedTime": {
       "type": "now"
     },
     "expectedDateModifier": null,
     "expectedTier": 1,
     "difficultyTags": [],
-    "notes": "",
+    "notes": "\"eastern time\" is one alias; \"time\" must not be stripped off it",
     "set": "realistic",
     "persona": "chaos",
     "split": "dev"
@@ -4019,16 +4021,18 @@
     "id": 241,
     "input": "3pm to to to chicago",
     "expectedSource": null,
-    "expectedTarget": null,
+    "expectedTarget": "chicago",
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
     },
     "expectedDateModifier": null,
-    "expectedTier": 3,
+    "expectedTier": 2,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Trebled connector — a typo, not a refusal",
     "set": "realistic",
     "persona": "chaos",
     "split": "dev"
@@ -4446,7 +4450,7 @@
   {
     "input": "Jordan time",
     "expectedSource": null,
-    "expectedTarget": "Jordan time",
+    "expectedTarget": "Jordan",
     "expectedTime": {
       "type": "now"
     },
@@ -4946,7 +4950,7 @@
   {
     "input": "hi",
     "expectedSource": null,
-    "expectedTarget": "hi",
+    "expectedTarget": null,
     "expectedTime": {
       "type": "now"
     },
@@ -4955,7 +4959,7 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Greeting, not a timezone query",
+    "notes": "Greeting, not a timezone query — returns nothing",
     "set": "edge",
     "id": 297
   },
@@ -4978,7 +4982,7 @@
   {
     "input": "help",
     "expectedSource": null,
-    "expectedTarget": "help",
+    "expectedTarget": null,
     "expectedTime": {
       "type": "now"
     },
@@ -4987,7 +4991,7 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Help request, not a timezone query",
+    "notes": "Help request, not a timezone query — returns nothing",
     "set": "edge",
     "id": 299
   },
@@ -5090,7 +5094,7 @@
   {
     "input": "12345",
     "expectedSource": null,
-    "expectedTarget": "12345",
+    "expectedTarget": null,
     "expectedTime": {
       "type": "now"
     },
@@ -5099,14 +5103,14 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Number string, not a valid query",
+    "notes": "Number string, not a valid query — returns nothing",
     "set": "edge",
     "id": 306
   },
   {
     "input": "the",
     "expectedSource": null,
-    "expectedTarget": "the",
+    "expectedTarget": null,
     "expectedTime": {
       "type": "now"
     },
@@ -5115,7 +5119,7 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Common word, not a location",
+    "notes": "Common word, not a location — returns nothing",
     "set": "edge",
     "id": 307
   },
@@ -6055,15 +6059,20 @@
     "set": "edge",
     "id": 364
   },
-
   {
     "input": "tomorrow 3pm NYC to London",
     "expectedSource": "NYC",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tomorrow at start with time + two cities",
     "set": "edge",
     "id": 365
@@ -6072,10 +6081,14 @@
     "input": "NYC to London tomorrow",
     "expectedSource": "NYC",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tomorrow at end, no explicit time",
     "set": "edge",
     "id": 366
@@ -6084,10 +6097,16 @@
     "input": "9am Berlin to Tokyo tomorrow",
     "expectedSource": "Berlin",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "absolute", "hour": 9, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tomorrow at end with time at start",
     "set": "edge",
     "id": 367
@@ -6096,10 +6115,16 @@
     "input": "yesterday 5pm London to NYC",
     "expectedSource": "London",
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "absolute", "hour": 17, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
     "expectedDateModifier": "yesterday",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "yesterday with time + two cities",
     "set": "edge",
     "id": 368
@@ -6108,10 +6133,16 @@
     "input": "today noon Tokyo",
     "expectedSource": null,
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "absolute", "hour": 12, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
     "expectedDateModifier": "today",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "today + named time + single city",
     "set": "edge",
     "id": 369
@@ -6120,10 +6151,14 @@
     "input": "today London",
     "expectedSource": null,
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": "today",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "today + single city, no time",
     "set": "edge",
     "id": 370
@@ -6132,10 +6167,16 @@
     "input": "tmrw 8am SF to Chicago",
     "expectedSource": "SF",
     "expectedTarget": "Chicago",
-    "expectedTime": { "type": "absolute", "hour": 8, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 0
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tmrw shorthand",
     "set": "edge",
     "id": 371
@@ -6144,10 +6185,16 @@
     "input": "tmw 10pm Paris",
     "expectedSource": null,
     "expectedTarget": "Paris",
-    "expectedTime": { "type": "absolute", "hour": 22, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 22,
+      "minute": 0
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tmw shorthand + single city",
     "set": "edge",
     "id": 372
@@ -6156,10 +6203,16 @@
     "input": "tomorrow midnight London to Sydney",
     "expectedSource": "London",
     "expectedTarget": "Sydney",
-    "expectedTime": { "type": "absolute", "hour": 0, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 0,
+      "minute": 0
+    },
     "expectedDateModifier": "tomorrow",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "tomorrow + named time midnight",
     "set": "edge",
     "id": 373
@@ -6168,23 +6221,31 @@
     "input": "yesterday Tokyo to London",
     "expectedSource": "Tokyo",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": "yesterday",
     "expectedTier": 1,
-    "difficultyTags": ["date-modifier"],
+    "difficultyTags": [
+      "date-modifier"
+    ],
     "notes": "yesterday with no time, two cities",
     "set": "edge",
     "id": 374
   },
-
   {
     "input": "in 2 hours NYC to London",
     "expectedSource": "NYC",
     "expectedTarget": "London",
-    "expectedTime": { "type": "relative", "minutes": 120 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 120
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "relative hours + two cities",
     "set": "edge",
     "id": 375
@@ -6193,10 +6254,15 @@
     "input": "in 30 minutes Berlin",
     "expectedSource": null,
     "expectedTarget": "Berlin",
-    "expectedTime": { "type": "relative", "minutes": 30 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 30
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "relative minutes + single city",
     "set": "edge",
     "id": 376
@@ -6205,10 +6271,15 @@
     "input": "in 1h30m Tokyo to SF",
     "expectedSource": "Tokyo",
     "expectedTarget": "SF",
-    "expectedTime": { "type": "relative", "minutes": 90 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 90
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "compound relative h+m",
     "set": "edge",
     "id": 377
@@ -6217,10 +6288,15 @@
     "input": "in half an hour London",
     "expectedSource": null,
     "expectedTarget": "London",
-    "expectedTime": { "type": "relative", "minutes": 30 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 30
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "half an hour idiom",
     "set": "edge",
     "id": 378
@@ -6229,10 +6305,15 @@
     "input": "in an hour Tokyo",
     "expectedSource": null,
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "relative", "minutes": 60 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 60
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "in an hour idiom",
     "set": "edge",
     "id": 379
@@ -6241,10 +6322,15 @@
     "input": "in 3 hrs Paris to Berlin",
     "expectedSource": "Paris",
     "expectedTarget": "Berlin",
-    "expectedTime": { "type": "relative", "minutes": 180 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 180
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "hrs abbreviation",
     "set": "edge",
     "id": 380
@@ -6253,10 +6339,15 @@
     "input": "in 45 min Sydney",
     "expectedSource": null,
     "expectedTarget": "Sydney",
-    "expectedTime": { "type": "relative", "minutes": 45 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 45
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "min abbreviation",
     "set": "edge",
     "id": 381
@@ -6265,10 +6356,15 @@
     "input": "in 2h 15m Chicago to London",
     "expectedSource": "Chicago",
     "expectedTarget": "London",
-    "expectedTime": { "type": "relative", "minutes": 135 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 135
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "compound with space between h and m",
     "set": "edge",
     "id": 382
@@ -6277,10 +6373,16 @@
     "input": "in 4 hours",
     "expectedSource": null,
     "expectedTarget": null,
-    "expectedTime": { "type": "relative", "minutes": 240 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 240
+    },
     "expectedDateModifier": null,
     "expectedTier": 3,
-    "difficultyTags": ["relative-time", "completeness"],
+    "difficultyTags": [
+      "relative-time",
+      "completeness"
+    ],
     "notes": "relative time with no location — incomplete query",
     "set": "edge",
     "id": 383
@@ -6289,23 +6391,31 @@
     "input": "in 1 hour NYC",
     "expectedSource": null,
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "relative", "minutes": 60 },
+    "expectedTime": {
+      "type": "relative",
+      "minutes": 60
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["relative-time"],
+    "difficultyTags": [
+      "relative-time"
+    ],
     "notes": "singular hour",
     "set": "edge",
     "id": 384
   },
-
   {
     "input": "Eastern Time to London",
     "expectedSource": "Eastern Time",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Full timezone name as source",
     "set": "edge",
     "id": 385
@@ -6314,10 +6424,14 @@
     "input": "Pacific Time to Tokyo",
     "expectedSource": "Pacific Time",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Pacific Time full name as source",
     "set": "edge",
     "id": 386
@@ -6326,10 +6440,14 @@
     "input": "east coast to London",
     "expectedSource": "east coast",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Informal region name as source",
     "set": "edge",
     "id": 387
@@ -6338,10 +6456,14 @@
     "input": "west coast to Tokyo",
     "expectedSource": "west coast",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Informal region name west coast",
     "set": "edge",
     "id": 388
@@ -6350,10 +6472,16 @@
     "input": "3pm Eastern Time to Pacific Time",
     "expectedSource": "Eastern Time",
     "expectedTarget": "Pacific Time",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Time + two full timezone names",
     "set": "edge",
     "id": 389
@@ -6362,10 +6490,14 @@
     "input": "Mountain Time",
     "expectedSource": null,
     "expectedTarget": "Mountain Time",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Standalone full timezone name",
     "set": "edge",
     "id": 390
@@ -6374,10 +6506,14 @@
     "input": "Central Time to London",
     "expectedSource": "Central Time",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Central Time full name as source",
     "set": "edge",
     "id": 391
@@ -6386,23 +6522,34 @@
     "input": "noon Pacific Time to Eastern Time",
     "expectedSource": "Pacific Time",
     "expectedTarget": "Eastern Time",
-    "expectedTime": { "type": "absolute", "hour": 12, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["format-mixing"],
+    "difficultyTags": [
+      "format-mixing"
+    ],
     "notes": "Named time + two full timezone names",
     "set": "edge",
     "id": 392
   },
-
   {
     "input": "3pm UTC+8 to London",
     "expectedSource": "UTC+8",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "UTC offset as source — aspirational, parser doesn't support UTC+N yet",
     "set": "edge",
     "id": 393
@@ -6411,10 +6558,14 @@
     "input": "GMT-5 to Tokyo",
     "expectedSource": "GMT-5",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "GMT-N offset as source — aspirational",
     "set": "edge",
     "id": 394
@@ -6423,10 +6574,14 @@
     "input": "UTC+5:30",
     "expectedSource": null,
     "expectedTarget": "UTC+5:30",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "Fractional UTC offset (India) — aspirational",
     "set": "edge",
     "id": 395
@@ -6435,10 +6590,16 @@
     "input": "noon UTC+9 to UTC-5",
     "expectedSource": "UTC+9",
     "expectedTarget": "UTC-5",
-    "expectedTime": { "type": "absolute", "hour": 12, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "Two UTC offsets — aspirational",
     "set": "edge",
     "id": 396
@@ -6447,10 +6608,14 @@
     "input": "UTC+0 to NYC",
     "expectedSource": "UTC+0",
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "UTC+0 explicit zero offset — aspirational",
     "set": "edge",
     "id": 397
@@ -6459,10 +6624,16 @@
     "input": "9am GMT+1 to GMT-8",
     "expectedSource": "GMT+1",
     "expectedTarget": "GMT-8",
-    "expectedTime": { "type": "absolute", "hour": 9, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "GMT offsets with time — aspirational",
     "set": "edge",
     "id": 398
@@ -6471,10 +6642,14 @@
     "input": "UTC-7",
     "expectedSource": null,
     "expectedTarget": "UTC-7",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "Standalone negative UTC offset — aspirational",
     "set": "edge",
     "id": 399
@@ -6483,23 +6658,38 @@
     "input": "3pm UTC+10 to London",
     "expectedSource": "UTC+10",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["utc-offset"],
+    "difficultyTags": [
+      "utc-offset"
+    ],
     "notes": "Two-digit UTC offset — aspirational",
     "set": "edge",
     "id": 400
   },
-
   {
     "input": "next Tuesday 3pm NYC to London",
     "expectedSource": "NYC",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "tuesday", "anchor": "next" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "tuesday",
+      "anchor": "next"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "next + day-of-week",
     "set": "edge",
     "id": 401
@@ -6508,10 +6698,20 @@
     "input": "Monday 9am Berlin to Tokyo",
     "expectedSource": "Berlin",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "absolute", "hour": 9, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "monday", "anchor": "bare" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "monday",
+      "anchor": "bare"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "Bare day-of-week",
     "set": "edge",
     "id": 402
@@ -6520,10 +6720,20 @@
     "input": "this Friday noon London",
     "expectedSource": null,
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 12, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "friday", "anchor": "this" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "friday",
+      "anchor": "this"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "this + day-of-week",
     "set": "edge",
     "id": 403
@@ -6532,10 +6742,18 @@
     "input": "next Wednesday Tokyo",
     "expectedSource": null,
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "now" },
-    "expectedDateModifier": { "type": "day-of-week", "day": "wednesday", "anchor": "next" },
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "wednesday",
+      "anchor": "next"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "next + day-of-week, no time",
     "set": "edge",
     "id": 404
@@ -6544,10 +6762,20 @@
     "input": "last Saturday 8pm Sydney to London",
     "expectedSource": "Sydney",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 20, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "saturday", "anchor": "last" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 20,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "saturday",
+      "anchor": "last"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "last + day-of-week",
     "set": "edge",
     "id": 405
@@ -6556,10 +6784,21 @@
     "input": "next Mon 10am EST to PST",
     "expectedSource": "EST",
     "expectedTarget": "PST",
-    "expectedTime": { "type": "absolute", "hour": 10, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "monday", "anchor": "next" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 10,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "monday",
+      "anchor": "next"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week", "format-mixing"],
+    "difficultyTags": [
+      "day-of-week",
+      "format-mixing"
+    ],
     "notes": "Abbreviated day + timezone abbreviations",
     "set": "edge",
     "id": 406
@@ -6568,10 +6807,20 @@
     "input": "Thu 2pm Chicago to London",
     "expectedSource": "Chicago",
     "expectedTarget": "London",
-    "expectedTime": { "type": "absolute", "hour": 14, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "thursday", "anchor": "bare" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 14,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "thursday",
+      "anchor": "bare"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "Short day name",
     "set": "edge",
     "id": 407
@@ -6580,23 +6829,38 @@
     "input": "next Sunday midnight NYC",
     "expectedSource": null,
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "absolute", "hour": 0, "minute": 0 },
-    "expectedDateModifier": { "type": "day-of-week", "day": "sunday", "anchor": "next" },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 0,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "sunday",
+      "anchor": "next"
+    },
     "expectedTier": 1,
-    "difficultyTags": ["day-of-week"],
+    "difficultyTags": [
+      "day-of-week"
+    ],
     "notes": "next + day + named time",
     "set": "edge",
     "id": 408
   },
-
   {
     "input": "9-5 London to NYC",
     "expectedSource": "London",
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "absolute", "hour": 9, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 2,
-    "difficultyTags": ["completeness"],
+    "difficultyTags": [
+      "completeness"
+    ],
     "notes": "Business hour range — aspirational, parser doesn't handle ranges",
     "set": "edge",
     "id": 409
@@ -6605,10 +6869,14 @@
     "input": "working hours Tokyo in NYC",
     "expectedSource": "Tokyo",
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 2,
-    "difficultyTags": ["completeness"],
+    "difficultyTags": [
+      "completeness"
+    ],
     "notes": "Natural language business hours — aspirational",
     "set": "edge",
     "id": 410
@@ -6617,23 +6885,30 @@
     "input": "overlap hours NYC and London",
     "expectedSource": "NYC",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 2,
-    "difficultyTags": ["completeness"],
+    "difficultyTags": [
+      "completeness"
+    ],
     "notes": "Overlap/meeting hours — aspirational",
     "set": "edge",
     "id": 411
   },
-
   {
     "input": "東京 to London",
     "expectedSource": "東京",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Japanese kanji for Tokyo — aspirational",
     "set": "edge",
     "id": 412
@@ -6642,10 +6917,14 @@
     "input": "Москва to NYC",
     "expectedSource": "Москва",
     "expectedTarget": "NYC",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Cyrillic Moscow — aspirational",
     "set": "edge",
     "id": 413
@@ -6654,10 +6933,16 @@
     "input": "3pm 北京 to SF",
     "expectedSource": "北京",
     "expectedTarget": "SF",
-    "expectedTime": { "type": "absolute", "hour": 15, "minute": 0 },
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Chinese Beijing with time — aspirational",
     "set": "edge",
     "id": 414
@@ -6666,10 +6951,14 @@
     "input": "دبي to London",
     "expectedSource": "دبي",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Arabic Dubai — aspirational",
     "set": "edge",
     "id": 415
@@ -6678,10 +6967,14 @@
     "input": "서울 to Tokyo",
     "expectedSource": "서울",
     "expectedTarget": "Tokyo",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Korean Seoul — aspirational",
     "set": "edge",
     "id": 416
@@ -6690,10 +6983,14 @@
     "input": "München to London",
     "expectedSource": "München",
     "expectedTarget": "London",
-    "expectedTime": { "type": "now" },
+    "expectedTime": {
+      "type": "now"
+    },
     "expectedDateModifier": null,
     "expectedTier": 1,
-    "difficultyTags": ["non-latin"],
+    "difficultyTags": [
+      "non-latin"
+    ],
     "notes": "Latin diacritics — München (Munich). Tier 1: resolver should handle this.",
     "set": "edge",
     "id": 417

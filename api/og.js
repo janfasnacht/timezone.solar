@@ -90683,10 +90683,12 @@ function parseTimeToken(value) {
 function mergeLocationTokens(tokens) {
   const merged = [];
   for (const token of tokens) {
-    if (token.type === "LOCATION" && merged.length > 0 && merged[merged.length - 1].type === "LOCATION") {
-      const prev = merged[merged.length - 1];
+    const prev = merged[merged.length - 1];
+    const adjacent = prev === void 0 || prev.endIndex === void 0 || token.index === void 0 || token.index === prev.endIndex + 1;
+    if (token.type === "LOCATION" && prev?.type === "LOCATION" && adjacent) {
       prev.value = `${prev.value} ${token.value}`;
       prev.raw = `${prev.raw} ${token.raw}`;
+      prev.endIndex = token.endIndex ?? token.index;
     } else {
       merged.push({ ...token });
     }
@@ -90977,8 +90979,53 @@ var NOISE_WORDS = /* @__PURE__ */ new Set([
   "if",
   "so",
   "then",
-  "that"
+  "that",
+  // Politeness
+  "pls",
+  "plz",
+  "thanks",
+  "thx",
+  "thank",
+  "sorry",
+  // The app's own vocabulary
+  "timezone",
+  "timezones",
+  "converter",
+  "conversion",
+  "search",
+  "query",
+  "help",
+  "random",
+  "test",
+  // Deixis and quantity
+  "there",
+  "here",
+  "about",
+  "many",
+  "much",
+  "hours",
+  "hour",
+  "ahead",
+  "behind",
+  "oclock",
+  // Vague times — no hour to extract, so noise rather than TIME
+  "morning",
+  "afternoon",
+  "evening",
+  "night",
+  "tonight",
+  // Business-hours phrasing; the range itself is not parsed
+  "working",
+  "work",
+  "business",
+  "office",
+  "overlap"
 ]);
+function isUnpronounceable(raw) {
+  const letters = raw.replace(/[^\p{L}]/gu, "");
+  if (letters.length === 0) return true;
+  return letters.length < 2 && raw.length < 3;
+}
 var CONNECTORS_EXTENDED = /* @__PURE__ */ new Set([
   ...CONNECTORS,
   "and",
@@ -90994,16 +91041,103 @@ function classifyToken(raw) {
   if (parseTimeToken(raw) !== null) return "TIME";
   if (DATE_MODIFIERS[lower]) return "DATE_MODIFIER";
   if (NOISE_WORDS.has(lower)) return "NOISE";
+  if (isUnpronounceable(raw)) return "NOISE";
   return "LOCATION";
 }
 
+// src/engine/aliases.ts
+var CITY_ALIASES = {};
+var US_STATE_TIMEZONES = {
+  "california": "America/Los_Angeles",
+  "ca": "America/Los_Angeles",
+  "oregon": "America/Los_Angeles",
+  "washington state": "America/Los_Angeles",
+  "nevada": "America/Los_Angeles",
+  "new york state": "America/New_York",
+  "massachusetts": "America/New_York",
+  "florida": "America/New_York",
+  "georgia": "America/New_York",
+  "pennsylvania": "America/New_York",
+  "virginia": "America/New_York",
+  "north carolina": "America/New_York",
+  "south carolina": "America/New_York",
+  "new jersey": "America/New_York",
+  "connecticut": "America/New_York",
+  "maryland": "America/New_York",
+  "maine": "America/New_York",
+  "vermont": "America/New_York",
+  "new hampshire": "America/New_York",
+  "rhode island": "America/New_York",
+  "delaware": "America/New_York",
+  "ohio": "America/New_York",
+  "michigan": "America/New_York",
+  "west virginia": "America/New_York",
+  "illinois": "America/Chicago",
+  "texas": "America/Chicago",
+  "minnesota": "America/Chicago",
+  "wisconsin": "America/Chicago",
+  "iowa": "America/Chicago",
+  "missouri": "America/Chicago",
+  "arkansas": "America/Chicago",
+  "louisiana": "America/Chicago",
+  "mississippi": "America/Chicago",
+  "alabama": "America/Chicago",
+  "tennessee": "America/Chicago",
+  "kansas": "America/Chicago",
+  "nebraska": "America/Chicago",
+  "oklahoma": "America/Chicago",
+  "indiana": "America/New_York",
+  "colorado": "America/Denver",
+  "arizona": "America/Phoenix",
+  "utah": "America/Denver",
+  "montana": "America/Denver",
+  "wyoming": "America/Denver",
+  "new mexico": "America/Denver",
+  "idaho": "America/Boise",
+  "hawaii": "Pacific/Honolulu",
+  "alaska": "America/Anchorage",
+  // Informal region names
+  "east coast": "America/New_York",
+  "west coast": "America/Los_Angeles",
+  "midwest": "America/Chicago",
+  "mountain": "America/Denver",
+  "pacific": "America/Los_Angeles",
+  "eastern": "America/New_York",
+  "central": "America/Chicago",
+  "mountain time": "America/Denver",
+  "pacific time": "America/Los_Angeles",
+  "eastern time": "America/New_York",
+  "central time": "America/Chicago"
+};
+
 // src/engine/parser.ts
+var ALIAS_PHRASES = [...Object.keys(CITY_ALIASES), ...Object.keys(US_STATE_TIMEZONES)].filter((key) => key.includes(" ")).map((key) => key.split(" ")).sort((a, b) => b.length - a.length);
+function matchAliasPhrase(parts, from) {
+  for (const phrase of ALIAS_PHRASES) {
+    if (from + phrase.length > parts.length) continue;
+    let hit = true;
+    for (let i = 0; i < phrase.length; i++) {
+      if (parts[from + i].toLowerCase() !== phrase[i]) {
+        hit = false;
+        break;
+      }
+    }
+    if (hit) return phrase.length;
+  }
+  return 0;
+}
 function tokenize(input) {
-  const parts = input.trim().split(/\s+/);
+  const parts = input.trim().split(/\s+/).filter(Boolean);
   const tokens = [];
-  for (const part of parts) {
-    if (!part) continue;
-    tokens.push({ type: classifyToken(part), value: part, raw: part });
+  for (let i = 0; i < parts.length; i++) {
+    const span = matchAliasPhrase(parts, i);
+    if (span > 0) {
+      const value = parts.slice(i, i + span).join(" ");
+      tokens.push({ type: "LOCATION", value, raw: value, index: i, endIndex: i + span - 1 });
+      i += span - 1;
+      continue;
+    }
+    tokens.push({ type: classifyToken(parts[i]), value: parts[i], raw: parts[i], index: i });
   }
   return tokens;
 }
@@ -91011,7 +91145,9 @@ function toBaseTokens(tokens) {
   return tokens.map((t) => ({
     type: t.type,
     value: t.value,
-    raw: t.raw
+    raw: t.raw,
+    index: t.index,
+    endIndex: t.endIndex ?? t.index
   }));
 }
 function tryPatternMatch(tokens) {
@@ -91113,23 +91249,6 @@ function parse(input) {
       matchType: "greedy",
       noiseCount
     };
-  }
-  if (noiseTokens.length > 0 && signalTokens.every((t) => t.type !== "LOCATION")) {
-    const promoted = afterDateMod.map(
-      (t) => t.type === "NOISE" ? { ...t, type: "LOCATION" } : t
-    );
-    const promotedSignal = promoted.filter((t) => t.type !== "NOISE");
-    const promotedBase = toBaseTokens(promotedSignal);
-    const promotedMerged = mergeLocationTokens(promotedBase);
-    const promotedCleaned = stripLeadingConnectors(removeConnectorBeforeTime(promotedMerged));
-    const promotedPattern = tryPatternMatch(promotedCleaned);
-    if (promotedPattern) {
-      return {
-        parsed: buildParsedQuery(promotedPattern, relativeMinutes, dateModifier),
-        matchType: "promoted",
-        noiseCount
-      };
-    }
   }
   return { parsed: null, matchType: "none", noiseCount };
 }
@@ -92471,71 +92590,6 @@ Fuse.config = Config;
 {
   register(ExtendedSearch);
 }
-
-// src/engine/aliases.ts
-var CITY_ALIASES = {};
-var US_STATE_TIMEZONES = {
-  "california": "America/Los_Angeles",
-  "ca": "America/Los_Angeles",
-  "oregon": "America/Los_Angeles",
-  "washington state": "America/Los_Angeles",
-  "nevada": "America/Los_Angeles",
-  "new york state": "America/New_York",
-  "massachusetts": "America/New_York",
-  "florida": "America/New_York",
-  "georgia": "America/New_York",
-  "pennsylvania": "America/New_York",
-  "virginia": "America/New_York",
-  "north carolina": "America/New_York",
-  "south carolina": "America/New_York",
-  "new jersey": "America/New_York",
-  "connecticut": "America/New_York",
-  "maryland": "America/New_York",
-  "maine": "America/New_York",
-  "vermont": "America/New_York",
-  "new hampshire": "America/New_York",
-  "rhode island": "America/New_York",
-  "delaware": "America/New_York",
-  "ohio": "America/New_York",
-  "michigan": "America/New_York",
-  "west virginia": "America/New_York",
-  "illinois": "America/Chicago",
-  "texas": "America/Chicago",
-  "minnesota": "America/Chicago",
-  "wisconsin": "America/Chicago",
-  "iowa": "America/Chicago",
-  "missouri": "America/Chicago",
-  "arkansas": "America/Chicago",
-  "louisiana": "America/Chicago",
-  "mississippi": "America/Chicago",
-  "alabama": "America/Chicago",
-  "tennessee": "America/Chicago",
-  "kansas": "America/Chicago",
-  "nebraska": "America/Chicago",
-  "oklahoma": "America/Chicago",
-  "indiana": "America/New_York",
-  "colorado": "America/Denver",
-  "arizona": "America/Phoenix",
-  "utah": "America/Denver",
-  "montana": "America/Denver",
-  "wyoming": "America/Denver",
-  "new mexico": "America/Denver",
-  "idaho": "America/Boise",
-  "hawaii": "Pacific/Honolulu",
-  "alaska": "America/Anchorage",
-  // Informal region names
-  "east coast": "America/New_York",
-  "west coast": "America/Los_Angeles",
-  "midwest": "America/Chicago",
-  "mountain": "America/Denver",
-  "pacific": "America/Los_Angeles",
-  "eastern": "America/New_York",
-  "central": "America/Chicago",
-  "mountain time": "America/Denver",
-  "pacific time": "America/Los_Angeles",
-  "eastern time": "America/New_York",
-  "central time": "America/Chicago"
-};
 
 // src/engine/airport-data.generated.ts
 var AIRPORT_DATA = [
@@ -97813,6 +97867,7 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   if (cityEntries && cityEntries.length > 0) {
     return cityEntriesToResolveResult(cityEntries, "city-db");
   }
+  if (NOISE_WORDS.has(normalized)) return null;
   const fuse = getFuse();
   const fuzzyResults = fuse.search(normalized);
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== void 0 && fuzzyResults[0].score < 0.3) {

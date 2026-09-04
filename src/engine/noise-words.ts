@@ -20,7 +20,26 @@ export const NOISE_WORDS = new Set([
   'ok', 'okay', 'hey', 'hi', 'hello', 'google', 'siri', 'alexa',
   // Conjunctions
   'if', 'so', 'then', 'that',
+  // Politeness
+  'pls', 'plz', 'thanks', 'thx', 'thank', 'sorry',
+  // The app's own vocabulary
+  'timezone', 'timezones', 'converter', 'conversion', 'search', 'query',
+  'help', 'random', 'test',
+  // Deixis and quantity
+  'there', 'here', 'about', 'many', 'much', 'hours', 'hour', 'ahead',
+  'behind', 'oclock',
+  // Vague times — no hour to extract, so noise rather than TIME
+  'morning', 'afternoon', 'evening', 'night', 'tonight',
+  // Business-hours phrasing; the range itself is not parsed
+  'working', 'work', 'business', 'office', 'overlap',
 ])
+
+/** A bare letter, or a token with no letters. No place name takes that shape. */
+export function isUnpronounceable(raw: string): boolean {
+  const letters = raw.replace(/[^\p{L}]/gu, '')
+  if (letters.length === 0) return true
+  return letters.length < 2 && raw.length < 3
+}
 
 export const CONNECTORS_EXTENDED = new Set([
   ...CONNECTORS,
@@ -34,5 +53,6 @@ export function classifyToken(raw: string): TokenTypeExtended {
   if (parseTimeToken(raw) !== null) return 'TIME'
   if (DATE_MODIFIERS[lower]) return 'DATE_MODIFIER'
   if (NOISE_WORDS.has(lower)) return 'NOISE'
+  if (isUnpronounceable(raw)) return 'NOISE'
   return 'LOCATION'
 }

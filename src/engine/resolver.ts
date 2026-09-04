@@ -4,6 +4,7 @@ import type { LocationRef, LocationKind, ResolveResult } from './types'
 import { CITY_ALIASES, US_STATE_TIMEZONES } from './aliases'
 import { TZ_ABBREVIATIONS, TZ_ABBREVIATION_LABELS } from './constants'
 import { lookupEntity } from './entities'
+import { NOISE_WORDS } from './noise-words'
 
 interface CityEntry {
   city: string
@@ -276,7 +277,11 @@ function resolveLocationUncached(
     return cityEntriesToResolveResult(cityEntries, 'city-db')
   }
 
-  // Layer 5: Lazy Fuse.js fuzzy search
+  // Layer 5: Lazy Fuse.js fuzzy search. A noise word never gets a guess: one
+  // edit is a typo on a long name and a different word on a short one, and no
+  // distance rule tells `hello`/Bello from `Tokio`/Tokyo.
+  if (NOISE_WORDS.has(normalized)) return null
+
   const fuse = getFuse()
   const fuzzyResults = fuse.search(normalized)
   if (fuzzyResults.length > 0 && fuzzyResults[0].score !== undefined && fuzzyResults[0].score < 0.3) {

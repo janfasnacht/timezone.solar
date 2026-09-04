@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Words that ask rather than name a place no longer come back as a failed
+  search for a city: `whats the time`, `timezone converter`, `help`, `hello`.
+  `Eastern Time` keeps its second word, and filler between two cities no longer
+  glues them into one
 - A misspelling still finds its city, but a coincidence no longer answers as
   one: `Meroe` returned Kemerovo's time, `Iceland` returned Auckland's
 - Cities are found under their own name as well as their transliteration —
