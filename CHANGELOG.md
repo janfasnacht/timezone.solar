@@ -5,13 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.7.0] - 2026-09-06
+
+### Added
+
+- A city can be written with its state or country: `portland maine`,
+  `Delhi India`, `Athens Georgia`, `Toledo Spain`, `vancouver wa`,
+  `newcastle nsw`. Where the qualifier rules every candidate out, the search
+  says so rather than answering with another city
 
 ### Fixed
 
-- A city written with its state or country resolves to that one. `portland maine`
-  gave Portland, Oregon and `springfield illinois` gave New York; countries, ISO
-  codes, provinces and postal abbreviations all work
+- `portland maine` answered Portland, Oregon, and `springfield illinois`
+  answered New York
 - Antarctic research stations no longer resolve to a timezone of nothing
 
 ### Changed
