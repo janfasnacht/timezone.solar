@@ -41,6 +41,8 @@ npm run test         # Run all tests once (vitest)
 npm run test:watch   # Watch mode tests
 npm run bench        # Run performance benchmarks (vitest bench)
 npm run perf:map     # Map interaction cost, driven in Chromium (needs a build)
+npm run eval         # Parser accuracy against the committed baseline
+npm run eval:baseline # Rewrite that baseline from the current run
 ```
 
 `perf:map` drives the production build, so run `npm run build` first. Playwright
@@ -109,9 +111,36 @@ Tests live alongside source files in `src/engine/*.test.ts` and `src/lib/*.test.
 
 Tests pin `Luxon Settings.now()` for reproducible DST-sensitive assertions. When writing time-dependent tests, always pin the current time.
 
+### The parser eval
+
+`npm run eval` scores the parser over `src/engine/__fixtures__/parser-eval.json`
+and compares the result against `parser-eval.baseline.json` next to it. No case
+is asserted individually — a failing case is printed with got-vs-expected but
+does not fail the run. What fails the run is a difference from the baseline, and
+the message says which of four kinds it is:
+
+- **regression** — a number went down. Fix it; do not rebaseline.
+- **fixture** — the ground truth was edited, so the scores are measured against
+  a different exam. Review that diff on its own terms before reading the scores.
+- **shape** — a metric appeared or disappeared, usually a new difficulty tag.
+- **improvement** — a number went up, or a different case now fails. Not a
+  failure, but the baseline has to be updated in the same change so the diff
+  shows what moved.
+
+The baseline gates every headline and per-tag accuracy plus tier safety and tier
+accuracy. Latency and complexity are printed but not gated: latency is not
+reproducible across machines. The baseline also records the case count and a
+hash over the ground-truth fields, so a score change and a ground-truth change
+cannot be confused. The hash ignores `notes`, `persona` and `difficultyTags` —
+those describe a case, they are not the case.
+
+Do not mark a known failure as expected. A case marked that way goes quiet when
+it starts passing, and says nothing about a different case breaking. If the eval
+ever reaches 100%, the set has stopped measuring anything.
+
 ## CI / Deployment
 
-**CI:** GitHub Actions (`.github/workflows/ci.yml`) — runs lint, build (includes typecheck via `tsc -b`), and test on pushes/PRs to `main`.
+**CI:** GitHub Actions (`.github/workflows/ci.yml`) — runs lint, build (includes typecheck via `tsc -b`), test and eval on pushes/PRs to `main`.
 
 **Hosting:** Vercel via Git integration — auto-deploys on push to `main`, preview deploys on PRs. Domain: `timezone.solar`.
 

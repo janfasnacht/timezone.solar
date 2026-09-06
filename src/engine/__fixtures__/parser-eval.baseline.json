@@ -1,0 +1,119 @@
+{
+  "adapter": "v2-noise-tolerant",
+  "fixture": {
+    "caseCount": 417,
+    "expectationsHash": "sha256:16c6f1565a7ed71af0c3c64891f7eb0733d50957e64ca36861e74a49de6eb816",
+    "setCounts": {
+      "realistic": 245,
+      "edge": 172
+    }
+  },
+  "metrics": {
+    "accuracy.overall": {
+      "value": 0.9904,
+      "n": 417
+    },
+    "accuracy.set.realistic": {
+      "value": 1,
+      "n": 245
+    },
+    "accuracy.set.edge": {
+      "value": 0.9767,
+      "n": 172
+    },
+    "accuracy.field.source": {
+      "value": 0.9952,
+      "n": 417
+    },
+    "accuracy.field.target": {
+      "value": 0.9928,
+      "n": 417
+    },
+    "accuracy.field.time": {
+      "value": 0.9976,
+      "n": 417
+    },
+    "accuracy.field.dateMod": {
+      "value": 1,
+      "n": 417
+    },
+    "accuracy.tag.structural-ambiguity": {
+      "value": 1,
+      "n": 15
+    },
+    "accuracy.tag.token-ambiguity": {
+      "value": 1,
+      "n": 12
+    },
+    "accuracy.tag.noise-tolerance": {
+      "value": 0.9,
+      "n": 20
+    },
+    "accuracy.tag.completeness": {
+      "value": 0.9474,
+      "n": 19
+    },
+    "accuracy.tag.typo": {
+      "value": 1,
+      "n": 15
+    },
+    "accuracy.tag.format-mixing": {
+      "value": 0.9583,
+      "n": 24
+    },
+    "accuracy.tag.multi-word-city": {
+      "value": 1,
+      "n": 15
+    },
+    "accuracy.tag.short-input": {
+      "value": 1,
+      "n": 12
+    },
+    "accuracy.tag.date-modifier": {
+      "value": 1,
+      "n": 10
+    },
+    "accuracy.tag.relative-time": {
+      "value": 1,
+      "n": 10
+    },
+    "accuracy.tag.utc-offset": {
+      "value": 1,
+      "n": 8
+    },
+    "accuracy.tag.day-of-week": {
+      "value": 1,
+      "n": 8
+    },
+    "accuracy.tag.non-latin": {
+      "value": 1,
+      "n": 6
+    },
+    "tierSafety": {
+      "value": 0.997,
+      "n": 332
+    },
+    "tierAccuracy": {
+      "value": 0.6643,
+      "n": 417
+    }
+  },
+  "failingCases": [
+    {
+      "id": 279,
+      "input": "3pm meeting time Berlin London"
+    },
+    {
+      "id": 290,
+      "input": "time zone difference London NYC"
+    },
+    {
+      "id": 334,
+      "input": "3pm London GMT to Tokyo JST"
+    },
+    {
+      "id": 409,
+      "input": "9-5 London to NYC"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "timezone.solar",
   "version": "1.6.0",
-  "description": "Natural language timezone converter — timezone.solar",
+  "description": "Natural language timezone converter \u2014 timezone.solar",
   "author": "Jan Fasnacht",
   "license": "MIT",
   "repository": {
@@ -30,6 +30,7 @@
     "eval:generate": "tsx --env-file=.env.local scripts/generate-eval-queries.ts",
     "eval:compile": "tsx scripts/compile-eval-fixture.ts",
     "eval": "vitest run --config vitest.eval.config.ts",
+    "eval:baseline": "tsx scripts/write-eval-baseline.ts",
     "icons:download": "npx tsx scripts/download-icons.ts",
     "airports:generate": "npx tsx scripts/generate-airports.ts"
   },
