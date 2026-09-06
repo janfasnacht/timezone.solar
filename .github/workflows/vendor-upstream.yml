@@ -1,0 +1,72 @@
+name: Vendor upstream check
+
+# Asks upstream once a week whether a pin has moved, and files an issue only
+# when a refresh would change what ships.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - id: check
+        run: |
+          set +e
+          npm run vendor:upstream 2>&1 | tee report.txt
+          echo "stale=$([ ${PIPESTATUS[0]} -eq 0 ] && echo false || echo true)" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - if: steps.check.outputs.stale == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            const body = [
+              'A pinned dataset has moved upstream and refreshing it would change what ships.',
+              '',
+              '```',
+              fs.readFileSync('report.txt', 'utf8').trim(),
+              '```',
+              '',
+              'Refresh the vendored file, regenerate, then re-lock with',
+              '`npm run vendor:check -- --write` and update the commit in `vendor/manifest.json`.',
+            ].join('\n')
+            const title = 'Vendored data is behind upstream'
+            const open = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'vendor',
+            })
+            const existing = open.data.find((i) => i.title === title)
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body,
+              })
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['vendor'],
+              })
+            }

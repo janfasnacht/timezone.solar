@@ -43,6 +43,8 @@ npm run bench        # Run performance benchmarks (vitest bench)
 npm run perf:map     # Map interaction cost, driven in Chromium (needs a build)
 npm run eval         # Parser accuracy against the committed baseline
 npm run eval:baseline # Rewrite that baseline from the current run
+npm run vendor:check # Vendored data matches vendor/manifest.json (offline)
+npm run vendor:upstream # Ask upstream whether a pinned dataset has moved
 ```
 
 `perf:map` drives the production build, so run `npm run build` first. Playwright
@@ -100,14 +102,25 @@ The engine is the core of the app and must stay framework-agnostic.
 
 ## Third-party data
 
+Every external dataset is described by `vendor/manifest.json`: a pinned commit
+or exact npm version, its licence and attribution, and the artefacts it
+generates. `vendor/README.md` is the policy; `npm run vendor:check` enforces it
+offline and runs in CI through `scripts/vendor.test.ts`, and
+`npm run vendor:upstream` asks upstream whether the pin is behind.
+
 `city-timezones` and `world-atlas` are pinned exactly, not on a caret range:
 they are datasets, and a minor bump changes the app's answers on install.
 `src/engine/city-count.test.ts` asserts the documented city count against what
 the package actually ships.
 
+A generated artefact must be a pure function of its vendored input — no clock,
+no environment, no network — because the check regenerates it and compares byte
+for byte. `scripts/lib/airport-data.ts` is the model: the generation is a
+library, `scripts/generate-airports.ts` is the thin CLI that writes the file.
+
 ## Testing
 
-Tests live alongside source files in `src/engine/*.test.ts` and `src/lib/*.test.ts`. Benchmarks in `src/engine/engine.bench.ts`.
+Tests live alongside source files in `src/engine/*.test.ts`, `src/lib/*.test.ts` and `scripts/*.test.ts`. Benchmarks in `src/engine/engine.bench.ts`.
 
 Tests pin `Luxon Settings.now()` for reproducible DST-sensitive assertions. When writing time-dependent tests, always pin the current time.
 

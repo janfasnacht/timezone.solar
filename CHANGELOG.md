@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Third-party data is pinned to a commit or an exact version, with its licence
+  and attribution recorded in `vendor/manifest.json`. CI fails if a vendored
+  file changes without the record changing, or if a generated artefact no
+  longer regenerates from the input it names, and a weekly job reports when a
+  pin has fallen behind upstream
+
 ## [1.7.0] - 2026-09-06
 
 ### Added

@@ -32,7 +32,9 @@
     "eval": "vitest run --config vitest.eval.config.ts",
     "eval:baseline": "tsx scripts/write-eval-baseline.ts",
     "icons:download": "npx tsx scripts/download-icons.ts",
-    "airports:generate": "npx tsx scripts/generate-airports.ts"
+    "airports:generate": "npx tsx scripts/generate-airports.ts",
+    "vendor:check": "npx tsx scripts/check-vendor.ts",
+    "vendor:upstream": "npx tsx scripts/check-vendor.ts --upstream"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
