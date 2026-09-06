@@ -28,6 +28,8 @@ const METHOD_SCORES: Record<LocationRef['resolveMethod'], number> = {
   // An offset is not a guess about what someone meant; it is what they typed.
   'utc-offset': 1.0,
   'city-db': 0.9,
+  // Named outright by the user, not guessed between same-named cities.
+  'qualified': 1.0,
   'fuzzy': 0.7,
 }
 

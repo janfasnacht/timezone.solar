@@ -91109,6 +91109,79 @@ var US_STATE_TIMEZONES = {
   "eastern time": "America/New_York",
   "central time": "America/Chicago"
 };
+var SUBNATIONAL_ABBREVIATIONS = {
+  // United States
+  al: "alabama",
+  ak: "alaska",
+  az: "arizona",
+  ar: "arkansas",
+  ca: "california",
+  co: "colorado",
+  ct: "connecticut",
+  de: "delaware",
+  fl: "florida",
+  ga: "georgia",
+  hi: "hawaii",
+  id: "idaho",
+  il: "illinois",
+  in: "indiana",
+  ia: "iowa",
+  ks: "kansas",
+  ky: "kentucky",
+  la: "louisiana",
+  me: "maine",
+  md: "maryland",
+  ma: "massachusetts",
+  mi: "michigan",
+  mn: "minnesota",
+  ms: "mississippi",
+  mo: "missouri",
+  mt: "montana",
+  ne: "nebraska",
+  nv: "nevada",
+  nh: "new hampshire",
+  nj: "new jersey",
+  nm: "new mexico",
+  ny: "new york",
+  nc: "north carolina",
+  nd: "north dakota",
+  oh: "ohio",
+  ok: "oklahoma",
+  or: "oregon",
+  pa: "pennsylvania",
+  ri: "rhode island",
+  sc: "south carolina",
+  sd: "south dakota",
+  tn: "tennessee",
+  tx: "texas",
+  ut: "utah",
+  vt: "vermont",
+  va: "virginia",
+  wa: "washington",
+  wv: "west virginia",
+  wi: "wisconsin",
+  wy: "wyoming",
+  dc: "district of columbia",
+  // Australia
+  nsw: "new south wales",
+  vic: "victoria",
+  qld: "queensland",
+  tas: "tasmania",
+  nt: "northern territory",
+  act: "australian capital territory",
+  // Canada
+  on: "ontario",
+  qc: "quebec",
+  bc: "british columbia",
+  ab: "alberta",
+  sk: "saskatchewan",
+  mb: "manitoba",
+  ns: "nova scotia",
+  nb: "new brunswick",
+  nl: "newfoundland and labrador",
+  pe: "prince edward island",
+  yt: "yukon"
+};
 
 // src/engine/parser.ts
 var ALIAS_PHRASES = [...Object.keys(CITY_ALIASES), ...Object.keys(US_STATE_TIMEZONES)].filter((key) => key.includes(" ")).map((key) => key.split(" ")).sort((a, b) => b.length - a.length);
@@ -97699,7 +97772,9 @@ function lookupEntity(input) {
 function normalize(input) {
   return input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
 }
-var allCities = import_city_timezones.default.cityMapping;
+var allCities = import_city_timezones.default.cityMapping.filter(
+  (entry) => typeof entry.timezone === "string" && entry.timezone.length > 0
+);
 var normalizedCityMap = /* @__PURE__ */ new Map();
 for (const entry of allCities) {
   for (const key of /* @__PURE__ */ new Set([normalize(entry.city_ascii), normalize(entry.city)])) {
@@ -97786,6 +97861,69 @@ function parseUtcOffset(input) {
   const label = `UTC${sign}${hours}${minutes ? `:${String(minutes).padStart(2, "0")}` : ""}`;
   return { iana: label, displayName: label, kind: "timezone", resolveMethod: "utc-offset" };
 }
+var COUNTRY_ALIASES = {
+  usa: "united states of america",
+  us: "united states of america",
+  america: "united states of america",
+  uk: "united kingdom",
+  gb: "united kingdom",
+  britain: "united kingdom",
+  england: "united kingdom",
+  uae: "united arab emirates",
+  "south korea": "korea, south",
+  "north korea": "korea, north"
+};
+var MAX_QUALIFIER_WORDS = 3;
+function matchesQualifier(entry, qualifier) {
+  const stateIana = US_STATE_TIMEZONES[qualifier];
+  if (stateIana && entry.timezone === stateIana) return true;
+  const province = SUBNATIONAL_ABBREVIATIONS[qualifier];
+  if (province && normalize(entry.province) === province) return true;
+  const country = entry.country.toLowerCase();
+  const wanted = COUNTRY_ALIASES[qualifier] ?? qualifier;
+  if (country === wanted) return true;
+  if (normalize(entry.country) === qualifier) return true;
+  if (typeof entry.iso2 === "string" && entry.iso2.toLowerCase() === qualifier) return true;
+  if (entry.iso3 && entry.iso3.toLowerCase() === qualifier) return true;
+  if (entry.province && normalize(entry.province) === qualifier) return true;
+  return false;
+}
+function looksLikeQualifier(qualifier) {
+  if (qualifier in US_STATE_TIMEZONES) return true;
+  if (qualifier in COUNTRY_ALIASES) return true;
+  if (qualifier in SUBNATIONAL_ABBREVIATIONS) return true;
+  return knownQualifiers.has(qualifier);
+}
+function isStrongQualifier(qualifier) {
+  return qualifier.length > 3;
+}
+var knownQualifiers = (() => {
+  const set = /* @__PURE__ */ new Set();
+  for (const entry of allCities) {
+    set.add(normalize(entry.country));
+    if (typeof entry.iso2 === "string") set.add(entry.iso2.toLowerCase());
+    if (entry.iso3) set.add(entry.iso3.toLowerCase());
+    if (entry.province) set.add(normalize(entry.province));
+  }
+  set.delete("");
+  return set;
+})();
+var REFUSED = /* @__PURE__ */ Symbol("qualifier contradicted");
+function resolveQualified(normalizedKey) {
+  const words = normalizedKey.split(" ");
+  if (words.length < 2) return null;
+  for (let take = 1; take <= MAX_QUALIFIER_WORDS && take < words.length; take++) {
+    const cut = words.length - take;
+    const qualifier = words.slice(cut).join(" ");
+    if (!looksLikeQualifier(qualifier)) continue;
+    const entries = normalizedCityMap.get(words.slice(0, cut).join(" "));
+    if (!entries) continue;
+    const matched = entries.filter((e) => matchesQualifier(e, qualifier));
+    if (matched.length > 0) return cityEntriesToResolveResult(matched, "qualified");
+    if (isStrongQualifier(qualifier)) return REFUSED;
+  }
+  return null;
+}
 function resolveLocation(input) {
   const trimmed = input.trim();
   if (!trimmed) return null;
@@ -97870,6 +98008,9 @@ function resolveLocationUncached(normalized, normalizedKey, originalTrimmed) {
   if (cityEntries && cityEntries.length > 0) {
     return cityEntriesToResolveResult(cityEntries, "city-db");
   }
+  const qualified = resolveQualified(normalizedKey);
+  if (qualified === REFUSED) return null;
+  if (qualified) return qualified;
   if (NOISE_WORDS.has(normalized)) return null;
   const fuse = getFuse();
   const fuzzyResults = fuse.search(normalized);
