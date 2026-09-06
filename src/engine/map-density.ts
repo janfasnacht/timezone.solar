@@ -106,7 +106,6 @@ export function getRankedMapEntities(): readonly RankedEntity[] {
         aliases: [],
         wikidataId: null,
         vibes: null,
-        iconSlug: null,
       },
     })
   }

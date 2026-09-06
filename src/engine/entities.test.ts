@@ -1,6 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
 import { lookupEntity, getEntityBySlug, getAllEntities, formatEntityLabel } from './entities'
 import { DateTime } from 'luxon'
 import { TZ_ABBREVIATIONS } from './constants'
@@ -133,47 +131,17 @@ describe('entities', () => {
       }
     })
 
-    it('every iconSlug matches expected pattern', () => {
-      const entities = getAllEntities()
-      for (const e of entities) {
-        if (e.kind !== 'city') continue
-        if (e.iconSlug !== null) {
-          expect(
-            e.iconSlug,
-            `Bad slug format: ${e.iconSlug}`,
-          ).toMatch(/^[a-z]{2}-[a-z0-9-]+$/)
-        }
-      }
-    })
-
-    it('every iconSlug has a corresponding SVG file', () => {
-      const entities = getAllEntities()
-      const iconsDir = join(import.meta.dirname, '../../public/icons')
-      for (const e of entities) {
-        if (e.kind !== 'city') continue
-        if (e.iconSlug !== null) {
-          const filePath = join(iconsDir, `${e.iconSlug}.svg`)
-          expect(
-            existsSync(filePath),
-            `Missing icon: ${e.iconSlug}.svg for ${e.slug}`,
-          ).toBe(true)
-        }
-      }
-    })
-
     it('original entities preserved unchanged', () => {
       const ny = getEntityBySlug('new-york')
       expect(ny?.kind).toBe('city')
       if (ny?.kind !== 'city') throw new Error('expected city')
       expect(ny.vibes).toEqual(['electric', 'hustling', 'sleepless'])
       expect(ny.aliases).toEqual(['nyc', 'ny'])
-      expect(ny.iconSlug).toBe('us-new-york')
 
       const tokyo = getEntityBySlug('tokyo')
       if (tokyo?.kind !== 'city') throw new Error('expected city')
       expect(tokyo.vibes).toEqual(['zen', 'precise', 'futuristic'])
       expect(tokyo.aliases).toEqual(['japan'])
-      expect(tokyo.iconSlug).toBe('jp-tokyo')
 
       const london = getEntityBySlug('london')
       if (london?.kind !== 'city') throw new Error('expected city')
