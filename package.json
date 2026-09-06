@@ -32,6 +32,7 @@
     "eval": "vitest run --config vitest.eval.config.ts",
     "eval:baseline": "tsx scripts/write-eval-baseline.ts",
     "airports:generate": "npx tsx scripts/generate-airports.ts",
+    "cities:generate": "npx tsx scripts/generate-city-data.ts",
     "vendor:check": "npx tsx scripts/check-vendor.ts",
     "vendor:upstream": "npx tsx scripts/check-vendor.ts --upstream"
   },

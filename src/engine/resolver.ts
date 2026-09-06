@@ -1,69 +1,30 @@
-import cityTimezones from 'city-timezones'
 import Fuse from 'fuse.js'
 import type { LocationRef, LocationKind, ResolveResult } from './types'
 import { CITY_ALIASES, US_STATE_TIMEZONES, SUBNATIONAL_ABBREVIATIONS } from './aliases'
 import { TZ_ABBREVIATIONS, TZ_ABBREVIATION_LABELS } from './constants'
 import { lookupEntity } from './entities'
 import { NOISE_WORDS } from './noise-words'
+import { normalize } from './normalize'
+import {
+  getHeadCities,
+  getNameIndex,
+  getQualifierVocabulary,
+  lookupCities,
+  getCityTableVersion,
+  type CityRow,
+} from './city-table'
 
-/** A `city-timezones` row. `iso2` is `-99` on 8 rows and `timezone` is null on 48. */
-interface CityEntry {
-  city: string
-  city_ascii: string
-  lat: number
-  lng: number
-  pop: number
-  country: string
-  iso2: string | number
-  iso3: string
-  province: string
-  timezone: string
-}
-
-// --- Normalization ---
-
-export function normalize(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // strip combining marks
-    .replace(/[^a-z0-9 ]/g, '')      // strip non-alphanumeric (keep spaces)
-    .trim()
-}
-
-// --- Pre-computed normalized city map ---
-
-// A row with no zone resolves with `iana: null` if left in the index.
-const allCities = (cityTimezones.cityMapping as unknown as CityEntry[]).filter(
-  (entry) => typeof entry.timezone === 'string' && entry.timezone.length > 0
-)
-
-// Indexed under both of a row's names. 115 of them differ — Kashgar is filed
-// under "Kashi", Bensonville under "Bentol" — and on `city_ascii` alone the
-// other spelling is reachable only by a fuzzy guess.
-const normalizedCityMap = new Map<string, CityEntry[]>()
-for (const entry of allCities) {
-  for (const key of new Set([normalize(entry.city_ascii), normalize(entry.city)])) {
-    if (!key) continue
-    const existing = normalizedCityMap.get(key)
-    if (existing) existing.push(entry)
-    else normalizedCityMap.set(key, [entry])
-  }
-}
-// Sort each bucket by population descending
-for (const entries of normalizedCityMap.values()) {
-  entries.sort((a, b) => b.pop - a.pop)
-}
+export { normalize }
 
 // --- Lazy Fuse.js ---
 
-let fuseInstance: Fuse<CityEntry> | null = null
+let fuseInstance: Fuse<CityRow> | null = null
 
-function getFuse(): Fuse<CityEntry> {
+/** Guessing across the tail would offer a village in place of the city meant. */
+function getFuse(): Fuse<CityRow> {
   if (!fuseInstance) {
-    const largeCities = allCities.filter((c) => c.pop > 100000)
-    fuseInstance = new Fuse(largeCities, {
-      keys: ['city', 'city_ascii'],
+    fuseInstance = new Fuse(getHeadCities() as CityRow[], {
+      keys: ['city', 'cityAscii'],
       threshold: 0.3,
       includeScore: true,
     })
@@ -106,6 +67,15 @@ const FUZZY_MAX_EDIT_RATIO = 0.3
 
 const CACHE_MAX = 500
 const resolveCache = new Map<string, ResolveResult | null>()
+let cachedVersion = getCityTableVersion()
+
+/** A miss cached from the head alone is exactly what the tail would find. */
+function dropCacheIfTableGrew(): void {
+  const version = getCityTableVersion()
+  if (version === cachedVersion) return
+  cachedVersion = version
+  resolveCache.clear()
+}
 
 function cacheGet(key: string): ResolveResult | null | undefined {
   return resolveCache.get(key)
@@ -129,7 +99,7 @@ function normalizeCountry(country: string): string {
   return country
 }
 
-function cityEntryToLocationRef(entry: CityEntry, resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): LocationRef {
+function cityRowToLocationRef(entry: CityRow, resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): LocationRef {
   return {
     iana: entry.timezone,
     displayName: entry.city,
@@ -139,10 +109,10 @@ function cityEntryToLocationRef(entry: CityEntry, resolveMethod: LocationRef['re
   }
 }
 
-function cityEntriesToResolveResult(entries: CityEntry[], resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): ResolveResult {
+function cityRowsToResolveResult(entries: CityRow[], resolveMethod: LocationRef['resolveMethod'], kind: LocationKind = 'city'): ResolveResult {
   return {
-    primary: cityEntryToLocationRef(entries[0], resolveMethod, kind),
-    alternatives: entries.slice(1).map((e) => cityEntryToLocationRef(e, resolveMethod, kind)),
+    primary: cityRowToLocationRef(entries[0], resolveMethod, kind),
+    alternatives: entries.slice(1).map((e) => cityRowToLocationRef(e, resolveMethod, kind)),
   }
 }
 
@@ -190,7 +160,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
 /** `united arab emirates` is the longest we accept. */
 const MAX_QUALIFIER_WORDS = 3
 
-function matchesQualifier(entry: CityEntry, qualifier: string): boolean {
+function matchesQualifier(entry: CityRow, qualifier: string): boolean {
   const stateIana = US_STATE_TIMEZONES[qualifier]
   if (stateIana && entry.timezone === stateIana) return true
 
@@ -202,7 +172,7 @@ function matchesQualifier(entry: CityEntry, qualifier: string): boolean {
   if (country === wanted) return true
   if (normalize(entry.country) === qualifier) return true
 
-  if (typeof entry.iso2 === 'string' && entry.iso2.toLowerCase() === qualifier) return true
+  if (entry.iso2 && entry.iso2.toLowerCase() === qualifier) return true
   if (entry.iso3 && entry.iso3.toLowerCase() === qualifier) return true
   if (entry.province && normalize(entry.province) === qualifier) return true
 
@@ -213,7 +183,7 @@ function looksLikeQualifier(qualifier: string): boolean {
   if (qualifier in US_STATE_TIMEZONES) return true
   if (qualifier in COUNTRY_ALIASES) return true
   if (qualifier in SUBNATIONAL_ABBREVIATIONS) return true
-  return knownQualifiers.has(qualifier)
+  return getQualifierVocabulary().has(qualifier)
 }
 
 /**
@@ -223,19 +193,6 @@ function looksLikeQualifier(qualifier: string): boolean {
 function isStrongQualifier(qualifier: string): boolean {
   return qualifier.length > 3
 }
-
-/** Every country, ISO code and province the dataset ships. */
-const knownQualifiers: Set<string> = (() => {
-  const set = new Set<string>()
-  for (const entry of allCities) {
-    set.add(normalize(entry.country))
-    if (typeof entry.iso2 === 'string') set.add(entry.iso2.toLowerCase())
-    if (entry.iso3) set.add(entry.iso3.toLowerCase())
-    if (entry.province) set.add(normalize(entry.province))
-  }
-  set.delete('')
-  return set
-})()
 
 /**
  * `portland maine`, `Delhi India`, `Toledo Spain`. Splits the tail off and, when
@@ -254,11 +211,11 @@ function resolveQualified(normalizedKey: string): ResolveResult | typeof REFUSED
     const qualifier = words.slice(cut).join(' ')
     if (!looksLikeQualifier(qualifier)) continue
 
-    const entries = normalizedCityMap.get(words.slice(0, cut).join(' '))
+    const entries = lookupCities(words.slice(0, cut).join(' '))
     if (!entries) continue
 
     const matched = entries.filter((e) => matchesQualifier(e, qualifier))
-    if (matched.length > 0) return cityEntriesToResolveResult(matched, 'qualified')
+    if (matched.length > 0) return cityRowsToResolveResult(matched, 'qualified')
     if (isStrongQualifier(qualifier)) return REFUSED
   }
 
@@ -275,6 +232,8 @@ export function resolveLocation(input: string): ResolveResult | null {
   // `utc+5:30` and `utc-5:30` would otherwise share a key.
   const offset = parseUtcOffset(trimmed)
   if (offset) return { primary: offset, alternatives: [] }
+
+  dropCacheIfTableGrew()
 
   const normalized = trimmed.toLowerCase()
   const normalizedKey = normalize(trimmed)
@@ -319,9 +278,9 @@ function resolveLocationUncached(
       }
     }
     const entityCityKey = normalize(entity.displayName)
-    const entries = normalizedCityMap.get(entityCityKey)
+    const entries = lookupCities(entityCityKey)
     if (entries && entries.length > 0) {
-      const result = cityEntriesToResolveResult(entries, 'entity')
+      const result = cityRowsToResolveResult(entries, 'entity')
       result.primary.entitySlug = entity.slug
       return result
     }
@@ -343,9 +302,9 @@ function resolveLocationUncached(
   const alias = CITY_ALIASES[normalized]
   if (alias) {
     const aliasKey = normalize(alias)
-    const entries = normalizedCityMap.get(aliasKey)
+    const entries = lookupCities(aliasKey)
     if (entries && entries.length > 0) {
-      return cityEntriesToResolveResult(entries, 'alias')
+      return cityRowsToResolveResult(entries, 'alias')
     }
   }
 
@@ -375,9 +334,9 @@ function resolveLocationUncached(
   }
 
   // Layer 4: Normalized city map — O(1) lookup with disambiguation
-  const cityEntries = normalizedCityMap.get(normalizedKey)
+  const cityEntries = lookupCities(normalizedKey)
   if (cityEntries && cityEntries.length > 0) {
-    return cityEntriesToResolveResult(cityEntries, 'city-db')
+    return cityRowsToResolveResult(cityEntries, 'city-db')
   }
 
   // Layer 4.5: a trailing country, state or province narrowing the city above.
@@ -399,11 +358,11 @@ function resolveLocationUncached(
     // de Tucuman" — and the match is only as far as the nearer of them.
     const distance = Math.min(
       editDistance(normalizedKey, normalize(match.city)),
-      editDistance(normalizedKey, normalize(match.city_ascii))
+      editDistance(normalizedKey, normalize(match.cityAscii))
     )
     if (distance <= normalizedKey.length * FUZZY_MAX_EDIT_RATIO) {
       return {
-        primary: cityEntryToLocationRef(match, 'fuzzy'),
+        primary: cityRowToLocationRef(match, 'fuzzy'),
         alternatives: [],
       }
     }
@@ -434,7 +393,7 @@ export function searchCities(input: string, limit = 6): { city: string; country:
   // Check entity lookup first
   const entity = lookupEntity(trimmed)
   if (entity) {
-    const entries = normalizedCityMap.get(normalize(entity.displayName))
+    const entries = lookupCities(normalize(entity.displayName))
     if (entries) {
       for (const e of entries) {
         const key = `${e.city}|${e.timezone}`
@@ -450,7 +409,7 @@ export function searchCities(input: string, limit = 6): { city: string; country:
   // Check aliases (legacy fallback)
   const alias = CITY_ALIASES[trimmed.toLowerCase()]
   if (alias) {
-    const entries = normalizedCityMap.get(normalize(alias))
+    const entries = lookupCities(normalize(alias))
     if (entries) {
       for (const e of entries) {
         const key = `${e.city}|${e.timezone}`
@@ -464,7 +423,7 @@ export function searchCities(input: string, limit = 6): { city: string; country:
   }
 
   // Exact normalized match
-  const exact = normalizedCityMap.get(normalizedKey)
+  const exact = lookupCities(normalizedKey)
   if (exact) {
     for (const e of exact) {
       const key = `${e.city}|${e.timezone}`
@@ -477,7 +436,7 @@ export function searchCities(input: string, limit = 6): { city: string; country:
   }
 
   // Prefix scan over normalized map
-  for (const [key, entries] of normalizedCityMap) {
+  for (const [key, entries] of getNameIndex()) {
     if (key.startsWith(normalizedKey) && key !== normalizedKey) {
       for (const e of entries) {
         const k = `${e.city}|${e.timezone}`

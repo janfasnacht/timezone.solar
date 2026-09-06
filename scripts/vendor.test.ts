@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkGeneratedArtefacts, checkOffline, readManifest } from './lib/vendor'
+import { checkGeneratedArtifacts, checkOffline, readManifest } from './lib/vendor'
 
 /**
  * The offline half of `npm run vendor:check`, so a stale pin or an unrecorded
@@ -23,8 +23,8 @@ describe('vendored data matches vendor/manifest.json', () => {
     expect(checkOffline(manifest)).toEqual([])
   })
 
-  it('regenerates airport-data.generated.ts from the vendored snapshot', () => {
-    expect(checkGeneratedArtefacts()).toEqual([])
+  it('regenerates every artifact from the input it names', () => {
+    expect(checkGeneratedArtifacts(manifest)).toEqual([])
   })
 })
 

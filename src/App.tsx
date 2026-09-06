@@ -11,6 +11,7 @@ import { AboutPage } from '@/components/AboutPage'
 import { SunDialLogo } from '@/components/SunDialLogo'
 import { ViewToggle } from '@/components/ViewToggle'
 import { TimeControl } from '@/components/TimeControl'
+import { loadCityTail, subscribeCityTail } from '@/engine/city-table'
 import { useConversion } from '@/hooks/useConversion'
 import { useRecentQueries } from '@/hooks/useRecentQueries'
 import { useUrlState } from '@/hooks/useUrlState'
@@ -115,10 +116,21 @@ function App() {
   // never moves the input.
   const isActive = Boolean(result || error || view === 'map')
 
+  // Until the deferred city tail lands a small city reads as not found, so
+  // whatever is in the box runs again once it is in.
+  useEffect(() => {
+    loadCityTail()
+    return subscribeCityTail(() => {
+      const q = liveQueryRef.current
+      if (q.length >= 2) runConversion(q)
+    })
+  }, [runConversion])
+
   useEffect(() => {
     if (urlQuery) {
       setInputValue(urlQuery)
       setCurrentInputValue(urlQuery)
+      liveQueryRef.current = urlQuery
       shouldCanonicalizeRef.current = true
       runConversion(urlQuery)
       addQuery(urlQuery)

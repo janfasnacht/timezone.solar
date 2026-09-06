@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef, useCallback, useEffect } from 'react'
+import { useMemo, useState, useRef, useCallback, useEffect, useSyncExternalStore } from 'react'
 import { geoNaturalEarth1, geoPath, geoGraticule10, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import type { Topology, GeometryCollection } from 'topojson-specification'
@@ -16,6 +16,7 @@ import {
   type Box,
 } from '@/engine/map-density'
 import { normalize } from '@/engine/resolver'
+import { subscribeCityTail } from '@/engine/city-table'
 import type { Entity } from '@/engine/entities'
 import type { HomeCity } from '@/lib/preferences'
 import { type EntityRole } from './EntityDot'
@@ -155,6 +156,12 @@ export function WorldMap({
   const frameRef = useRef({ w: WIDTH, h: HEIGHT })
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null)
+  // Identity changes only when the deferred city tail lands.
+  const rankedEntities = useSyncExternalStore(
+    subscribeCityTail,
+    getRankedMapEntities,
+    getRankedMapEntities,
+  )
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
   const vpH = containerRect?.height ?? 0
 
@@ -304,13 +311,12 @@ export function WorldMap({
       const point = projection([r.entity.lng, r.entity.lat])
       return point ? { entity: r.entity, rank: r.rank, x: point[0], y: point[1] } : null
     }
-    const all = getRankedMapEntities()
     const isProjected = (p: ProjectedEntity | null): p is ProjectedEntity => p !== null
     return {
-      cityPool: all.filter((r) => r.entity.kind !== 'airport').map(project).filter(isProjected),
-      airportPool: all.filter((r) => r.entity.kind === 'airport').map(project).filter(isProjected),
+      cityPool: rankedEntities.filter((r) => r.entity.kind !== 'airport').map(project).filter(isProjected),
+      airportPool: rankedEntities.filter((r) => r.entity.kind === 'airport').map(project).filter(isProjected),
     }
-  }, [projection])
+  }, [projection, rankedEntities])
 
   /** Visible slice in frame units, plus screen pixels per frame unit. Density and
    *  label sizes are picked in screen px and divided through `ppu`.

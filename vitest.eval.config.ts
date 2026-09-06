@@ -8,6 +8,7 @@ export default defineConfig({
     },
   },
   test: {
+    setupFiles: ['./src/test-setup.ts'],
     include: ['src/engine/parser-eval.eval.ts'],
   },
 })
