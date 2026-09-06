@@ -153,6 +153,23 @@ function main(): void {
   mkdirSync(fixtureDir, { recursive: true })
 
   const fixturePath = resolve(fixtureDir, 'parser-eval.json')
+
+  // The committed fixture is the source of truth, not these scripts: `_generated/`
+  // is gitignored and `edge-cases.ts` has drifted behind the JSON.
+  if (existsSync(fixturePath)) {
+    const existing: TestCase[] = JSON.parse(readFileSync(fixturePath, 'utf-8'))
+    if (allCases.length < existing.length) {
+      console.error(
+        `\nRefusing to write: this run produced ${allCases.length} cases and the ` +
+        `committed fixture has ${existing.length}. That would delete ` +
+        `${existing.length - allCases.length} of them.\n\n` +
+        `The fixture is the source of truth. If you really mean to shrink it, ` +
+        `edit parser-eval.json directly so the diff is reviewable.`
+      )
+      process.exit(1)
+    }
+  }
+
   writeFileSync(fixturePath, JSON.stringify(allCases, null, 2))
 
   // --- Summary ---

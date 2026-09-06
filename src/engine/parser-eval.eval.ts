@@ -20,12 +20,15 @@ import {
   buildBaseline,
   compareToBaseline,
   formatComparison,
+  pinEvalEnvironment,
 } from '@/engine/eval'
 
 const BASELINE_PATH = resolve(
   dirname(fileURLToPath(import.meta.url)),
   '__fixtures__/parser-eval.baseline.json'
 )
+
+pinEvalEnvironment()
 
 const cases = loadFixture()
 const scorecard = runEvaluation(parserAdapter, cases)

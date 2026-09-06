@@ -6,8 +6,20 @@
  */
 
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { parse } from '../src/engine/parser.ts'
 import type { TestCase } from './eval-types.ts'
+
+/** Not a `TestCase` until a person fills the expectations in. */
+type UnlabelledCase = Omit<
+  TestCase,
+  'expectedSource' | 'expectedTarget' | 'expectedTime' | 'expectedDateModifier' | 'expectedTier'
+> & {
+  expectedSource: null
+  expectedTarget: null
+  expectedTime: null
+  expectedDateModifier: null
+  expectedTier: null
+  labelled: false
+}
 
 const API_KEY = process.env.ANTHROPIC_API_KEY
 if (!API_KEY) {
@@ -168,105 +180,69 @@ async function generateQueries(): Promise<
   return all
 }
 
-// --- Stage 2: Parse and annotate ---
+// --- Stage 2: Shell out unlabelled cases ---
 
-function annotateQueries(
+/**
+ * The model is asked for query strings and nothing else; expectations are left
+ * blank for a person to fill in. Seeding them from `parse()` output, as this
+ * once did, grades the parser against a transcript of itself.
+ */
+function shellOutQueries(
   raw: Array<{ query: string; persona: string }>
-): TestCase[] {
-  return raw.map((item, i) => {
-    const result = parse(item.query)
-
-    const tc: TestCase = {
-      id: i + 1,
-      input: item.query,
-      expectedSource: result?.sourceLocation ?? null,
-      expectedTarget: result?.targetLocation ?? null,
-      expectedTime: result?.time ?? { type: 'now' },
-      expectedDateModifier: result?.dateModifier ?? null,
-      expectedTier: 1,
-      difficultyTags: [],
-      notes: result ? '' : 'parser returned null — needs review',
-      set: 'realistic',
-      persona: item.persona,
-    }
-
-    if (!result) {
-      tc.expectedTier = 3
-      tc.difficultyTags.push('parse-failure')
-    }
-
-    return tc
-  })
+): UnlabelledCase[] {
+  return raw.map((item, i) => ({
+    id: i + 1,
+    input: item.query,
+    expectedSource: null,
+    expectedTarget: null,
+    expectedTime: null,
+    expectedDateModifier: null,
+    expectedTier: null,
+    difficultyTags: [],
+    notes: 'UNLABELLED — a person must fill in the expectation from the phrase',
+    set: 'realistic',
+    persona: item.persona,
+    labelled: false,
+  }))
 }
 
 // --- Stage 3: Distribution audit ---
 
-function printAudit(cases: TestCase[]): void {
+/** Audits the queries, not the answers: the answers do not exist yet. */
+function printAudit(cases: UnlabelledCase[]): void {
   console.log('\n=== Distribution Audit ===\n')
 
-  // Persona mix
   const personaCounts = new Map<string, number>()
   for (const tc of cases) {
-    const p = tc.persona ?? 'unknown'
-    personaCounts.set(p, (personaCounts.get(p) ?? 0) + 1)
+    const persona = tc.persona ?? 'unknown'
+    personaCounts.set(persona, (personaCounts.get(persona) ?? 0) + 1)
   }
   console.log('Persona distribution:')
-  for (const [persona, count] of [...personaCounts.entries()].sort(
-    (a, b) => b[1] - a[1]
-  )) {
+  for (const [persona, count] of [...personaCounts.entries()].sort((a, b) => b[1] - a[1])) {
     console.log(`  ${persona}: ${count} (${((count / cases.length) * 100).toFixed(1)}%)`)
   }
 
-  // Parser success rate
-  const parsed = cases.filter((tc) => !tc.difficultyTags.includes('parse-failure'))
-  console.log(
-    `\nParser success rate: ${parsed.length}/${cases.length} (${((parsed.length / cases.length) * 100).toFixed(1)}%)`
-  )
+  const words = cases.map((tc) => tc.input.trim().split(/\s+/).length).sort((a, b) => a - b)
+  const at = (q: number) => words[Math.min(words.length - 1, Math.floor(q * words.length))]
+  console.log(`\nQuery length (words): p10 ${at(0.1)}, median ${at(0.5)}, p90 ${at(0.9)}, max ${words[words.length - 1]}`)
 
-  // City frequency (from expectedSource and expectedTarget)
-  const cityFreq = new Map<string, number>()
-  for (const tc of cases) {
-    for (const loc of [tc.expectedSource, tc.expectedTarget]) {
-      if (loc) {
-        const normalized = loc.toLowerCase()
-        cityFreq.set(normalized, (cityFreq.get(normalized) ?? 0) + 1)
-      }
-    }
-  }
-  console.log('\nTop 20 cities:')
-  const sorted = [...cityFreq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20)
-  for (const [city, count] of sorted) {
-    console.log(`  ${city}: ${count}`)
-  }
+  const nonAscii = cases.filter((tc) => [...tc.input].some((ch) => ch.codePointAt(0)! > 127)).length
+  const noConnective = cases.filter((tc) => !/\b(to|in|at|from|vs|versus|and|between)\b/i.test(tc.input)).length
+  const allLower = cases.filter((tc) => tc.input === tc.input.toLowerCase()).length
+  console.log(`Non-ASCII inputs:      ${nonAscii} (${((nonAscii / cases.length) * 100).toFixed(1)}%)`)
+  console.log(`No connective word:    ${noConnective} (${((noConnective / cases.length) * 100).toFixed(1)}%)`)
+  console.log(`Entirely lower case:   ${allLower} (${((allLower / cases.length) * 100).toFixed(1)}%)`)
 
-  // Pattern distribution (time type)
-  const timeTypes = new Map<string, number>()
-  for (const tc of cases) {
-    timeTypes.set(tc.expectedTime.type, (timeTypes.get(tc.expectedTime.type) ?? 0) + 1)
-  }
-  console.log('\nTime type distribution:')
-  for (const [type, count] of [...timeTypes.entries()].sort(
-    (a, b) => b[1] - a[1]
-  )) {
-    console.log(`  ${type}: ${count} (${((count / cases.length) * 100).toFixed(1)}%)`)
-  }
-
-  // Source presence
-  const withSource = cases.filter((tc) => tc.expectedSource !== null).length
-  console.log(
-    `\nQueries with explicit source: ${withSource}/${cases.length} (${((withSource / cases.length) * 100).toFixed(1)}%)`
-  )
-
-  // Tier distribution
-  const tierCounts = new Map<number, number>()
-  for (const tc of cases) {
-    tierCounts.set(tc.expectedTier, (tierCounts.get(tc.expectedTier) ?? 0) + 1)
-  }
-  console.log('\nTier distribution:')
-  for (const [tier, count] of [...tierCounts.entries()].sort(
-    (a, b) => a[0] - b[0]
-  )) {
-    console.log(`  Tier ${tier}: ${count} (${((count / cases.length) * 100).toFixed(1)}%)`)
+  const seen = new Set<string>()
+  const dupes = cases.filter((tc) => {
+    const key = tc.input.trim().toLowerCase()
+    if (seen.has(key)) return true
+    seen.add(key)
+    return false
+  })
+  if (dupes.length > 0) {
+    console.log(`\nDuplicate inputs: ${dupes.length}`)
+    for (const d of dupes.slice(0, 10)) console.log(`  "${d.input}"`)
   }
 }
 
@@ -276,18 +252,17 @@ async function main(): Promise<void> {
   console.log('=== Eval Query Generator ===\n')
 
   const raw = await generateQueries()
-  const annotated = annotateQueries(raw)
-  printAudit(annotated)
+  const cases = shellOutQueries(raw)
+  printAudit(cases)
 
-  // Write output
   const outDir = new URL('./_generated/', import.meta.url)
   mkdirSync(outDir, { recursive: true })
 
-  const outPath = new URL('./annotated-queries.json', outDir)
-  writeFileSync(outPath, JSON.stringify(annotated, null, 2))
+  const outPath = new URL('./unlabelled-queries.json', outDir)
+  writeFileSync(outPath, JSON.stringify(cases, null, 2))
 
-  console.log(`\nWrote ${annotated.length} annotated cases to scripts/_generated/annotated-queries.json`)
-  console.log('Review the file and correct ground truth before running eval:compile')
+  console.log(`\nWrote ${cases.length} unlabelled queries to scripts/_generated/unlabelled-queries.json`)
+  console.log('Every expectation is null. Label them from the phrase, not from what the parser does.')
 }
 
 main().catch((err) => {

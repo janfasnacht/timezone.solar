@@ -22,6 +22,14 @@ function shortInputGating(input: string, result: ResolveResult): boolean {
   return false
 }
 
+/** Same-named cities already sit in `alternatives`; the hint says which one. */
+function promoteHintedAlternative(result: ResolveResult, iana: string): ResolveResult | null {
+  const hinted = result.alternatives.find((alt) => alt.iana === iana)
+  if (!hinted) return null
+  const rest = result.alternatives.filter((alt) => alt !== hinted)
+  return { primary: hinted, alternatives: [result.primary, ...rest] }
+}
+
 function tryHintSplit(input: string): ResolveResult | null {
   const words = input.split(/\s+/)
   if (words.length < 2) return null
@@ -33,9 +41,11 @@ function tryHintSplit(input: string): ResolveResult | null {
   const stateIana = US_STATE_TIMEZONES[lastWord]
   if (stateIana) {
     const result = resolveLocation(cityPart)
-    if (result && result.primary.iana === stateIana) {
-      return result
-    }
+    if (!result) return null
+    if (result.primary.iana === stateIana) return result
+
+    // Refuse rather than answer with the city the hint ruled out.
+    return promoteHintedAlternative(result, stateIana)
   }
 
   // Try resolving city part alone if full input failed

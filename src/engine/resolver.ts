@@ -182,6 +182,12 @@ export function resolveLocation(input: string): ResolveResult | null {
   const normalized = trimmed.toLowerCase()
   const normalizedKey = normalize(trimmed)
 
+  // A non-Latin name normalizes to "", so caching would give every such query
+  // the same entry.
+  if (!normalizedKey) {
+    return resolveLocationUncached(normalized, normalizedKey, trimmed)
+  }
+
   // Check cache
   const cached = cacheGet(normalizedKey)
   if (cached !== undefined) return cached
