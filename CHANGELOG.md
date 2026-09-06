@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- A city written with its state or country resolves to that one. `portland maine`
+  gave Portland, Oregon and `springfield illinois` gave New York; countries, ISO
+  codes, provinces and postal abbreviations all work
+- Antarctic research stations no longer resolve to a timezone of nothing
+
 ### Changed
 
 - Parser accuracy is checked on every push and pull request, against a committed

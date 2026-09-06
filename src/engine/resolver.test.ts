@@ -366,3 +366,63 @@ describe('resolver', () => {
     })
   })
 })
+
+describe('qualified place names', () => {
+  it('lets a state pick between same-named cities', () => {
+    expect(resolveLocation('portland maine')?.primary.iana).toBe('America/New_York')
+    expect(resolveLocation('portland oregon')?.primary.iana).toBe('America/Los_Angeles')
+    expect(resolveLocation('springfield illinois')?.primary.iana).toBe('America/Chicago')
+  })
+
+  it('accepts postal abbreviations', () => {
+    expect(resolveLocation('portland me')?.primary.iana).toBe('America/New_York')
+    expect(resolveLocation('portland or')?.primary.iana).toBe('America/Los_Angeles')
+    expect(resolveLocation('vancouver wa')?.primary.iana).toBe('America/Los_Angeles')
+    expect(resolveLocation('newcastle nsw')?.primary.iana).toBe('Australia/Sydney')
+  })
+
+  it('accepts a country, a country alias and an ISO code', () => {
+    expect(resolveLocation('Athens Greece')?.primary.iana).toBe('Europe/Athens')
+    expect(resolveLocation('Athens Georgia')?.primary.iana).toBe('America/New_York')
+    expect(resolveLocation('London UK')?.primary.iana).toBe('Europe/London')
+    expect(resolveLocation('Delhi India')?.primary.iana).toBe('Asia/Kolkata')
+    expect(resolveLocation('Toledo Spain')?.primary.iana).toBe('Europe/Madrid')
+  })
+
+  it('refuses rather than answering with the city the qualifier ruled out', () => {
+    // Cambridge, Massachusetts is not in the dataset. Returning Cambridge, UK
+    // because it is the only Cambridge left is how `portland maine` used to
+    // answer Oregon.
+    expect(resolveLocation('cambridge massachusetts')).toBeNull()
+    expect(resolveLocation('portland texas')).toBeNull()
+  })
+
+  it('does not let a two-letter English word veto a city', () => {
+    // `or`, `in`, `me`, `hi` are postal codes and ordinary words. They may
+    // match, but they must not refuse.
+    expect(resolveLocation('london')?.primary.iana).toBe('Europe/London')
+    expect(resolveLocation('tokyo')?.primary.iana).toBe('Asia/Tokyo')
+  })
+
+  it('leaves an unqualified name to the population sort', () => {
+    const portland = resolveLocation('Portland')
+    expect(portland?.primary.iana).toBe('America/Los_Angeles')
+    expect(portland?.alternatives.length).toBeGreaterThan(0)
+  })
+
+  it('does not shadow a multi-word city name', () => {
+    expect(resolveLocation('salt lake city')?.primary.iana).toBe('America/Denver')
+    expect(resolveLocation('kansas city')?.primary.iana).toBe('America/Chicago')
+    expect(resolveLocation('new york')?.primary.iana).toBe('America/New_York')
+  })
+})
+
+describe('rows the dataset ships without a zone', () => {
+  it('does not answer with a null IANA', () => {
+    // 48 Antarctic research stations ship `timezone: null`. They used to resolve
+    // and hand `iana: null` to the converter.
+    for (const q of ['Vostok', 'McMurdo Station', 'Scott Base']) {
+      expect(resolveLocation(q)).toBeNull()
+    }
+  })
+})

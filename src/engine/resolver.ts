@@ -1,11 +1,12 @@
 import cityTimezones from 'city-timezones'
 import Fuse from 'fuse.js'
 import type { LocationRef, LocationKind, ResolveResult } from './types'
-import { CITY_ALIASES, US_STATE_TIMEZONES } from './aliases'
+import { CITY_ALIASES, US_STATE_TIMEZONES, SUBNATIONAL_ABBREVIATIONS } from './aliases'
 import { TZ_ABBREVIATIONS, TZ_ABBREVIATION_LABELS } from './constants'
 import { lookupEntity } from './entities'
 import { NOISE_WORDS } from './noise-words'
 
+/** A `city-timezones` row. `iso2` is `-99` on 8 rows and `timezone` is null on 48. */
 interface CityEntry {
   city: string
   city_ascii: string
@@ -13,7 +14,7 @@ interface CityEntry {
   lng: number
   pop: number
   country: string
-  iso2: string
+  iso2: string | number
   iso3: string
   province: string
   timezone: string
@@ -32,7 +33,10 @@ export function normalize(input: string): string {
 
 // --- Pre-computed normalized city map ---
 
-const allCities = cityTimezones.cityMapping as unknown as CityEntry[]
+// A row with no zone resolves with `iana: null` if left in the index.
+const allCities = (cityTimezones.cityMapping as unknown as CityEntry[]).filter(
+  (entry) => typeof entry.timezone === 'string' && entry.timezone.length > 0
+)
 
 // Indexed under both of a row's names. 115 of them differ — Kashgar is filed
 // under "Kashi", Bensonville under "Bentol" — and on `city_ascii` alone the
@@ -168,6 +172,99 @@ export function parseUtcOffset(input: string): LocationRef | null {
   return { iana: label, displayName: label, kind: 'timezone', resolveMethod: 'utc-offset' }
 }
 
+// --- Qualifiers ---
+
+const COUNTRY_ALIASES: Record<string, string> = {
+  usa: 'united states of america',
+  us: 'united states of america',
+  america: 'united states of america',
+  uk: 'united kingdom',
+  gb: 'united kingdom',
+  britain: 'united kingdom',
+  england: 'united kingdom',
+  uae: 'united arab emirates',
+  'south korea': 'korea, south',
+  'north korea': 'korea, north',
+}
+
+/** `united arab emirates` is the longest we accept. */
+const MAX_QUALIFIER_WORDS = 3
+
+function matchesQualifier(entry: CityEntry, qualifier: string): boolean {
+  const stateIana = US_STATE_TIMEZONES[qualifier]
+  if (stateIana && entry.timezone === stateIana) return true
+
+  const province = SUBNATIONAL_ABBREVIATIONS[qualifier]
+  if (province && normalize(entry.province) === province) return true
+
+  const country = entry.country.toLowerCase()
+  const wanted = COUNTRY_ALIASES[qualifier] ?? qualifier
+  if (country === wanted) return true
+  if (normalize(entry.country) === qualifier) return true
+
+  if (typeof entry.iso2 === 'string' && entry.iso2.toLowerCase() === qualifier) return true
+  if (entry.iso3 && entry.iso3.toLowerCase() === qualifier) return true
+  if (entry.province && normalize(entry.province) === qualifier) return true
+
+  return false
+}
+
+function looksLikeQualifier(qualifier: string): boolean {
+  if (qualifier in US_STATE_TIMEZONES) return true
+  if (qualifier in COUNTRY_ALIASES) return true
+  if (qualifier in SUBNATIONAL_ABBREVIATIONS) return true
+  return knownQualifiers.has(qualifier)
+}
+
+/**
+ * Only a long qualifier may refuse. `or`, `in`, `me`, `hi` are postal codes and
+ * ordinary words; they may match, but must not rule a city out.
+ */
+function isStrongQualifier(qualifier: string): boolean {
+  return qualifier.length > 3
+}
+
+/** Every country, ISO code and province the dataset ships. */
+const knownQualifiers: Set<string> = (() => {
+  const set = new Set<string>()
+  for (const entry of allCities) {
+    set.add(normalize(entry.country))
+    if (typeof entry.iso2 === 'string') set.add(entry.iso2.toLowerCase())
+    if (entry.iso3) set.add(entry.iso3.toLowerCase())
+    if (entry.province) set.add(normalize(entry.province))
+  }
+  set.delete('')
+  return set
+})()
+
+/**
+ * `portland maine`, `Delhi India`, `Toledo Spain`. Splits the tail off and, when
+ * it names a country, state or province, keeps only the rows of the head city
+ * that sit in it. `REFUSED` means the tail is a qualifier that matches nothing,
+ * which must not fall back to the head alone.
+ */
+const REFUSED = Symbol('qualifier contradicted')
+
+function resolveQualified(normalizedKey: string): ResolveResult | typeof REFUSED | null {
+  const words = normalizedKey.split(' ')
+  if (words.length < 2) return null
+
+  for (let take = 1; take <= MAX_QUALIFIER_WORDS && take < words.length; take++) {
+    const cut = words.length - take
+    const qualifier = words.slice(cut).join(' ')
+    if (!looksLikeQualifier(qualifier)) continue
+
+    const entries = normalizedCityMap.get(words.slice(0, cut).join(' '))
+    if (!entries) continue
+
+    const matched = entries.filter((e) => matchesQualifier(e, qualifier))
+    if (matched.length > 0) return cityEntriesToResolveResult(matched, 'qualified')
+    if (isStrongQualifier(qualifier)) return REFUSED
+  }
+
+  return null
+}
+
 // --- Main resolver ---
 
 export function resolveLocation(input: string): ResolveResult | null {
@@ -282,6 +379,11 @@ function resolveLocationUncached(
   if (cityEntries && cityEntries.length > 0) {
     return cityEntriesToResolveResult(cityEntries, 'city-db')
   }
+
+  // Layer 4.5: a trailing country, state or province narrowing the city above.
+  const qualified = resolveQualified(normalizedKey)
+  if (qualified === REFUSED) return null
+  if (qualified) return qualified
 
   // Layer 5: Lazy Fuse.js fuzzy search. A noise word never gets a guess: one
   // edit is a typo on a long name and a different word on a short one, and no
