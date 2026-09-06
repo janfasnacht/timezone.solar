@@ -13,7 +13,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 2,
@@ -31,7 +32,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 3,
@@ -47,7 +49,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 4,
@@ -63,7 +66,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 5,
@@ -81,7 +85,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 6,
@@ -97,7 +102,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 7,
@@ -115,7 +121,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 8,
@@ -131,7 +138,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 9,
@@ -147,7 +155,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 10,
@@ -165,7 +174,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 11,
@@ -183,7 +193,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 12,
@@ -201,7 +212,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 13,
@@ -217,7 +229,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 14,
@@ -235,7 +248,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 15,
@@ -251,7 +265,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 16,
@@ -269,7 +284,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 17,
@@ -287,7 +303,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 18,
@@ -304,7 +321,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 19,
@@ -320,7 +338,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 20,
@@ -336,7 +355,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 21,
@@ -354,7 +374,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 22,
@@ -370,7 +391,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 23,
@@ -388,7 +410,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 24,
@@ -406,7 +429,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 25,
@@ -424,7 +448,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 26,
@@ -442,7 +467,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 27,
@@ -458,7 +484,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 28,
@@ -476,7 +503,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 29,
@@ -494,7 +522,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 30,
@@ -510,7 +539,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 31,
@@ -528,7 +558,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 32,
@@ -546,7 +577,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 33,
@@ -562,7 +594,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 34,
@@ -580,7 +613,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 35,
@@ -596,7 +630,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 36,
@@ -614,7 +649,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 37,
@@ -630,7 +666,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 38,
@@ -648,7 +685,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 39,
@@ -664,7 +702,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 40,
@@ -682,7 +721,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 41,
@@ -700,7 +740,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 42,
@@ -716,7 +757,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 43,
@@ -734,7 +776,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 44,
@@ -750,7 +793,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 45,
@@ -768,7 +812,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 46,
@@ -785,7 +830,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 47,
@@ -801,7 +847,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 48,
@@ -819,7 +866,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 49,
@@ -837,7 +885,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 50,
@@ -853,7 +902,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 51,
@@ -871,7 +921,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 52,
@@ -889,7 +940,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 53,
@@ -905,7 +957,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 54,
@@ -923,7 +976,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 55,
@@ -941,7 +995,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 56,
@@ -959,7 +1014,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 57,
@@ -975,7 +1031,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 58,
@@ -991,7 +1048,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 59,
@@ -1009,7 +1067,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 60,
@@ -1027,7 +1086,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "business-traveler",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 61,
@@ -1043,7 +1103,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 62,
@@ -1059,7 +1120,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 63,
@@ -1075,7 +1137,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 64,
@@ -1093,7 +1156,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 65,
@@ -1109,7 +1173,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 66,
@@ -1125,7 +1190,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 67,
@@ -1141,7 +1207,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 68,
@@ -1159,7 +1226,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 69,
@@ -1175,7 +1243,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 70,
@@ -1183,17 +1252,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 60
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 71,
@@ -1209,7 +1280,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 72,
@@ -1225,7 +1297,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 73,
@@ -1243,7 +1316,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 74,
@@ -1259,7 +1333,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 75,
@@ -1267,17 +1342,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 30
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 76,
@@ -1293,7 +1370,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 77,
@@ -1311,7 +1389,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 78,
@@ -1327,7 +1406,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 79,
@@ -1345,7 +1425,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 80,
@@ -1361,7 +1442,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 81,
@@ -1369,17 +1451,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 120
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 82,
@@ -1395,7 +1479,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 83,
@@ -1411,7 +1496,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 84,
@@ -1429,7 +1515,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 85,
@@ -1447,7 +1534,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 86,
@@ -1465,7 +1553,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 87,
@@ -1481,7 +1570,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 88,
@@ -1489,17 +1579,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 45
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 89,
@@ -1517,7 +1609,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 90,
@@ -1533,7 +1626,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 91,
@@ -1549,7 +1643,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 92,
@@ -1567,7 +1662,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 93,
@@ -1583,7 +1679,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 94,
@@ -1601,7 +1698,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 95,
@@ -1617,7 +1715,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 96,
@@ -1635,7 +1734,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 97,
@@ -1651,7 +1751,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 98,
@@ -1669,7 +1770,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 99,
@@ -1687,7 +1789,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 100,
@@ -1703,7 +1806,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 101,
@@ -1711,17 +1815,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 90
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 102,
@@ -1739,7 +1845,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 103,
@@ -1755,7 +1862,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 104,
@@ -1773,7 +1881,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 105,
@@ -1789,7 +1898,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 106,
@@ -1807,7 +1917,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 107,
@@ -1823,7 +1934,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 108,
@@ -1839,7 +1951,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 109,
@@ -1857,7 +1970,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 110,
@@ -1865,17 +1979,19 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "relative",
+      "minutes": 60
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Relative time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 111,
@@ -1891,7 +2007,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 112,
@@ -1909,7 +2026,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 113,
@@ -1927,7 +2045,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "remote-worker",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 114,
@@ -1943,7 +2062,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 115,
@@ -1959,7 +2079,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 116,
@@ -1975,7 +2096,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 117,
@@ -1991,7 +2113,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 118,
@@ -2007,7 +2130,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 119,
@@ -2023,7 +2147,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 120,
@@ -2039,7 +2164,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 121,
@@ -2055,7 +2181,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 122,
@@ -2071,7 +2198,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 123,
@@ -2087,7 +2215,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 124,
@@ -2103,7 +2232,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 125,
@@ -2119,7 +2249,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 126,
@@ -2135,7 +2266,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 127,
@@ -2151,7 +2283,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 128,
@@ -2167,7 +2300,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 129,
@@ -2183,7 +2317,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 130,
@@ -2199,7 +2334,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 131,
@@ -2215,7 +2351,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 132,
@@ -2231,7 +2368,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 133,
@@ -2247,7 +2385,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 134,
@@ -2263,7 +2402,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 135,
@@ -2279,7 +2419,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 136,
@@ -2295,7 +2436,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 137,
@@ -2311,7 +2453,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 138,
@@ -2327,7 +2470,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 139,
@@ -2343,7 +2487,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 140,
@@ -2359,7 +2504,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 141,
@@ -2375,7 +2521,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 142,
@@ -2391,7 +2538,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 143,
@@ -2407,7 +2555,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 144,
@@ -2423,7 +2572,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 145,
@@ -2439,7 +2589,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 146,
@@ -2455,7 +2606,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 147,
@@ -2471,7 +2623,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 148,
@@ -2487,7 +2640,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 149,
@@ -2503,7 +2657,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 150,
@@ -2519,7 +2674,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 151,
@@ -2535,7 +2691,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 152,
@@ -2553,7 +2710,8 @@
     "notes": "\"time difference\" as noise, \"and\" as connector",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 153,
@@ -2569,7 +2727,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 154,
@@ -2585,7 +2744,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 155,
@@ -2601,7 +2761,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 156,
@@ -2617,7 +2778,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 157,
@@ -2633,7 +2795,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 158,
@@ -2649,7 +2812,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 159,
@@ -2665,7 +2829,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 160,
@@ -2685,7 +2850,8 @@
     "notes": "\"what time\" as noise between locations",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 161,
@@ -2703,7 +2869,8 @@
     "notes": "\"evening time\" as vague noise — no precise time extractable",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 162,
@@ -2719,7 +2886,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 163,
@@ -2735,7 +2903,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "family-caller",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 164,
@@ -2751,7 +2920,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 165,
@@ -2767,7 +2937,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 166,
@@ -2783,7 +2954,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 167,
@@ -2799,7 +2971,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 168,
@@ -2815,7 +2988,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 169,
@@ -2831,7 +3005,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 170,
@@ -2847,7 +3022,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 171,
@@ -2863,7 +3039,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 172,
@@ -2879,7 +3056,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 173,
@@ -2895,7 +3073,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 174,
@@ -2911,7 +3090,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 175,
@@ -2927,7 +3107,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 176,
@@ -2943,7 +3124,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 177,
@@ -2959,7 +3141,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 178,
@@ -2975,7 +3158,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 179,
@@ -2991,7 +3175,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 180,
@@ -3007,7 +3192,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 181,
@@ -3023,7 +3209,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 182,
@@ -3039,7 +3226,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 183,
@@ -3055,7 +3243,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 184,
@@ -3071,7 +3260,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 185,
@@ -3087,7 +3277,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 186,
@@ -3103,7 +3294,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 187,
@@ -3119,7 +3311,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 188,
@@ -3135,7 +3328,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 189,
@@ -3151,7 +3345,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 190,
@@ -3167,7 +3362,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 191,
@@ -3183,7 +3379,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 192,
@@ -3199,7 +3396,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 193,
@@ -3215,7 +3413,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 194,
@@ -3231,7 +3430,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 195,
@@ -3247,7 +3447,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 196,
@@ -3263,7 +3464,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 197,
@@ -3279,7 +3481,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 198,
@@ -3295,7 +3498,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 199,
@@ -3311,7 +3515,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 200,
@@ -3327,7 +3532,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 201,
@@ -3343,7 +3549,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 202,
@@ -3359,7 +3566,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 203,
@@ -3375,7 +3583,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 204,
@@ -3391,7 +3600,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "tourist",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 205,
@@ -3407,7 +3617,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 206,
@@ -3427,7 +3638,8 @@
     "notes": "Doubled connector — a typo, not a refusal",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 207,
@@ -3443,7 +3655,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 208,
@@ -3459,7 +3672,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 209,
@@ -3467,17 +3681,20 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "A clock time with no place. Nothing to convert.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 210,
@@ -3485,17 +3702,20 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Named time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 211,
@@ -3513,7 +3733,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 212,
@@ -3531,7 +3752,8 @@
     "notes": "emoji/non-ASCII garbage — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 213,
@@ -3547,7 +3769,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 214,
@@ -3565,7 +3788,8 @@
     "notes": "natural language question — extract London",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 215,
@@ -3581,7 +3805,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 216,
@@ -3599,7 +3824,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 217,
@@ -3607,17 +3833,20 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 15,
+      "minute": 30
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Dotted clock time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 218,
@@ -3633,7 +3862,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 219,
@@ -3649,7 +3879,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 220,
@@ -3664,10 +3895,11 @@
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "A connector and a noise word. Names neither time nor place.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 221,
@@ -3675,17 +3907,20 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 0,
+      "minute": 0
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "Named time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 222,
@@ -3703,7 +3938,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 223,
@@ -3721,7 +3957,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 224,
@@ -3739,7 +3976,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 225,
@@ -3755,7 +3993,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 226,
@@ -3773,7 +4012,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 227,
@@ -3791,7 +4031,8 @@
     "notes": "\"vs\" as connector, \"time difference\" as noise",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 228,
@@ -3799,17 +4040,20 @@
     "expectedSource": null,
     "expectedTarget": null,
     "expectedTime": {
-      "type": "now"
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
     },
     "expectedDateModifier": null,
     "expectedTier": 3,
     "difficultyTags": [
       "parse-failure"
     ],
-    "notes": "parser returned null — needs review",
+    "notes": "24-hour clock time, no place. Nothing to convert.",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 229,
@@ -3827,7 +4071,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 230,
@@ -3843,7 +4088,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 231,
@@ -3861,7 +4107,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 232,
@@ -3879,7 +4126,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 233,
@@ -3895,7 +4143,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 234,
@@ -3913,7 +4162,8 @@
     "notes": "no location after noise stripping",
     "set": "realistic",
     "persona": "chaos",
-    "split": "eval"
+    "split": "eval",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 235,
@@ -3929,7 +4179,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 236,
@@ -3947,7 +4198,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 237,
@@ -3965,7 +4217,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 238,
@@ -3981,7 +4234,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 239,
@@ -3999,7 +4253,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 240,
@@ -4015,7 +4270,8 @@
     "notes": "\"eastern time\" is one alias; \"time\" must not be stripped off it",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 241,
@@ -4035,7 +4291,8 @@
     "notes": "Trebled connector — a typo, not a refusal",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 242,
@@ -4051,7 +4308,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 243,
@@ -4069,7 +4327,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 244,
@@ -4085,7 +4344,8 @@
     "notes": "",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "id": 245,
@@ -4103,7 +4363,8 @@
     "notes": "garbage input — not a timezone query",
     "set": "realistic",
     "persona": "chaos",
-    "split": "dev"
+    "split": "dev",
+    "provenance": "generated-from-parser"
   },
   {
     "input": "Portland",
@@ -4119,7 +4380,9 @@
     ],
     "notes": "Portland OR vs Portland ME — ambiguous without context",
     "set": "edge",
-    "id": 246
+    "id": 246,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Georgia",
@@ -4135,7 +4398,9 @@
     ],
     "notes": "Georgia state vs Georgia country",
     "set": "edge",
-    "id": 247
+    "id": 247,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Birmingham",
@@ -4151,7 +4416,9 @@
     ],
     "notes": "Birmingham UK vs Birmingham AL",
     "set": "edge",
-    "id": 248
+    "id": 248,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Victoria",
@@ -4167,7 +4434,9 @@
     ],
     "notes": "Victoria BC vs Victoria AU vs Victoria Seychelles",
     "set": "edge",
-    "id": 249
+    "id": 249,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Cambridge",
@@ -4183,7 +4452,9 @@
     ],
     "notes": "Cambridge UK vs Cambridge MA",
     "set": "edge",
-    "id": 250
+    "id": 250,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Richmond",
@@ -4199,7 +4470,9 @@
     ],
     "notes": "Richmond VA vs Richmond BC vs Richmond UK",
     "set": "edge",
-    "id": 251
+    "id": 251,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Springfield",
@@ -4215,7 +4488,9 @@
     ],
     "notes": "Springfield — many US cities with this name",
     "set": "edge",
-    "id": 252
+    "id": 252,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Santiago",
@@ -4231,7 +4506,9 @@
     ],
     "notes": "Santiago Chile vs Santiago de Compostela Spain",
     "set": "edge",
-    "id": 253
+    "id": 253,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Hamilton",
@@ -4247,7 +4524,9 @@
     ],
     "notes": "Hamilton NZ vs Hamilton ON vs Hamilton Bermuda",
     "set": "edge",
-    "id": 254
+    "id": 254,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "London to Portland",
@@ -4263,7 +4542,9 @@
     ],
     "notes": "Portland ambiguity in two-city query",
     "set": "edge",
-    "id": 255
+    "id": 255,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm Portland to Birmingham",
@@ -4281,7 +4562,9 @@
     ],
     "notes": "Both cities are ambiguous",
     "set": "edge",
-    "id": 256
+    "id": 256,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Perth",
@@ -4297,7 +4580,9 @@
     ],
     "notes": "Perth AU vs Perth Scotland",
     "set": "edge",
-    "id": 257
+    "id": 257,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Newcastle",
@@ -4313,7 +4598,9 @@
     ],
     "notes": "Newcastle UK vs Newcastle AU",
     "set": "edge",
-    "id": 258
+    "id": 258,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Valencia",
@@ -4329,7 +4616,9 @@
     ],
     "notes": "Valencia Spain vs Valencia Venezuela",
     "set": "edge",
-    "id": 259
+    "id": 259,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Panama",
@@ -4345,12 +4634,14 @@
     ],
     "notes": "Panama City vs Panama country",
     "set": "edge",
-    "id": 260
+    "id": 260,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Jan Tokyo",
     "expectedSource": null,
-    "expectedTarget": "Jan Tokyo",
+    "expectedTarget": "Tokyo",
     "expectedTime": {
       "type": "now"
     },
@@ -4359,14 +4650,16 @@
     "difficultyTags": [
       "token-ambiguity"
     ],
-    "notes": "\"Jan\" could be a name, abbreviation, or month — parser sees as location",
+    "notes": "A person writing this means Tokyo; `Jan` is a name or a month. Two adjacent locations are merged into one, so this fails until the reading is split.",
     "set": "edge",
-    "id": 261
+    "id": 261,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "March London",
     "expectedSource": null,
-    "expectedTarget": "March London",
+    "expectedTarget": "London",
     "expectedTime": {
       "type": "now"
     },
@@ -4375,9 +4668,11 @@
     "difficultyTags": [
       "token-ambiguity"
     ],
-    "notes": "\"March\" could be month or part of location name",
+    "notes": "Means London. Same merge as the Jan case.",
     "set": "edge",
-    "id": 262
+    "id": 262,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "noon Australia",
@@ -4395,7 +4690,9 @@
     ],
     "notes": "\"noon\" is a named time — should parse correctly",
     "set": "edge",
-    "id": 263
+    "id": 263,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "midnight Tokyo",
@@ -4413,7 +4710,9 @@
     ],
     "notes": "\"midnight\" is a named time — should parse correctly",
     "set": "edge",
-    "id": 264
+    "id": 264,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "EST to PST",
@@ -4429,7 +4728,9 @@
     ],
     "notes": "TZ abbreviations as locations — both source and target",
     "set": "edge",
-    "id": 265
+    "id": 265,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "IST to London",
@@ -4445,7 +4746,9 @@
     ],
     "notes": "IST is ambiguous: India, Israel, or Ireland Standard Time",
     "set": "edge",
-    "id": 266
+    "id": 266,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Jordan time",
@@ -4461,7 +4764,9 @@
     ],
     "notes": "\"Jordan\" could be country or person name; \"time\" as noise",
     "set": "edge",
-    "id": 267
+    "id": 267,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Turkey to Greece",
@@ -4477,7 +4782,9 @@
     ],
     "notes": "Country names that could be other things (turkey the bird)",
     "set": "edge",
-    "id": 268
+    "id": 268,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Nice to Paris",
@@ -4493,7 +4800,9 @@
     ],
     "notes": "\"Nice\" is a city in France but also an English adjective",
     "set": "edge",
-    "id": 269
+    "id": 269,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Mobile to Dallas",
@@ -4509,7 +4818,9 @@
     ],
     "notes": "\"Mobile\" is a city in Alabama but also a common English word",
     "set": "edge",
-    "id": 270
+    "id": 270,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Lima to Quito",
@@ -4525,7 +4836,9 @@
     ],
     "notes": "\"Lima\" — city name that looks like it could be something else",
     "set": "edge",
-    "id": 271
+    "id": 271,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Reading to London",
@@ -4541,7 +4854,9 @@
     ],
     "notes": "\"Reading\" is a city but also a common English word",
     "set": "edge",
-    "id": 272
+    "id": 272,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "what time is it in Tokyo",
@@ -4557,7 +4872,9 @@
     ],
     "notes": "Natural language question — noise words should be stripped",
     "set": "edge",
-    "id": 273
+    "id": 273,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "what time is 3pm NYC in London",
@@ -4575,7 +4892,9 @@
     ],
     "notes": "Question with embedded valid query",
     "set": "edge",
-    "id": 274
+    "id": 274,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "can you tell me 3pm NYC to London",
@@ -4593,7 +4912,9 @@
     ],
     "notes": "Polite request wrapping valid query",
     "set": "edge",
-    "id": 275
+    "id": 275,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "please convert 5pm London to Tokyo",
@@ -4611,7 +4932,9 @@
     ],
     "notes": "Polite request with \"convert\"",
     "set": "edge",
-    "id": 276
+    "id": 276,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "time in Berlin right now",
@@ -4627,7 +4950,9 @@
     ],
     "notes": "\"time in\" prefix and \"right now\" suffix as noise",
     "set": "edge",
-    "id": 277
+    "id": 277,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "current time Tokyo",
@@ -4643,7 +4968,9 @@
     ],
     "notes": "\"current\" as noise word",
     "set": "edge",
-    "id": 278
+    "id": 278,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm meeting time Berlin London",
@@ -4661,7 +4988,9 @@
     ],
     "notes": "\"meeting time\" as noise between locations — hard to parse",
     "set": "edge",
-    "id": 279
+    "id": 279,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "I need to know what 4pm in NYC is in London",
@@ -4679,7 +5008,9 @@
     ],
     "notes": "Long natural language with valid query embedded",
     "set": "edge",
-    "id": 280
+    "id": 280,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "convert Tokyo time to EST",
@@ -4695,7 +5026,9 @@
     ],
     "notes": "\"convert\" and \"time\" as noise",
     "set": "edge",
-    "id": 281
+    "id": 281,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tell me the time difference between NYC and London",
@@ -4711,7 +5044,9 @@
     ],
     "notes": "Natural language with \"difference between\"",
     "set": "edge",
-    "id": 282
+    "id": 282,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "when its 3pm in NYC what time is it in London",
@@ -4729,7 +5064,9 @@
     ],
     "notes": "Full sentence query",
     "set": "edge",
-    "id": 283
+    "id": 283,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "if its 9am in London what time in Tokyo",
@@ -4747,7 +5084,9 @@
     ],
     "notes": "Conditional phrasing",
     "set": "edge",
-    "id": 284
+    "id": 284,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Berlin time now please",
@@ -4763,7 +5102,9 @@
     ],
     "notes": "Noise at end: \"time now please\"",
     "set": "edge",
-    "id": 285
+    "id": 285,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "whats the time in sydney",
@@ -4779,7 +5120,9 @@
     ],
     "notes": "Contraction and noise words",
     "set": "edge",
-    "id": 286
+    "id": 286,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "ok google time in Tokyo",
@@ -4795,7 +5138,9 @@
     ],
     "notes": "Voice assistant prefix as noise",
     "set": "edge",
-    "id": 287
+    "id": 287,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "hey what is 2pm est in tokyo",
@@ -4813,7 +5158,9 @@
     ],
     "notes": "\"hey what is\" as noise prefix",
     "set": "edge",
-    "id": 288
+    "id": 288,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "i want to schedule a call at 3pm london time for my colleague in mumbai",
@@ -4831,7 +5178,9 @@
     ],
     "notes": "Very long sentence with lots of noise",
     "set": "edge",
-    "id": 289
+    "id": 289,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "time zone difference London NYC",
@@ -4847,7 +5196,9 @@
     ],
     "notes": "\"time zone difference\" as noise prefix",
     "set": "edge",
-    "id": 290
+    "id": 290,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "check time for Dubai",
@@ -4863,7 +5214,9 @@
     ],
     "notes": "\"check time for\" as noise",
     "set": "edge",
-    "id": 291
+    "id": 291,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "show me 6pm Tokyo in Berlin time",
@@ -4881,23 +5234,9 @@
     ],
     "notes": "\"show me\" prefix and \"time\" suffix noise",
     "set": "edge",
-    "id": 292
-  },
-  {
-    "input": "Tokyo",
-    "expectedSource": null,
-    "expectedTarget": "Tokyo",
-    "expectedTime": {
-      "type": "now"
-    },
-    "expectedDateModifier": null,
-    "expectedTier": 1,
-    "difficultyTags": [
-      "completeness"
-    ],
-    "notes": "Single city — valid minimal query",
-    "set": "edge",
-    "id": 293
+    "id": 292,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "6pm",
@@ -4913,7 +5252,9 @@
     ],
     "notes": "Time only, no location — should fail or return null",
     "set": "edge",
-    "id": 294
+    "id": 294,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "",
@@ -4929,7 +5270,9 @@
     ],
     "notes": "Empty string",
     "set": "edge",
-    "id": 295
+    "id": 295,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "   ",
@@ -4945,7 +5288,9 @@
     ],
     "notes": "Whitespace only",
     "set": "edge",
-    "id": 296
+    "id": 296,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "hi",
@@ -4961,7 +5306,9 @@
     ],
     "notes": "Greeting, not a timezone query — returns nothing",
     "set": "edge",
-    "id": 297
+    "id": 297,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "asdf",
@@ -4975,25 +5322,11 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Random characters",
+    "notes": "Nonsense. The parser has no dictionary by design, so it correctly offers the string as a location; the resolver is what must refuse it.",
     "set": "edge",
-    "id": 298
-  },
-  {
-    "input": "help",
-    "expectedSource": null,
-    "expectedTarget": null,
-    "expectedTime": {
-      "type": "now"
-    },
-    "expectedDateModifier": null,
-    "expectedTier": 3,
-    "difficultyTags": [
-      "completeness"
-    ],
-    "notes": "Help request, not a timezone query — returns nothing",
-    "set": "edge",
-    "id": 299
+    "id": 298,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "to",
@@ -5009,7 +5342,9 @@
     ],
     "notes": "Connector only — should return null",
     "set": "edge",
-    "id": 300
+    "id": 300,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm to",
@@ -5025,7 +5360,9 @@
     ],
     "notes": "Time + connector, no location",
     "set": "edge",
-    "id": 301
+    "id": 301,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "to London",
@@ -5041,7 +5378,9 @@
     ],
     "notes": "Leading connector + city — connector stripped, city valid",
     "set": "edge",
-    "id": 302
+    "id": 302,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "London to",
@@ -5057,7 +5396,9 @@
     ],
     "notes": "City + trailing connector — partial query",
     "set": "edge",
-    "id": 303
+    "id": 303,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tomorrow",
@@ -5073,7 +5414,9 @@
     ],
     "notes": "Date modifier only, no location",
     "set": "edge",
-    "id": 304
+    "id": 304,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "now",
@@ -5089,7 +5432,9 @@
     ],
     "notes": "\"now\" alone — stripped in preprocessing, returns null",
     "set": "edge",
-    "id": 305
+    "id": 305,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "12345",
@@ -5105,7 +5450,9 @@
     ],
     "notes": "Number string, not a valid query — returns nothing",
     "set": "edge",
-    "id": 306
+    "id": 306,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "the",
@@ -5121,7 +5468,9 @@
     ],
     "notes": "Common word, not a location — returns nothing",
     "set": "edge",
-    "id": 307
+    "id": 307,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Londno",
@@ -5137,7 +5486,9 @@
     ],
     "notes": "Typo for London — resolver should fuzzy match",
     "set": "edge",
-    "id": 308
+    "id": 308,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Zuric",
@@ -5153,7 +5504,9 @@
     ],
     "notes": "Typo for Zurich",
     "set": "edge",
-    "id": 309
+    "id": 309,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Tokyp",
@@ -5169,7 +5522,9 @@
     ],
     "notes": "Typo for Tokyo",
     "set": "edge",
-    "id": 310
+    "id": 310,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Sydeny",
@@ -5185,7 +5540,9 @@
     ],
     "notes": "Typo for Sydney",
     "set": "edge",
-    "id": 311
+    "id": 311,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Berln",
@@ -5201,7 +5558,9 @@
     ],
     "notes": "Typo for Berlin",
     "set": "edge",
-    "id": 312
+    "id": 312,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Singaproe",
@@ -5217,7 +5576,9 @@
     ],
     "notes": "Typo for Singapore",
     "set": "edge",
-    "id": 313
+    "id": 313,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Melborne",
@@ -5233,7 +5594,9 @@
     ],
     "notes": "Typo for Melbourne",
     "set": "edge",
-    "id": 314
+    "id": 314,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Bangkoc",
@@ -5249,7 +5612,9 @@
     ],
     "notes": "Typo for Bangkok",
     "set": "edge",
-    "id": 315
+    "id": 315,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Mumabi",
@@ -5265,7 +5630,9 @@
     ],
     "notes": "Typo for Mumbai",
     "set": "edge",
-    "id": 316
+    "id": 316,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Mosocw",
@@ -5281,7 +5648,9 @@
     ],
     "notes": "Typo for Moscow",
     "set": "edge",
-    "id": 317
+    "id": 317,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Beuons Aires",
@@ -5297,7 +5666,9 @@
     ],
     "notes": "Typo for Buenos Aires",
     "set": "edge",
-    "id": 318
+    "id": 318,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Tornoto",
@@ -5313,7 +5684,9 @@
     ],
     "notes": "Typo for Toronto",
     "set": "edge",
-    "id": 319
+    "id": 319,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Londno to Tokyp",
@@ -5329,7 +5702,9 @@
     ],
     "notes": "Both cities have typos",
     "set": "edge",
-    "id": 320
+    "id": 320,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm Sydeny to Melborne",
@@ -5347,7 +5722,9 @@
     ],
     "notes": "Time + two typo cities",
     "set": "edge",
-    "id": 321
+    "id": 321,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Delhii",
@@ -5363,7 +5740,9 @@
     ],
     "notes": "Typo for Delhi",
     "set": "edge",
-    "id": 322
+    "id": 322,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm EST to London",
@@ -5381,7 +5760,9 @@
     ],
     "notes": "TZ abbreviation as source + city as target",
     "set": "edge",
-    "id": 323
+    "id": 323,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "CET to JST",
@@ -5397,7 +5778,9 @@
     ],
     "notes": "Two TZ abbreviations",
     "set": "edge",
-    "id": 324
+    "id": 324,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "15:00 NYC to GMT",
@@ -5415,7 +5798,9 @@
     ],
     "notes": "24h time + city + TZ abbreviation",
     "set": "edge",
-    "id": 325
+    "id": 325,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "PST to IST",
@@ -5431,7 +5816,9 @@
     ],
     "notes": "IST is ambiguous — India? Israel? Ireland?",
     "set": "edge",
-    "id": 326
+    "id": 326,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "noon EST to London",
@@ -5449,7 +5836,9 @@
     ],
     "notes": "Named time + TZ abbreviation + city",
     "set": "edge",
-    "id": 327
+    "id": 327,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Tokyo to PT",
@@ -5465,7 +5854,9 @@
     ],
     "notes": "City + informal TZ abbreviation (Pacific Time)",
     "set": "edge",
-    "id": 328
+    "id": 328,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3.30pm London to NYC",
@@ -5483,7 +5874,9 @@
     ],
     "notes": "Dot-separated time format",
     "set": "edge",
-    "id": 329
+    "id": 329,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "AEST to Berlin",
@@ -5499,7 +5892,9 @@
     ],
     "notes": "Australian TZ abbreviation + European city",
     "set": "edge",
-    "id": 330
+    "id": 330,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "UTC to Tokyo",
@@ -5515,7 +5910,9 @@
     ],
     "notes": "UTC as source",
     "set": "edge",
-    "id": 331
+    "id": 331,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "midnight GMT to New York",
@@ -5533,7 +5930,9 @@
     ],
     "notes": "Named time + TZ abbreviation + multi-word city",
     "set": "edge",
-    "id": 332
+    "id": 332,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "9am pacific to eastern",
@@ -5551,7 +5950,9 @@
     ],
     "notes": "Informal timezone names without \"time\"",
     "set": "edge",
-    "id": 333
+    "id": 333,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm London GMT to Tokyo JST",
@@ -5567,7 +5968,9 @@
     ],
     "notes": "Redundant TZ info — confusing format",
     "set": "edge",
-    "id": 334
+    "id": 334,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "BST to CEST",
@@ -5583,7 +5986,9 @@
     ],
     "notes": "Summer time abbreviations",
     "set": "edge",
-    "id": 335
+    "id": 335,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "ET to CT",
@@ -5599,7 +6004,9 @@
     ],
     "notes": "Short US timezone abbreviations",
     "set": "edge",
-    "id": 336
+    "id": 336,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm US Eastern to Japan",
@@ -5617,7 +6024,9 @@
     ],
     "notes": "Verbose timezone name + country name",
     "set": "edge",
-    "id": 337
+    "id": 337,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "New York to London",
@@ -5633,7 +6042,9 @@
     ],
     "notes": "Two-word city as source",
     "set": "edge",
-    "id": 338
+    "id": 338,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "London to New York",
@@ -5649,7 +6060,9 @@
     ],
     "notes": "Two-word city as target",
     "set": "edge",
-    "id": 339
+    "id": 339,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Ho Chi Minh City to Bangkok",
@@ -5665,7 +6078,9 @@
     ],
     "notes": "Four-word city as source",
     "set": "edge",
-    "id": 340
+    "id": 340,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Salt Lake City to Denver",
@@ -5681,7 +6096,9 @@
     ],
     "notes": "Three-word city as source",
     "set": "edge",
-    "id": 341
+    "id": 341,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm New York to Los Angeles",
@@ -5699,7 +6116,9 @@
     ],
     "notes": "Time + two multi-word cities",
     "set": "edge",
-    "id": 342
+    "id": 342,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Buenos Aires to São Paulo",
@@ -5715,7 +6134,9 @@
     ],
     "notes": "Diacritical marks in city name",
     "set": "edge",
-    "id": 343
+    "id": 343,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Kuala Lumpur",
@@ -5731,7 +6152,9 @@
     ],
     "notes": "Two-word city alone",
     "set": "edge",
-    "id": 344
+    "id": 344,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Rio de Janeiro to Mexico City",
@@ -5747,7 +6170,9 @@
     ],
     "notes": "Three-word city to two-word city",
     "set": "edge",
-    "id": 345
+    "id": 345,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "San Francisco to New York",
@@ -5763,7 +6188,9 @@
     ],
     "notes": "Two multi-word US cities",
     "set": "edge",
-    "id": 346
+    "id": 346,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Tel Aviv to Istanbul",
@@ -5779,7 +6206,9 @@
     ],
     "notes": "Two-word Middle Eastern city",
     "set": "edge",
-    "id": 347
+    "id": 347,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm Hong Kong to Los Angeles",
@@ -5797,7 +6226,9 @@
     ],
     "notes": "Time + two-word city + two-word city",
     "set": "edge",
-    "id": 348
+    "id": 348,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Addis Ababa",
@@ -5813,7 +6244,9 @@
     ],
     "notes": "Two-word African city",
     "set": "edge",
-    "id": 349
+    "id": 349,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Dar es Salaam to Nairobi",
@@ -5829,7 +6262,9 @@
     ],
     "notes": "Three-word city with lowercase preposition",
     "set": "edge",
-    "id": 350
+    "id": 350,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Phnom Penh to Ho Chi Minh City",
@@ -5845,7 +6280,9 @@
     ],
     "notes": "Two multi-word Asian cities",
     "set": "edge",
-    "id": 351
+    "id": 351,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "noon San José to Guatemala City",
@@ -5863,7 +6300,9 @@
     ],
     "notes": "Named time + diacritical city + multi-word city",
     "set": "edge",
-    "id": 352
+    "id": 352,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "LA",
@@ -5879,23 +6318,9 @@
     ],
     "notes": "Common abbreviation for Los Angeles",
     "set": "edge",
-    "id": 353
-  },
-  {
-    "input": "SF",
-    "expectedSource": null,
-    "expectedTarget": "SF",
-    "expectedTime": {
-      "type": "now"
-    },
-    "expectedDateModifier": null,
-    "expectedTier": 1,
-    "difficultyTags": [
-      "short-input"
-    ],
-    "notes": "Common abbreviation for San Francisco",
-    "set": "edge",
-    "id": 354
+    "id": 353,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "UK",
@@ -5911,7 +6336,9 @@
     ],
     "notes": "Country abbreviation",
     "set": "edge",
-    "id": 355
+    "id": 355,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "NZ",
@@ -5927,7 +6354,9 @@
     ],
     "notes": "Country abbreviation for New Zealand",
     "set": "edge",
-    "id": 356
+    "id": 356,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "DC",
@@ -5943,7 +6372,9 @@
     ],
     "notes": "Abbreviation for Washington DC",
     "set": "edge",
-    "id": 357
+    "id": 357,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "HK",
@@ -5959,7 +6390,9 @@
     ],
     "notes": "Abbreviation for Hong Kong",
     "set": "edge",
-    "id": 358
+    "id": 358,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "SG",
@@ -5975,7 +6408,9 @@
     ],
     "notes": "Abbreviation for Singapore",
     "set": "edge",
-    "id": 359
+    "id": 359,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "LA to NY",
@@ -5991,7 +6426,9 @@
     ],
     "notes": "Two abbreviations with connector",
     "set": "edge",
-    "id": 360
+    "id": 360,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm LA to SF",
@@ -6009,7 +6446,9 @@
     ],
     "notes": "Time + two abbreviations",
     "set": "edge",
-    "id": 361
+    "id": 361,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "JP",
@@ -6025,7 +6464,9 @@
     ],
     "notes": "JP — not a common abbreviation, could be Japan",
     "set": "edge",
-    "id": 362
+    "id": 362,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "AZ",
@@ -6041,7 +6482,9 @@
     ],
     "notes": "AZ — Arizona or Azerbaijan?",
     "set": "edge",
-    "id": 363
+    "id": 363,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "KL",
@@ -6057,7 +6500,9 @@
     ],
     "notes": "KL — Kuala Lumpur abbreviation, less common",
     "set": "edge",
-    "id": 364
+    "id": 364,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tomorrow 3pm NYC to London",
@@ -6075,7 +6520,9 @@
     ],
     "notes": "tomorrow at start with time + two cities",
     "set": "edge",
-    "id": 365
+    "id": 365,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "NYC to London tomorrow",
@@ -6091,7 +6538,9 @@
     ],
     "notes": "tomorrow at end, no explicit time",
     "set": "edge",
-    "id": 366
+    "id": 366,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "9am Berlin to Tokyo tomorrow",
@@ -6109,7 +6558,9 @@
     ],
     "notes": "tomorrow at end with time at start",
     "set": "edge",
-    "id": 367
+    "id": 367,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "yesterday 5pm London to NYC",
@@ -6127,7 +6578,9 @@
     ],
     "notes": "yesterday with time + two cities",
     "set": "edge",
-    "id": 368
+    "id": 368,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "today noon Tokyo",
@@ -6145,7 +6598,9 @@
     ],
     "notes": "today + named time + single city",
     "set": "edge",
-    "id": 369
+    "id": 369,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "today London",
@@ -6161,7 +6616,9 @@
     ],
     "notes": "today + single city, no time",
     "set": "edge",
-    "id": 370
+    "id": 370,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tmrw 8am SF to Chicago",
@@ -6179,7 +6636,9 @@
     ],
     "notes": "tmrw shorthand",
     "set": "edge",
-    "id": 371
+    "id": 371,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tmw 10pm Paris",
@@ -6197,7 +6656,9 @@
     ],
     "notes": "tmw shorthand + single city",
     "set": "edge",
-    "id": 372
+    "id": 372,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "tomorrow midnight London to Sydney",
@@ -6215,7 +6676,9 @@
     ],
     "notes": "tomorrow + named time midnight",
     "set": "edge",
-    "id": 373
+    "id": 373,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "yesterday Tokyo to London",
@@ -6231,7 +6694,9 @@
     ],
     "notes": "yesterday with no time, two cities",
     "set": "edge",
-    "id": 374
+    "id": 374,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 2 hours NYC to London",
@@ -6248,7 +6713,9 @@
     ],
     "notes": "relative hours + two cities",
     "set": "edge",
-    "id": 375
+    "id": 375,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 30 minutes Berlin",
@@ -6265,7 +6732,9 @@
     ],
     "notes": "relative minutes + single city",
     "set": "edge",
-    "id": 376
+    "id": 376,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 1h30m Tokyo to SF",
@@ -6282,7 +6751,9 @@
     ],
     "notes": "compound relative h+m",
     "set": "edge",
-    "id": 377
+    "id": 377,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in half an hour London",
@@ -6299,7 +6770,9 @@
     ],
     "notes": "half an hour idiom",
     "set": "edge",
-    "id": 378
+    "id": 378,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in an hour Tokyo",
@@ -6316,7 +6789,9 @@
     ],
     "notes": "in an hour idiom",
     "set": "edge",
-    "id": 379
+    "id": 379,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 3 hrs Paris to Berlin",
@@ -6333,7 +6808,9 @@
     ],
     "notes": "hrs abbreviation",
     "set": "edge",
-    "id": 380
+    "id": 380,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 45 min Sydney",
@@ -6350,7 +6827,9 @@
     ],
     "notes": "min abbreviation",
     "set": "edge",
-    "id": 381
+    "id": 381,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 2h 15m Chicago to London",
@@ -6367,7 +6846,9 @@
     ],
     "notes": "compound with space between h and m",
     "set": "edge",
-    "id": 382
+    "id": 382,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 4 hours",
@@ -6385,7 +6866,9 @@
     ],
     "notes": "relative time with no location — incomplete query",
     "set": "edge",
-    "id": 383
+    "id": 383,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "in 1 hour NYC",
@@ -6402,7 +6885,9 @@
     ],
     "notes": "singular hour",
     "set": "edge",
-    "id": 384
+    "id": 384,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Eastern Time to London",
@@ -6418,7 +6903,9 @@
     ],
     "notes": "Full timezone name as source",
     "set": "edge",
-    "id": 385
+    "id": 385,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Pacific Time to Tokyo",
@@ -6434,7 +6921,9 @@
     ],
     "notes": "Pacific Time full name as source",
     "set": "edge",
-    "id": 386
+    "id": 386,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "east coast to London",
@@ -6450,7 +6939,9 @@
     ],
     "notes": "Informal region name as source",
     "set": "edge",
-    "id": 387
+    "id": 387,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "west coast to Tokyo",
@@ -6466,7 +6957,9 @@
     ],
     "notes": "Informal region name west coast",
     "set": "edge",
-    "id": 388
+    "id": 388,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm Eastern Time to Pacific Time",
@@ -6484,7 +6977,9 @@
     ],
     "notes": "Time + two full timezone names",
     "set": "edge",
-    "id": 389
+    "id": 389,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Mountain Time",
@@ -6500,7 +6995,9 @@
     ],
     "notes": "Standalone full timezone name",
     "set": "edge",
-    "id": 390
+    "id": 390,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Central Time to London",
@@ -6516,7 +7013,9 @@
     ],
     "notes": "Central Time full name as source",
     "set": "edge",
-    "id": 391
+    "id": 391,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "noon Pacific Time to Eastern Time",
@@ -6534,7 +7033,9 @@
     ],
     "notes": "Named time + two full timezone names",
     "set": "edge",
-    "id": 392
+    "id": 392,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm UTC+8 to London",
@@ -6550,9 +7051,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "UTC offset as source — aspirational, parser doesn't support UTC+N yet",
+    "notes": "UTC offset as source.",
     "set": "edge",
-    "id": 393
+    "id": 393,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "GMT-5 to Tokyo",
@@ -6566,9 +7069,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "GMT-N offset as source — aspirational",
+    "notes": "GMT-N offset as source.",
     "set": "edge",
-    "id": 394
+    "id": 394,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "UTC+5:30",
@@ -6582,9 +7087,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "Fractional UTC offset (India) — aspirational",
+    "notes": "Fractional UTC offset (India).",
     "set": "edge",
-    "id": 395
+    "id": 395,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "noon UTC+9 to UTC-5",
@@ -6600,9 +7107,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "Two UTC offsets — aspirational",
+    "notes": "Two UTC offsets.",
     "set": "edge",
-    "id": 396
+    "id": 396,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "UTC+0 to NYC",
@@ -6616,9 +7125,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "UTC+0 explicit zero offset — aspirational",
+    "notes": "Explicit zero offset.",
     "set": "edge",
-    "id": 397
+    "id": 397,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "9am GMT+1 to GMT-8",
@@ -6634,9 +7145,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "GMT offsets with time — aspirational",
+    "notes": "GMT offsets with a time.",
     "set": "edge",
-    "id": 398
+    "id": 398,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "UTC-7",
@@ -6650,9 +7163,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "Standalone negative UTC offset — aspirational",
+    "notes": "Standalone negative UTC offset.",
     "set": "edge",
-    "id": 399
+    "id": 399,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm UTC+10 to London",
@@ -6668,9 +7183,11 @@
     "difficultyTags": [
       "utc-offset"
     ],
-    "notes": "Two-digit UTC offset — aspirational",
+    "notes": "Two-digit UTC offset.",
     "set": "edge",
-    "id": 400
+    "id": 400,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "next Tuesday 3pm NYC to London",
@@ -6692,7 +7209,9 @@
     ],
     "notes": "next + day-of-week",
     "set": "edge",
-    "id": 401
+    "id": 401,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Monday 9am Berlin to Tokyo",
@@ -6714,7 +7233,9 @@
     ],
     "notes": "Bare day-of-week",
     "set": "edge",
-    "id": 402
+    "id": 402,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "this Friday noon London",
@@ -6736,7 +7257,9 @@
     ],
     "notes": "this + day-of-week",
     "set": "edge",
-    "id": 403
+    "id": 403,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "next Wednesday Tokyo",
@@ -6756,7 +7279,9 @@
     ],
     "notes": "next + day-of-week, no time",
     "set": "edge",
-    "id": 404
+    "id": 404,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "last Saturday 8pm Sydney to London",
@@ -6778,7 +7303,9 @@
     ],
     "notes": "last + day-of-week",
     "set": "edge",
-    "id": 405
+    "id": 405,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "next Mon 10am EST to PST",
@@ -6801,7 +7328,9 @@
     ],
     "notes": "Abbreviated day + timezone abbreviations",
     "set": "edge",
-    "id": 406
+    "id": 406,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Thu 2pm Chicago to London",
@@ -6823,7 +7352,9 @@
     ],
     "notes": "Short day name",
     "set": "edge",
-    "id": 407
+    "id": 407,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "next Sunday midnight NYC",
@@ -6845,7 +7376,9 @@
     ],
     "notes": "next + day + named time",
     "set": "edge",
-    "id": 408
+    "id": 408,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "9-5 London to NYC",
@@ -6861,9 +7394,11 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Business hour range — aspirational, parser doesn't handle ranges",
+    "notes": "A range, not an instant. TimeRef has no interval type, so the best available reading is the start of the range.",
     "set": "edge",
-    "id": 409
+    "id": 409,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "working hours Tokyo in NYC",
@@ -6877,9 +7412,11 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Natural language business hours — aspirational",
+    "notes": "A range, not an instant. Expects `now` because TimeRef cannot represent working hours; the expectation changes when it can.",
     "set": "edge",
-    "id": 410
+    "id": 410,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "overlap hours NYC and London",
@@ -6893,9 +7430,11 @@
     "difficultyTags": [
       "completeness"
     ],
-    "notes": "Overlap/meeting hours — aspirational",
+    "notes": "An overlap between two zones, not an instant. Same representation gap as the working-hours case.",
     "set": "edge",
-    "id": 411
+    "id": 411,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "東京 to London",
@@ -6909,9 +7448,11 @@
     "difficultyTags": [
       "non-latin"
     ],
-    "notes": "Japanese kanji for Tokyo — aspirational",
+    "notes": "Japanese kanji for Tokyo. Extraction is correct; the name resolves to nothing.",
     "set": "edge",
-    "id": 412
+    "id": 412,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "Москва to NYC",
@@ -6925,9 +7466,11 @@
     "difficultyTags": [
       "non-latin"
     ],
-    "notes": "Cyrillic Moscow — aspirational",
+    "notes": "Cyrillic Moscow. Extraction is correct; the name resolves to nothing.",
     "set": "edge",
-    "id": 413
+    "id": 413,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "3pm 北京 to SF",
@@ -6943,9 +7486,11 @@
     "difficultyTags": [
       "non-latin"
     ],
-    "notes": "Chinese Beijing with time — aspirational",
+    "notes": "Chinese Beijing with a time. Extraction is correct; the name resolves to nothing.",
     "set": "edge",
-    "id": 414
+    "id": 414,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "دبي to London",
@@ -6959,9 +7504,11 @@
     "difficultyTags": [
       "non-latin"
     ],
-    "notes": "Arabic Dubai — aspirational",
+    "notes": "Arabic Dubai. Extraction is correct; the name resolves to nothing.",
     "set": "edge",
-    "id": 415
+    "id": 415,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "서울 to Tokyo",
@@ -6975,9 +7522,11 @@
     "difficultyTags": [
       "non-latin"
     ],
-    "notes": "Korean Seoul — aspirational",
+    "notes": "Korean Seoul. Extraction is correct; the name resolves to nothing.",
     "set": "edge",
-    "id": 416
+    "id": 416,
+    "provenance": "hand-written",
+    "split": "dev"
   },
   {
     "input": "München to London",
@@ -6993,6 +7542,8 @@
     ],
     "notes": "Latin diacritics — München (Munich). Tier 1: resolver should handle this.",
     "set": "edge",
-    "id": 417
+    "id": 417,
+    "provenance": "hand-written",
+    "split": "dev"
   }
 ]

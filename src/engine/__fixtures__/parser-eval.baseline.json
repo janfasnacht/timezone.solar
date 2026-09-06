@@ -1,49 +1,49 @@
 {
   "adapter": "v2-noise-tolerant",
   "fixture": {
-    "caseCount": 417,
-    "expectationsHash": "sha256:16c6f1565a7ed71af0c3c64891f7eb0733d50957e64ca36861e74a49de6eb816",
+    "caseCount": 414,
+    "expectationsHash": "sha256:70a7c02c165f2410a61e8c3eaa09881d2535580e43f75c4e3471d570606c1323",
     "resolutionHash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "setCounts": {
       "realistic": 245,
-      "edge": 172
+      "edge": 169
     }
   },
   "metrics": {
     "accuracy.overall": {
-      "value": 0.9904,
-      "n": 417
+      "value": 0.9855,
+      "n": 414
     },
     "accuracy.set.realistic": {
       "value": 1,
       "n": 245
     },
     "accuracy.set.edge": {
-      "value": 0.9767,
-      "n": 172
+      "value": 0.9645,
+      "n": 169
     },
     "accuracy.field.source": {
       "value": 0.9952,
-      "n": 417
+      "n": 414
     },
     "accuracy.field.target": {
-      "value": 0.9928,
-      "n": 417
+      "value": 0.9879,
+      "n": 414
     },
     "accuracy.field.time": {
       "value": 0.9976,
-      "n": 417
+      "n": 414
     },
     "accuracy.field.dateMod": {
       "value": 1,
-      "n": 417
+      "n": 414
     },
     "accuracy.tag.structural-ambiguity": {
       "value": 1,
       "n": 15
     },
     "accuracy.tag.token-ambiguity": {
-      "value": 1,
+      "value": 0.8333,
       "n": 12
     },
     "accuracy.tag.noise-tolerance": {
@@ -51,8 +51,8 @@
       "n": 20
     },
     "accuracy.tag.completeness": {
-      "value": 0.9474,
-      "n": 19
+      "value": 0.9412,
+      "n": 17
     },
     "accuracy.tag.typo": {
       "value": 1,
@@ -68,7 +68,7 @@
     },
     "accuracy.tag.short-input": {
       "value": 1,
-      "n": 12
+      "n": 11
     },
     "accuracy.tag.date-modifier": {
       "value": 1,
@@ -92,22 +92,38 @@
     },
     "tierSafety": {
       "value": 0.997,
-      "n": 332
+      "n": 330
     },
     "tierAccuracy": {
       "value": 0.6643,
-      "n": 417
+      "n": 414
+    },
+    "accuracy.provenance.generated-from-parser": {
+      "value": 1,
+      "n": 245
+    },
+    "accuracy.provenance.hand-written": {
+      "value": 0.9645,
+      "n": 169
     },
     "resolution.answerRate": {
-      "value": 0.8455,
-      "n": 382
+      "value": 0.8447,
+      "n": 380
     },
     "resolution.confidentAnswerable": {
-      "value": 0.8922,
-      "n": 382
+      "value": 0.8918,
+      "n": 380
     }
   },
   "failingCases": [
+    {
+      "id": 261,
+      "input": "Jan Tokyo"
+    },
+    {
+      "id": 262,
+      "input": "March London"
+    },
     {
       "id": 279,
       "input": "3pm meeting time Berlin London"
