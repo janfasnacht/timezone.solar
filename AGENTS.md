@@ -127,6 +127,12 @@ the message says which of four kinds it is:
   failure, but the baseline has to be updated in the same change so the diff
   shows what moved.
 
+The eval harness typechecks under `tsconfig.eval.json`, which also covers
+`scripts/`. `tsconfig.app.json` excludes `src/engine/eval`, `adapter.ts` and
+every `*.test.ts`, so without that reference the code gating CI is not itself
+checked — which is how `scripts/generate-eval-queries.ts` was able to stop
+compiling unnoticed.
+
 The baseline gates every headline and per-tag accuracy plus tier safety and tier
 accuracy. Latency and complexity are printed but not gated: latency is not
 reproducible across machines. The baseline also records the case count and a

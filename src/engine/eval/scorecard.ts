@@ -26,7 +26,14 @@ function dateModifierEqual(a: DateModifier, b: DateModifier): boolean {
   if (a === b) return true
   if (a === null || b === null) return false
   if (typeof a === 'string' || typeof b === 'string') return a === b
-  return a.type === b.type && a.day === b.day && a.anchor === b.anchor
+  if (a.type !== b.type) return false
+  if (a.type === 'date' && b.type === 'date') {
+    return a.year === b.year && a.month === b.month && a.day === b.day
+  }
+  if (a.type === 'day-of-week' && b.type === 'day-of-week') {
+    return a.day === b.day && a.anchor === b.anchor
+  }
+  return false
 }
 
 export function assertParseResult(adapter: ParserAdapter, tc: TestCase): ParseAssertionResult {

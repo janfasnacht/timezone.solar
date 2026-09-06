@@ -6,10 +6,18 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { parserAdapter } from '../src/engine/adapter'
-import { loadFixture, runEvaluation, buildBaseline, compareToBaseline } from '../src/engine/eval'
+import {
+  loadFixture,
+  runEvaluation,
+  buildBaseline,
+  compareToBaseline,
+  pinEvalEnvironment,
+} from '../src/engine/eval'
 import type { EvalBaseline } from '../src/engine/eval'
 
 const OUT = resolve(import.meta.dirname, '../src/engine/__fixtures__/parser-eval.baseline.json')
+
+pinEvalEnvironment()
 
 const cases = loadFixture()
 const scorecard = runEvaluation(parserAdapter, cases)
