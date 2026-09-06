@@ -1,13 +1,17 @@
 import type { TestCase } from './types'
 import fixtureData from '../__fixtures__/parser-eval.json'
 
+/** Every set a case can belong to, in report order. */
+export const SETS = ['realistic', 'edge', 'regression', 'adversarial'] as const
+export type CaseSet = (typeof SETS)[number]
+
 const allCases: TestCase[] = fixtureData as TestCase[]
 
 export function loadFixture(): TestCase[] {
   return allCases
 }
 
-export function filterBySet(cases: TestCase[], set: 'realistic' | 'edge' | 'regression'): TestCase[] {
+export function filterBySet(cases: TestCase[], set: CaseSet): TestCase[] {
   return cases.filter((tc) => tc.set === set)
 }
 

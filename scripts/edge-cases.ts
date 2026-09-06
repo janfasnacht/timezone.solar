@@ -14,8 +14,6 @@ function edge(
     time?: TestCase['expectedTime']
     dateModifier?: TestCase['expectedDateModifier']
     tier?: 1 | 2 | 3
-    sourceKind?: TestCase['expectedSourceKind']
-    targetKind?: TestCase['expectedTargetKind']
   },
   tags: string[],
   notes: string
@@ -27,8 +25,6 @@ function edge(
     expectedTime: expected.time ?? { type: 'now' },
     expectedDateModifier: expected.dateModifier ?? null,
     expectedTier: expected.tier ?? 1,
-    expectedSourceKind: expected.sourceKind,
-    expectedTargetKind: expected.targetKind,
     difficultyTags: tags,
     notes,
     set: 'edge',

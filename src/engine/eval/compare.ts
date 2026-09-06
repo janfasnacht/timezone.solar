@@ -80,7 +80,18 @@ export function compareToBaseline(baseline: EvalBaseline, current: EvalBaseline)
   if (baseline.fixture.expectationsHash !== current.fixture.expectationsHash) {
     diffs.push({
       kind: 'fixture',
-      detail: `expectations hash changed — ground truth was edited, so the scores below are measured against a different exam`,
+      detail: `expectations hash changed — what the parser is supposed to extract was edited, so the scores below are measured against a different exam`,
+    })
+  }
+  if (baseline.fixture.resolutionHash === undefined) {
+    diffs.push({
+      kind: 'shape',
+      detail: `baseline predates the resolution hash — regenerate it`,
+    })
+  } else if (baseline.fixture.resolutionHash !== current.fixture.resolutionHash) {
+    diffs.push({
+      kind: 'fixture',
+      detail: `resolution hash changed — where names are supposed to land was re-annotated (extraction expectations are unchanged)`,
     })
   }
   if (baseline.adapter !== current.adapter) {

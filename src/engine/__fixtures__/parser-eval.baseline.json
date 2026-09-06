@@ -3,6 +3,7 @@
   "fixture": {
     "caseCount": 417,
     "expectationsHash": "sha256:16c6f1565a7ed71af0c3c64891f7eb0733d50957e64ca36861e74a49de6eb816",
+    "resolutionHash": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "setCounts": {
       "realistic": 245,
       "edge": 172
@@ -96,6 +97,14 @@
     "tierAccuracy": {
       "value": 0.6643,
       "n": 417
+    },
+    "resolution.answerRate": {
+      "value": 0.8455,
+      "n": 382
+    },
+    "resolution.confidentAnswerable": {
+      "value": 0.8922,
+      "n": 382
     }
   },
   "failingCases": [
