@@ -189,6 +189,5 @@ export function findEntityForMap(name: string): Entity | null {
     aliases: [],
     wikidataId: null,
     vibes: null,
-    iconSlug: null,
   }
 }

@@ -93521,8 +93521,7 @@ var CITY_DATA = [
     lng: -73.98,
     aliases: ["nyc", "ny"],
     wikidataId: null,
-    vibes: ["electric", "hustling", "sleepless"],
-    iconSlug: "us-new-york"
+    vibes: ["electric", "hustling", "sleepless"]
   },
   {
     slug: "los-angeles",
@@ -93534,8 +93533,7 @@ var CITY_DATA = [
     lng: -118.18,
     aliases: ["la"],
     wikidataId: null,
-    vibes: ["laid-back", "screen-lit", "dreamy"],
-    iconSlug: "us-los-angeles"
+    vibes: ["laid-back", "screen-lit", "dreamy"]
   },
   {
     slug: "chicago",
@@ -93547,8 +93545,7 @@ var CITY_DATA = [
     lng: -87.75,
     aliases: ["chi"],
     wikidataId: null,
-    vibes: ["gritty", "soulful", "broad-shouldered"],
-    iconSlug: "us-chicago"
+    vibes: ["gritty", "soulful", "broad-shouldered"]
   },
   {
     slug: "san-francisco",
@@ -93560,8 +93557,7 @@ var CITY_DATA = [
     lng: -122.46,
     aliases: ["sf", "san fran"],
     wikidataId: null,
-    vibes: ["utopian", "inventive", "free-spirited"],
-    iconSlug: "us-san-francisco"
+    vibes: ["utopian", "inventive", "free-spirited"]
   },
   {
     slug: "boston",
@@ -93573,8 +93569,7 @@ var CITY_DATA = [
     lng: -71.07,
     aliases: ["bos"],
     wikidataId: null,
-    vibes: ["scholarly", "scrappy", "revolutionary"],
-    iconSlug: "us-boston"
+    vibes: ["scholarly", "scrappy", "revolutionary"]
   },
   {
     slug: "miami",
@@ -93586,8 +93581,7 @@ var CITY_DATA = [
     lng: -80.22,
     aliases: ["mia"],
     wikidataId: null,
-    vibes: ["art-deco", "electric", "vivid"],
-    iconSlug: "us-miami"
+    vibes: ["art-deco", "electric", "vivid"]
   },
   {
     slug: "seattle",
@@ -93599,8 +93593,7 @@ var CITY_DATA = [
     lng: -122.34,
     aliases: ["sea"],
     wikidataId: null,
-    vibes: ["cozy", "caffeinated", "evergreen"],
-    iconSlug: "us-seattle"
+    vibes: ["cozy", "caffeinated", "evergreen"]
   },
   {
     slug: "denver",
@@ -93612,8 +93605,7 @@ var CITY_DATA = [
     lng: -104.98,
     aliases: ["den"],
     wikidataId: null,
-    vibes: ["alpine", "outdoorsy", "mile-high"],
-    iconSlug: "us-denver"
+    vibes: ["alpine", "outdoorsy", "mile-high"]
   },
   {
     slug: "austin",
@@ -93625,8 +93617,7 @@ var CITY_DATA = [
     lng: -97.74,
     aliases: ["aus"],
     wikidataId: null,
-    vibes: ["weird", "creative", "honky-tonk"],
-    iconSlug: "us-austin"
+    vibes: ["weird", "creative", "honky-tonk"]
   },
   {
     slug: "portland",
@@ -93638,8 +93629,7 @@ var CITY_DATA = [
     lng: -122.68,
     aliases: ["pdx"],
     wikidataId: null,
-    vibes: ["quirky", "artisanal", "chill"],
-    iconSlug: null
+    vibes: ["quirky", "artisanal", "chill"]
   },
   {
     slug: "dallas",
@@ -93651,8 +93641,7 @@ var CITY_DATA = [
     lng: -96.84,
     aliases: ["dfw"],
     wikidataId: null,
-    vibes: ["big", "brash", "sprawling"],
-    iconSlug: null
+    vibes: ["big", "brash", "sprawling"]
   },
   {
     slug: "houston",
@@ -93664,8 +93653,7 @@ var CITY_DATA = [
     lng: -95.34,
     aliases: ["hou"],
     wikidataId: null,
-    vibes: ["ambitious", "sprawling", "space-bound"],
-    iconSlug: null
+    vibes: ["ambitious", "sprawling", "space-bound"]
   },
   {
     slug: "atlanta",
@@ -93677,8 +93665,7 @@ var CITY_DATA = [
     lng: -84.4,
     aliases: ["atl"],
     wikidataId: null,
-    vibes: ["southern", "buzzing", "canopied"],
-    iconSlug: "us-atlanta"
+    vibes: ["southern", "buzzing", "canopied"]
   },
   {
     slug: "las-vegas",
@@ -93690,8 +93677,7 @@ var CITY_DATA = [
     lng: -115.22,
     aliases: ["vegas"],
     wikidataId: null,
-    vibes: ["flashy", "restless", "neon"],
-    iconSlug: null
+    vibes: ["flashy", "restless", "neon"]
   },
   {
     slug: "new-orleans",
@@ -93703,8 +93689,7 @@ var CITY_DATA = [
     lng: -90.04,
     aliases: ["nola"],
     wikidataId: null,
-    vibes: ["brass-loud", "soulful", "festive"],
-    iconSlug: "us-new-orleans"
+    vibes: ["brass-loud", "soulful", "festive"]
   },
   {
     slug: "minneapolis",
@@ -93716,8 +93701,7 @@ var CITY_DATA = [
     lng: -93.25,
     aliases: ["msp"],
     wikidataId: null,
-    vibes: ["hardy", "friendly", "lakeside"],
-    iconSlug: null
+    vibes: ["hardy", "friendly", "lakeside"]
   },
   {
     slug: "detroit",
@@ -93729,8 +93713,7 @@ var CITY_DATA = [
     lng: -83.08,
     aliases: ["dtw"],
     wikidataId: null,
-    vibes: ["resilient", "gritty", "reborn"],
-    iconSlug: null
+    vibes: ["resilient", "gritty", "reborn"]
   },
   {
     slug: "philadelphia",
@@ -93742,8 +93725,7 @@ var CITY_DATA = [
     lng: -75.17,
     aliases: ["philly"],
     wikidataId: null,
-    vibes: ["scrappy", "proud", "bell-cracked"],
-    iconSlug: "us-philadelphia"
+    vibes: ["scrappy", "proud", "bell-cracked"]
   },
   {
     slug: "honolulu",
@@ -93755,8 +93737,7 @@ var CITY_DATA = [
     lng: -157.86,
     aliases: [],
     wikidataId: null,
-    vibes: ["aloha", "surf-worn", "golden"],
-    iconSlug: null
+    vibes: ["aloha", "surf-worn", "golden"]
   },
   {
     slug: "washington-dc",
@@ -93768,8 +93749,7 @@ var CITY_DATA = [
     lng: -77.01,
     aliases: ["dc"],
     wikidataId: null,
-    vibes: ["powerful", "polished", "monumental"],
-    iconSlug: "us-washington"
+    vibes: ["powerful", "polished", "monumental"]
   },
   {
     slug: "anchorage",
@@ -93781,8 +93761,7 @@ var CITY_DATA = [
     lng: -149.9,
     aliases: [],
     wikidataId: null,
-    vibes: ["wild", "rugged", "moose-crossed"],
-    iconSlug: null
+    vibes: ["wild", "rugged", "moose-crossed"]
   },
   {
     slug: "toronto",
@@ -93794,8 +93773,7 @@ var CITY_DATA = [
     lng: -79.42,
     aliases: ["canada"],
     wikidataId: null,
-    vibes: ["multicultural", "polite", "dynamic"],
-    iconSlug: "ca-toronto"
+    vibes: ["multicultural", "polite", "dynamic"]
   },
   {
     slug: "montreal",
@@ -93807,8 +93785,7 @@ var CITY_DATA = [
     lng: -73.58,
     aliases: [],
     wikidataId: null,
-    vibes: ["bilingual", "festive", "spiral-staired"],
-    iconSlug: null
+    vibes: ["bilingual", "festive", "spiral-staired"]
   },
   {
     slug: "vancouver",
@@ -93820,8 +93797,7 @@ var CITY_DATA = [
     lng: -123.12,
     aliases: [],
     wikidataId: null,
-    vibes: ["scenic", "laid-back", "lush"],
-    iconSlug: "ca-vancouver"
+    vibes: ["scenic", "laid-back", "lush"]
   },
   {
     slug: "mexico-city",
@@ -93833,8 +93809,7 @@ var CITY_DATA = [
     lng: -99.13,
     aliases: ["cdmx", "mexico"],
     wikidataId: null,
-    vibes: ["vibrant", "mural-painted", "ancient"],
-    iconSlug: null
+    vibes: ["vibrant", "mural-painted", "ancient"]
   },
   {
     slug: "albuquerque",
@@ -93846,8 +93821,7 @@ var CITY_DATA = [
     lng: -106.65,
     aliases: [],
     wikidataId: null,
-    vibes: ["high-desert", "expansive", "mystical"],
-    iconSlug: "us-albuquerque"
+    vibes: ["high-desert", "expansive", "mystical"]
   },
   {
     slug: "cincinnati",
@@ -93859,8 +93833,7 @@ var CITY_DATA = [
     lng: -84.51,
     aliases: [],
     wikidataId: null,
-    vibes: ["unpretentious", "steady", "riverbound"],
-    iconSlug: "us-cincinnati"
+    vibes: ["unpretentious", "steady", "riverbound"]
   },
   {
     slug: "columbus",
@@ -93872,8 +93845,7 @@ var CITY_DATA = [
     lng: -83,
     aliases: [],
     wikidataId: null,
-    vibes: ["earnest", "balanced", "grounded"],
-    iconSlug: "us-columbus"
+    vibes: ["earnest", "balanced", "grounded"]
   },
   {
     slug: "hartford",
@@ -93885,8 +93857,7 @@ var CITY_DATA = [
     lng: -72.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["nostalgic", "insurance-built", "weathered"],
-    iconSlug: "us-hartford"
+    vibes: ["nostalgic", "insurance-built", "weathered"]
   },
   {
     slug: "irvine",
@@ -93898,8 +93869,7 @@ var CITY_DATA = [
     lng: -117.83,
     aliases: [],
     wikidataId: null,
-    vibes: ["polished", "master-planned", "pristine"],
-    iconSlug: "us-irvine"
+    vibes: ["polished", "master-planned", "pristine"]
   },
   {
     slug: "peoria",
@@ -93911,8 +93881,7 @@ var CITY_DATA = [
     lng: -89.59,
     aliases: [],
     wikidataId: null,
-    vibes: ["humble", "unhurried", "practical"],
-    iconSlug: "us-peoria"
+    vibes: ["humble", "unhurried", "practical"]
   },
   {
     slug: "phoenix",
@@ -93924,8 +93893,7 @@ var CITY_DATA = [
     lng: -112.07,
     aliases: [],
     wikidataId: null,
-    vibes: ["saguaro-lined", "resilient", "sprawling"],
-    iconSlug: "us-phoenix"
+    vibes: ["saguaro-lined", "resilient", "sprawling"]
   },
   {
     slug: "pittsburgh",
@@ -93937,8 +93905,7 @@ var CITY_DATA = [
     lng: -80,
     aliases: [],
     wikidataId: null,
-    vibes: ["gritty", "proud", "blue-collar"],
-    iconSlug: "us-pittsburgh"
+    vibes: ["gritty", "proud", "blue-collar"]
   },
   {
     slug: "sacramento",
@@ -93950,8 +93917,7 @@ var CITY_DATA = [
     lng: -121.49,
     aliases: [],
     wikidataId: null,
-    vibes: ["laid-back", "farm-to-fork", "easygoing"],
-    iconSlug: "us-sacramento"
+    vibes: ["laid-back", "farm-to-fork", "easygoing"]
   },
   {
     slug: "san-diego",
@@ -93963,8 +93929,7 @@ var CITY_DATA = [
     lng: -117.16,
     aliases: [],
     wikidataId: null,
-    vibes: ["surf-slow", "naval", "carefree"],
-    iconSlug: "us-san-diego"
+    vibes: ["surf-slow", "naval", "carefree"]
   },
   {
     slug: "st-louis",
@@ -93976,8 +93941,7 @@ var CITY_DATA = [
     lng: -90.2,
     aliases: [],
     wikidataId: null,
-    vibes: ["soulful", "midwestern", "unpretentious"],
-    iconSlug: "us-st-louis"
+    vibes: ["soulful", "midwestern", "unpretentious"]
   },
   {
     slug: "ottawa",
@@ -93989,8 +93953,7 @@ var CITY_DATA = [
     lng: -75.7,
     aliases: [],
     wikidataId: null,
-    vibes: ["dignified", "bilingual", "parliamentary"],
-    iconSlug: "ca-ottawa"
+    vibes: ["dignified", "bilingual", "parliamentary"]
   },
   {
     slug: "guadalajara",
@@ -94002,8 +93965,7 @@ var CITY_DATA = [
     lng: -103.35,
     aliases: [],
     wikidataId: null,
-    vibes: ["spirited", "traditional", "mariachi-loud"],
-    iconSlug: "mx-guadalajara"
+    vibes: ["spirited", "traditional", "mariachi-loud"]
   },
   {
     slug: "tijuana",
@@ -94015,8 +93977,7 @@ var CITY_DATA = [
     lng: -117.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["edgy", "border-crossing", "hustling"],
-    iconSlug: "mx-tijuana"
+    vibes: ["edgy", "border-crossing", "hustling"]
   },
   {
     slug: "san-juan",
@@ -94028,8 +93989,7 @@ var CITY_DATA = [
     lng: -66.11,
     aliases: [],
     wikidataId: null,
-    vibes: ["fortressed", "salsa-ready", "vibrant"],
-    iconSlug: "pr-san-juan"
+    vibes: ["fortressed", "salsa-ready", "vibrant"]
   },
   // --- South America ---
   {
@@ -94042,8 +94002,7 @@ var CITY_DATA = [
     lng: -46.63,
     aliases: ["brazil"],
     wikidataId: null,
-    vibes: ["intense", "rhythmic", "massive"],
-    iconSlug: "br-sao-paulo"
+    vibes: ["intense", "rhythmic", "massive"]
   },
   {
     slug: "buenos-aires",
@@ -94055,8 +94014,7 @@ var CITY_DATA = [
     lng: -58.4,
     aliases: ["argentina"],
     wikidataId: null,
-    vibes: ["tango-stepped", "elegant", "nocturnal"],
-    iconSlug: "ar-buenos-aires"
+    vibes: ["tango-stepped", "elegant", "nocturnal"]
   },
   {
     slug: "bogota",
@@ -94068,8 +94026,7 @@ var CITY_DATA = [
     lng: -74.08,
     aliases: ["colombia"],
     wikidataId: null,
-    vibes: ["graffitied", "lively", "elevated"],
-    iconSlug: "co-bogota"
+    vibes: ["graffitied", "lively", "elevated"]
   },
   {
     slug: "lima",
@@ -94081,8 +94038,7 @@ var CITY_DATA = [
     lng: -77.05,
     aliases: ["peru"],
     wikidataId: null,
-    vibes: ["ceviche-sharp", "flavorful", "ancient"],
-    iconSlug: "pe-lima"
+    vibes: ["ceviche-sharp", "flavorful", "ancient"]
   },
   {
     slug: "santiago",
@@ -94094,8 +94050,7 @@ var CITY_DATA = [
     lng: -70.67,
     aliases: ["chile"],
     wikidataId: null,
-    vibes: ["cosmopolitan", "andean", "adventurous"],
-    iconSlug: "cl-santiago"
+    vibes: ["cosmopolitan", "andean", "adventurous"]
   },
   {
     slug: "cordoba-argentina",
@@ -94107,8 +94062,7 @@ var CITY_DATA = [
     lng: -64.18,
     aliases: [],
     wikidataId: null,
-    vibes: ["scholarly", "jesuit-founded", "rebellious"],
-    iconSlug: "ar-cordoba"
+    vibes: ["scholarly", "jesuit-founded", "rebellious"]
   },
   {
     slug: "ushuaia",
@@ -94120,8 +94074,7 @@ var CITY_DATA = [
     lng: -68.31,
     aliases: [],
     wikidataId: null,
-    vibes: ["end-of-the-world", "remote", "adventurous"],
-    iconSlug: "ar-ushuaia"
+    vibes: ["end-of-the-world", "remote", "adventurous"]
   },
   {
     slug: "la-paz",
@@ -94133,8 +94086,7 @@ var CITY_DATA = [
     lng: -68.15,
     aliases: [],
     wikidataId: null,
-    vibes: ["breathless", "high-altitude", "dizzying"],
-    iconSlug: "bo-la-paz"
+    vibes: ["breathless", "high-altitude", "dizzying"]
   },
   {
     slug: "brasilia",
@@ -94146,8 +94098,7 @@ var CITY_DATA = [
     lng: -47.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["modernist", "niemeyer-curved", "spacious"],
-    iconSlug: "br-brasilia"
+    vibes: ["modernist", "niemeyer-curved", "spacious"]
   },
   {
     slug: "rio-de-janeiro",
@@ -94159,8 +94110,7 @@ var CITY_DATA = [
     lng: -43.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["sensual", "exuberant", "samba-swayed"],
-    iconSlug: "br-rio-de-janeiro"
+    vibes: ["sensual", "exuberant", "samba-swayed"]
   },
   {
     slug: "valparaiso",
@@ -94172,8 +94122,7 @@ var CITY_DATA = [
     lng: -71.62,
     aliases: [],
     wikidataId: null,
-    vibes: ["bohemian", "colorful", "funicular-climbed"],
-    iconSlug: "cl-valparaiso"
+    vibes: ["bohemian", "colorful", "funicular-climbed"]
   },
   {
     slug: "cartagena",
@@ -94185,8 +94134,7 @@ var CITY_DATA = [
     lng: -75.51,
     aliases: [],
     wikidataId: null,
-    vibes: ["walled", "colonial", "festive"],
-    iconSlug: "co-cartagena"
+    vibes: ["walled", "colonial", "festive"]
   },
   {
     slug: "medellin",
@@ -94198,8 +94146,7 @@ var CITY_DATA = [
     lng: -75.57,
     aliases: [],
     wikidataId: null,
-    vibes: ["transformed", "innovative", "cable-car-strung"],
-    iconSlug: "co-medellin"
+    vibes: ["transformed", "innovative", "cable-car-strung"]
   },
   {
     slug: "quito",
@@ -94211,8 +94158,7 @@ var CITY_DATA = [
     lng: -78.47,
     aliases: [],
     wikidataId: null,
-    vibes: ["elevated", "colonial", "volcano-ringed"],
-    iconSlug: "ec-quito"
+    vibes: ["elevated", "colonial", "volcano-ringed"]
   },
   {
     slug: "cusco",
@@ -94224,8 +94170,7 @@ var CITY_DATA = [
     lng: -71.97,
     aliases: [],
     wikidataId: null,
-    vibes: ["ancient", "mystical", "thin-aired"],
-    iconSlug: "pe-cusco"
+    vibes: ["ancient", "mystical", "thin-aired"]
   },
   {
     slug: "montevideo",
@@ -94237,8 +94182,7 @@ var CITY_DATA = [
     lng: -56.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["relaxed", "literary", "rambla-walked"],
-    iconSlug: "uy-montevideo"
+    vibes: ["relaxed", "literary", "rambla-walked"]
   },
   {
     slug: "caracas",
@@ -94250,8 +94194,7 @@ var CITY_DATA = [
     lng: -66.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["intense", "volatile", "mountainous"],
-    iconSlug: "ve-caracas"
+    vibes: ["intense", "volatile", "mountainous"]
   },
   // --- Europe ---
   {
@@ -94264,8 +94207,7 @@ var CITY_DATA = [
     lng: -0.12,
     aliases: ["uk", "england"],
     wikidataId: null,
-    vibes: ["posh", "cozy", "literary"],
-    iconSlug: "gb-london"
+    vibes: ["posh", "cozy", "literary"]
   },
   {
     slug: "paris",
@@ -94277,8 +94219,7 @@ var CITY_DATA = [
     lng: 2.33,
     aliases: ["france"],
     wikidataId: null,
-    vibes: ["romantic", "chic", "dreamy"],
-    iconSlug: "fr-paris"
+    vibes: ["romantic", "chic", "dreamy"]
   },
   {
     slug: "berlin",
@@ -94290,8 +94231,7 @@ var CITY_DATA = [
     lng: 13.4,
     aliases: ["germany"],
     wikidataId: null,
-    vibes: ["free", "underground", "raw"],
-    iconSlug: "de-berlin"
+    vibes: ["free", "underground", "raw"]
   },
   {
     slug: "zurich",
@@ -94303,8 +94243,7 @@ var CITY_DATA = [
     lng: 8.55,
     aliases: ["switzerland"],
     wikidataId: null,
-    vibes: ["precise", "bank-quiet", "alpine"],
-    iconSlug: null
+    vibes: ["precise", "bank-quiet", "alpine"]
   },
   {
     slug: "amsterdam",
@@ -94316,8 +94255,7 @@ var CITY_DATA = [
     lng: 4.92,
     aliases: ["netherlands", "holland"],
     wikidataId: null,
-    vibes: ["open-minded", "bicycle-ruled", "candid"],
-    iconSlug: "nl-amsterdam"
+    vibes: ["open-minded", "bicycle-ruled", "candid"]
   },
   {
     slug: "rome",
@@ -94329,8 +94267,7 @@ var CITY_DATA = [
     lng: 12.48,
     aliases: ["italy"],
     wikidataId: null,
-    vibes: ["eternal", "ruin-strewn", "dramatic"],
-    iconSlug: "it-rome"
+    vibes: ["eternal", "ruin-strewn", "dramatic"]
   },
   {
     slug: "madrid",
@@ -94342,8 +94279,7 @@ var CITY_DATA = [
     lng: -3.68,
     aliases: ["spain"],
     wikidataId: null,
-    vibes: ["fiery", "nocturnal", "prado-proud"],
-    iconSlug: "es-madrid"
+    vibes: ["fiery", "nocturnal", "prado-proud"]
   },
   {
     slug: "lisbon",
@@ -94355,8 +94291,7 @@ var CITY_DATA = [
     lng: -9.14,
     aliases: ["portugal"],
     wikidataId: null,
-    vibes: ["melancholic", "fado-hushed", "soulful"],
-    iconSlug: "pt-lisbon"
+    vibes: ["melancholic", "fado-hushed", "soulful"]
   },
   {
     slug: "stockholm",
@@ -94368,8 +94303,7 @@ var CITY_DATA = [
     lng: 18.1,
     aliases: ["sweden"],
     wikidataId: null,
-    vibes: ["minimal", "sleek", "thoughtful"],
-    iconSlug: "se-stockholm"
+    vibes: ["minimal", "sleek", "thoughtful"]
   },
   {
     slug: "oslo",
@@ -94381,8 +94315,7 @@ var CITY_DATA = [
     lng: 10.75,
     aliases: ["norway"],
     wikidataId: null,
-    vibes: ["rugged", "fjord-headed", "pristine"],
-    iconSlug: "no-oslo"
+    vibes: ["rugged", "fjord-headed", "pristine"]
   },
   {
     slug: "copenhagen",
@@ -94394,8 +94327,7 @@ var CITY_DATA = [
     lng: 12.57,
     aliases: ["denmark"],
     wikidataId: null,
-    vibes: ["hygge", "cozy", "whimsical"],
-    iconSlug: "dk-copenhagen"
+    vibes: ["hygge", "cozy", "whimsical"]
   },
   {
     slug: "helsinki",
@@ -94407,8 +94339,7 @@ var CITY_DATA = [
     lng: 24.93,
     aliases: ["finland"],
     wikidataId: null,
-    vibes: ["stoic", "design-minded", "luminous"],
-    iconSlug: "fi-helsinki"
+    vibes: ["stoic", "design-minded", "luminous"]
   },
   {
     slug: "vienna",
@@ -94420,8 +94351,7 @@ var CITY_DATA = [
     lng: 16.37,
     aliases: ["austria"],
     wikidataId: null,
-    vibes: ["refined", "classical", "grand"],
-    iconSlug: "at-vienna"
+    vibes: ["refined", "classical", "grand"]
   },
   {
     slug: "brussels",
@@ -94433,8 +94363,7 @@ var CITY_DATA = [
     lng: 4.33,
     aliases: ["belgium"],
     wikidataId: null,
-    vibes: ["cosmopolitan", "quirky", "indulgent"],
-    iconSlug: "be-brussels"
+    vibes: ["cosmopolitan", "quirky", "indulgent"]
   },
   {
     slug: "warsaw",
@@ -94446,8 +94375,7 @@ var CITY_DATA = [
     lng: 21,
     aliases: ["poland"],
     wikidataId: null,
-    vibes: ["brick-by-brick", "rising", "spirited"],
-    iconSlug: "pl-warsaw"
+    vibes: ["brick-by-brick", "rising", "spirited"]
   },
   {
     slug: "prague",
@@ -94459,8 +94387,7 @@ var CITY_DATA = [
     lng: 14.47,
     aliases: ["czech republic", "czechia"],
     wikidataId: null,
-    vibes: ["bohemian", "golden", "enchanted"],
-    iconSlug: "cz-prague"
+    vibes: ["bohemian", "golden", "enchanted"]
   },
   {
     slug: "athens",
@@ -94472,8 +94399,7 @@ var CITY_DATA = [
     lng: 23.73,
     aliases: ["greece"],
     wikidataId: null,
-    vibes: ["ancient", "ruin-crowned", "philosophical"],
-    iconSlug: "gr-athens"
+    vibes: ["ancient", "ruin-crowned", "philosophical"]
   },
   {
     slug: "istanbul",
@@ -94485,8 +94411,7 @@ var CITY_DATA = [
     lng: 29.01,
     aliases: ["turkey"],
     wikidataId: null,
-    vibes: ["mystical", "two-continented", "layered"],
-    iconSlug: "tr-istanbul"
+    vibes: ["mystical", "two-continented", "layered"]
   },
   {
     slug: "moscow",
@@ -94498,8 +94423,7 @@ var CITY_DATA = [
     lng: 37.62,
     aliases: ["russia"],
     wikidataId: null,
-    vibes: ["imposing", "onion-domed", "grand"],
-    iconSlug: "ru-moscow"
+    vibes: ["imposing", "onion-domed", "grand"]
   },
   {
     slug: "dublin",
@@ -94511,8 +94435,7 @@ var CITY_DATA = [
     lng: -6.25,
     aliases: ["ireland"],
     wikidataId: null,
-    vibes: ["convivial", "witty", "pub-lit"],
-    iconSlug: "ie-dublin"
+    vibes: ["convivial", "witty", "pub-lit"]
   },
   {
     slug: "edinburgh",
@@ -94524,8 +94447,7 @@ var CITY_DATA = [
     lng: -3.22,
     aliases: ["scotland"],
     wikidataId: null,
-    vibes: ["moody", "storied", "crag-topped"],
-    iconSlug: "gb-edinburgh"
+    vibes: ["moody", "storied", "crag-topped"]
   },
   {
     slug: "reykjavik",
@@ -94537,8 +94459,7 @@ var CITY_DATA = [
     lng: -21.95,
     aliases: [],
     wikidataId: null,
-    vibes: ["otherworldly", "stark", "luminous"],
-    iconSlug: "is-reykjavik"
+    vibes: ["otherworldly", "stark", "luminous"]
   },
   {
     slug: "andorra-la-vella",
@@ -94550,8 +94471,7 @@ var CITY_DATA = [
     lng: 1.52,
     aliases: [],
     wikidataId: null,
-    vibes: ["alpine", "duty-free", "tucked-away"],
-    iconSlug: "ad-andorra"
+    vibes: ["alpine", "duty-free", "tucked-away"]
   },
   {
     slug: "tirana",
@@ -94563,8 +94483,7 @@ var CITY_DATA = [
     lng: 19.82,
     aliases: [],
     wikidataId: null,
-    vibes: ["block-painted", "scrappy", "emerging"],
-    iconSlug: "al-tirana"
+    vibes: ["block-painted", "scrappy", "emerging"]
   },
   {
     slug: "baku",
@@ -94576,8 +94495,7 @@ var CITY_DATA = [
     lng: 49.87,
     aliases: [],
     wikidataId: null,
-    vibes: ["flame-towered", "oil-slicked", "cosmopolitan"],
-    iconSlug: "az-baku"
+    vibes: ["flame-towered", "oil-slicked", "cosmopolitan"]
   },
   {
     slug: "mostar",
@@ -94589,8 +94507,7 @@ var CITY_DATA = [
     lng: 17.81,
     aliases: [],
     wikidataId: null,
-    vibes: ["bridged", "resilient", "haunted"],
-    iconSlug: "ba-mostar"
+    vibes: ["bridged", "resilient", "haunted"]
   },
   {
     slug: "sarajevo",
@@ -94602,8 +94519,7 @@ var CITY_DATA = [
     lng: 18.41,
     aliases: [],
     wikidataId: null,
-    vibes: ["scarred", "multicultural", "spirited"],
-    iconSlug: "ba-sarajevo"
+    vibes: ["scarred", "multicultural", "spirited"]
   },
   {
     slug: "bruges",
@@ -94615,8 +94531,7 @@ var CITY_DATA = [
     lng: 3.22,
     aliases: [],
     wikidataId: null,
-    vibes: ["medieval", "tranquil", "chocolatey"],
-    iconSlug: "be-bruges"
+    vibes: ["medieval", "tranquil", "chocolatey"]
   },
   {
     slug: "sofia",
@@ -94628,8 +94543,7 @@ var CITY_DATA = [
     lng: 23.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["post-soviet", "leafy", "unpolished"],
-    iconSlug: "bg-sofia"
+    vibes: ["post-soviet", "leafy", "unpolished"]
   },
   {
     slug: "minsk",
@@ -94641,8 +94555,7 @@ var CITY_DATA = [
     lng: 27.57,
     aliases: [],
     wikidataId: null,
-    vibes: ["soviet-era", "orderly", "melancholic"],
-    iconSlug: "by-minsk"
+    vibes: ["soviet-era", "orderly", "melancholic"]
   },
   {
     slug: "bern",
@@ -94654,8 +94567,7 @@ var CITY_DATA = [
     lng: 7.45,
     aliases: [],
     wikidataId: null,
-    vibes: ["calm", "arcaded", "genteel"],
-    iconSlug: "ch-bern"
+    vibes: ["calm", "arcaded", "genteel"]
   },
   {
     slug: "limassol",
@@ -94667,8 +94579,7 @@ var CITY_DATA = [
     lng: 33.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["carnival-loud", "beachfront", "relaxed"],
-    iconSlug: "cy-limassol"
+    vibes: ["carnival-loud", "beachfront", "relaxed"]
   },
   {
     slug: "nicosia",
@@ -94680,8 +94591,7 @@ var CITY_DATA = [
     lng: 33.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["divided", "venetian-walled", "liminal"],
-    iconSlug: "cy-nicosia"
+    vibes: ["divided", "venetian-walled", "liminal"]
   },
   {
     slug: "paphos",
@@ -94693,8 +94603,7 @@ var CITY_DATA = [
     lng: 32.42,
     aliases: [],
     wikidataId: null,
-    vibes: ["mythical", "seaside", "languid"],
-    iconSlug: "cy-paphos"
+    vibes: ["mythical", "seaside", "languid"]
   },
   {
     slug: "aachen",
@@ -94706,8 +94615,7 @@ var CITY_DATA = [
     lng: 6.08,
     aliases: [],
     wikidataId: null,
-    vibes: ["thermal", "imperial", "cross-border"],
-    iconSlug: "de-aachen"
+    vibes: ["thermal", "imperial", "cross-border"]
   },
   {
     slug: "bielefeld",
@@ -94719,8 +94627,7 @@ var CITY_DATA = [
     lng: 8.53,
     aliases: [],
     wikidataId: null,
-    vibes: ["unassuming", "industrial", "modest"],
-    iconSlug: "de-bielefeld"
+    vibes: ["unassuming", "industrial", "modest"]
   },
   {
     slug: "bremen",
@@ -94732,8 +94639,7 @@ var CITY_DATA = [
     lng: 8.8,
     aliases: [],
     wikidataId: null,
-    vibes: ["maritime", "hanseatic", "independent"],
-    iconSlug: "de-bremen"
+    vibes: ["maritime", "hanseatic", "independent"]
   },
   {
     slug: "cologne",
@@ -94745,8 +94651,7 @@ var CITY_DATA = [
     lng: 6.96,
     aliases: [],
     wikidataId: null,
-    vibes: ["carnival-ready", "jovial", "cathedral-shadowed"],
-    iconSlug: "de-cologne"
+    vibes: ["carnival-ready", "jovial", "cathedral-shadowed"]
   },
   {
     slug: "erfurt",
@@ -94758,8 +94663,7 @@ var CITY_DATA = [
     lng: 11.03,
     aliases: [],
     wikidataId: null,
-    vibes: ["floral", "bridge-housed", "gentle"],
-    iconSlug: "de-erfurt"
+    vibes: ["floral", "bridge-housed", "gentle"]
   },
   {
     slug: "frankfurt",
@@ -94771,8 +94675,7 @@ var CITY_DATA = [
     lng: 8.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["financial", "transient", "glass-towered"],
-    iconSlug: "de-frankfurt"
+    vibes: ["financial", "transient", "glass-towered"]
   },
   {
     slug: "freiburg",
@@ -94784,8 +94687,7 @@ var CITY_DATA = [
     lng: 7.85,
     aliases: [],
     wikidataId: null,
-    vibes: ["black-forest-edged", "eco-conscious", "youthful"],
-    iconSlug: "de-freiburg"
+    vibes: ["black-forest-edged", "eco-conscious", "youthful"]
   },
   {
     slug: "giessen",
@@ -94797,8 +94699,7 @@ var CITY_DATA = [
     lng: 8.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["studious", "small-town", "seminar-quiet"],
-    iconSlug: "de-giessen"
+    vibes: ["studious", "small-town", "seminar-quiet"]
   },
   {
     slug: "hamburg",
@@ -94810,8 +94711,7 @@ var CITY_DATA = [
     lng: 9.99,
     aliases: [],
     wikidataId: null,
-    vibes: ["maritime", "liberal", "warehouse-red"],
-    iconSlug: "de-hamburg"
+    vibes: ["maritime", "liberal", "warehouse-red"]
   },
   {
     slug: "karlsruhe",
@@ -94823,8 +94723,7 @@ var CITY_DATA = [
     lng: 8.4,
     aliases: [],
     wikidataId: null,
-    vibes: ["planned", "fan-shaped", "cultured"],
-    iconSlug: "de-karlsruhe"
+    vibes: ["planned", "fan-shaped", "cultured"]
   },
   {
     slug: "leipzig",
@@ -94836,8 +94735,7 @@ var CITY_DATA = [
     lng: 12.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["artistic", "rebellious", "emerging"],
-    iconSlug: "de-leipzig"
+    vibes: ["artistic", "rebellious", "emerging"]
   },
   {
     slug: "munich",
@@ -94849,8 +94747,7 @@ var CITY_DATA = [
     lng: 11.58,
     aliases: [],
     wikidataId: null,
-    vibes: ["gemutlich", "beer-garden-ready", "prosperous"],
-    iconSlug: "de-munich"
+    vibes: ["gemutlich", "beer-garden-ready", "prosperous"]
   },
   {
     slug: "nuremberg",
@@ -94862,8 +94759,7 @@ var CITY_DATA = [
     lng: 11.08,
     aliases: [],
     wikidataId: null,
-    vibes: ["medieval", "contemplative", "lebkuchen-spiced"],
-    iconSlug: "de-nuremberg"
+    vibes: ["medieval", "contemplative", "lebkuchen-spiced"]
   },
   {
     slug: "siegen",
@@ -94875,8 +94771,7 @@ var CITY_DATA = [
     lng: 8.02,
     aliases: [],
     wikidataId: null,
-    vibes: ["forested", "hilly", "tucked-away"],
-    iconSlug: "de-siegen"
+    vibes: ["forested", "hilly", "tucked-away"]
   },
   {
     slug: "stuttgart",
@@ -94888,8 +94783,7 @@ var CITY_DATA = [
     lng: 9.18,
     aliases: [],
     wikidataId: null,
-    vibes: ["engineered", "industrious", "hilly"],
-    iconSlug: "de-stuttgart"
+    vibes: ["engineered", "industrious", "hilly"]
   },
   {
     slug: "tallinn",
@@ -94901,8 +94795,7 @@ var CITY_DATA = [
     lng: 24.75,
     aliases: [],
     wikidataId: null,
-    vibes: ["medieval", "digital", "baltic"],
-    iconSlug: "ee-tallinn"
+    vibes: ["medieval", "digital", "baltic"]
   },
   {
     slug: "barcelona",
@@ -94914,8 +94807,7 @@ var CITY_DATA = [
     lng: 2.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["gaudi-drawn", "modernist", "rebellious"],
-    iconSlug: "es-barcelona"
+    vibes: ["gaudi-drawn", "modernist", "rebellious"]
   },
   {
     slug: "cordoba-spain",
@@ -94927,8 +94819,7 @@ var CITY_DATA = [
     lng: -4.78,
     aliases: [],
     wikidataId: null,
-    vibes: ["moorish", "patio-flowered", "contemplative"],
-    iconSlug: "es-cordoba"
+    vibes: ["moorish", "patio-flowered", "contemplative"]
   },
   {
     slug: "a-coruna",
@@ -94940,8 +94831,7 @@ var CITY_DATA = [
     lng: -8.4,
     aliases: [],
     wikidataId: null,
-    vibes: ["lighthouse-topped", "maritime", "galician"],
-    iconSlug: "es-coruna"
+    vibes: ["lighthouse-topped", "maritime", "galician"]
   },
   {
     slug: "gijon",
@@ -94953,8 +94843,7 @@ var CITY_DATA = [
     lng: -5.66,
     aliases: [],
     wikidataId: null,
-    vibes: ["salty", "working-class", "green"],
-    iconSlug: "es-gijon"
+    vibes: ["salty", "working-class", "green"]
   },
   {
     slug: "granada-spain",
@@ -94966,8 +94855,7 @@ var CITY_DATA = [
     lng: -3.6,
     aliases: [],
     wikidataId: null,
-    vibes: ["moorish", "poetic", "twilit"],
-    iconSlug: "es-granada"
+    vibes: ["moorish", "poetic", "twilit"]
   },
   {
     slug: "malaga",
@@ -94979,8 +94867,7 @@ var CITY_DATA = [
     lng: -4.42,
     aliases: [],
     wikidataId: null,
-    vibes: ["picasso-proud", "coastal", "promenaded"],
-    iconSlug: "es-malaga"
+    vibes: ["picasso-proud", "coastal", "promenaded"]
   },
   {
     slug: "santiago-de-compostela",
@@ -94992,8 +94879,7 @@ var CITY_DATA = [
     lng: -8.54,
     aliases: [],
     wikidataId: null,
-    vibes: ["pilgrim-weary", "sacred", "granite-grey"],
-    iconSlug: "es-santiago-de-compostela"
+    vibes: ["pilgrim-weary", "sacred", "granite-grey"]
   },
   {
     slug: "valencia",
@@ -95005,8 +94891,7 @@ var CITY_DATA = [
     lng: -0.38,
     aliases: [],
     wikidataId: null,
-    vibes: ["paella-born", "orange-scented", "modern"],
-    iconSlug: "es-valencia"
+    vibes: ["paella-born", "orange-scented", "modern"]
   },
   {
     slug: "vigo",
@@ -95018,8 +94903,7 @@ var CITY_DATA = [
     lng: -8.72,
     aliases: [],
     wikidataId: null,
-    vibes: ["trawler-busy", "maritime", "industrial"],
-    iconSlug: "es-vigo"
+    vibes: ["trawler-busy", "maritime", "industrial"]
   },
   {
     slug: "kuopio",
@@ -95031,8 +94915,7 @@ var CITY_DATA = [
     lng: 27.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["lakeside", "sauna-ready", "tranquil"],
-    iconSlug: "fi-kuopio"
+    vibes: ["lakeside", "sauna-ready", "tranquil"]
   },
   {
     slug: "lyon",
@@ -95044,8 +94927,7 @@ var CITY_DATA = [
     lng: 4.83,
     aliases: [],
     wikidataId: null,
-    vibes: ["gastronomic", "silky", "traboule-hidden"],
-    iconSlug: "fr-lyon"
+    vibes: ["gastronomic", "silky", "traboule-hidden"]
   },
   {
     slug: "montpellier",
@@ -95057,8 +94939,7 @@ var CITY_DATA = [
     lng: 3.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["student-thronged", "youthful", "mediterranean"],
-    iconSlug: "fr-montpellier"
+    vibes: ["student-thronged", "youthful", "mediterranean"]
   },
   {
     slug: "rennes",
@@ -95070,8 +94951,7 @@ var CITY_DATA = [
     lng: -1.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["half-timbered", "breton", "studious"],
-    iconSlug: "fr-rennes"
+    vibes: ["half-timbered", "breton", "studious"]
   },
   {
     slug: "leeds",
@@ -95083,8 +94963,7 @@ var CITY_DATA = [
     lng: -1.55,
     aliases: [],
     wikidataId: null,
-    vibes: ["post-industrial", "direct", "northern"],
-    iconSlug: "gb-leeds"
+    vibes: ["post-industrial", "direct", "northern"]
   },
   {
     slug: "manchester",
@@ -95096,8 +94975,7 @@ var CITY_DATA = [
     lng: -2.24,
     aliases: [],
     wikidataId: null,
-    vibes: ["post-punk", "musical", "gritty"],
-    iconSlug: "gb-manchester"
+    vibes: ["post-punk", "musical", "gritty"]
   },
   {
     slug: "batumi",
@@ -95109,8 +94987,7 @@ var CITY_DATA = [
     lng: 41.63,
     aliases: [],
     wikidataId: null,
-    vibes: ["palm-lined", "casino-lit", "eccentric"],
-    iconSlug: "ge-batumi"
+    vibes: ["palm-lined", "casino-lit", "eccentric"]
   },
   {
     slug: "tbilisi",
@@ -95122,8 +94999,7 @@ var CITY_DATA = [
     lng: 44.8,
     aliases: [],
     wikidataId: null,
-    vibes: ["sulfuric", "bohemian", "crossroads"],
-    iconSlug: "ge-tbilisi"
+    vibes: ["sulfuric", "bohemian", "crossroads"]
   },
   {
     slug: "zagreb",
@@ -95135,8 +95011,7 @@ var CITY_DATA = [
     lng: 15.98,
     aliases: [],
     wikidataId: null,
-    vibes: ["cafe-lingering", "post-yugoslav", "green"],
-    iconSlug: "hr-zagreb"
+    vibes: ["cafe-lingering", "post-yugoslav", "green"]
   },
   {
     slug: "budapest",
@@ -95148,8 +95023,7 @@ var CITY_DATA = [
     lng: 19.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["thermal", "melancholic", "ruin-barred"],
-    iconSlug: "hu-budapest"
+    vibes: ["thermal", "melancholic", "ruin-barred"]
   },
   {
     slug: "debrecen",
@@ -95161,8 +95035,7 @@ var CITY_DATA = [
     lng: 21.63,
     aliases: [],
     wikidataId: null,
-    vibes: ["earnest", "reformed", "provincial"],
-    iconSlug: "hu-debrecen"
+    vibes: ["earnest", "reformed", "provincial"]
   },
   {
     slug: "szeged",
@@ -95174,8 +95047,7 @@ var CITY_DATA = [
     lng: 20.15,
     aliases: [],
     wikidataId: null,
-    vibes: ["boulevarded", "paprika-scented", "peaceful"],
-    iconSlug: "hu-szeged"
+    vibes: ["boulevarded", "paprika-scented", "peaceful"]
   },
   {
     slug: "akureyri",
@@ -95187,8 +95059,7 @@ var CITY_DATA = [
     lng: -18.09,
     aliases: [],
     wikidataId: null,
-    vibes: ["northern", "heart-lit", "cozy"],
-    iconSlug: "is-akureyri"
+    vibes: ["northern", "heart-lit", "cozy"]
   },
   {
     slug: "bologna",
@@ -95200,8 +95071,7 @@ var CITY_DATA = [
     lng: 11.34,
     aliases: [],
     wikidataId: null,
-    vibes: ["studious", "porticoed", "leftist"],
-    iconSlug: "it-bologna"
+    vibes: ["studious", "porticoed", "leftist"]
   },
   {
     slug: "ferrara",
@@ -95213,8 +95083,7 @@ var CITY_DATA = [
     lng: 11.62,
     aliases: [],
     wikidataId: null,
-    vibes: ["cycling", "renaissance", "quiet"],
-    iconSlug: "it-ferrara"
+    vibes: ["cycling", "renaissance", "quiet"]
   },
   {
     slug: "forte-dei-marmi",
@@ -95226,8 +95095,7 @@ var CITY_DATA = [
     lng: 10.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["jet-set", "beachside", "exclusive"],
-    iconSlug: "it-forte-dei-marmi"
+    vibes: ["jet-set", "beachside", "exclusive"]
   },
   {
     slug: "milan",
@@ -95239,8 +95107,7 @@ var CITY_DATA = [
     lng: 9.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["fashionable", "ambitious", "sleek"],
-    iconSlug: "it-milan"
+    vibes: ["fashionable", "ambitious", "sleek"]
   },
   {
     slug: "palermo",
@@ -95252,8 +95119,7 @@ var CITY_DATA = [
     lng: 13.35,
     aliases: [],
     wikidataId: null,
-    vibes: ["chaotic", "spicy", "arab-norman"],
-    iconSlug: "it-palermo"
+    vibes: ["chaotic", "spicy", "arab-norman"]
   },
   {
     slug: "sorrento",
@@ -95265,8 +95131,7 @@ var CITY_DATA = [
     lng: 14.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["limoncello-sweet", "cliffside", "romantic"],
-    iconSlug: "it-sorrento"
+    vibes: ["limoncello-sweet", "cliffside", "romantic"]
   },
   {
     slug: "taranto",
@@ -95278,8 +95143,7 @@ var CITY_DATA = [
     lng: 17.24,
     aliases: [],
     wikidataId: null,
-    vibes: ["maritime", "industrial", "mussel-farmed"],
-    iconSlug: "it-taranto"
+    vibes: ["maritime", "industrial", "mussel-farmed"]
   },
   {
     slug: "trieste",
@@ -95291,8 +95155,7 @@ var CITY_DATA = [
     lng: 13.78,
     aliases: [],
     wikidataId: null,
-    vibes: ["mitteleuropean", "melancholic", "coffee-scented"],
-    iconSlug: "it-trieste"
+    vibes: ["mitteleuropean", "melancholic", "coffee-scented"]
   },
   {
     slug: "venice",
@@ -95304,8 +95167,7 @@ var CITY_DATA = [
     lng: 12.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["labyrinthine", "sinking", "dreamlike"],
-    iconSlug: "it-venice"
+    vibes: ["labyrinthine", "sinking", "dreamlike"]
   },
   {
     slug: "vaduz",
@@ -95317,8 +95179,7 @@ var CITY_DATA = [
     lng: 9.52,
     aliases: [],
     wikidataId: null,
-    vibes: ["alpine", "tax-sheltered", "tiny"],
-    iconSlug: "li-vaduz"
+    vibes: ["alpine", "tax-sheltered", "tiny"]
   },
   {
     slug: "vilnius",
@@ -95330,8 +95191,7 @@ var CITY_DATA = [
     lng: 25.28,
     aliases: [],
     wikidataId: null,
-    vibes: ["baroque", "bohemian", "courtyarded"],
-    iconSlug: "lt-vilnius"
+    vibes: ["baroque", "bohemian", "courtyarded"]
   },
   {
     slug: "luxembourg-city",
@@ -95343,8 +95203,7 @@ var CITY_DATA = [
     lng: 6.13,
     aliases: [],
     wikidataId: null,
-    vibes: ["multilingual", "prosperous", "compact"],
-    iconSlug: "lu-luxembourg"
+    vibes: ["multilingual", "prosperous", "compact"]
   },
   {
     slug: "riga",
@@ -95356,8 +95215,7 @@ var CITY_DATA = [
     lng: 24.11,
     aliases: [],
     wikidataId: null,
-    vibes: ["art-nouveau", "amber-lit", "baltic"],
-    iconSlug: "lv-riga"
+    vibes: ["art-nouveau", "amber-lit", "baltic"]
   },
   {
     slug: "monaco",
@@ -95369,8 +95227,7 @@ var CITY_DATA = [
     lng: 7.42,
     aliases: [],
     wikidataId: null,
-    vibes: ["glamorous", "tax-free", "exclusive"],
-    iconSlug: "mc-monaco"
+    vibes: ["glamorous", "tax-free", "exclusive"]
   },
   {
     slug: "chisinau",
@@ -95382,8 +95239,7 @@ var CITY_DATA = [
     lng: 28.86,
     aliases: [],
     wikidataId: null,
-    vibes: ["post-soviet", "quiet", "wine-soaked"],
-    iconSlug: "md-chisinau"
+    vibes: ["post-soviet", "quiet", "wine-soaked"]
   },
   {
     slug: "budva",
@@ -95395,8 +95251,7 @@ var CITY_DATA = [
     lng: 18.84,
     aliases: [],
     wikidataId: null,
-    vibes: ["beach-ready", "nightlife-charged", "adriatic"],
-    iconSlug: "me-budva"
+    vibes: ["beach-ready", "nightlife-charged", "adriatic"]
   },
   {
     slug: "herceg-novi",
@@ -95408,8 +95263,7 @@ var CITY_DATA = [
     lng: 18.54,
     aliases: [],
     wikidataId: null,
-    vibes: ["floral", "stair-stepped", "coastal"],
-    iconSlug: "me-herceg-novi"
+    vibes: ["floral", "stair-stepped", "coastal"]
   },
   {
     slug: "podgorica",
@@ -95421,8 +95275,7 @@ var CITY_DATA = [
     lng: 19.26,
     aliases: [],
     wikidataId: null,
-    vibes: ["concrete", "functional", "confluent"],
-    iconSlug: "me-podgorica"
+    vibes: ["concrete", "functional", "confluent"]
   },
   {
     slug: "skopje",
@@ -95434,8 +95287,7 @@ var CITY_DATA = [
     lng: 21.43,
     aliases: [],
     wikidataId: null,
-    vibes: ["rebuilt", "eclectic", "rough-edged"],
-    iconSlug: "mk-skopje"
+    vibes: ["rebuilt", "eclectic", "rough-edged"]
   },
   {
     slug: "valletta",
@@ -95447,8 +95299,7 @@ var CITY_DATA = [
     lng: 14.51,
     aliases: [],
     wikidataId: null,
-    vibes: ["honey-stoned", "fortified", "balconied"],
-    iconSlug: "mt-valletta"
+    vibes: ["honey-stoned", "fortified", "balconied"]
   },
   {
     slug: "de-meije",
@@ -95460,8 +95311,7 @@ var CITY_DATA = [
     lng: 4.84,
     aliases: [],
     wikidataId: null,
-    vibes: ["pastoral", "watery", "tranquil"],
-    iconSlug: "nl-de-meije"
+    vibes: ["pastoral", "watery", "tranquil"]
   },
   {
     slug: "maastricht",
@@ -95473,8 +95323,7 @@ var CITY_DATA = [
     lng: 5.69,
     aliases: [],
     wikidataId: null,
-    vibes: ["hilly", "border-crossing", "burgundian"],
-    iconSlug: "nl-maastricht"
+    vibes: ["hilly", "border-crossing", "burgundian"]
   },
   {
     slug: "rotterdam",
@@ -95486,8 +95335,7 @@ var CITY_DATA = [
     lng: 4.48,
     aliases: [],
     wikidataId: null,
-    vibes: ["rebuilt", "bold", "architectural"],
-    iconSlug: "nl-rotterdam"
+    vibes: ["rebuilt", "bold", "architectural"]
   },
   {
     slug: "woerden",
@@ -95499,8 +95347,7 @@ var CITY_DATA = [
     lng: 4.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["canal-lined", "cheese-market-fresh", "quiet"],
-    iconSlug: "nl-woerden"
+    vibes: ["canal-lined", "cheese-market-fresh", "quiet"]
   },
   {
     slug: "gdansk",
@@ -95512,8 +95359,7 @@ var CITY_DATA = [
     lng: 18.65,
     aliases: [],
     wikidataId: null,
-    vibes: ["hanseatic", "amber-tinged", "maritime"],
-    iconSlug: "pl-gdansk"
+    vibes: ["hanseatic", "amber-tinged", "maritime"]
   },
   {
     slug: "poznan",
@@ -95525,8 +95371,7 @@ var CITY_DATA = [
     lng: 16.93,
     aliases: [],
     wikidataId: null,
-    vibes: ["mercantile", "goat-clocked", "proud"],
-    iconSlug: "pl-poznan"
+    vibes: ["mercantile", "goat-clocked", "proud"]
   },
   {
     slug: "swiebodzin",
@@ -95538,8 +95383,7 @@ var CITY_DATA = [
     lng: 15.53,
     aliases: [],
     wikidataId: null,
-    vibes: ["small-town", "statue-shadowed", "faithful"],
-    iconSlug: "pl-swiebodzin"
+    vibes: ["small-town", "statue-shadowed", "faithful"]
   },
   {
     slug: "wroclaw",
@@ -95551,8 +95395,7 @@ var CITY_DATA = [
     lng: 17.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["island-dotted", "gnome-spotted", "colorful"],
-    iconSlug: "pl-wroclaw"
+    vibes: ["island-dotted", "gnome-spotted", "colorful"]
   },
   {
     slug: "amadora",
@@ -95564,8 +95407,7 @@ var CITY_DATA = [
     lng: -9.24,
     aliases: [],
     wikidataId: null,
-    vibes: ["residential", "unpretentious", "suburban"],
-    iconSlug: "pt-amadora"
+    vibes: ["residential", "unpretentious", "suburban"]
   },
   {
     slug: "barcelos",
@@ -95577,8 +95419,7 @@ var CITY_DATA = [
     lng: -8.62,
     aliases: [],
     wikidataId: null,
-    vibes: ["folkloric", "ceramic", "traditional"],
-    iconSlug: "pt-barcelos"
+    vibes: ["folkloric", "ceramic", "traditional"]
   },
   {
     slug: "braga",
@@ -95590,8 +95431,7 @@ var CITY_DATA = [
     lng: -8.43,
     aliases: [],
     wikidataId: null,
-    vibes: ["baroque", "youthful", "stairway-climbed"],
-    iconSlug: "pt-braga"
+    vibes: ["baroque", "youthful", "stairway-climbed"]
   },
   {
     slug: "chaves",
@@ -95603,8 +95443,7 @@ var CITY_DATA = [
     lng: -7.47,
     aliases: [],
     wikidataId: null,
-    vibes: ["thermal", "fortified", "roman-bridged"],
-    iconSlug: "pt-chaves"
+    vibes: ["thermal", "fortified", "roman-bridged"]
   },
   {
     slug: "guimaraes",
@@ -95616,8 +95455,7 @@ var CITY_DATA = [
     lng: -8.29,
     aliases: [],
     wikidataId: null,
-    vibes: ["medieval", "birthplace-proud", "storied"],
-    iconSlug: "pt-guimaraes"
+    vibes: ["medieval", "birthplace-proud", "storied"]
   },
   {
     slug: "leiria",
@@ -95629,8 +95467,7 @@ var CITY_DATA = [
     lng: -8.81,
     aliases: [],
     wikidataId: null,
-    vibes: ["castle-topped", "pine-scented", "central"],
-    iconSlug: "pt-leiria"
+    vibes: ["castle-topped", "pine-scented", "central"]
   },
   {
     slug: "matosinhos",
@@ -95642,8 +95479,7 @@ var CITY_DATA = [
     lng: -8.69,
     aliases: [],
     wikidataId: null,
-    vibes: ["oceanic", "grilled-fish-scented", "beachside"],
-    iconSlug: "pt-matosinhos"
+    vibes: ["oceanic", "grilled-fish-scented", "beachside"]
   },
   {
     slug: "nazare",
@@ -95655,8 +95491,7 @@ var CITY_DATA = [
     lng: -9.07,
     aliases: [],
     wikidataId: null,
-    vibes: ["wave-battered", "fishing-village", "pious"],
-    iconSlug: "pt-nazare"
+    vibes: ["wave-battered", "fishing-village", "pious"]
   },
   {
     slug: "porto",
@@ -95668,8 +95503,7 @@ var CITY_DATA = [
     lng: -8.61,
     aliases: [],
     wikidataId: null,
-    vibes: ["soulful", "port-wine-soaked", "steep"],
-    iconSlug: "pt-porto"
+    vibes: ["soulful", "port-wine-soaked", "steep"]
   },
   {
     slug: "viana-do-castelo",
@@ -95681,8 +95515,7 @@ var CITY_DATA = [
     lng: -8.83,
     aliases: [],
     wikidataId: null,
-    vibes: ["folkloric", "maritime", "filigree-worked"],
-    iconSlug: "pt-viana-do-castelo"
+    vibes: ["folkloric", "maritime", "filigree-worked"]
   },
   {
     slug: "vila-real",
@@ -95694,8 +95527,7 @@ var CITY_DATA = [
     lng: -7.74,
     aliases: [],
     wikidataId: null,
-    vibes: ["thermal", "mountainous", "vineyard-terraced"],
-    iconSlug: "pt-vila-real"
+    vibes: ["thermal", "mountainous", "vineyard-terraced"]
   },
   {
     slug: "bucharest",
@@ -95707,8 +95539,7 @@ var CITY_DATA = [
     lng: 26.1,
     aliases: [],
     wikidataId: null,
-    vibes: ["crumbling", "belle-epoque", "chaotic"],
-    iconSlug: "ro-bucharest"
+    vibes: ["crumbling", "belle-epoque", "chaotic"]
   },
   {
     slug: "belgrade",
@@ -95720,8 +95551,7 @@ var CITY_DATA = [
     lng: 20.47,
     aliases: [],
     wikidataId: null,
-    vibes: ["defiant", "nightlife-charged", "balkan"],
-    iconSlug: "rs-belgrade"
+    vibes: ["defiant", "nightlife-charged", "balkan"]
   },
   {
     slug: "subotica",
@@ -95733,8 +95563,7 @@ var CITY_DATA = [
     lng: 19.66,
     aliases: [],
     wikidataId: null,
-    vibes: ["art-nouveau", "multicultural", "tile-fronted"],
-    iconSlug: "rs-subotica"
+    vibes: ["art-nouveau", "multicultural", "tile-fronted"]
   },
   {
     slug: "murmansk",
@@ -95746,8 +95575,7 @@ var CITY_DATA = [
     lng: 33.07,
     aliases: [],
     wikidataId: null,
-    vibes: ["arctic-ported", "darkened", "hardy"],
-    iconSlug: "ru-murmansk"
+    vibes: ["arctic-ported", "darkened", "hardy"]
   },
   {
     slug: "st-petersburg",
@@ -95759,8 +95587,7 @@ var CITY_DATA = [
     lng: 30.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["imperial", "melancholic", "white-nighted"],
-    iconSlug: null
+    vibes: ["imperial", "melancholic", "white-nighted"]
   },
   {
     slug: "tula",
@@ -95772,8 +95599,7 @@ var CITY_DATA = [
     lng: 37.62,
     aliases: [],
     wikidataId: null,
-    vibes: ["stoic", "industrial", "samovar-made"],
-    iconSlug: "ru-tula"
+    vibes: ["stoic", "industrial", "samovar-made"]
   },
   {
     slug: "yakutsk",
@@ -95785,8 +95611,7 @@ var CITY_DATA = [
     lng: 129.73,
     aliases: [],
     wikidataId: null,
-    vibes: ["diamond-rich", "isolated", "extreme"],
-    iconSlug: "ru-yakutsk"
+    vibes: ["diamond-rich", "isolated", "extreme"]
   },
   {
     slug: "ljubljana",
@@ -95798,8 +95623,7 @@ var CITY_DATA = [
     lng: 14.51,
     aliases: [],
     wikidataId: null,
-    vibes: ["charming", "laid-back", "green"],
-    iconSlug: "si-ljubljana"
+    vibes: ["charming", "laid-back", "green"]
   },
   {
     slug: "bratislava",
@@ -95811,8 +95635,7 @@ var CITY_DATA = [
     lng: 17.11,
     aliases: [],
     wikidataId: null,
-    vibes: ["castle-hilled", "unassuming", "emerging"],
-    iconSlug: "sk-bratislava"
+    vibes: ["castle-hilled", "unassuming", "emerging"]
   },
   {
     slug: "san-marino",
@@ -95824,8 +95647,7 @@ var CITY_DATA = [
     lng: 12.45,
     aliases: [],
     wikidataId: null,
-    vibes: ["serene", "three-towered", "elevated"],
-    iconSlug: "sm-san-marino"
+    vibes: ["serene", "three-towered", "elevated"]
   },
   {
     slug: "kyiv",
@@ -95837,8 +95659,7 @@ var CITY_DATA = [
     lng: 30.52,
     aliases: [],
     wikidataId: null,
-    vibes: ["chestnut-lined", "spirited", "ancient"],
-    iconSlug: "ua-kyiv"
+    vibes: ["chestnut-lined", "spirited", "ancient"]
   },
   {
     slug: "odessa",
@@ -95850,8 +95671,7 @@ var CITY_DATA = [
     lng: 30.73,
     aliases: [],
     wikidataId: null,
-    vibes: ["witty", "cosmopolitan", "opera-proud"],
-    iconSlug: "ua-odessa"
+    vibes: ["witty", "cosmopolitan", "opera-proud"]
   },
   {
     slug: "liverpool",
@@ -95863,8 +95683,7 @@ var CITY_DATA = [
     lng: -2.98,
     aliases: [],
     wikidataId: null,
-    vibes: ["gritty", "musical", "beat-born"],
-    iconSlug: "uk-liverpool"
+    vibes: ["gritty", "musical", "beat-born"]
   },
   {
     slug: "vatican-city",
@@ -95876,8 +95695,7 @@ var CITY_DATA = [
     lng: 12.45,
     aliases: [],
     wikidataId: null,
-    vibes: ["reverent", "sacred", "hushed"],
-    iconSlug: "va-vatican"
+    vibes: ["reverent", "sacred", "hushed"]
   },
   {
     slug: "pristina",
@@ -95889,8 +95707,7 @@ var CITY_DATA = [
     lng: 21.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["newborn", "defiant", "raw"],
-    iconSlug: "xk-pristina"
+    vibes: ["newborn", "defiant", "raw"]
   },
   // --- Africa ---
   {
@@ -95903,8 +95720,7 @@ var CITY_DATA = [
     lng: 31.25,
     aliases: ["egypt"],
     wikidataId: null,
-    vibes: ["ancient", "chaotic", "minaret-spiked"],
-    iconSlug: "eg-cairo"
+    vibes: ["ancient", "chaotic", "minaret-spiked"]
   },
   {
     slug: "johannesburg",
@@ -95916,8 +95732,7 @@ var CITY_DATA = [
     lng: 28.03,
     aliases: ["south africa"],
     wikidataId: null,
-    vibes: ["ambitious", "reef-mined", "resilient"],
-    iconSlug: null
+    vibes: ["ambitious", "reef-mined", "resilient"]
   },
   {
     slug: "cape-town",
@@ -95929,8 +95744,7 @@ var CITY_DATA = [
     lng: 18.43,
     aliases: [],
     wikidataId: null,
-    vibes: ["stunning", "table-shadowed", "wild"],
-    iconSlug: "za-cape-town"
+    vibes: ["stunning", "table-shadowed", "wild"]
   },
   {
     slug: "lagos",
@@ -95942,8 +95756,7 @@ var CITY_DATA = [
     lng: 3.39,
     aliases: ["nigeria"],
     wikidataId: null,
-    vibes: ["hustling", "loud", "unstoppable"],
-    iconSlug: "ng-lagos"
+    vibes: ["hustling", "loud", "unstoppable"]
   },
   {
     slug: "nairobi",
@@ -95955,8 +95768,7 @@ var CITY_DATA = [
     lng: 36.82,
     aliases: ["kenya"],
     wikidataId: null,
-    vibes: ["enterprising", "matatu-loud", "rising"],
-    iconSlug: "ke-nairobi"
+    vibes: ["enterprising", "matatu-loud", "rising"]
   },
   {
     slug: "ouagadougou",
@@ -95968,8 +95780,7 @@ var CITY_DATA = [
     lng: -1.52,
     aliases: [],
     wikidataId: null,
-    vibes: ["dusty", "moped-swarmed", "resilient"],
-    iconSlug: "bf-ouagadougou"
+    vibes: ["dusty", "moped-swarmed", "resilient"]
   },
   {
     slug: "lalibela",
@@ -95981,8 +95792,7 @@ var CITY_DATA = [
     lng: 39.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["mystical", "devotional", "rock-hewn"],
-    iconSlug: "et-lalibela"
+    vibes: ["mystical", "devotional", "rock-hewn"]
   },
   {
     slug: "addis-ababa",
@@ -95994,8 +95804,7 @@ var CITY_DATA = [
     lng: 38.75,
     aliases: [],
     wikidataId: null,
-    vibes: ["bustling", "hopeful", "high"],
-    iconSlug: null
+    vibes: ["bustling", "hopeful", "high"]
   },
   {
     slug: "accra",
@@ -96007,8 +95816,7 @@ var CITY_DATA = [
     lng: -0.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["vibrant", "welcoming", "highlife-loud"],
-    iconSlug: "gh-accra"
+    vibes: ["vibrant", "welcoming", "highlife-loud"]
   },
   {
     slug: "abidjan",
@@ -96020,8 +95828,7 @@ var CITY_DATA = [
     lng: -4.01,
     aliases: [],
     wikidataId: null,
-    vibes: ["dynamic", "lagoon-split", "ambitious"],
-    iconSlug: null
+    vibes: ["dynamic", "lagoon-split", "ambitious"]
   },
   {
     slug: "kinshasa",
@@ -96033,8 +95840,7 @@ var CITY_DATA = [
     lng: 15.31,
     aliases: [],
     wikidataId: null,
-    vibes: ["frenetic", "rhythmic", "boundless"],
-    iconSlug: null
+    vibes: ["frenetic", "rhythmic", "boundless"]
   },
   {
     slug: "maseru",
@@ -96046,8 +95852,7 @@ var CITY_DATA = [
     lng: 27.48,
     aliases: [],
     wikidataId: null,
-    vibes: ["blanket-wrapped", "rugged", "quiet"],
-    iconSlug: "ls-maseru"
+    vibes: ["blanket-wrapped", "rugged", "quiet"]
   },
   {
     slug: "benghazi",
@@ -96059,8 +95864,7 @@ var CITY_DATA = [
     lng: 20.09,
     aliases: [],
     wikidataId: null,
-    vibes: ["weathered", "tense", "coastal"],
-    iconSlug: "ly-benghazi"
+    vibes: ["weathered", "tense", "coastal"]
   },
   {
     slug: "casablanca",
@@ -96072,8 +95876,7 @@ var CITY_DATA = [
     lng: -7.59,
     aliases: [],
     wikidataId: null,
-    vibes: ["white-housed", "cinematic", "salty"],
-    iconSlug: "ma-casablanca"
+    vibes: ["white-housed", "cinematic", "salty"]
   },
   {
     slug: "fez",
@@ -96085,8 +95888,7 @@ var CITY_DATA = [
     lng: -5,
     aliases: [],
     wikidataId: null,
-    vibes: ["labyrinthine", "tannery-dyed", "aromatic"],
-    iconSlug: "ma-fez"
+    vibes: ["labyrinthine", "tannery-dyed", "aromatic"]
   },
   {
     slug: "marrakesh",
@@ -96098,8 +95900,7 @@ var CITY_DATA = [
     lng: -8.01,
     aliases: [],
     wikidataId: null,
-    vibes: ["intoxicating", "spicy", "ochre"],
-    iconSlug: "ma-marrakesh"
+    vibes: ["intoxicating", "spicy", "ochre"]
   },
   {
     slug: "antananarivo",
@@ -96111,8 +95912,7 @@ var CITY_DATA = [
     lng: 47.52,
     aliases: [],
     wikidataId: null,
-    vibes: ["hilly", "chaotic", "resourceful"],
-    iconSlug: "mg-antananarivo"
+    vibes: ["hilly", "chaotic", "resourceful"]
   },
   {
     slug: "maputo",
@@ -96124,8 +95924,7 @@ var CITY_DATA = [
     lng: 32.58,
     aliases: [],
     wikidataId: null,
-    vibes: ["acacia-lined", "rhythmic", "languid"],
-    iconSlug: "mz-maputo"
+    vibes: ["acacia-lined", "rhythmic", "languid"]
   },
   {
     slug: "windhoek",
@@ -96137,8 +95936,7 @@ var CITY_DATA = [
     lng: 17.08,
     aliases: [],
     wikidataId: null,
-    vibes: ["german-tinged", "spacious", "wide-streeted"],
-    iconSlug: "na-windhoek"
+    vibes: ["german-tinged", "spacious", "wide-streeted"]
   },
   {
     slug: "kigali",
@@ -96150,8 +95948,7 @@ var CITY_DATA = [
     lng: 29.87,
     aliases: [],
     wikidataId: null,
-    vibes: ["clean", "orderly", "rising"],
-    iconSlug: "rw-kigali"
+    vibes: ["clean", "orderly", "rising"]
   },
   {
     slug: "dakar",
@@ -96163,8 +95960,7 @@ var CITY_DATA = [
     lng: -17.44,
     aliases: [],
     wikidataId: null,
-    vibes: ["baobab-shaded", "musical", "coastal"],
-    iconSlug: "sn-dakar"
+    vibes: ["baobab-shaded", "musical", "coastal"]
   },
   {
     slug: "dar-es-salaam",
@@ -96176,8 +95972,7 @@ var CITY_DATA = [
     lng: 39.28,
     aliases: [],
     wikidataId: null,
-    vibes: ["dhow-dotted", "bustling", "swahili"],
-    iconSlug: null
+    vibes: ["dhow-dotted", "bustling", "swahili"]
   },
   {
     slug: "zanzibar",
@@ -96189,8 +95984,7 @@ var CITY_DATA = [
     lng: 39.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["clove-scented", "turquoise", "timeless"],
-    iconSlug: "tz-zanzibar"
+    vibes: ["clove-scented", "turquoise", "timeless"]
   },
   {
     slug: "tunis",
@@ -96202,8 +95996,7 @@ var CITY_DATA = [
     lng: 10.17,
     aliases: [],
     wikidataId: null,
-    vibes: ["mediterranean", "refined", "medina-wound"],
-    iconSlug: "tn-tunis"
+    vibes: ["mediterranean", "refined", "medina-wound"]
   },
   {
     slug: "kampala",
@@ -96215,8 +96008,7 @@ var CITY_DATA = [
     lng: 32.58,
     aliases: [],
     wikidataId: null,
-    vibes: ["green", "boda-boda-quick", "lively"],
-    iconSlug: null
+    vibes: ["green", "boda-boda-quick", "lively"]
   },
   {
     slug: "lusaka",
@@ -96228,8 +96020,7 @@ var CITY_DATA = [
     lng: 28.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["copper-funded", "dusty", "easy-going"],
-    iconSlug: null
+    vibes: ["copper-funded", "dusty", "easy-going"]
   },
   {
     slug: "algiers",
@@ -96241,8 +96032,7 @@ var CITY_DATA = [
     lng: 3.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["white", "steep", "nostalgic"],
-    iconSlug: null
+    vibes: ["white", "steep", "nostalgic"]
   },
   // --- Middle East ---
   {
@@ -96255,8 +96045,7 @@ var CITY_DATA = [
     lng: 55.28,
     aliases: ["uae"],
     wikidataId: null,
-    vibes: ["opulent", "futuristic", "dazzling"],
-    iconSlug: "ae-dubai"
+    vibes: ["opulent", "futuristic", "dazzling"]
   },
   {
     slug: "riyadh",
@@ -96268,8 +96057,7 @@ var CITY_DATA = [
     lng: 46.77,
     aliases: ["saudi arabia"],
     wikidataId: null,
-    vibes: ["vast", "ambitious", "mud-brick-rooted"],
-    iconSlug: "sa-riyadh"
+    vibes: ["vast", "ambitious", "mud-brick-rooted"]
   },
   {
     slug: "jerusalem",
@@ -96281,8 +96069,7 @@ var CITY_DATA = [
     lng: 35.21,
     aliases: ["israel"],
     wikidataId: null,
-    vibes: ["sacred", "ancient", "thrice-holy"],
-    iconSlug: "il-jerusalem"
+    vibes: ["sacred", "ancient", "thrice-holy"]
   },
   {
     slug: "abu-dhabi",
@@ -96294,8 +96081,7 @@ var CITY_DATA = [
     lng: 54.65,
     aliases: [],
     wikidataId: null,
-    vibes: ["opulent", "sleek", "air-conditioned"],
-    iconSlug: "ae-abu-dhabi"
+    vibes: ["opulent", "sleek", "air-conditioned"]
   },
   {
     slug: "manama",
@@ -96307,8 +96093,7 @@ var CITY_DATA = [
     lng: 50.59,
     aliases: [],
     wikidataId: null,
-    vibes: ["cosmopolitan", "pearl-diving", "relaxed"],
-    iconSlug: "bh-manama"
+    vibes: ["cosmopolitan", "pearl-diving", "relaxed"]
   },
   {
     slug: "haifa",
@@ -96320,8 +96105,7 @@ var CITY_DATA = [
     lng: 34.99,
     aliases: [],
     wikidataId: null,
-    vibes: ["terraced", "diverse", "carmel-climbing"],
-    iconSlug: "il-haifa"
+    vibes: ["terraced", "diverse", "carmel-climbing"]
   },
   {
     slug: "tel-aviv",
@@ -96333,8 +96117,7 @@ var CITY_DATA = [
     lng: 34.78,
     aliases: [],
     wikidataId: null,
-    vibes: ["hedonistic", "bauhaus-white", "electric"],
-    iconSlug: "il-tel-aviv"
+    vibes: ["hedonistic", "bauhaus-white", "electric"]
   },
   {
     slug: "baghdad",
@@ -96346,8 +96129,7 @@ var CITY_DATA = [
     lng: 44.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["ancient", "complex", "resilient"],
-    iconSlug: null
+    vibes: ["ancient", "complex", "resilient"]
   },
   {
     slug: "samarra",
@@ -96359,8 +96141,7 @@ var CITY_DATA = [
     lng: 43.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["sacred", "timeworn", "dusty"],
-    iconSlug: "iq-samarra"
+    vibes: ["sacred", "timeworn", "dusty"]
   },
   {
     slug: "isfahan",
@@ -96372,8 +96153,7 @@ var CITY_DATA = [
     lng: 51.68,
     aliases: [],
     wikidataId: null,
-    vibes: ["turquoise", "poetic", "half-the-world"],
-    iconSlug: "ir-isfahan"
+    vibes: ["turquoise", "poetic", "half-the-world"]
   },
   {
     slug: "mashhad",
@@ -96385,8 +96165,7 @@ var CITY_DATA = [
     lng: 59.6,
     aliases: [],
     wikidataId: null,
-    vibes: ["devotional", "bustling", "pilgrimage-bound"],
-    iconSlug: "ir-mashhad"
+    vibes: ["devotional", "bustling", "pilgrimage-bound"]
   },
   {
     slug: "tehran",
@@ -96398,8 +96177,7 @@ var CITY_DATA = [
     lng: 51.39,
     aliases: [],
     wikidataId: null,
-    vibes: ["alborz-backed", "dynamic", "sprawling"],
-    iconSlug: "ir-tehran"
+    vibes: ["alborz-backed", "dynamic", "sprawling"]
   },
   {
     slug: "amman",
@@ -96411,8 +96189,7 @@ var CITY_DATA = [
     lng: 35.93,
     aliases: [],
     wikidataId: null,
-    vibes: ["sandy", "hilly", "welcoming"],
-    iconSlug: "jo-amman"
+    vibes: ["sandy", "hilly", "welcoming"]
   },
   {
     slug: "kuwait-city",
@@ -96424,8 +96201,7 @@ var CITY_DATA = [
     lng: 47.99,
     aliases: [],
     wikidataId: null,
-    vibes: ["gleaming", "modern", "tower-crowned"],
-    iconSlug: "kw-kuwait"
+    vibes: ["gleaming", "modern", "tower-crowned"]
   },
   {
     slug: "beirut",
@@ -96437,8 +96213,7 @@ var CITY_DATA = [
     lng: 35.5,
     aliases: [],
     wikidataId: null,
-    vibes: ["resilient", "cultured", "phoenician"],
-    iconSlug: "lb-beirut"
+    vibes: ["resilient", "cultured", "phoenician"]
   },
   {
     slug: "muscat",
@@ -96450,8 +96225,7 @@ var CITY_DATA = [
     lng: 58.54,
     aliases: [],
     wikidataId: null,
-    vibes: ["fragrant", "serene", "white-washed"],
-    iconSlug: "om-muscat"
+    vibes: ["fragrant", "serene", "white-washed"]
   },
   {
     slug: "doha",
@@ -96463,8 +96237,7 @@ var CITY_DATA = [
     lng: 51.53,
     aliases: [],
     wikidataId: null,
-    vibes: ["gleaming", "ambitious", "corniche-curved"],
-    iconSlug: "qa-doha"
+    vibes: ["gleaming", "ambitious", "corniche-curved"]
   },
   {
     slug: "jeddah",
@@ -96476,8 +96249,7 @@ var CITY_DATA = [
     lng: 39.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["coral-built", "cosmopolitan", "gateway-like"],
-    iconSlug: null
+    vibes: ["coral-built", "cosmopolitan", "gateway-like"]
   },
   // --- Asia ---
   {
@@ -96490,8 +96262,7 @@ var CITY_DATA = [
     lng: 139.75,
     aliases: ["japan"],
     wikidataId: null,
-    vibes: ["zen", "precise", "futuristic"],
-    iconSlug: "jp-tokyo"
+    vibes: ["zen", "precise", "futuristic"]
   },
   {
     slug: "osaka",
@@ -96503,8 +96274,7 @@ var CITY_DATA = [
     lng: 135.46,
     aliases: [],
     wikidataId: null,
-    vibes: ["playful", "comedy-quick", "neon"],
-    iconSlug: null
+    vibes: ["playful", "comedy-quick", "neon"]
   },
   {
     slug: "seoul",
@@ -96516,8 +96286,7 @@ var CITY_DATA = [
     lng: 127,
     aliases: ["korea", "south korea"],
     wikidataId: null,
-    vibes: ["trendy", "fast-paced", "glossy"],
-    iconSlug: "kr-seoul"
+    vibes: ["trendy", "fast-paced", "glossy"]
   },
   {
     slug: "shanghai",
@@ -96529,8 +96298,7 @@ var CITY_DATA = [
     lng: 121.44,
     aliases: ["china"],
     wikidataId: null,
-    vibes: ["electric", "towering", "relentless"],
-    iconSlug: "cn-shanghai"
+    vibes: ["electric", "towering", "relentless"]
   },
   {
     slug: "beijing",
@@ -96542,8 +96310,7 @@ var CITY_DATA = [
     lng: 116.39,
     aliases: [],
     wikidataId: null,
-    vibes: ["imperial", "vast", "hutong-threaded"],
-    iconSlug: "cn-beijing"
+    vibes: ["imperial", "vast", "hutong-threaded"]
   },
   {
     slug: "hong-kong",
@@ -96555,8 +96322,7 @@ var CITY_DATA = [
     lng: 114.19,
     aliases: ["hk"],
     wikidataId: null,
-    vibes: ["dense", "neon", "kinetic"],
-    iconSlug: null
+    vibes: ["dense", "neon", "kinetic"]
   },
   {
     slug: "singapore",
@@ -96568,8 +96334,7 @@ var CITY_DATA = [
     lng: 103.86,
     aliases: ["sg"],
     wikidataId: null,
-    vibes: ["orderly", "lush", "spotless"],
-    iconSlug: null
+    vibes: ["orderly", "lush", "spotless"]
   },
   {
     slug: "bangkok",
@@ -96581,8 +96346,7 @@ var CITY_DATA = [
     lng: 100.52,
     aliases: ["bkk", "thailand"],
     wikidataId: null,
-    vibes: ["street-stall-lit", "chaotic", "golden"],
-    iconSlug: null
+    vibes: ["street-stall-lit", "chaotic", "golden"]
   },
   {
     slug: "mumbai",
@@ -96594,8 +96358,7 @@ var CITY_DATA = [
     lng: 72.86,
     aliases: ["india"],
     wikidataId: null,
-    vibes: ["intense", "cinematic", "teeming"],
-    iconSlug: null
+    vibes: ["intense", "cinematic", "teeming"]
   },
   {
     slug: "delhi",
@@ -96607,8 +96370,7 @@ var CITY_DATA = [
     lng: 77.23,
     aliases: [],
     wikidataId: null,
-    vibes: ["spicy", "seven-citied", "vibrant"],
-    iconSlug: "in-delhi"
+    vibes: ["spicy", "seven-citied", "vibrant"]
   },
   {
     slug: "karachi",
@@ -96620,8 +96382,7 @@ var CITY_DATA = [
     lng: 66.99,
     aliases: ["pakistan"],
     wikidataId: null,
-    vibes: ["gritty", "sprawling", "biryani-scented"],
-    iconSlug: "pk-karachi"
+    vibes: ["gritty", "sprawling", "biryani-scented"]
   },
   {
     slug: "dhaka",
@@ -96633,8 +96394,7 @@ var CITY_DATA = [
     lng: 90.41,
     aliases: ["bangladesh"],
     wikidataId: null,
-    vibes: ["dense", "lively", "rickshaw-painted"],
-    iconSlug: "bd-dhaka"
+    vibes: ["dense", "lively", "rickshaw-painted"]
   },
   {
     slug: "ho-chi-minh-city",
@@ -96646,8 +96406,7 @@ var CITY_DATA = [
     lng: 106.7,
     aliases: ["vietnam"],
     wikidataId: null,
-    vibes: ["buzzing", "aromatic", "coffee-strong"],
-    iconSlug: null
+    vibes: ["buzzing", "aromatic", "coffee-strong"]
   },
   {
     slug: "jakarta",
@@ -96659,8 +96418,7 @@ var CITY_DATA = [
     lng: 106.83,
     aliases: ["indonesia"],
     wikidataId: null,
-    vibes: ["traffic-snarled", "sprawling", "lively"],
-    iconSlug: null
+    vibes: ["traffic-snarled", "sprawling", "lively"]
   },
   {
     slug: "kuala-lumpur",
@@ -96672,8 +96430,7 @@ var CITY_DATA = [
     lng: 101.7,
     aliases: ["malaysia"],
     wikidataId: null,
-    vibes: ["gleaming", "twin-towered", "diverse"],
-    iconSlug: "my-kuala-lumpur"
+    vibes: ["gleaming", "twin-towered", "diverse"]
   },
   {
     slug: "manila",
@@ -96685,8 +96442,7 @@ var CITY_DATA = [
     lng: 120.98,
     aliases: ["philippines"],
     wikidataId: null,
-    vibes: ["cheerful", "resilient", "jeepney-bright"],
-    iconSlug: "ph-manila"
+    vibes: ["cheerful", "resilient", "jeepney-bright"]
   },
   {
     slug: "taipei",
@@ -96698,8 +96454,7 @@ var CITY_DATA = [
     lng: 121.57,
     aliases: ["taiwan"],
     wikidataId: null,
-    vibes: ["inventive", "nocturnal", "sweet"],
-    iconSlug: "tw-taipei"
+    vibes: ["inventive", "nocturnal", "sweet"]
   },
   {
     slug: "kathmandu",
@@ -96711,8 +96466,7 @@ var CITY_DATA = [
     lng: 85.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["spiritual", "high", "prayer-flagged"],
-    iconSlug: "np-kathmandu"
+    vibes: ["spiritual", "high", "prayer-flagged"]
   },
   {
     slug: "yerevan",
@@ -96724,8 +96478,7 @@ var CITY_DATA = [
     lng: 44.51,
     aliases: [],
     wikidataId: null,
-    vibes: ["rosy", "ancient", "soviet-tinged"],
-    iconSlug: "am-yerevan"
+    vibes: ["rosy", "ancient", "soviet-tinged"]
   },
   {
     slug: "seria",
@@ -96737,8 +96490,7 @@ var CITY_DATA = [
     lng: 114.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["oil-built", "quiet", "industrial"],
-    iconSlug: "bn-seria"
+    vibes: ["oil-built", "quiet", "industrial"]
   },
   {
     slug: "thimphu",
@@ -96750,8 +96502,7 @@ var CITY_DATA = [
     lng: 89.64,
     aliases: [],
     wikidataId: null,
-    vibes: ["peaceful", "buddhist", "mountain-fresh"],
-    iconSlug: "bt-thimphu"
+    vibes: ["peaceful", "buddhist", "mountain-fresh"]
   },
   {
     slug: "chengdu",
@@ -96763,8 +96514,7 @@ var CITY_DATA = [
     lng: 104.07,
     aliases: [],
     wikidataId: null,
-    vibes: ["spicy", "laid-back", "teahouse-slow"],
-    iconSlug: "cn-chengdu"
+    vibes: ["spicy", "laid-back", "teahouse-slow"]
   },
   {
     slug: "jingzhou",
@@ -96776,8 +96526,7 @@ var CITY_DATA = [
     lng: 112.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["wall-ringed", "riverside", "tranquil"],
-    iconSlug: "cn-jingzhou"
+    vibes: ["wall-ringed", "riverside", "tranquil"]
   },
   {
     slug: "leshan",
@@ -96789,8 +96538,7 @@ var CITY_DATA = [
     lng: 103.77,
     aliases: [],
     wikidataId: null,
-    vibes: ["peaceful", "meditative", "riverside"],
-    iconSlug: "cn-leshan"
+    vibes: ["peaceful", "meditative", "riverside"]
   },
   {
     slug: "shenzhen",
@@ -96802,8 +96550,7 @@ var CITY_DATA = [
     lng: 114.06,
     aliases: [],
     wikidataId: null,
-    vibes: ["overnight-built", "innovative", "frenetic"],
-    iconSlug: null
+    vibes: ["overnight-built", "innovative", "frenetic"]
   },
   {
     slug: "guangzhou",
@@ -96815,8 +96562,7 @@ var CITY_DATA = [
     lng: 113.26,
     aliases: [],
     wikidataId: null,
-    vibes: ["dim-sum-early", "mercantile", "bold"],
-    iconSlug: null
+    vibes: ["dim-sum-early", "mercantile", "bold"]
   },
   {
     slug: "chongqing",
@@ -96828,8 +96574,7 @@ var CITY_DATA = [
     lng: 106.55,
     aliases: [],
     wikidataId: null,
-    vibes: ["fiery", "cliff-stacked", "sprawling"],
-    iconSlug: null
+    vibes: ["fiery", "cliff-stacked", "sprawling"]
   },
   {
     slug: "wuhan",
@@ -96841,8 +96586,7 @@ var CITY_DATA = [
     lng: 114.31,
     aliases: [],
     wikidataId: null,
-    vibes: ["riverside", "industrial", "yangtze-split"],
-    iconSlug: null
+    vibes: ["riverside", "industrial", "yangtze-split"]
   },
   {
     slug: "denpasar",
@@ -96854,8 +96598,7 @@ var CITY_DATA = [
     lng: 115.22,
     aliases: [],
     wikidataId: null,
-    vibes: ["temple-dotted", "spiritual", "languid"],
-    iconSlug: "id-denpasar"
+    vibes: ["temple-dotted", "spiritual", "languid"]
   },
   {
     slug: "surabaya",
@@ -96867,8 +96610,7 @@ var CITY_DATA = [
     lng: 112.75,
     aliases: [],
     wikidataId: null,
-    vibes: ["heroic", "gritty", "industrial"],
-    iconSlug: null
+    vibes: ["heroic", "gritty", "industrial"]
   },
   {
     slug: "agra",
@@ -96880,8 +96622,7 @@ var CITY_DATA = [
     lng: 78.02,
     aliases: [],
     wikidataId: null,
-    vibes: ["monumental", "marble-inlaid", "timeless"],
-    iconSlug: "in-agra"
+    vibes: ["monumental", "marble-inlaid", "timeless"]
   },
   {
     slug: "kolkata",
@@ -96893,8 +96634,7 @@ var CITY_DATA = [
     lng: 88.36,
     aliases: [],
     wikidataId: null,
-    vibes: ["literary", "tram-rattled", "intense"],
-    iconSlug: null
+    vibes: ["literary", "tram-rattled", "intense"]
   },
   {
     slug: "bangalore",
@@ -96906,8 +96646,7 @@ var CITY_DATA = [
     lng: 77.59,
     aliases: [],
     wikidataId: null,
-    vibes: ["cosmopolitan", "code-fuelled", "innovative"],
-    iconSlug: null
+    vibes: ["cosmopolitan", "code-fuelled", "innovative"]
   },
   {
     slug: "chennai",
@@ -96919,8 +96658,7 @@ var CITY_DATA = [
     lng: 80.27,
     aliases: [],
     wikidataId: null,
-    vibes: ["carnatic", "traditional", "coastal"],
-    iconSlug: null
+    vibes: ["carnatic", "traditional", "coastal"]
   },
   {
     slug: "hyderabad",
@@ -96932,8 +96670,7 @@ var CITY_DATA = [
     lng: 78.49,
     aliases: [],
     wikidataId: null,
-    vibes: ["spiced", "historic", "tech-savvy"],
-    iconSlug: null
+    vibes: ["spiced", "historic", "tech-savvy"]
   },
   {
     slug: "kyoto",
@@ -96945,8 +96682,7 @@ var CITY_DATA = [
     lng: 135.77,
     aliases: [],
     wikidataId: null,
-    vibes: ["tranquil", "refined", "moss-gardened"],
-    iconSlug: "jp-kyoto"
+    vibes: ["tranquil", "refined", "moss-gardened"]
   },
   {
     slug: "nara",
@@ -96958,8 +96694,7 @@ var CITY_DATA = [
     lng: 135.8,
     aliases: [],
     wikidataId: null,
-    vibes: ["gentle", "sacred", "deer-roamed"],
-    iconSlug: "jp-nara"
+    vibes: ["gentle", "sacred", "deer-roamed"]
   },
   {
     slug: "shirakawa-go",
@@ -96971,8 +96706,7 @@ var CITY_DATA = [
     lng: 136.91,
     aliases: [],
     wikidataId: null,
-    vibes: ["thatched", "rustic", "traditional"],
-    iconSlug: "jp-shirakawa-go"
+    vibes: ["thatched", "rustic", "traditional"]
   },
   {
     slug: "sihanoukville",
@@ -96984,8 +96718,7 @@ var CITY_DATA = [
     lng: 103.5,
     aliases: [],
     wikidataId: null,
-    vibes: ["beachy", "laid-back", "half-built"],
-    iconSlug: "kh-sihanoukville"
+    vibes: ["beachy", "laid-back", "half-built"]
   },
   {
     slug: "phnom-penh",
@@ -96997,8 +96730,7 @@ var CITY_DATA = [
     lng: 104.92,
     aliases: [],
     wikidataId: null,
-    vibes: ["mekong-met", "chaotic", "emerging"],
-    iconSlug: null
+    vibes: ["mekong-met", "chaotic", "emerging"]
   },
   {
     slug: "bishkek",
@@ -97010,8 +96742,7 @@ var CITY_DATA = [
     lng: 74.59,
     aliases: [],
     wikidataId: null,
-    vibes: ["soviet", "poplar-lined", "fresh"],
-    iconSlug: "kg-bishkek"
+    vibes: ["soviet", "poplar-lined", "fresh"]
   },
   {
     slug: "pyongyang",
@@ -97023,8 +96754,7 @@ var CITY_DATA = [
     lng: 125.75,
     aliases: [],
     wikidataId: null,
-    vibes: ["austere", "controlled", "monumental"],
-    iconSlug: "kp-pyongyang"
+    vibes: ["austere", "controlled", "monumental"]
   },
   {
     slug: "busan",
@@ -97036,8 +96766,7 @@ var CITY_DATA = [
     lng: 129.08,
     aliases: [],
     wikidataId: null,
-    vibes: ["coastal", "fish-market-loud", "relaxed"],
-    iconSlug: null
+    vibes: ["coastal", "fish-market-loud", "relaxed"]
   },
   {
     slug: "almaty",
@@ -97049,8 +96778,7 @@ var CITY_DATA = [
     lng: 76.95,
     aliases: [],
     wikidataId: null,
-    vibes: ["mountainous", "cosmopolitan", "soviet-nostalgic"],
-    iconSlug: "kz-alma-aty"
+    vibes: ["mountainous", "cosmopolitan", "soviet-nostalgic"]
   },
   {
     slug: "astana",
@@ -97062,8 +96790,7 @@ var CITY_DATA = [
     lng: 71.43,
     aliases: [],
     wikidataId: null,
-    vibes: ["futuristic", "steppe-planted", "ambitious"],
-    iconSlug: "kz-astana"
+    vibes: ["futuristic", "steppe-planted", "ambitious"]
   },
   {
     slug: "kostanay",
@@ -97075,8 +96802,7 @@ var CITY_DATA = [
     lng: 63.63,
     aliases: [],
     wikidataId: null,
-    vibes: ["provincial", "wheat-belted", "quiet"],
-    iconSlug: "kz-kostanay"
+    vibes: ["provincial", "wheat-belted", "quiet"]
   },
   {
     slug: "schuchinsk",
@@ -97088,8 +96814,7 @@ var CITY_DATA = [
     lng: 70.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["pine-scented", "lakeside", "sanatorium-slow"],
-    iconSlug: "kz-schuchinsk"
+    vibes: ["pine-scented", "lakeside", "sanatorium-slow"]
   },
   {
     slug: "uralsk",
@@ -97101,8 +96826,7 @@ var CITY_DATA = [
     lng: 51.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["frontier", "spacious", "remote"],
-    iconSlug: "kz-uralsk"
+    vibes: ["frontier", "spacious", "remote"]
   },
   {
     slug: "luang-prabang",
@@ -97114,8 +96838,7 @@ var CITY_DATA = [
     lng: 102.13,
     aliases: [],
     wikidataId: null,
-    vibes: ["golden", "alms-walked", "spiritual"],
-    iconSlug: "la-luang-prabang"
+    vibes: ["golden", "alms-walked", "spiritual"]
   },
   {
     slug: "bagan",
@@ -97127,8 +96850,7 @@ var CITY_DATA = [
     lng: 94.86,
     aliases: [],
     wikidataId: null,
-    vibes: ["mystical", "ancient", "temple-strewn"],
-    iconSlug: "mm-bagan"
+    vibes: ["mystical", "ancient", "temple-strewn"]
   },
   {
     slug: "yangon",
@@ -97140,8 +96862,7 @@ var CITY_DATA = [
     lng: 96.2,
     aliases: [],
     wikidataId: null,
-    vibes: ["golden", "teak-shuttered", "timeless"],
-    iconSlug: null
+    vibes: ["golden", "teak-shuttered", "timeless"]
   },
   {
     slug: "ulaanbaatar",
@@ -97153,8 +96874,7 @@ var CITY_DATA = [
     lng: 106.92,
     aliases: [],
     wikidataId: null,
-    vibes: ["harsh", "nomadic", "smoky"],
-    iconSlug: "mn-ulaanbaatar"
+    vibes: ["harsh", "nomadic", "smoky"]
   },
   {
     slug: "kuching",
@@ -97166,8 +96886,7 @@ var CITY_DATA = [
     lng: 110.34,
     aliases: [],
     wikidataId: null,
-    vibes: ["riverside", "laid-back", "cat-named"],
-    iconSlug: "my-kuching"
+    vibes: ["riverside", "laid-back", "cat-named"]
   },
   {
     slug: "islamabad",
@@ -97179,8 +96898,7 @@ var CITY_DATA = [
     lng: 73.04,
     aliases: [],
     wikidataId: null,
-    vibes: ["green", "planned", "margalla-backed"],
-    iconSlug: "pk-islamabad"
+    vibes: ["green", "planned", "margalla-backed"]
   },
   {
     slug: "lahore",
@@ -97192,8 +96910,7 @@ var CITY_DATA = [
     lng: 74.35,
     aliases: [],
     wikidataId: null,
-    vibes: ["vibrant", "mughal-gardened", "spicy"],
-    iconSlug: null
+    vibes: ["vibrant", "mughal-gardened", "spicy"]
   },
   {
     slug: "cebu",
@@ -97205,8 +96922,7 @@ var CITY_DATA = [
     lng: 123.89,
     aliases: [],
     wikidataId: null,
-    vibes: ["lechon-proud", "festive", "coastal"],
-    iconSlug: "ph-cebu"
+    vibes: ["lechon-proud", "festive", "coastal"]
   },
   {
     slug: "sentosa",
@@ -97218,8 +96934,7 @@ var CITY_DATA = [
     lng: 103.83,
     aliases: [],
     wikidataId: null,
-    vibes: ["resort-like", "manicured", "playful"],
-    iconSlug: "sg-sentosa"
+    vibes: ["resort-like", "manicured", "playful"]
   },
   {
     slug: "colombo",
@@ -97231,8 +96946,7 @@ var CITY_DATA = [
     lng: 79.85,
     aliases: [],
     wikidataId: null,
-    vibes: ["cinnamon-traded", "colonial", "bustling"],
-    iconSlug: null
+    vibes: ["cinnamon-traded", "colonial", "bustling"]
   },
   {
     slug: "pattaya",
@@ -97244,8 +96958,7 @@ var CITY_DATA = [
     lng: 100.88,
     aliases: [],
     wikidataId: null,
-    vibes: ["jet-ski-loud", "beachy", "hedonistic"],
-    iconSlug: "th-pattaya"
+    vibes: ["jet-ski-loud", "beachy", "hedonistic"]
   },
   {
     slug: "dushanbe",
@@ -97257,8 +96970,7 @@ var CITY_DATA = [
     lng: 68.77,
     aliases: [],
     wikidataId: null,
-    vibes: ["monday-named", "soviet", "leafy"],
-    iconSlug: "tj-dushanbe"
+    vibes: ["monday-named", "soviet", "leafy"]
   },
   {
     slug: "dili",
@@ -97270,8 +96982,7 @@ var CITY_DATA = [
     lng: 125.57,
     aliases: [],
     wikidataId: null,
-    vibes: ["independence-proud", "emerging", "coastal"],
-    iconSlug: "tl-dili"
+    vibes: ["independence-proud", "emerging", "coastal"]
   },
   {
     slug: "ashgabat",
@@ -97283,8 +96994,7 @@ var CITY_DATA = [
     lng: 58.38,
     aliases: [],
     wikidataId: null,
-    vibes: ["marble", "surreal", "gleaming"],
-    iconSlug: "tm-ashgabat"
+    vibes: ["marble", "surreal", "gleaming"]
   },
   {
     slug: "nukus",
@@ -97296,8 +97006,7 @@ var CITY_DATA = [
     lng: 59.6,
     aliases: [],
     wikidataId: null,
-    vibes: ["desert-museumed", "dusty", "stark"],
-    iconSlug: "uz-nukus"
+    vibes: ["desert-museumed", "dusty", "stark"]
   },
   {
     slug: "tashkent",
@@ -97309,8 +97018,7 @@ var CITY_DATA = [
     lng: 69.28,
     aliases: [],
     wikidataId: null,
-    vibes: ["soviet", "metro-muraled", "spacious"],
-    iconSlug: "uz-tashkent"
+    vibes: ["soviet", "metro-muraled", "spacious"]
   },
   {
     slug: "hanoi",
@@ -97322,8 +97030,7 @@ var CITY_DATA = [
     lng: 105.85,
     aliases: [],
     wikidataId: null,
-    vibes: ["motorbike-buzzing", "aromatic", "old-quartered"],
-    iconSlug: "vn-hanoi"
+    vibes: ["motorbike-buzzing", "aromatic", "old-quartered"]
   },
   {
     slug: "vung-tau",
@@ -97335,8 +97042,7 @@ var CITY_DATA = [
     lng: 107.08,
     aliases: [],
     wikidataId: null,
-    vibes: ["rig-supplied", "coastal", "relaxed"],
-    iconSlug: "vn-vung-tau"
+    vibes: ["rig-supplied", "coastal", "relaxed"]
   },
   // --- Oceania ---
   {
@@ -97349,8 +97055,7 @@ var CITY_DATA = [
     lng: 151.19,
     aliases: ["australia"],
     wikidataId: null,
-    vibes: ["harbour-shaped", "sparkling", "coastal"],
-    iconSlug: "au-sydney"
+    vibes: ["harbour-shaped", "sparkling", "coastal"]
   },
   {
     slug: "melbourne",
@@ -97362,8 +97067,7 @@ var CITY_DATA = [
     lng: 144.98,
     aliases: [],
     wikidataId: null,
-    vibes: ["laneway-hidden", "caffeinated", "eclectic"],
-    iconSlug: "au-melbourne"
+    vibes: ["laneway-hidden", "caffeinated", "eclectic"]
   },
   {
     slug: "auckland",
@@ -97375,8 +97079,7 @@ var CITY_DATA = [
     lng: 174.76,
     aliases: ["new zealand", "nz"],
     wikidataId: null,
-    vibes: ["sail-crowded", "green", "fresh"],
-    iconSlug: null
+    vibes: ["sail-crowded", "green", "fresh"]
   },
   {
     slug: "canberra",
@@ -97388,8 +97091,7 @@ var CITY_DATA = [
     lng: 149.13,
     aliases: [],
     wikidataId: null,
-    vibes: ["planned", "leafy", "bureaucratic"],
-    iconSlug: "au-canberra"
+    vibes: ["planned", "leafy", "bureaucratic"]
   },
   {
     slug: "hobart",
@@ -97401,8 +97103,7 @@ var CITY_DATA = [
     lng: 147.33,
     aliases: [],
     wikidataId: null,
-    vibes: ["cool", "maritime", "artsy"],
-    iconSlug: "au-hobart"
+    vibes: ["cool", "maritime", "artsy"]
   },
   {
     slug: "perth",
@@ -97414,8 +97115,7 @@ var CITY_DATA = [
     lng: 115.86,
     aliases: [],
     wikidataId: null,
-    vibes: ["swan-rivered", "isolated", "relaxed"],
-    iconSlug: "au-perth"
+    vibes: ["swan-rivered", "isolated", "relaxed"]
   },
   {
     slug: "suva",
@@ -97427,8 +97127,7 @@ var CITY_DATA = [
     lng: 178.44,
     aliases: [],
     wikidataId: null,
-    vibes: ["market-loud", "verandaed", "island-time"],
-    iconSlug: "fj-suva"
+    vibes: ["market-loud", "verandaed", "island-time"]
   },
   {
     slug: "tarawa",
@@ -97440,8 +97139,7 @@ var CITY_DATA = [
     lng: 173,
     aliases: [],
     wikidataId: null,
-    vibes: ["remote", "atoll-bound", "lagoon-like"],
-    iconSlug: "ki-tarawa"
+    vibes: ["remote", "atoll-bound", "lagoon-like"]
   },
   {
     slug: "port-louis",
@@ -97453,8 +97151,7 @@ var CITY_DATA = [
     lng: 57.5,
     aliases: [],
     wikidataId: null,
-    vibes: ["sugar-traded", "bustling", "creole"],
-    iconSlug: "mu-port-louis"
+    vibes: ["sugar-traded", "bustling", "creole"]
   },
   {
     slug: "noumea",
@@ -97466,8 +97163,7 @@ var CITY_DATA = [
     lng: 166.46,
     aliases: [],
     wikidataId: null,
-    vibes: ["french", "turquoise", "resort-like"],
-    iconSlug: "nc-noumea"
+    vibes: ["french", "turquoise", "resort-like"]
   },
   {
     slug: "wellington",
@@ -97479,8 +97175,7 @@ var CITY_DATA = [
     lng: 174.78,
     aliases: [],
     wikidataId: null,
-    vibes: ["hill-hugged", "creative", "caffeinated"],
-    iconSlug: "nz-wellington"
+    vibes: ["hill-hugged", "creative", "caffeinated"]
   },
   {
     slug: "honiara",
@@ -97492,8 +97187,7 @@ var CITY_DATA = [
     lng: 159.96,
     aliases: [],
     wikidataId: null,
-    vibes: ["war-marked", "quiet", "emerging"],
-    iconSlug: "sb-honiara"
+    vibes: ["war-marked", "quiet", "emerging"]
   },
   {
     slug: "nukualofa",
@@ -97505,8 +97199,7 @@ var CITY_DATA = [
     lng: -175.2,
     aliases: [],
     wikidataId: null,
-    vibes: ["remote", "pacific", "tranquil"],
-    iconSlug: "to-nukualofa"
+    vibes: ["remote", "pacific", "tranquil"]
   },
   {
     slug: "funafuti",
@@ -97518,8 +97211,7 @@ var CITY_DATA = [
     lng: 179.2,
     aliases: [],
     wikidataId: null,
-    vibes: ["tiny", "coral", "vulnerable"],
-    iconSlug: "tv-funafuti"
+    vibes: ["tiny", "coral", "vulnerable"]
   },
   {
     slug: "port-vila",
@@ -97531,8 +97223,7 @@ var CITY_DATA = [
     lng: 168.32,
     aliases: [],
     wikidataId: null,
-    vibes: ["kava-slow", "volcanic", "laid-back"],
-    iconSlug: "vu-port-vila"
+    vibes: ["kava-slow", "volcanic", "laid-back"]
   },
   {
     slug: "apia",
@@ -97544,8 +97235,7 @@ var CITY_DATA = [
     lng: -171.76,
     aliases: [],
     wikidataId: null,
-    vibes: ["sunday-quiet", "polynesian", "unhurried"],
-    iconSlug: "ws-apia"
+    vibes: ["sunday-quiet", "polynesian", "unhurried"]
   },
   // --- Central America & Caribbean ---
   {
@@ -97558,8 +97248,7 @@ var CITY_DATA = [
     lng: -61.84,
     aliases: [],
     wikidataId: null,
-    vibes: ["turquoise", "colonial", "cricket-mad"],
-    iconSlug: "ag-saint-john"
+    vibes: ["turquoise", "colonial", "cricket-mad"]
   },
   {
     slug: "nassau",
@@ -97571,8 +97260,7 @@ var CITY_DATA = [
     lng: -77.35,
     aliases: [],
     wikidataId: null,
-    vibes: ["turquoise", "resort", "cruise-docked"],
-    iconSlug: "bs-nassau"
+    vibes: ["turquoise", "resort", "cruise-docked"]
   },
   {
     slug: "san-ignacio",
@@ -97584,8 +97272,7 @@ var CITY_DATA = [
     lng: -89.07,
     aliases: [],
     wikidataId: null,
-    vibes: ["jungle-wrapped", "mystical", "adventurous"],
-    iconSlug: "bz-san-ignacio"
+    vibes: ["jungle-wrapped", "mystical", "adventurous"]
   },
   {
     slug: "alajuela",
@@ -97597,8 +97284,7 @@ var CITY_DATA = [
     lng: -84.22,
     aliases: [],
     wikidataId: null,
-    vibes: ["coffee-farmed", "verdant", "volcanic"],
-    iconSlug: "cr-alajuela"
+    vibes: ["coffee-farmed", "verdant", "volcanic"]
   },
   {
     slug: "havana",
@@ -97610,8 +97296,7 @@ var CITY_DATA = [
     lng: -82.37,
     aliases: [],
     wikidataId: null,
-    vibes: ["nostalgic", "peeling-grand", "rhythmic"],
-    iconSlug: "cu-havana"
+    vibes: ["nostalgic", "peeling-grand", "rhythmic"]
   },
   {
     slug: "willemstad",
@@ -97623,8 +97308,7 @@ var CITY_DATA = [
     lng: -68.94,
     aliases: [],
     wikidataId: null,
-    vibes: ["pastel", "pontoon-bridged", "dutch-tinged"],
-    iconSlug: "cw-willemstadt"
+    vibes: ["pastel", "pontoon-bridged", "dutch-tinged"]
   },
   {
     slug: "st-george",
@@ -97636,8 +97320,7 @@ var CITY_DATA = [
     lng: -61.75,
     aliases: [],
     wikidataId: null,
-    vibes: ["horseshoe-harboured", "cobblestoned", "volcanic"],
-    iconSlug: "gd-st-george"
+    vibes: ["horseshoe-harboured", "cobblestoned", "volcanic"]
   },
   {
     slug: "antigua-guatemala",
@@ -97649,8 +97332,7 @@ var CITY_DATA = [
     lng: -90.73,
     aliases: [],
     wikidataId: null,
-    vibes: ["earthquake-hushed", "volcanic", "cobblestoned"],
-    iconSlug: "gt-antigua"
+    vibes: ["earthquake-hushed", "volcanic", "cobblestoned"]
   },
   {
     slug: "georgetown",
@@ -97662,8 +97344,7 @@ var CITY_DATA = [
     lng: -58.16,
     aliases: [],
     wikidataId: null,
-    vibes: ["wooden", "sea-walled", "colonial"],
-    iconSlug: "gy-georgetown"
+    vibes: ["wooden", "sea-walled", "colonial"]
   },
   {
     slug: "tegucigalpa",
@@ -97675,8 +97356,7 @@ var CITY_DATA = [
     lng: -87.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["silver-hilled", "chaotic", "resilient"],
-    iconSlug: "hn-tegucigalpa"
+    vibes: ["silver-hilled", "chaotic", "resilient"]
   },
   {
     slug: "port-au-prince",
@@ -97688,8 +97368,7 @@ var CITY_DATA = [
     lng: -72.34,
     aliases: [],
     wikidataId: null,
-    vibes: ["vibrant", "resilient", "gingerbread-housed"],
-    iconSlug: "ht-port-au-prince"
+    vibes: ["vibrant", "resilient", "gingerbread-housed"]
   },
   {
     slug: "soufriere",
@@ -97701,8 +97380,7 @@ var CITY_DATA = [
     lng: -61.06,
     aliases: [],
     wikidataId: null,
-    vibes: ["piton-framed", "lush", "dramatic"],
-    iconSlug: "lc-soufriere"
+    vibes: ["piton-framed", "lush", "dramatic"]
   },
   {
     slug: "granada-nicaragua",
@@ -97714,8 +97392,7 @@ var CITY_DATA = [
     lng: -85.96,
     aliases: [],
     wikidataId: null,
-    vibes: ["horse-carted", "lakeside", "colorful"],
-    iconSlug: "ni-granada"
+    vibes: ["horse-carted", "lakeside", "colorful"]
   },
   {
     slug: "panama-city",
@@ -97727,8 +97404,7 @@ var CITY_DATA = [
     lng: -79.52,
     aliases: ["panama"],
     wikidataId: null,
-    vibes: ["canal-fed", "cosmopolitan", "gleaming"],
-    iconSlug: "pa-panama"
+    vibes: ["canal-fed", "cosmopolitan", "gleaming"]
   },
   {
     slug: "san-salvador",
@@ -97740,8 +97416,7 @@ var CITY_DATA = [
     lng: -89.19,
     aliases: [],
     wikidataId: null,
-    vibes: ["pupusa-fed", "resilient", "volcanic"],
-    iconSlug: "sv-san-salvador"
+    vibes: ["pupusa-fed", "resilient", "volcanic"]
   }
 ];
 var ENTITIES = [

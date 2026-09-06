@@ -31,7 +31,6 @@
     "eval:compile": "tsx scripts/compile-eval-fixture.ts",
     "eval": "vitest run --config vitest.eval.config.ts",
     "eval:baseline": "tsx scripts/write-eval-baseline.ts",
-    "icons:download": "npx tsx scripts/download-icons.ts",
     "airports:generate": "npx tsx scripts/generate-airports.ts"
   },
   "dependencies": {

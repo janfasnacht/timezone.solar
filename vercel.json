@@ -5,7 +5,7 @@
   ],
   "rewrites": [
     { "source": "/about", "destination": "/index.html" },
-    { "source": "/:path((?!api|assets|icons|favicon|manifest|robots|sitemap).*)", "destination": "/index.html" }
+    { "source": "/:path((?!api|assets|favicon|manifest|robots|sitemap).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
