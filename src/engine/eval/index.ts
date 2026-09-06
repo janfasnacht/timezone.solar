@@ -22,4 +22,11 @@ export {
   runEvaluation,
   printScorecard,
   printComparisonTable,
+  printFailures,
 } from './scorecard'
+
+export type { EvalBaseline, BaselineMetric } from './baseline'
+export { hashExpectations, toMetricMap, buildBaseline } from './baseline'
+
+export type { BaselineDiff, BaselineComparison, DiffKind } from './compare'
+export { compareToBaseline, formatComparison } from './compare'

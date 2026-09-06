@@ -1,97 +1,48 @@
 /**
- * Parser evaluation test harness.
+ * Parser evaluation. Cases report into the scorecard; the scorecard is the only
+ * assertion, so a failing case is not a failing run. What fails the run is a
+ * difference from `__fixtures__/parser-eval.baseline.json`.
  *
- * Loads test cases from __fixtures__/parser-eval.json and evaluates
- * the parser against ground truth. Reports per-suite accuracy and
- * aggregate metrics via the eval/ scorecard module.
- *
- * Run: npm run eval
- * Filter: npx vitest run src/engine/parser-eval.test.ts --grep "edge:typo"
+ * Run: `npm run eval`. Rebaseline: `npm run eval:baseline`.
  */
 
+import { readFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
 import { parserAdapter } from './adapter'
-import type { TestCase } from '@/engine/eval'
+import type { EvalBaseline } from '@/engine/eval'
 import {
   loadFixture,
-  filterBySet,
-  filterBySplit,
-  groupByTag,
-  assertParseResult,
   runEvaluation,
   printScorecard,
+  printFailures,
+  buildBaseline,
+  compareToBaseline,
+  formatComparison,
 } from '@/engine/eval'
 
-// --- Load fixture ---
+const BASELINE_PATH = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  '__fixtures__/parser-eval.baseline.json'
+)
 
 const cases = loadFixture()
-const realisticCases = filterBySet(cases, 'realistic')
-const realisticDev = filterBySplit(realisticCases, 'dev')
-const realisticEval = filterBySplit(realisticCases, 'eval')
-const edgeCases = filterBySet(cases, 'edge')
-const regressionCases = filterBySet(cases, 'regression')
-const edgeByTag = groupByTag(edgeCases)
+const scorecard = runEvaluation(parserAdapter, cases)
+const current = buildBaseline(scorecard, cases)
 
-// --- Per-case test helper ---
+printScorecard(scorecard)
+printFailures(parserAdapter, cases, scorecard)
 
-function runCaseTest(tc: TestCase) {
-  const r = assertParseResult(parserAdapter, tc)
-  if (!r.passed) {
-    const { parsed } = parserAdapter.parse(tc.input)
-    expect.soft(r.sourceMatch, `source: got "${parsed?.sourceLocation}" expected "${tc.expectedSource}"`).toBe(true)
-    expect.soft(r.targetMatch, `target: got "${parsed?.targetLocation}" expected "${tc.expectedTarget}"`).toBe(true)
-    expect.soft(r.timeMatch, `time: got ${JSON.stringify(parsed?.time)} expected ${JSON.stringify(tc.expectedTime)}`).toBe(true)
-    expect.soft(r.dateModifierMatch, `dateModifier: got "${parsed?.dateModifier}" expected "${tc.expectedDateModifier}"`).toBe(true)
-  }
-  expect(r.passed).toBe(true)
-}
-
-// --- Test suites ---
-
-if (realisticDev.length > 0) {
-  describe('realistic (dev split)', () => {
-    it.each(realisticDev.map((tc) => [tc.id, tc.input, tc]))(
-      'case #%i: %s',
-      (_id, _input, tc) => runCaseTest(tc as TestCase)
-    )
-  })
-}
-
-if (realisticEval.length > 0) {
-  describe('realistic (eval split)', () => {
-    it.each(realisticEval.map((tc) => [tc.id, tc.input, tc]))(
-      'case #%i: %s',
-      (_id, _input, tc) => runCaseTest(tc as TestCase)
-    )
-  })
-}
-
-describe('edge cases', () => {
-  for (const [tag, tagCases] of edgeByTag) {
-    describe(`edge:${tag}`, () => {
-      it.each(tagCases.map((tc) => [tc.id, tc.input, tc]))(
-        'case #%i: %s',
-        (_id, _input, tc) => runCaseTest(tc as TestCase)
-      )
-    })
-  }
-})
-
-if (regressionCases.length > 0) {
-  describe('regression', () => {
-    it.each(regressionCases.map((tc) => [tc.id, tc.input, tc]))(
-      'case #%i: %s',
-      (_id, _input, tc) => runCaseTest(tc as TestCase)
-    )
-  })
-}
-
-// --- Scorecard ---
-
-describe('scorecard', () => {
-  it('reports full eval scorecard', () => {
-    const scorecard = runEvaluation(parserAdapter, cases)
-    printScorecard(scorecard)
-    expect(scorecard.totalCases).toBe(cases.length)
+describe('eval baseline', () => {
+  it('matches the committed baseline', () => {
+    let baseline: EvalBaseline
+    try {
+      baseline = JSON.parse(readFileSync(BASELINE_PATH, 'utf-8'))
+    } catch {
+      throw new Error(`No baseline at ${BASELINE_PATH}. Run \`npm run eval:baseline\`.`)
+    }
+    const comparison = compareToBaseline(baseline, current)
+    expect(comparison.clean, formatComparison(comparison)).toBe(true)
   })
 })

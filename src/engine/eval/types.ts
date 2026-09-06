@@ -68,4 +68,6 @@ export interface EvalScorecard {
   complexity: { loc: number; regexCount: number } | null
   calibration: CalibrationBucket[] | null
   composite: number
+  /** Ids of cases that did not pass, ascending. */
+  failingCaseIds: number[]
 }

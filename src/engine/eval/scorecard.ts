@@ -199,6 +199,7 @@ export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalSc
     latency,
     complexity,
     calibration,
+    failingCaseIds: results.filter((r) => !r.assertion.passed).map((r) => r.tc.id).sort((a, b) => a - b),
   }
 
   return { ...partial, composite: computeComposite(partial) }
@@ -291,4 +292,29 @@ export function printComparisonTable(scorecards: EvalScorecard[]): void {
   row('Composite', (sc) => sc.composite.toFixed(3))
 
   console.log(sep)
+}
+
+/** The run asserts only the scorecard, so this is where per-case detail surfaces. */
+export function printFailures(adapter: ParserAdapter, cases: TestCase[], sc: EvalScorecard): void {
+  if (sc.failingCaseIds.length === 0) {
+    console.log(`\nNo failing cases.`)
+    return
+  }
+
+  const byId = new Map(cases.map((tc) => [tc.id, tc]))
+  console.log(`\n=== Failing cases (${sc.failingCaseIds.length}) ===\n`)
+
+  for (const id of sc.failingCaseIds) {
+    const tc = byId.get(id)
+    if (!tc) continue
+    const r = assertParseResult(adapter, tc)
+    const { parsed } = adapter.parse(tc.input)
+    const tags = tc.difficultyTags.length > 0 ? ` [${tc.difficultyTags.join(', ')}]` : ''
+    console.log(`#${id} ${tc.set}${tags}: "${tc.input}"`)
+    if (!r.sourceMatch) console.log(`  source:  got ${JSON.stringify(parsed?.sourceLocation ?? null)} want ${JSON.stringify(tc.expectedSource)}`)
+    if (!r.targetMatch) console.log(`  target:  got ${JSON.stringify(parsed?.targetLocation ?? null)} want ${JSON.stringify(tc.expectedTarget)}`)
+    if (!r.timeMatch) console.log(`  time:    got ${JSON.stringify(parsed?.time)} want ${JSON.stringify(tc.expectedTime)}`)
+    if (!r.dateModifierMatch) console.log(`  dateMod: got ${JSON.stringify(parsed?.dateModifier)} want ${JSON.stringify(tc.expectedDateModifier)}`)
+    if (tc.notes) console.log(`  notes:   ${tc.notes}`)
+  }
 }
