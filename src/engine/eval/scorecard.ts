@@ -8,7 +8,7 @@ import type {
   ResolutionMetrics,
   EvalScorecard,
 } from './types'
-import { groupByTag, filterBySet, SETS } from './fixture'
+import { groupByTag, SETS } from './fixture'
 import { computeComposite, calibrationCurve, complexityMetric, percentile } from './metrics'
 
 // --- Assertion logic ---
@@ -195,9 +195,9 @@ export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalSc
     byProvenance[p as string] = groupRate(group, (r) => r.assertion.passed)
   }
 
-  // By tag
+  // Across every set that carries tags, not just `edge`.
   const byTag: Record<string, number> = {}
-  const tagGroups = groupByTag(filterBySet(cases, 'edge'))
+  const tagGroups = groupByTag(cases)
   for (const [tag, tagCases] of tagGroups) {
     const tagIds = new Set(tagCases.map((tc) => tc.id))
     byTag[tag] = groupRate(results.filter((r) => tagIds.has(r.tc.id)), (r) => r.assertion.passed)
@@ -346,7 +346,7 @@ export function printScorecard(sc: EvalScorecard): void {
   console.log(`  DateMod:  ${pct(sc.accuracy.byField.dateMod)}`)
 
   if (Object.keys(sc.accuracy.byTag).length > 0) {
-    console.log(`\nEdge case breakdown by tag:`)
+    console.log(`\nBreakdown by difficulty tag:`)
     for (const [tag, acc] of Object.entries(sc.accuracy.byTag).sort((a, b) => a[0].localeCompare(b[0]))) {
       console.log(`  ${tag}: ${pct(acc)}`)
     }

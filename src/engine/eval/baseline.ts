@@ -113,7 +113,7 @@ export function toMetricMap(sc: EvalScorecard, cases: TestCase[]): Record<string
     metrics[`accuracy.field.${field}`] = { value: round(acc), n: total }
   }
 
-  const tagGroups = groupByTag(filterBySet(cases, 'edge'))
+  const tagGroups = groupByTag(cases)
   for (const [tag, acc] of Object.entries(sc.accuracy.byTag)) {
     metrics[`accuracy.tag.${tag}`] = { value: round(acc), n: tagGroups.get(tag)?.length ?? 0 }
   }

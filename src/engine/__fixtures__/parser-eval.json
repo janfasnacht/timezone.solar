@@ -7545,5 +7545,3860 @@
     "id": 417,
     "provenance": "hand-written",
     "split": "dev"
+  },
+  {
+    "id": 418,
+    "input": "Wie spät ist es in Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "German 'what time is it in Berlin'. 'in' is already a connector, so the four filler words in front are the whole problem. — Person wants the current time in Berlin. Nothing else in the sentence names a place.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 419,
+    "input": "wie viel Uhr ist es in Tokio",
+    "expectedSource": null,
+    "expectedTarget": "Tokio",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym"
+    ],
+    "notes": "German filler plus the German exonym for Tokyo. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 420,
+    "input": "Uhrzeit Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "search-box"
+    ],
+    "notes": "German equivalent of 'time berlin' — the search-box shape in another language. — Current time in Berlin.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 421,
+    "input": "15 Uhr Berlin in New York",
+    "expectedSource": "Berlin",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "German writes the hour as '15 Uhr'. parseTimeToken has no 'Uhr' form, and '15' alone reads as hour 15 only if the word after it is dropped. — 3pm Berlin, expressed in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 422,
+    "input": "Zeitverschiebung Berlin New York",
+    "expectedSource": "Berlin",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "search-box"
+    ],
+    "notes": "German 'time difference'. Two adjacent place names with no connector between them. — Offset between Berlin and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 423,
+    "input": "morgen 9 Uhr München nach London",
+    "expectedSource": "München",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym",
+      "scope-decision"
+    ],
+    "notes": "'morgen' is tomorrow, 'nach' is the connector. Whether the app should read German date words is a product call; the meaning is not in doubt. — Tomorrow at 9am Munich time, in London terms.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 424,
+    "input": "Wann ist es 15 Uhr in Berlin für Tokio",
+    "expectedSource": "Berlin",
+    "expectedTarget": "Tokio",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "scope-decision"
+    ],
+    "notes": "Long German sentence. Tier 2 because a reasonable system may decline rather than guess at a sentence it cannot segment. — 3pm Berlin converted to Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 425,
+    "input": "東京は今何時",
+    "expectedSource": null,
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "Japanese has no spaces, so the whole query is one token. The place name is the first two characters. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 426,
+    "input": "東京の今の時間",
+    "expectedSource": null,
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "Same request, different Japanese phrasing. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 427,
+    "input": "ニューヨークの午後3時は東京で何時",
+    "expectedSource": "ニューヨーク",
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "Katakana New York, kanji Tokyo, '午後3時' is 3pm. Tier 2: correct segmentation of an unspaced sentence is a large ask. — 3pm New York, in Tokyo time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 428,
+    "input": "東京 ニューヨーク 時差",
+    "expectedSource": "東京",
+    "expectedTarget": "ニューヨーク",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "search-box"
+    ],
+    "notes": "Spaced Japanese keyword string, '時差' = time difference. The Japanese equivalent of 'nyc london time'. — Offset between Tokyo and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tokyo",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 429,
+    "input": "大阪 時間",
+    "expectedSource": null,
+    "expectedTarget": "大阪",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "search-box"
+    ],
+    "notes": "'Osaka time'. '時間' is the Japanese noise word the English NOISE_WORDS set has no entry for. — Current time in Osaka.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 430,
+    "input": "午後3時 東京 から ロンドン",
+    "expectedSource": "東京",
+    "expectedTarget": "ロンドン",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "'から' is the Japanese 'from'. Katakana London. — 3pm Tokyo, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tokyo",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 431,
+    "input": "que hora es en Tokio",
+    "expectedSource": null,
+    "expectedTarget": "Tokio",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym"
+    ],
+    "notes": "Spanish. 'en' is the connector Spanish uses where English uses 'in'; CONNECTORS has no entry for it, so every word here classifies as a location and merges into one. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 432,
+    "input": "¿qué hora es en Madrid?",
+    "expectedSource": null,
+    "expectedTarget": "Madrid",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Inverted opening question mark. preprocess only strips a trailing '?'. — Current time in Madrid.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Madrid"
+  },
+  {
+    "id": 433,
+    "input": "las 3 de la tarde en Nueva York en Madrid",
+    "expectedSource": "Nueva York",
+    "expectedTarget": "Madrid",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "endonym"
+    ],
+    "notes": "'3 de la tarde' is 3pm written out. Spanish exonym for New York. — 3pm New York, in Madrid time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/Madrid"
+  },
+  {
+    "id": 434,
+    "input": "hora en Bogotá",
+    "expectedSource": null,
+    "expectedTarget": "Bogotá",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Two-word Spanish query, no English noise word in it. — Current time in Bogota.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Bogota"
+  },
+  {
+    "id": 435,
+    "input": "diferencia horaria entre Madrid y Nueva York",
+    "expectedSource": "Madrid",
+    "expectedTarget": "Nueva York",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "'entre ... y' is 'between ... and'. CONNECTORS_EXTENDED has 'between' and 'and' but not their Spanish forms. — Offset between Madrid and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Madrid",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 436,
+    "input": "mañana 9am Madrid a Londres",
+    "expectedSource": "Madrid",
+    "expectedTarget": "Londres",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym",
+      "scope-decision"
+    ],
+    "notes": "'mañana' is tomorrow, 'a' is the connector, 'Londres' the Spanish exonym. — Tomorrow 9am Madrid, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Madrid",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 437,
+    "input": "Delhi mein abhi kya time hai",
+    "expectedSource": null,
+    "expectedTarget": "Delhi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Hinglish, Latin script. The place comes first and four Hindi words follow it. — Current time in Delhi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 438,
+    "input": "दिल्ली में अभी क्या समय है",
+    "expectedSource": null,
+    "expectedTarget": "दिल्ली",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "Same sentence in Devanagari. — Current time in Delhi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 439,
+    "input": "kal subah 9 baje Delhi to London",
+    "expectedSource": "Delhi",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "scope-decision"
+    ],
+    "notes": "'kal' is tomorrow (and yesterday — Hindi uses one word for both), 'subah' is morning, '9 baje' is 9 o'clock. Tier 2 because 'kal' is genuinely two-way. — 9am tomorrow in Delhi, in London time. A reader could defend yesterday.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Kolkata",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 440,
+    "input": "Mumbai ka time",
+    "expectedSource": null,
+    "expectedTarget": "Mumbai",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "search-box"
+    ],
+    "notes": "Hinglish possessive. 'ka' sits between the place and the word 'time'. — Current time in Mumbai.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 441,
+    "input": "كم الساعة في دبي",
+    "expectedSource": null,
+    "expectedTarget": "دبي",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "Arabic 'what time is it in Dubai', right-to-left. The place is the last token in reading order and the first in logical order. — Current time in Dubai.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Dubai"
+  },
+  {
+    "id": 442,
+    "input": "الساعة الآن في القاهرة",
+    "expectedSource": null,
+    "expectedTarget": "القاهرة",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "Arabic, Cairo with its definite article attached. — Current time in Cairo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Africa/Cairo"
+  },
+  {
+    "id": 443,
+    "input": "3 مساءً في نيويورك كم في لندن",
+    "expectedSource": "نيويورك",
+    "expectedTarget": "لندن",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "'مساءً' is the pm marker and follows the digit, as English 'pm' does — but in Arabic script, so normalizeMeridiem cannot see it. — 3pm New York, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 444,
+    "input": "quelle heure est-il à Paris",
+    "expectedSource": null,
+    "expectedTarget": "Paris",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "French. 'est-il' is hyphenated into one token. — Current time in Paris.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Paris"
+  },
+  {
+    "id": 445,
+    "input": "15h Paris à New York",
+    "expectedSource": "Paris",
+    "expectedTarget": "New York",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "French writes 3pm as '15h'. TIME_REGEX accepts only a bare number, a colon/dot pair, or am/pm. — 3pm Paris, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Paris",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 446,
+    "input": "décalage horaire Paris Tokyo",
+    "expectedSource": "Paris",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "search-box"
+    ],
+    "notes": "French for 'time difference' followed by two juxtaposed places. — Offset between Paris and Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Paris",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 447,
+    "input": "que horas são em Lisboa",
+    "expectedSource": null,
+    "expectedTarget": "Lisboa",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym"
+    ],
+    "notes": "Portuguese, and Lisboa is the endonym for Lisbon. — Current time in Lisbon.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Lisbon"
+  },
+  {
+    "id": 448,
+    "input": "17h30 de São Paulo em Lisboa",
+    "expectedSource": "São Paulo",
+    "expectedTarget": "Lisboa",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "endonym"
+    ],
+    "notes": "'17h30' is the common Lusophone/French clock form. — 5:30pm São Paulo, in Lisbon time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/Sao_Paulo",
+    "expectedTargetIana": "Europe/Lisbon"
+  },
+  {
+    "id": 449,
+    "input": "который час в Москве",
+    "expectedSource": null,
+    "expectedTarget": "Москве",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "Russian, and the city is in the prepositional case — 'Москве', not the dictionary form 'Москва'. Any Cyrillic alias table keyed on the nominative misses this. — Current time in Moscow.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 450,
+    "input": "Москва Нью-Йорк разница во времени",
+    "expectedSource": "Москва",
+    "expectedTarget": "Нью-Йорк",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "search-box"
+    ],
+    "notes": "Russian keyword string. 'Нью-Йорк' is hyphenated, so it survives as one token. — Offset between Moscow and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Moscow",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 451,
+    "input": "北京现在几点",
+    "expectedSource": null,
+    "expectedTarget": "北京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "Simplified Chinese, unspaced. 'Beijing now what time'. — Current time in Beijing.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Shanghai"
+  },
+  {
+    "id": 452,
+    "input": "纽约下午3点是北京几点",
+    "expectedSource": "纽约",
+    "expectedTarget": "北京",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "'下午3点' is 3pm. Two Chinese place names inside one unspaced string. — 3pm New York, in Beijing time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Asia/Shanghai"
+  },
+  {
+    "id": 453,
+    "input": "东京时间",
+    "expectedSource": null,
+    "expectedTarget": "东京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin",
+      "endonym",
+      "segmentation"
+    ],
+    "notes": "Simplified 东京 for Tokyo, against the traditional/Japanese 東京 the fixture already has. Two different byte strings for one city. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 454,
+    "input": "서울 지금 몇 시",
+    "expectedSource": null,
+    "expectedTarget": "서울",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english",
+      "non-latin"
+    ],
+    "notes": "Korean, spaced. — Current time in Seoul.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Seoul"
+  },
+  {
+    "id": 455,
+    "input": "jam berapa di Jakarta",
+    "expectedSource": null,
+    "expectedTarget": "Jakarta",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Indonesian. 'di' is the connector; place last. — Current time in Jakarta.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Jakarta"
+  },
+  {
+    "id": 456,
+    "input": "İstanbul saat kaç",
+    "expectedSource": null,
+    "expectedTarget": "İstanbul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Turkish, and the dotted capital İ lowercases to 'i̇' (i plus combining dot) under a non-Turkish locale — normalize() then strips the mark and gets 'istanbul', which happens to work. Worth an explicit case either way. — Current time in Istanbul.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Istanbul"
+  },
+  {
+    "id": 457,
+    "input": "mấy giờ ở Hà Nội",
+    "expectedSource": null,
+    "expectedTarget": "Hà Nội",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-english"
+    ],
+    "notes": "Vietnamese. The place is two tokens, both with diacritics, at the end. — Current time in Hanoi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": 458,
+    "input": "東京",
+    "expectedSource": null,
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Bare kanji Tokyo. normalize() reduces it to the empty string, so it can never reach the city map and it shares one cache slot with every other non-Latin input. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 459,
+    "input": "北京 to 上海",
+    "expectedSource": "北京",
+    "expectedTarget": "上海",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Two Chinese cities with an English connector between them. — Beijing and Shanghai — same zone, so the answer should say so rather than fail.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Shanghai",
+    "expectedTargetIana": "Asia/Shanghai"
+  },
+  {
+    "id": 460,
+    "input": "Москва",
+    "expectedSource": null,
+    "expectedTarget": "Москва",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Bare Cyrillic Moscow. — Current time in Moscow.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 461,
+    "input": "Санкт-Петербург to London",
+    "expectedSource": "Санкт-Петербург",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Hyphenated Cyrillic name as source. — Current time in St Petersburg, and in London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Moscow",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 462,
+    "input": "Київ to Berlin",
+    "expectedSource": "Київ",
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "long-tail"
+    ],
+    "notes": "Ukrainian Kyiv — different Cyrillic spelling from the Russian Киев. — Kyiv and Berlin.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Kyiv",
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 463,
+    "input": "القاهرة",
+    "expectedSource": null,
+    "expectedTarget": "القاهرة",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Arabic Cairo, definite article attached; a lookup table keyed on 'قاهرة' misses it. — Current time in Cairo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Africa/Cairo"
+  },
+  {
+    "id": 464,
+    "input": "3pm الرياض to London",
+    "expectedSource": "الرياض",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Arabic Riyadh inside an otherwise English query — bidirectional text in one input. — 3pm Riyadh, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Riyadh",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 465,
+    "input": "दिल्ली",
+    "expectedSource": null,
+    "expectedTarget": "दिल्ली",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Devanagari Delhi. isUnpronounceable counts \\p{L} only, and the vowel signs are combining marks, so the letter count is lower than it looks. — Current time in Delhi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 466,
+    "input": "मुंबई to London",
+    "expectedSource": "मुंबई",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Devanagari Mumbai as source. — Mumbai and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Kolkata",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 467,
+    "input": "Αθήνα",
+    "expectedSource": null,
+    "expectedTarget": "Αθήνα",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Greek Athens with the accent. The fixture has Athens in Latin twice and in Greek never. — Current time in Athens.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Athens"
+  },
+  {
+    "id": 468,
+    "input": "Αθήνα to London",
+    "expectedSource": "Αθήνα",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Greek source, English target. — Athens and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Athens",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 469,
+    "input": "서울",
+    "expectedSource": null,
+    "expectedTarget": "서울",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Bare Hangul Seoul. — Current time in Seoul.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Seoul"
+  },
+  {
+    "id": 470,
+    "input": "9am 서울 to 뉴욕",
+    "expectedSource": "서울",
+    "expectedTarget": "뉴욕",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Two Hangul place names in one query. — 9am Seoul, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Seoul",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 471,
+    "input": "台北 time",
+    "expectedSource": null,
+    "expectedTarget": "台北",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "search-box"
+    ],
+    "notes": "Traditional Chinese Taipei plus the English word 'time'. — Current time in Taipei.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Taipei"
+  },
+  {
+    "id": 472,
+    "input": "上海 to 東京 3pm",
+    "expectedSource": "上海",
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Simplified source, traditional target, English time and connector. — 3pm Shanghai, in Tokyo time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Shanghai",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 473,
+    "input": "תל אביב",
+    "expectedSource": null,
+    "expectedTarget": "תל אביב",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "long-tail"
+    ],
+    "notes": "Hebrew Tel Aviv, two tokens, right-to-left. — Current time in Tel Aviv.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Jerusalem"
+  },
+  {
+    "id": 474,
+    "input": "กรุงเทพ",
+    "expectedSource": null,
+    "expectedTarget": "กรุงเทพ",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "segmentation",
+      "long-tail"
+    ],
+    "notes": "Thai Bangkok. Thai has no inter-word spaces and no case. — Current time in Bangkok.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Bangkok"
+  },
+  {
+    "id": 475,
+    "input": "Ереван to Москва",
+    "expectedSource": "Ереван",
+    "expectedTarget": "Москва",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "long-tail"
+    ],
+    "notes": "Two Cyrillic names in one query — the case that exposes the shared empty-string cache key most directly. — Yerevan and Moscow, four hours apart.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Yerevan",
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 476,
+    "input": "北京時間",
+    "expectedSource": null,
+    "expectedTarget": "北京",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "segmentation"
+    ],
+    "notes": "'Beijing time' with no separator: the noise word is glued to the place name. — Current time in Beijing.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Shanghai"
+  },
+  {
+    "id": 477,
+    "input": "Тбилиси",
+    "expectedSource": null,
+    "expectedTarget": "Тбилиси",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin",
+      "long-tail"
+    ],
+    "notes": "Cyrillic Tbilisi. The fixture has Tbilisi in Latin twice. — Current time in Tbilisi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tbilisi"
+  },
+  {
+    "id": 478,
+    "input": "سنغافورة to نيويورك",
+    "expectedSource": "سنغافورة",
+    "expectedTarget": "نيويورك",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Arabic Singapore to Arabic New York, English connector. — Singapore and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Singapore",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 479,
+    "input": "東京 大阪 時差",
+    "expectedSource": "東京",
+    "expectedTarget": "大阪",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "non-latin",
+      "search-box"
+    ],
+    "notes": "Both cities share Asia/Tokyo — a correct answer says the difference is zero rather than refusing. — Offset between Tokyo and Osaka: none.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tokyo",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 480,
+    "input": "ᏣᎳᎩ",
+    "expectedSource": null,
+    "expectedTarget": null,
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 3,
+    "difficultyTags": [
+      "non-latin"
+    ],
+    "notes": "Cherokee syllabary, not a place. A control case: the system should refuse, not fuzzy-guess, and should refuse for the right reason rather than because normalize() emptied it. — Not a timezone query. Refuse.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": null
+  },
+  {
+    "id": 481,
+    "input": "14 March 3pm London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Date before time, day before month. The fixture has no case at all that expects an AbsoluteDate. — 3pm on 14 March, London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 482,
+    "input": "March 14 3pm London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Same day, US order. — 3pm on 14 March, London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 483,
+    "input": "3pm on March 14 London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Time first, then date, with 'on' — a word that is neither connector nor noise. — 3pm on 14 March, London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 484,
+    "input": "14th of March 9am Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Ordinal plus 'of'. DAY_MONTH allows the ordinal suffix but not the 'of'. — 9am on 14 March in Berlin.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 485,
+    "input": "14/03 15:00 London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Day-first numeric date, 24h clock. 14 cannot be a month, so this one is unambiguous whatever the locale. — 14 March at 15:00 London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 486,
+    "input": "03/14 15:00 London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Month-first, also unambiguous for the same reason. — 14 March at 15:00 London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 487,
+    "input": "05/06 3pm Berlin to London",
+    "expectedSource": "Berlin",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Genuinely ambiguous: 5 June or 6 May. The right behaviour is to say which one it picked, not to pick silently. Expectation left with no date on purpose. — 3pm Berlin in London terms, on a date the app must not guess at silently.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 488,
+    "input": "2026-03-14 15:00 London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": 2026,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "ISO date. Supported by extractAbsoluteDate and covered by no eval case. — 14 March 2026 at 15:00 London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 489,
+    "input": "14.03.2026 15:00 Berlin to London",
+    "expectedSource": "Berlin",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": 2026,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format",
+      "non-english"
+    ],
+    "notes": "The standard German written date. extractAbsoluteDate deliberately refuses dot separators because '3.30pm' uses one; that trade-off costs every dot-writing locale, and the eval never records the cost. — 14 March 2026 at 15:00 Berlin, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 490,
+    "input": "14. März 15 Uhr Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format",
+      "non-english"
+    ],
+    "notes": "German month name and German clock form together. — 15:00 on 14 March in Berlin.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 491,
+    "input": "14 marzo 15:00 Madrid a Londres",
+    "expectedSource": "Madrid",
+    "expectedTarget": "Londres",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format",
+      "non-english"
+    ],
+    "notes": "Spanish month name. MONTH_NAMES is English-only. — 15:00 on 14 March, Madrid, in London time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Madrid",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 492,
+    "input": "2026年3月14日 15時 東京",
+    "expectedSource": null,
+    "expectedTarget": "東京",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": 2026,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format",
+      "non-latin",
+      "non-english"
+    ],
+    "notes": "Japanese date and hour markers. — 15:00 on 14 March 2026 in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 493,
+    "input": "Sat 14 Mar 09:00 Sydney to London",
+    "expectedSource": "Sydney",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 3,
+      "day": 14
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Weekday name and calendar date together. extractDayOfWeek runs before extractAbsoluteDate, so the weekday wins; a date is more specific and should win instead. — 09:00 on Saturday 14 March, Sydney, in London time. The date is the load-bearing part.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Australia/Sydney",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 494,
+    "input": "31/12 23:59 Sydney to London",
+    "expectedSource": "Sydney",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 23,
+      "minute": 59
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": 12,
+      "day": 31
+    },
+    "expectedTier": 1,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "New Year's Eve across the date line — the answer crosses a year boundary, not just a day. — 23:59 on 31 December in Sydney, in London time (still 31 December there, mid-afternoon).",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Australia/Sydney",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 495,
+    "input": "1/2/2026 noon London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "1 February or 2 January, decided today by whatever Intl says the machine's locale is. A shared link should not mean different days to two people. — Noon London in New York terms, on a date that must be stated back to the user.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 496,
+    "input": "Fri 09:00 CET to IST",
+    "expectedSource": "CET",
+    "expectedTarget": "IST",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "friday",
+      "anchor": "bare"
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format",
+      "structural-ambiguity"
+    ],
+    "notes": "IST is India, Israel or Ireland. The fixture already notes this twice and still expects a confident answer both times. — 09:00 Friday Central European Time, in Indian time — but the app should say which IST it chose.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 497,
+    "input": "next month 3pm Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Relative date at a granularity the parser has no representation for. — 3pm Tokyo on a date about a month out. Refusing the date but answering the time is defensible; silently dropping 'next month' is not.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 498,
+    "input": "Tokyo on the 3rd at 9am",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "date",
+      "year": null,
+      "month": null,
+      "day": 3
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-format"
+    ],
+    "notes": "Day with no month named. AbsoluteDate has a nullable year but not a nullable month, so this shape cannot currently be expressed at all. — 9am on the 3rd of the coming month in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 499,
+    "input": "nyc london time",
+    "expectedSource": "nyc",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "The plainest search-engine shape there is. Two places, one keyword, no grammar. — Time in New York and in London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 500,
+    "input": "london tokyo time difference",
+    "expectedSource": "london",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Adjacent LOCATION tokens are merged before pattern matching, so the two cities become one name. — Offset between London and Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 501,
+    "input": "time in tokyo now",
+    "expectedSource": null,
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Noise on both sides of the place. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 502,
+    "input": "3pm est to pst",
+    "expectedSource": "est",
+    "expectedTarget": "pst",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "All lowercase abbreviations, the way they get typed into a search bar. — 3pm Eastern in Pacific terms.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "America/Los_Angeles"
+  },
+  {
+    "id": 503,
+    "input": "berlin new york",
+    "expectedSource": "berlin",
+    "expectedTarget": "new york",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Three tokens, two places, and the boundary between them is only knowable from the names themselves. — Berlin and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 504,
+    "input": "tokyo nyc",
+    "expectedSource": "tokyo",
+    "expectedTarget": "nyc",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Two bare places, no connector. — Tokyo and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tokyo",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 505,
+    "input": "est pst",
+    "expectedSource": "est",
+    "expectedTarget": "pst",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Two bare abbreviations. — Eastern and Pacific.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "America/Los_Angeles"
+  },
+  {
+    "id": 506,
+    "input": "world clock london",
+    "expectedSource": null,
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "'world' is not in NOISE_WORDS, so it classifies as a location and merges with London. — Current time in London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 507,
+    "input": "current time london berlin",
+    "expectedSource": "london",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Noise prefix, then two juxtaposed places. — London and Berlin, now.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 508,
+    "input": "london time vs new york time",
+    "expectedSource": "london",
+    "expectedTarget": "new york",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "'vs' is a connector; 'time' appears twice as noise, and the second one sits between the target's two words. — Offset between London and New York.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 509,
+    "input": "what time japan",
+    "expectedSource": null,
+    "expectedTarget": "japan",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Country, not city, with the verb dropped. — Current time in Japan.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 510,
+    "input": "convert est pst",
+    "expectedSource": "est",
+    "expectedTarget": "pst",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Verb plus two abbreviations, no connector. — Eastern in Pacific terms.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "America/Los_Angeles"
+  },
+  {
+    "id": 511,
+    "input": "9am pst",
+    "expectedSource": null,
+    "expectedTarget": "pst",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "A time and a zone with no second place. The honest answer is 9am Pacific expressed in the viewer's own zone. — 9am Pacific, shown in my time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Los_Angeles"
+  },
+  {
+    "id": 512,
+    "input": "paris berlin hour difference",
+    "expectedSource": "paris",
+    "expectedTarget": "berlin",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Both cities are in Europe/Paris-equivalent offsets, so the right answer is zero rather than a failure. — Offset between Paris and Berlin: none.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Paris",
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 513,
+    "input": "clock tokyo",
+    "expectedSource": null,
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "'clock' is already a noise word; this checks the single-place path. — Current time in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 514,
+    "input": "time now in delhi and london",
+    "expectedSource": "delhi",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "'and' is a connector. 'now' is stripped in preprocessing. — Delhi and London, now.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Kolkata",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 515,
+    "input": "NYC->London",
+    "expectedSource": "NYC",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "'->' is a listed connector but only as a standalone token; here it is glued to both names with no spaces. — New York and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 516,
+    "input": "nyc > london 3pm",
+    "expectedSource": "nyc",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Bare '>' is not in CONNECTORS. isUnpronounceable makes it noise, which is the right outcome by accident. — 3pm New York in London terms.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 517,
+    "input": "london/tokyo time",
+    "expectedSource": "london",
+    "expectedTarget": "tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Slash separator with no spaces — one token containing two places. — London and Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 518,
+    "input": "3pm nyc-london",
+    "expectedSource": "nyc",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Hyphen separator, one token. Hyphens are legitimate inside names (Nyíregyháza, Nyeri), so this cannot be split blindly. — 3pm New York in London terms.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 519,
+    "input": "timezone tokyo london converter",
+    "expectedSource": "tokyo",
+    "expectedTarget": "london",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "App vocabulary wrapped around two adjacent places. — Tokyo and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tokyo",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 520,
+    "input": "sydney time converter",
+    "expectedSource": null,
+    "expectedTarget": "sydney",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Product-name noise after a place. — Current time in Sydney.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Australia/Sydney"
+  },
+  {
+    "id": 521,
+    "input": "gmt+5.30",
+    "expectedSource": null,
+    "expectedTarget": "gmt+5.30",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "search-box"
+    ],
+    "notes": "Dot rather than colon in a half-hour offset. UTC_OFFSET_RE accepts ':' or nothing, not '.'. — UTC+5:30, i.e. India.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null
+  },
+  {
+    "id": 522,
+    "input": "München",
+    "expectedSource": null,
+    "expectedTarget": "München",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Munich. German ü; city-timezones stores this row as 'Munich' under both name columns, so the normalized map has no 'munchen' key. There is not one endonym alias in entities.ts today. — Current time in Munich. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 523,
+    "input": "Köln",
+    "expectedSource": null,
+    "expectedTarget": "Köln",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Cologne. the endonym and the exonym share almost no letters. There is not one endonym alias in entities.ts today. — Current time in Cologne. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 524,
+    "input": "Wien",
+    "expectedSource": null,
+    "expectedTarget": "Wien",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Vienna. four letters, so the fuzzy edit-ratio gate cannot rescue it. There is not one endonym alias in entities.ts today. — Current time in Vienna. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Vienna"
+  },
+  {
+    "id": 525,
+    "input": "Praha",
+    "expectedSource": null,
+    "expectedTarget": "Praha",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Prague. the fixture has Prague in English twice. There is not one endonym alias in entities.ts today. — Current time in Prague. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Prague"
+  },
+  {
+    "id": 526,
+    "input": "Firenze",
+    "expectedSource": null,
+    "expectedTarget": "Firenze",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Florence. no shared prefix. There is not one endonym alias in entities.ts today. — Current time in Florence. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Rome"
+  },
+  {
+    "id": 527,
+    "input": "Napoli",
+    "expectedSource": null,
+    "expectedTarget": "Napoli",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Naples. There is not one endonym alias in entities.ts today. — Current time in Naples. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Rome"
+  },
+  {
+    "id": 528,
+    "input": "Lisboa",
+    "expectedSource": null,
+    "expectedTarget": "Lisboa",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Lisbon. the fixture has Lisbon in English twice. There is not one endonym alias in entities.ts today. — Current time in Lisbon. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Lisbon"
+  },
+  {
+    "id": 529,
+    "input": "Moskva",
+    "expectedSource": null,
+    "expectedTarget": "Moskva",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Moscow. the Latin transliteration, distinct from the Cyrillic form. There is not one endonym alias in entities.ts today. — Current time in Moscow. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 530,
+    "input": "København",
+    "expectedSource": null,
+    "expectedTarget": "København",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Copenhagen. the ø is not a combining mark, so NFD does not decompose it and normalize() drops it entirely, giving 'kbenhavn'. There is not one endonym alias in entities.ts today. — Current time in Copenhagen. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Copenhagen"
+  },
+  {
+    "id": 531,
+    "input": "Göteborg",
+    "expectedSource": null,
+    "expectedTarget": "Göteborg",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Gothenburg. There is not one endonym alias in entities.ts today. — Current time in Gothenburg. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Stockholm"
+  },
+  {
+    "id": 532,
+    "input": "Warszawa",
+    "expectedSource": null,
+    "expectedTarget": "Warszawa",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Warsaw. There is not one endonym alias in entities.ts today. — Current time in Warsaw. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Warsaw"
+  },
+  {
+    "id": 533,
+    "input": "Beograd",
+    "expectedSource": null,
+    "expectedTarget": "Beograd",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Belgrade. There is not one endonym alias in entities.ts today. — Current time in Belgrade. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Belgrade"
+  },
+  {
+    "id": 534,
+    "input": "Bucureşti",
+    "expectedSource": null,
+    "expectedTarget": "Bucureşti",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Bucharest. cedilla-vs-comma ş is itself two different code points in the wild. There is not one endonym alias in entities.ts today. — Current time in Bucharest. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Bucharest"
+  },
+  {
+    "id": 535,
+    "input": "Antwerpen",
+    "expectedSource": null,
+    "expectedTarget": "Antwerpen",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Antwerp. There is not one endonym alias in entities.ts today. — Current time in Antwerp. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Brussels"
+  },
+  {
+    "id": 536,
+    "input": "Den Haag",
+    "expectedSource": null,
+    "expectedTarget": "Den Haag",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for The Hague. two tokens, and the exonym has three. There is not one endonym alias in entities.ts today. — Current time in The Hague. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Amsterdam"
+  },
+  {
+    "id": 537,
+    "input": "Genève",
+    "expectedSource": null,
+    "expectedTarget": "Genève",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Geneva. There is not one endonym alias in entities.ts today. — Current time in Geneva. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Zurich"
+  },
+  {
+    "id": 538,
+    "input": "Sevilla",
+    "expectedSource": null,
+    "expectedTarget": "Sevilla",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Seville. There is not one endonym alias in entities.ts today. — Current time in Seville. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Madrid"
+  },
+  {
+    "id": 539,
+    "input": "Torino",
+    "expectedSource": null,
+    "expectedTarget": "Torino",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym for Turin. There is not one endonym alias in entities.ts today. — Current time in Turin. Someone who lives there types the name they use.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Rome"
+  },
+  {
+    "id": 540,
+    "input": "Köln to London",
+    "expectedSource": "Köln",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Endonym as source in a two-place query, so a failure here is a resolve-source error rather than an empty result. — Cologne and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 541,
+    "input": "Wien to Praha",
+    "expectedSource": "Wien",
+    "expectedTarget": "Praha",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Two endonyms, one query, same offset. — Vienna and Prague: same time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Vienna",
+    "expectedTargetIana": "Europe/Prague"
+  },
+  {
+    "id": 542,
+    "input": "Firenze to Roma 3pm",
+    "expectedSource": "Firenze",
+    "expectedTarget": "Roma",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Both Italian endonyms plus a time. — 3pm Florence, in Rome time: the same 3pm.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Rome",
+    "expectedTargetIana": "Europe/Rome"
+  },
+  {
+    "id": 543,
+    "input": "Ciudad de México to Bogotá",
+    "expectedSource": "Ciudad de México",
+    "expectedTarget": "Bogotá",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Four-token Spanish endonym for Mexico City, with 'de' lowercase in the middle. — Mexico City and Bogota.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/Mexico_City",
+    "expectedTargetIana": "America/Bogota"
+  },
+  {
+    "id": 544,
+    "input": "Warszawa to Kraków",
+    "expectedSource": "Warszawa",
+    "expectedTarget": "Kraków",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "endonym"
+    ],
+    "notes": "Two Polish endonyms; Kraków has an ó that NFD does decompose. — Warsaw and Krakow: same time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Warsaw",
+    "expectedTargetIana": "Europe/Warsaw"
+  },
+  {
+    "id": 545,
+    "input": "Springfield to Chicago",
+    "expectedSource": "Springfield",
+    "expectedTarget": "Chicago",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Springfield IL is the one near Chicago, but MO, MA and OR all exist and MA is in a different zone. Naming a nearby city is weak evidence, not proof. — Ask which Springfield, or answer Illinois and say so.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "America/Chicago",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 546,
+    "input": "Cambridge to Boston",
+    "expectedSource": "Cambridge",
+    "expectedTarget": "Boston",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Cambridge MA borders Boston. Same-zone-as-target is a hint the resolver has no way to use. — Massachusetts, almost certainly — and the answer should say which.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "America/New_York",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 547,
+    "input": "Cambridge to London",
+    "expectedSource": "Cambridge",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Mirror of the previous case, pointing at the UK instead. Whichever one the resolver picks, it should not pick the same one for both. — England, almost certainly.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "Europe/London",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 548,
+    "input": "San José to San Francisco",
+    "expectedSource": "San José",
+    "expectedTarget": "San Francisco",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "San Jose CA is the one 45 miles from San Francisco, but the accent on 'José' points at Costa Rica. The fixture's one San José case treats it as unambiguous. — California. The accent is a spelling habit, not a country.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "America/Los_Angeles",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 549,
+    "input": "San José Costa Rica",
+    "expectedSource": null,
+    "expectedTarget": "San José Costa Rica",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "The disambiguator is spelled out. A qualified name should beat any default. — San Jose, Costa Rica.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Costa_Rica"
+  },
+  {
+    "id": 550,
+    "input": "Santiago to Buenos Aires",
+    "expectedSource": "Santiago",
+    "expectedTarget": "Buenos Aires",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Chile, given the neighbour. The fixture marks bare 'Santiago' tier 2 and stops there. — Santiago de Chile and Buenos Aires.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "America/Argentina/Buenos_Aires",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 551,
+    "input": "Santiago de Compostela",
+    "expectedSource": null,
+    "expectedTarget": "Santiago de Compostela",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "Three tokens, and a prefix match on 'Santiago' gets the wrong continent. — Galicia, Spain.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Madrid"
+  },
+  {
+    "id": 552,
+    "input": "Tripoli",
+    "expectedSource": null,
+    "expectedTarget": "Tripoli",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "Libya and Lebanon, two zones, and the Libyan one is larger. — Ask, or answer Libya and say so.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 553,
+    "input": "Tripoli Lebanon",
+    "expectedSource": null,
+    "expectedTarget": "Tripoli Lebanon",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "Qualified. Must not fall back to the bigger city. — Tripoli, Lebanon.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Beirut"
+  },
+  {
+    "id": 554,
+    "input": "Birmingham Alabama to London",
+    "expectedSource": "Birmingham Alabama",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "State qualifier attached with no comma. — Birmingham AL and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/Chicago",
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 555,
+    "input": "Birmingham UK",
+    "expectedSource": null,
+    "expectedTarget": "Birmingham UK",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Country qualifier. — Birmingham, England.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 556,
+    "input": "Newcastle NSW",
+    "expectedSource": null,
+    "expectedTarget": "Newcastle NSW",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "Australian state abbreviation as the disambiguator. — Newcastle, New South Wales.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Australia/Sydney"
+  },
+  {
+    "id": 557,
+    "input": "Newcastle upon Tyne",
+    "expectedSource": null,
+    "expectedTarget": "Newcastle upon Tyne",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Three tokens with a lowercase preposition, like 'Dar es Salaam' which the fixture does have. — Newcastle, England.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 558,
+    "input": "Portland OR to Portland ME",
+    "expectedSource": "Portland OR",
+    "expectedTarget": "Portland ME",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "The fixture's flagship ambiguity, with both halves disambiguated. Two different zones, three hours apart. — Portland Oregon and Portland Maine.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/Los_Angeles",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 559,
+    "input": "Vancouver WA to Portland OR",
+    "expectedSource": "Vancouver WA",
+    "expectedTarget": "Portland OR",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Vancouver WA rather than Vancouver BC; the two are in the same zone, which hides the error. — Vancouver Washington and Portland Oregon: same time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/Los_Angeles",
+    "expectedTargetIana": "America/Los_Angeles"
+  },
+  {
+    "id": 560,
+    "input": "Athens Georgia to Athens Greece",
+    "expectedSource": "Athens Georgia",
+    "expectedTarget": "Athens Greece",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Both halves are the same city name; 'Georgia' is itself in the fixture as an ambiguity case. — Athens GA and Athens, Greece.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/Athens"
+  },
+  {
+    "id": 561,
+    "input": "Toledo Spain to Toledo Ohio",
+    "expectedSource": "Toledo Spain",
+    "expectedTarget": "Toledo Ohio",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Country and state qualifiers in one query. — Toledo, Spain and Toledo, Ohio.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Madrid",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 562,
+    "input": "Sydney Nova Scotia",
+    "expectedSource": null,
+    "expectedTarget": "Sydney Nova Scotia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "A small Sydney sharing its name with a very large one. Population ordering makes this the hardest class of miss. — Sydney, Cape Breton — UTC-4/-3, not Australia.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Halifax"
+  },
+  {
+    "id": 563,
+    "input": "Columbus Ohio",
+    "expectedSource": null,
+    "expectedTarget": "Columbus Ohio",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Common US name plus state. — Columbus, Ohio.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 564,
+    "input": "St Petersburg FL to St Petersburg Russia",
+    "expectedSource": "St Petersburg FL",
+    "expectedTarget": "St Petersburg Russia",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Abbreviated 'St' with no full stop, twice, on two continents. — St Petersburg Florida and St Petersburg Russia.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "America/New_York",
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 565,
+    "input": "Washington to Washington",
+    "expectedSource": "Washington",
+    "expectedTarget": "Washington",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "City and state, same word, different zones. Whatever the app answers it should not silently answer zero. — Probably DC and the state — the query is a bad one and deserves a question back.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 566,
+    "input": "Nuuk",
+    "expectedSource": null,
+    "expectedTarget": "Nuuk",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Greenland, population under 20k — below the fuzzy pool's 100k floor, so a typo of it can never be recovered. — Current time in Nuuk.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Nuuk"
+  },
+  {
+    "id": 567,
+    "input": "Yakutsk to Moscow",
+    "expectedSource": "Yakutsk",
+    "expectedTarget": "Moscow",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Six hours apart inside one country. — Yakutsk and Moscow.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Yakutsk",
+    "expectedTargetIana": "Europe/Moscow"
+  },
+  {
+    "id": 568,
+    "input": "Kathmandu to Delhi",
+    "expectedSource": "Kathmandu",
+    "expectedTarget": "Delhi",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+5:45 against UTC+5:30 — a fifteen-minute offset, the kind of answer that looks like a bug when it is right. — Kathmandu is 15 minutes ahead of Delhi.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Kathmandu",
+    "expectedTargetIana": "Asia/Kolkata"
+  },
+  {
+    "id": 569,
+    "input": "Tehran to Kabul",
+    "expectedSource": "Tehran",
+    "expectedTarget": "Kabul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+3:30 against UTC+4:30. — Kabul is an hour ahead of Tehran.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Tehran",
+    "expectedTargetIana": "Asia/Kabul"
+  },
+  {
+    "id": 570,
+    "input": "Eucla",
+    "expectedSource": null,
+    "expectedTarget": "Eucla",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+8:45, the strangest offset in Australia, and a settlement of a few dozen people. — Current time in Eucla, Western Australia.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Australia/Eucla"
+  },
+  {
+    "id": 571,
+    "input": "Chatham Islands",
+    "expectedSource": null,
+    "expectedTarget": "Chatham Islands",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+12:45. Two tokens, and the second is a common noun. — Current time on the Chathams.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Pacific/Chatham"
+  },
+  {
+    "id": 572,
+    "input": "Lord Howe Island to Sydney",
+    "expectedSource": "Lord Howe Island",
+    "expectedTarget": "Sydney",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Three tokens, and its DST shift is 30 minutes rather than an hour. — Lord Howe and Sydney, half an hour apart in summer.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Australia/Lord_Howe",
+    "expectedTargetIana": "Australia/Sydney"
+  },
+  {
+    "id": 573,
+    "input": "St John's Newfoundland",
+    "expectedSource": null,
+    "expectedTarget": "St John's Newfoundland",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail",
+      "structural-ambiguity"
+    ],
+    "notes": "Apostrophe inside the name; normalize() strips it, which is right here and wrong for names where it separates letters. — St John's, UTC-3:30.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/St_Johns"
+  },
+  {
+    "id": 574,
+    "input": "Apia to Pago Pago",
+    "expectedSource": "Apia",
+    "expectedTarget": "Pago Pago",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Same clock hour, 24 hours apart in date — the extreme case for dayBoundary. — Same time of day, a day apart.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Pacific/Apia",
+    "expectedTargetIana": "Pacific/Pago_Pago"
+  },
+  {
+    "id": 575,
+    "input": "Pyongyang to Seoul",
+    "expectedSource": "Pyongyang",
+    "expectedTarget": "Seoul",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Same zone since 2018; the answer 'no difference' is the correct surprising one. — Pyongyang and Seoul: same time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Pyongyang",
+    "expectedTargetIana": "Asia/Seoul"
+  },
+  {
+    "id": 576,
+    "input": "Ouagadougou to Bamako",
+    "expectedSource": "Ouagadougou",
+    "expectedTarget": "Bamako",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Two long West African names, both UTC+0. — Same time in both.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Africa/Ouagadougou",
+    "expectedTargetIana": "Africa/Bamako"
+  },
+  {
+    "id": 577,
+    "input": "Nouakchott",
+    "expectedSource": null,
+    "expectedTarget": "Nouakchott",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Long, rarely typed correctly. — Current time in Nouakchott.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Africa/Nouakchott"
+  },
+  {
+    "id": 578,
+    "input": "Ulaanbaatar to Beijing",
+    "expectedSource": "Ulaanbaatar",
+    "expectedTarget": "Beijing",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "The fixture has Ulaanbaatar once, as a target only. — Ulaanbaatar and Beijing: same time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Ulaanbaatar",
+    "expectedTargetIana": "Asia/Shanghai"
+  },
+  {
+    "id": 579,
+    "input": "Asmara",
+    "expectedSource": null,
+    "expectedTarget": "Asmara",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Eritrea. Africa is two percent of the fixture's place mentions. — Current time in Asmara.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Africa/Asmara"
+  },
+  {
+    "id": 580,
+    "input": "Malé Maldives",
+    "expectedSource": null,
+    "expectedTarget": "Malé Maldives",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "Four letters plus an accent, and 'male' is an English word — the fuzzy layer's worst case. — Male, Maldives.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Indian/Maldives"
+  },
+  {
+    "id": 581,
+    "input": "Thimphu to Kathmandu",
+    "expectedSource": "Thimphu",
+    "expectedTarget": "Kathmandu",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+6 against UTC+5:45 — a 15-minute difference between neighbours. — Thimphu is 15 minutes ahead of Kathmandu.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Thimphu",
+    "expectedTargetIana": "Asia/Kathmandu"
+  },
+  {
+    "id": 582,
+    "input": "Kiritimati",
+    "expectedSource": null,
+    "expectedTarget": "Kiritimati",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail"
+    ],
+    "notes": "UTC+14, the earliest zone on earth. — Current time on Kiritimati.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Pacific/Kiritimati"
+  },
+  {
+    "id": 583,
+    "input": "Adelaide to Perth",
+    "expectedSource": "Adelaide",
+    "expectedTarget": "Perth",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "long-tail",
+      "structural-ambiguity"
+    ],
+    "notes": "UTC+9:30 against UTC+8, and Perth is already in the fixture as an ambiguity case. — Adelaide is 90 minutes ahead of Perth.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Australia/Adelaide",
+    "expectedTargetIana": "Australia/Perth"
+  },
+  {
+    "id": 584,
+    "input": "5 p.m. Berlin to Tokyo",
+    "expectedSource": "Berlin",
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 17,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Full stops in the meridiem. normalizeMeridiem handles this; nothing in the fixture checks it. — 5pm Berlin, in Tokyo time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Berlin",
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 585,
+    "input": "half past three London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 30
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Written-out clock time; ambiguous am/pm, and a person would read it as afternoon. — 3:30 in the afternoon, London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 586,
+    "input": "quarter to nine Berlin",
+    "expectedSource": null,
+    "expectedTarget": "Berlin",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 8,
+      "minute": 45
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "Same class, subtractive form. — 8:45 in Berlin.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/Berlin"
+  },
+  {
+    "id": 587,
+    "input": "3 o'clock London to NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "'oclock' is a noise word, so the hour beside it survives as a bare TIME token. Reading it as 3am would be a twelve-hour error. — 3 in the afternoon, London, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 588,
+    "input": "0900 Zulu to NYC",
+    "expectedSource": "0900 Zulu",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 9,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing",
+      "long-tail"
+    ],
+    "notes": "Military/aviation form. 'Zulu' is UTC; four digits with no separator are not a time to TIME_REGEX. — 09:00 UTC, in New York time.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 589,
+    "input": "noon to midnight London in NYC",
+    "expectedSource": "London",
+    "expectedTarget": "NYC",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 12,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "A range. The fixture's three range cases are all marked aspirational and all record whatever fell out. — A twelve-hour window, not a moment. Answering only the start is a partial answer, not a wrong one.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/London",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 590,
+    "input": "Tokyo tomorrow morning",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": "tomorrow",
+    "expectedTier": 2,
+    "difficultyTags": [
+      "date-modifier"
+    ],
+    "notes": "'morning' is a noise word, so the vagueness is dropped rather than represented. — Some time tomorrow morning in Tokyo — the app should either pick a convention and show it, or say it cannot.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 591,
+    "input": "London at 3 in the afternoon",
+    "expectedSource": null,
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing"
+    ],
+    "notes": "The meridiem is four words away from the digit. — 3pm in London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Europe/London"
+  },
+  {
+    "id": 592,
+    "input": "3pm ist to est",
+    "expectedSource": "ist",
+    "expectedTarget": "est",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 15,
+      "minute": 0
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "format-mixing",
+      "structural-ambiguity"
+    ],
+    "notes": "Lowercase, and IST is three different zones. — 3pm Indian (probably) in US Eastern terms — with the choice shown.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Asia/Kolkata",
+    "expectedTargetIana": "America/New_York"
+  },
+  {
+    "id": 593,
+    "input": "Sun City to London",
+    "expectedSource": "Sun City",
+    "expectedTarget": "London",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "parser-utils comments say 'sun' is left alone to protect this name. Nothing in the fixture tests it. — Sun City, South Africa, and London.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedTargetIana": "Europe/London",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 594,
+    "input": "10pm Sun Tokyo",
+    "expectedSource": null,
+    "expectedTarget": "Tokyo",
+    "expectedTime": {
+      "type": "absolute",
+      "hour": 22,
+      "minute": 0
+    },
+    "expectedDateModifier": {
+      "type": "day-of-week",
+      "day": "sunday",
+      "anchor": "bare"
+    },
+    "expectedTier": 2,
+    "difficultyTags": [
+      "day-of-week"
+    ],
+    "notes": "Bare 'Sun' as a weekday, which SHORT_DAYS_NO_SUN deliberately does not strip. The safe choice costs this query. — 10pm on Sunday in Tokyo.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tokyo"
+  },
+  {
+    "id": 595,
+    "input": "Reading to Reading",
+    "expectedSource": "Reading",
+    "expectedTarget": "Reading",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Reading, England and Reading, Pennsylvania. The fixture has 'Reading to London' as tier 1 with no note about the other one. — Two different Readings, five hours apart — or a user mistake worth querying.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedAmbiguous": true
+  },
+  {
+    "id": 596,
+    "input": "Nice, France to Nice",
+    "expectedSource": "Nice, France",
+    "expectedTarget": "Nice",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "Comma-qualified first, bare second. Commas appear nowhere in the fixture's 417 inputs. — Same city twice; the answer should say so rather than resolve the second one somewhere else.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": "Europe/Paris",
+    "expectedTargetIana": "Europe/Paris"
+  },
+  {
+    "id": 597,
+    "input": "Mobile Alabama",
+    "expectedSource": null,
+    "expectedTarget": "Mobile Alabama",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 1,
+    "difficultyTags": [
+      "structural-ambiguity"
+    ],
+    "notes": "'Mobile' is in the fixture as a token-ambiguity case; qualified, it should be unambiguous. — Mobile, Alabama.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "America/Chicago"
+  },
+  {
+    "id": 598,
+    "input": "Georgia the country",
+    "expectedSource": null,
+    "expectedTarget": "Georgia the country",
+    "expectedTime": {
+      "type": "now"
+    },
+    "expectedDateModifier": null,
+    "expectedTier": 2,
+    "difficultyTags": [
+      "structural-ambiguity",
+      "long-tail"
+    ],
+    "notes": "The user disambiguates in words rather than with a code. US_STATE_TIMEZONES maps bare 'georgia' to America/New_York. — Tbilisi's zone, not Atlanta's.",
+    "set": "adversarial",
+    "split": "dev",
+    "provenance": "adversarial",
+    "expectedSourceIana": null,
+    "expectedTargetIana": "Asia/Tbilisi"
   }
 ]
