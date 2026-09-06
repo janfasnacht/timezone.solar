@@ -1,6 +1,6 @@
 /**
  * Whether what is on disk still matches `vendor/manifest.json`. A dataset is
- * verified when its bytes hash to the manifest and its generated artefacts
+ * verified when its bytes hash to the manifest and its generated artifacts
  * regenerate byte-for-byte from those bytes.
  */
 
@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto'
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { generateAirportData, OUTPUT_FILE as AIRPORT_OUTPUT } from './airport-data'
+import { generateCityData, OUTPUT_FILE as CITY_OUTPUT } from './city-table'
 
 export const ROOT = join(import.meta.dirname, '..', '..')
 export const MANIFEST_PATH = join(ROOT, 'vendor', 'manifest.json')
@@ -47,7 +48,7 @@ export function checkOffline(manifest: Manifest): string[] {
   for (const d of manifest.datasets) {
     problems.push(...(d.source.kind === 'npm' ? checkNpmPin(d, d.source) : checkVendored(d)))
   }
-  problems.push(...checkGeneratedArtefacts())
+  problems.push(...checkGeneratedArtefacts(manifest))
   return problems
 }
 
@@ -83,14 +84,28 @@ function checkVendored(d: Dataset): string[] {
   return problems
 }
 
-/** A generated artefact must be reproducible from the input it names. */
-export function checkGeneratedArtefacts(): string[] {
-  return generateAirportData().text === readFileSync(AIRPORT_OUTPUT, 'utf8')
-    ? []
-    : [
-        'openflights-airports: src/engine/airport-data.generated.ts does not match ' +
-          'vendor/openflights-airports.dat — run npm run airports:generate',
-      ]
+/** A manifest entry naming an artifact absent here is itself a failure. */
+const GENERATORS: Record<string, { file: string; generate: () => { text: string } }> = {
+  'src/engine/airport-data.generated.ts': { file: AIRPORT_OUTPUT, generate: generateAirportData },
+  'src/engine/city-data.generated.ts': { file: CITY_OUTPUT, generate: generateCityData },
+}
+
+/** A generated artifact must be reproducible from the input it names. */
+export function checkGeneratedArtefacts(manifest: Manifest): string[] {
+  const problems: string[] = []
+  for (const d of manifest.datasets) {
+    for (const path of d.generates) {
+      const gen = GENERATORS[path]
+      if (!gen) {
+        problems.push(`${d.id}: ${path} has no generator registered in scripts/lib/vendor.ts`)
+        continue
+      }
+      if (gen.generate().text !== readFileSync(gen.file, 'utf8')) {
+        problems.push(`${d.id}: ${path} does not match its input — run ${d.regenerate}`)
+      }
+    }
+  }
+  return problems
 }
 
 function declaredVersion(name: string): string | undefined {

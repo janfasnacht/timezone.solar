@@ -39,8 +39,10 @@
         "attribution": "Kevin Roberts"
       },
       "vendored": null,
-      "generates": [],
-      "regenerate": "edit the exact version in package.json, then npm install"
+      "generates": [
+        "src/engine/city-data.generated.ts"
+      ],
+      "regenerate": "npm run cities:generate"
     },
     {
       "id": "world-atlas",

@@ -8,6 +8,7 @@ export default defineConfig({
     },
   },
   test: {
+    setupFiles: ['./src/test-setup.ts'],
     include: ['src/**/*.test.ts', 'api/**/*.test.ts', 'scripts/**/*.test.ts', '*.test.ts'],
     exclude: ['node_modules'],
     benchmark: {

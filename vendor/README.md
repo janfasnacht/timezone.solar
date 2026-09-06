@@ -12,9 +12,9 @@ data rather than code — has an entry in `manifest.json` carrying:
 - **A pin.** A git commit SHA, or an exact npm version. Never a branch, never a
   caret range: a dataset that moves under you changes the app's answers on
   install, and that has to show up as a diff.
-- **Source, licence and attribution.** Recorded next to the data, not inferred
+- **Source, license and attribution.** Recorded next to the data, not inferred
   from the URL it came from.
-- **Its generated artefacts**, and the command that rebuilds them.
+- **Its generated artifacts**, and the command that rebuilds them.
 
 Two checks keep the record honest:
 
@@ -25,8 +25,8 @@ npm run vendor:upstream    # network: has upstream moved, and would output diffe
 
 `vendor:check` runs in CI through `scripts/vendor.test.ts`. It fails when a
 vendored file no longer hashes to what the manifest records, when a pinned npm
-version drifts, and when a generated artefact does not regenerate byte-for-byte
-from the input it names — so a stale artefact is a build failure, not a slow
+version drifts, and when a generated artifact does not regenerate byte-for-byte
+from the input it names — so a stale artifact is a build failure, not a slow
 divergence.
 
 `vendor:upstream` runs weekly from `.github/workflows/vendor-upstream.yml`. It

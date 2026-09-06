@@ -1,5 +1,6 @@
-import cityTimezones from 'city-timezones'
+import { lookupCities } from './city-table'
 import { lookupEntity, type Entity } from './entities'
+import { normalize } from './normalize'
 
 /**
  * Curated set of ~90 city slugs that carry the world map.
@@ -158,24 +159,17 @@ export const ANCHOR_CITY_SLUGS: ReadonlySet<string> = new Set([
 ])
 
 /**
- * Look up an entity by name for map rendering, first from curated entities,
- * then from the city-timezones database as a fallback. Used for the source and
- * target of a conversion, which are drawn whatever the density pass decides.
+ * An entity by name for map rendering: curated entities first, then the same
+ * population-ordered bucket the resolver answers from, so the dot on the map is
+ * the city on the card. Used for a conversion's source and target, which are
+ * drawn whatever the density pass decides.
  */
 export function findEntityForMap(name: string): Entity | null {
   const entity = lookupEntity(name)
   if (entity) return entity
 
-  // Fallback: city-timezones database
-  const results = cityTimezones.lookupViaCity(name) as Array<{
-    city: string
-    lat: number
-    lng: number
-    timezone: string
-    iso2: string
-    country: string
-  }>
-  if (results.length === 0) return null
+  const results = lookupCities(normalize(name))
+  if (!results || results.length === 0) return null
   const best = results[0]
   return {
     kind: 'city',

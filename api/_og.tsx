@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse } from '../src/engine/parser'
 import { resolveLocation } from '../src/engine/resolver'
+import { loadCityTail } from '../src/engine/city-table'
 import { convert } from '../src/engine/converter'
 import type { ConversionResult, ConversionIntent, DateModifier, DayOfWeek } from '../src/engine/types'
 
@@ -293,6 +294,8 @@ function ResultCard({ result, use24h }: { result: ConversionResult; use24h: bool
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
+  // No first paint to protect, and the card must name the city the page does.
+  await loadCityTail()
   const from = req.query?.from as string | undefined
   const to = req.query?.to as string | undefined
   const t = req.query?.t as string | undefined

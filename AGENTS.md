@@ -77,9 +77,31 @@ The engine is the core of the app and must stay framework-agnostic.
 
 **Parser** (`src/engine/parser.ts`): Tokenizes natural language queries into structured `ParsedQuery`. Supports 13 query patterns (e.g., `"3pm NYC to London"`, `"Tokyo"`, `"in 2 hours in Berlin"`). Pre-processes relative time and dates, then classifies tokens as TIME/LOCATION/CONNECTOR/DATE_MODIFIER/NOISE and matches against known patterns, falling back to a greedy first-and-last extraction. Multi-word alias keys (`Eastern Time`) are matched ahead of classification; noise is dropped, and adjacent LOCATION tokens merge only if they were adjacent in the input.
 
-**Resolver** (`src/engine/resolver.ts`): Maps location strings to IANA timezones. A UTC offset (`utc+5:30`) resolves to itself ahead of the cache; otherwise a 6-layer pipeline: curated entities (cities and airports) → custom aliases → US states → TZ abbreviations → city-timezones DB (normalized O(1) lookup, keyed on both of a row's names) → Fuse.js fuzzy search (lazy, pool capped at pop > 100k). A fuzzy hit must also pass an edit-distance ratio, and a noise word never gets one. Returns primary match + alternatives for ambiguous cities (Portland OR/ME). Uses FIFO cache (500 entries).
+**Resolver** (`src/engine/resolver.ts`): Maps location strings to IANA timezones. A UTC offset (`utc+5:30`) resolves to itself ahead of the cache; otherwise a 6-layer pipeline: curated entities (cities and airports) → custom aliases → US states → TZ abbreviations → the city table (normalized O(1) lookup, keyed on both of a row's names) → Fuse.js fuzzy search (lazy, pool is the bundled head). A fuzzy hit must also pass an edit-distance ratio, and a noise word never gets one. Returns primary match + alternatives for ambiguous cities (Portland OR/ME). Uses FIFO cache (500 entries).
 
 **Converter** (`src/engine/converter.ts`): Luxon-based time math between two resolved timezones. Handles DST, temporal anchoring (auto-advances to tomorrow if specified time has passed), date modifiers, day boundary detection, and swap.
+
+### The city table
+
+`src/engine/city-table.ts` decodes `city-data.generated.ts`, which
+`npm run cities:generate` re-encodes from the pinned `city-timezones` package —
+positional records with timezone, country and province in lookup tables, 241 KB
+gzipped down to 119 KB. Population is in thousands and coordinates in hundredths
+of a degree; `city-table.test.ts` asserts the round trip to exactly that.
+
+`CITY_HEAD` is every city of 100,000 people or more, bundled, and is also the
+fuzzy pool. `CITY_TAIL` is its own module and its own chunk, pulled in by
+`loadCityTail()` — `App` starts it on mount, the OG handler awaits it. Decoding
+is lazy either way.
+
+Before the tail lands a small city does not resolve; it never resolves
+*wrongly*. **Cache a derivation of the table against `getCityTableVersion()`,
+not against a `subscribeCityTail` listener** — listeners fire in import order,
+so App's re-run can beat the resolver's cache drop. Tests run with the tail
+loaded (`src/test-setup.ts`); the window before it arrives is covered in
+`city-table.test.ts` with a reset module registry.
+
+Nothing outside `city-table.ts` and its generator imports `city-timezones`.
 
 ### Key Types (`src/engine/types.ts`)
 
@@ -103,7 +125,7 @@ The engine is the core of the app and must stay framework-agnostic.
 ## Third-party data
 
 Every external dataset is described by `vendor/manifest.json`: a pinned commit
-or exact npm version, its licence and attribution, and the artefacts it
+or exact npm version, its license and attribution, and the artifacts it
 generates. `vendor/README.md` is the policy; `npm run vendor:check` enforces it
 offline and runs in CI through `scripts/vendor.test.ts`, and
 `npm run vendor:upstream` asks upstream whether the pin is behind.
@@ -113,7 +135,7 @@ they are datasets, and a minor bump changes the app's answers on install.
 `src/engine/city-count.test.ts` asserts the documented city count against what
 the package actually ships.
 
-A generated artefact must be a pure function of its vendored input — no clock,
+A generated artifact must be a pure function of its vendored input — no clock,
 no environment, no network — because the check regenerates it and compares byte
 for byte. `scripts/lib/airport-data.ts` is the model: the generation is a
 library, `scripts/generate-airports.ts` is the thin CLI that writes the file.

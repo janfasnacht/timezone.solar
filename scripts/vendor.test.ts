@@ -8,10 +8,10 @@ import { checkGeneratedArtefacts, checkOffline, readManifest } from './lib/vendo
 describe('vendored data matches vendor/manifest.json', () => {
   const manifest = readManifest()
 
-  it('records source, licence and attribution for every dataset', () => {
+  it('records source, license and attribution for every dataset', () => {
     expect(manifest.datasets.length).toBeGreaterThan(0)
     for (const d of manifest.datasets) {
-      expect(d.license.url, `${d.id} has no licence url`).toBeTruthy()
+      expect(d.license.url, `${d.id} has no license url`).toBeTruthy()
       expect(d.license.attribution, `${d.id} has no attribution`).toBeTruthy()
       if (d.source.kind === 'github') {
         expect(d.source.commit, `${d.id} is not pinned to a commit`).toMatch(/^[0-9a-f]{40}$/)
@@ -23,8 +23,8 @@ describe('vendored data matches vendor/manifest.json', () => {
     expect(checkOffline(manifest)).toEqual([])
   })
 
-  it('regenerates airport-data.generated.ts from the vendored snapshot', () => {
-    expect(checkGeneratedArtefacts()).toEqual([])
+  it('regenerates every artifact from the input it names', () => {
+    expect(checkGeneratedArtefacts(manifest)).toEqual([])
   })
 })
 

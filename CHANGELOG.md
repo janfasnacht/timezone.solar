@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Third-party data is pinned to a commit or an exact version, with its licence
+- The city table is re-encoded and the cities under 100,000 people load
+  separately, taking 196 KB gzipped — 45% — off the JavaScript that has to
+  arrive before anything is on screen, and 1.8 MB off the social-image bundle.
+  Same 7,281 cities, same answers
+- Third-party data is pinned to a commit or an exact version, with its license
   and attribution recorded in `vendor/manifest.json`. CI fails if a vendored
-  file changes without the record changing, or if a generated artefact no
+  file changes without the record changing, or if a generated artifact no
   longer regenerates from the input it names, and a weekly job reports when a
   pin has fallen behind upstream
 

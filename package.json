@@ -33,6 +33,7 @@
     "eval:baseline": "tsx scripts/write-eval-baseline.ts",
     "icons:download": "npx tsx scripts/download-icons.ts",
     "airports:generate": "npx tsx scripts/generate-airports.ts",
+    "cities:generate": "npx tsx scripts/generate-city-data.ts",
     "vendor:check": "npx tsx scripts/check-vendor.ts",
     "vendor:upstream": "npx tsx scripts/check-vendor.ts --upstream"
   },
