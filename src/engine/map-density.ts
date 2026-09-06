@@ -1,8 +1,8 @@
-import cityTimezones from 'city-timezones'
+import { getAllCities, getCityTableVersion } from './city-table'
 import { getAllEntities, type Entity } from './entities'
 import { FAMILIAR_AIRPORT_IATA, FAMILIAR_CITY_SLUGS } from './familiar-cities'
 import { ANCHOR_CITY_SLUGS, MAP_CITY_SLUGS } from './map-entities'
-import { normalize } from './resolver'
+import { normalize } from './normalize'
 
 /** A tier base picks the band; log-population orders within it. Bands are wide
  *  enough that population never promotes a tail city past a curated one. */
@@ -24,40 +24,29 @@ const TIER = {
 /** Below this a dot is drawn as an incidental mark. */
 export const MINOR_RANK = TIER.curatedCity
 
-interface CityRow {
-  city: string
-  city_ascii?: string
-  lat: number
-  lng: number
-  pop?: number
-  timezone: string
-  iso2: string
-  country: string
-}
-
 /**
  * log10, so a 20M city outranks a 20K one by ~3 rather than 1000x.
  *
  * Floored at zero: a handful of DB rows carry a fractional population, and a
  * negative score would drop a place below its own tier base.
  */
-function popScore(pop: number | undefined): number {
-  return pop && pop > 1 ? Math.log10(pop) : 0
+function popScore(pop: number): number {
+  return pop > 1 ? Math.log10(pop) : 0
 }
 
 let popByName: Map<string, number> | null = null
 
 /** Curated entities carry no population; borrow it by name from the DB. */
-function populationOf(name: string): number | undefined {
+function populationOf(name: string): number {
   if (!popByName) {
     popByName = new Map()
-    for (const row of cityTimezones.cityMapping as CityRow[]) {
+    for (const row of getAllCities()) {
       const key = normalize(row.city)
       const existing = popByName.get(key)
       if (row.pop && (existing === undefined || row.pop > existing)) popByName.set(key, row.pop)
     }
   }
-  return popByName.get(normalize(name))
+  return popByName.get(normalize(name)) ?? 0
 }
 
 function rankOf(entity: Entity, cityNameBySlug: Map<string, string>): number {
@@ -79,16 +68,19 @@ function rankOf(entity: Entity, cityNameBySlug: Map<string, string>): number {
 }
 
 let ranked: readonly RankedEntity[] | null = null
+let rankedVersion = -1
 
 /** Sorted once at module load; selection walks this order, so no render re-sorts 7K entries. */
 export function getRankedMapEntities(): readonly RankedEntity[] {
-  if (ranked) return ranked
+  // The tail is most of what the map draws once you zoom in.
+  if (ranked && rankedVersion === getCityTableVersion()) return ranked
+  popByName = null
   const curated = getAllEntities()
   const seen = new Set(curated.map((e) => e.slug))
   const cityNameBySlug = new Map(curated.map((e) => [e.slug, e.displayName]))
   const out: RankedEntity[] = curated.map((entity) => ({ entity, rank: rankOf(entity, cityNameBySlug) }))
 
-  for (const row of cityTimezones.cityMapping as CityRow[]) {
+  for (const row of getAllCities()) {
     const slug = row.city.toLowerCase().replace(/\s+/g, '-')
     if (seen.has(slug)) continue
     seen.add(slug)
@@ -112,6 +104,7 @@ export function getRankedMapEntities(): readonly RankedEntity[] {
 
   out.sort((a, b) => b.rank - a.rank)
   ranked = out
+  rankedVersion = getCityTableVersion()
   return ranked
 }
 

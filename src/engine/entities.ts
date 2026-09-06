@@ -1,4 +1,4 @@
-import { normalize } from './resolver'
+import { normalize } from './normalize'
 import { TZ_ABBREVIATIONS } from './constants'
 import { AIRPORT_DATA } from './airport-data.generated'
 
