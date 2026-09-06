@@ -133,12 +133,35 @@ every `*.test.ts`, so without that reference the code gating CI is not itself
 checked — which is how `scripts/generate-eval-queries.ts` was able to stop
 compiling unnoticed.
 
-The baseline gates every headline and per-tag accuracy plus tier safety and tier
-accuracy. Latency and complexity are printed but not gated: latency is not
-reproducible across machines. The baseline also records the case count and a
-hash over the ground-truth fields, so a score change and a ground-truth change
-cannot be confused. The hash ignores `notes`, `persona` and `difficultyTags` —
-those describe a case, they are not the case.
+The scorecard reports two different things and leads with the second:
+
+- **Extraction accuracy** — did the parser pull the right strings out. This is
+  the number the eval measured for its first year, and it is blind to where
+  those strings land.
+- **Answer rate** — did the parse succeed *and* every name it produced resolve.
+  This is what a user experiences; anything else is an error card. It sits well
+  below extraction accuracy and the gap is the point.
+
+A case may also carry `expectedSourceIana` / `expectedTargetIana` /
+`expectedAmbiguous`. These are optional: `undefined` means nobody annotated the
+case and it is not scored, `null` means the name must *not* resolve. Annotated
+cases feed `resolution.*`.
+
+The baseline gates every headline and per-tag accuracy, the resolution metrics,
+answer rate, and tier safety and accuracy. Latency and complexity are printed
+but not gated: latency is not reproducible across machines.
+
+Every gated metric is a rate where **higher is better** — `compare.ts` reads any
+decrease as a regression and has no notion of direction. A count of harms must
+therefore be recorded as its complement (`confidentAnswerable`, not
+"confidently unresolvable"), or the gate inverts and a fix reads as a break.
+
+The baseline records the case count and **two** hashes. `expectationsHash`
+covers what the parser should extract; `resolutionHash` covers where names
+should land. Keeping them apart means the CI output says which kind of
+ground-truth edit happened — re-annotating a resolution does not disturb the
+extraction hash. Both ignore `notes`, `persona`, `difficultyTags` and
+`provenance`: those describe a case, they are not the case.
 
 Do not mark a known failure as expected. A case marked that way goes quiet when
 it starts passing, and says nothing about a different case breaking. If the eval

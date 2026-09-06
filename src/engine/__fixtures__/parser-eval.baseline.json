@@ -1,65 +1,79 @@
 {
   "adapter": "v2-noise-tolerant",
   "fixture": {
-    "caseCount": 417,
-    "expectationsHash": "sha256:16c6f1565a7ed71af0c3c64891f7eb0733d50957e64ca36861e74a49de6eb816",
+    "caseCount": 595,
+    "expectationsHash": "sha256:e6aa6e051ba48ca767a02d28729097ffb5b3d74b0167a8364dc69b4abc05a5ab",
+    "resolutionHash": "sha256:af9987bd2f7beb13bcc38163233be852d86652cb40c852f7fc43da0dc433e1e7",
     "setCounts": {
       "realistic": 245,
-      "edge": 172
+      "edge": 169,
+      "adversarial": 181
     }
   },
   "metrics": {
     "accuracy.overall": {
-      "value": 0.9904,
-      "n": 417
+      "value": 0.8655,
+      "n": 595
     },
     "accuracy.set.realistic": {
       "value": 1,
       "n": 245
     },
     "accuracy.set.edge": {
-      "value": 0.9767,
-      "n": 172
+      "value": 0.9645,
+      "n": 169
+    },
+    "accuracy.set.adversarial": {
+      "value": 0.5912,
+      "n": 181
     },
     "accuracy.field.source": {
-      "value": 0.9952,
-      "n": 417
+      "value": 0.916,
+      "n": 595
     },
     "accuracy.field.target": {
-      "value": 0.9928,
-      "n": 417
+      "value": 0.9059,
+      "n": 595
     },
     "accuracy.field.time": {
-      "value": 0.9976,
-      "n": 417
+      "value": 0.9748,
+      "n": 595
     },
     "accuracy.field.dateMod": {
-      "value": 1,
-      "n": 417
+      "value": 0.9798,
+      "n": 595
     },
-    "accuracy.tag.structural-ambiguity": {
+    "accuracy.tag.parse-failure": {
       "value": 1,
-      "n": 15
-    },
-    "accuracy.tag.token-ambiguity": {
-      "value": 1,
-      "n": 12
+      "n": 14
     },
     "accuracy.tag.noise-tolerance": {
-      "value": 0.9,
-      "n": 20
+      "value": 0.92,
+      "n": 25
+    },
+    "accuracy.tag.garbage": {
+      "value": 1,
+      "n": 9
+    },
+    "accuracy.tag.structural-ambiguity": {
+      "value": 0.9556,
+      "n": 45
+    },
+    "accuracy.tag.token-ambiguity": {
+      "value": 0.8333,
+      "n": 12
     },
     "accuracy.tag.completeness": {
-      "value": 0.9474,
-      "n": 19
+      "value": 0.9412,
+      "n": 17
     },
     "accuracy.tag.typo": {
       "value": 1,
       "n": 15
     },
     "accuracy.tag.format-mixing": {
-      "value": 0.9583,
-      "n": 24
+      "value": 0.8125,
+      "n": 32
     },
     "accuracy.tag.multi-word-city": {
       "value": 1,
@@ -67,11 +81,11 @@
     },
     "accuracy.tag.short-input": {
       "value": 1,
-      "n": 12
+      "n": 11
     },
     "accuracy.tag.date-modifier": {
       "value": 1,
-      "n": 10
+      "n": 11
     },
     "accuracy.tag.relative-time": {
       "value": 1,
@@ -82,23 +96,103 @@
       "n": 8
     },
     "accuracy.tag.day-of-week": {
-      "value": 1,
-      "n": 8
+      "value": 0.8889,
+      "n": 9
     },
     "accuracy.tag.non-latin": {
-      "value": 1,
-      "n": 6
+      "value": 0.5652,
+      "n": 46
+    },
+    "accuracy.tag.non-english": {
+      "value": 0,
+      "n": 44
+    },
+    "accuracy.tag.endonym": {
+      "value": 0.7419,
+      "n": 31
+    },
+    "accuracy.tag.search-box": {
+      "value": 0.3438,
+      "n": 32
+    },
+    "accuracy.tag.scope-decision": {
+      "value": 0,
+      "n": 4
+    },
+    "accuracy.tag.segmentation": {
+      "value": 0.125,
+      "n": 8
+    },
+    "accuracy.tag.long-tail": {
+      "value": 0.9375,
+      "n": 32
+    },
+    "accuracy.tag.date-format": {
+      "value": 0.4444,
+      "n": 18
     },
     "tierSafety": {
-      "value": 0.997,
-      "n": 332
+      "value": 0.8943,
+      "n": 473
     },
     "tierAccuracy": {
-      "value": 0.6643,
-      "n": 417
+      "value": 0.5765,
+      "n": 595
+    },
+    "accuracy.provenance.generated-from-parser": {
+      "value": 1,
+      "n": 245
+    },
+    "accuracy.provenance.hand-written": {
+      "value": 0.9645,
+      "n": 169
+    },
+    "accuracy.provenance.adversarial": {
+      "value": 0.5912,
+      "n": 181
+    },
+    "resolution.answerRate": {
+      "value": 0.6786,
+      "n": 560
+    },
+    "resolution.confidentAnswerable": {
+      "value": 0.8643,
+      "n": 560
+    },
+    "resolution.accuracy": {
+      "value": 0.337,
+      "n": 181
+    },
+    "resolution.field.source": {
+      "value": 0.6906,
+      "n": 181
+    },
+    "resolution.field.target": {
+      "value": 0.4586,
+      "n": 181
+    },
+    "resolution.set.adversarial": {
+      "value": 0.337,
+      "n": 181
+    },
+    "resolution.confidentCorrect": {
+      "value": 0.5918,
+      "n": 181
+    },
+    "resolution.ambiguityRecall": {
+      "value": 0.6667,
+      "n": 9
     }
   },
   "failingCases": [
+    {
+      "id": 261,
+      "input": "Jan Tokyo"
+    },
+    {
+      "id": 262,
+      "input": "March London"
+    },
     {
       "id": 279,
       "input": "3pm meeting time Berlin London"
@@ -114,6 +208,302 @@
     {
       "id": 409,
       "input": "9-5 London to NYC"
+    },
+    {
+      "id": 418,
+      "input": "Wie spät ist es in Berlin"
+    },
+    {
+      "id": 419,
+      "input": "wie viel Uhr ist es in Tokio"
+    },
+    {
+      "id": 420,
+      "input": "Uhrzeit Berlin"
+    },
+    {
+      "id": 421,
+      "input": "15 Uhr Berlin in New York"
+    },
+    {
+      "id": 422,
+      "input": "Zeitverschiebung Berlin New York"
+    },
+    {
+      "id": 423,
+      "input": "morgen 9 Uhr München nach London"
+    },
+    {
+      "id": 424,
+      "input": "Wann ist es 15 Uhr in Berlin für Tokio"
+    },
+    {
+      "id": 425,
+      "input": "東京は今何時"
+    },
+    {
+      "id": 426,
+      "input": "東京の今の時間"
+    },
+    {
+      "id": 427,
+      "input": "ニューヨークの午後3時は東京で何時"
+    },
+    {
+      "id": 428,
+      "input": "東京 ニューヨーク 時差"
+    },
+    {
+      "id": 429,
+      "input": "大阪 時間"
+    },
+    {
+      "id": 430,
+      "input": "午後3時 東京 から ロンドン"
+    },
+    {
+      "id": 431,
+      "input": "que hora es en Tokio"
+    },
+    {
+      "id": 432,
+      "input": "¿qué hora es en Madrid?"
+    },
+    {
+      "id": 433,
+      "input": "las 3 de la tarde en Nueva York en Madrid"
+    },
+    {
+      "id": 434,
+      "input": "hora en Bogotá"
+    },
+    {
+      "id": 435,
+      "input": "diferencia horaria entre Madrid y Nueva York"
+    },
+    {
+      "id": 436,
+      "input": "mañana 9am Madrid a Londres"
+    },
+    {
+      "id": 437,
+      "input": "Delhi mein abhi kya time hai"
+    },
+    {
+      "id": 438,
+      "input": "दिल्ली में अभी क्या समय है"
+    },
+    {
+      "id": 439,
+      "input": "kal subah 9 baje Delhi to London"
+    },
+    {
+      "id": 440,
+      "input": "Mumbai ka time"
+    },
+    {
+      "id": 441,
+      "input": "كم الساعة في دبي"
+    },
+    {
+      "id": 442,
+      "input": "الساعة الآن في القاهرة"
+    },
+    {
+      "id": 443,
+      "input": "3 مساءً في نيويورك كم في لندن"
+    },
+    {
+      "id": 444,
+      "input": "quelle heure est-il à Paris"
+    },
+    {
+      "id": 445,
+      "input": "15h Paris à New York"
+    },
+    {
+      "id": 446,
+      "input": "décalage horaire Paris Tokyo"
+    },
+    {
+      "id": 447,
+      "input": "que horas são em Lisboa"
+    },
+    {
+      "id": 448,
+      "input": "17h30 de São Paulo em Lisboa"
+    },
+    {
+      "id": 449,
+      "input": "который час в Москве"
+    },
+    {
+      "id": 450,
+      "input": "Москва Нью-Йорк разница во времени"
+    },
+    {
+      "id": 451,
+      "input": "北京现在几点"
+    },
+    {
+      "id": 452,
+      "input": "纽约下午3点是北京几点"
+    },
+    {
+      "id": 453,
+      "input": "东京时间"
+    },
+    {
+      "id": 454,
+      "input": "서울 지금 몇 시"
+    },
+    {
+      "id": 455,
+      "input": "jam berapa di Jakarta"
+    },
+    {
+      "id": 456,
+      "input": "İstanbul saat kaç"
+    },
+    {
+      "id": 457,
+      "input": "mấy giờ ở Hà Nội"
+    },
+    {
+      "id": 476,
+      "input": "北京時間"
+    },
+    {
+      "id": 479,
+      "input": "東京 大阪 時差"
+    },
+    {
+      "id": 480,
+      "input": "ᏣᎳᎩ"
+    },
+    {
+      "id": 483,
+      "input": "3pm on March 14 London to NYC"
+    },
+    {
+      "id": 484,
+      "input": "14th of March 9am Berlin"
+    },
+    {
+      "id": 487,
+      "input": "05/06 3pm Berlin to London"
+    },
+    {
+      "id": 489,
+      "input": "14.03.2026 15:00 Berlin to London"
+    },
+    {
+      "id": 490,
+      "input": "14. März 15 Uhr Berlin"
+    },
+    {
+      "id": 491,
+      "input": "14 marzo 15:00 Madrid a Londres"
+    },
+    {
+      "id": 492,
+      "input": "2026年3月14日 15時 東京"
+    },
+    {
+      "id": 495,
+      "input": "1/2/2026 noon London to NYC"
+    },
+    {
+      "id": 497,
+      "input": "next month 3pm Tokyo"
+    },
+    {
+      "id": 498,
+      "input": "Tokyo on the 3rd at 9am"
+    },
+    {
+      "id": 499,
+      "input": "nyc london time"
+    },
+    {
+      "id": 500,
+      "input": "london tokyo time difference"
+    },
+    {
+      "id": 503,
+      "input": "berlin new york"
+    },
+    {
+      "id": 504,
+      "input": "tokyo nyc"
+    },
+    {
+      "id": 505,
+      "input": "est pst"
+    },
+    {
+      "id": 506,
+      "input": "world clock london"
+    },
+    {
+      "id": 507,
+      "input": "current time london berlin"
+    },
+    {
+      "id": 510,
+      "input": "convert est pst"
+    },
+    {
+      "id": 512,
+      "input": "paris berlin hour difference"
+    },
+    {
+      "id": 515,
+      "input": "NYC->London"
+    },
+    {
+      "id": 517,
+      "input": "london/tokyo time"
+    },
+    {
+      "id": 518,
+      "input": "3pm nyc-london"
+    },
+    {
+      "id": 519,
+      "input": "timezone tokyo london converter"
+    },
+    {
+      "id": 558,
+      "input": "Portland OR to Portland ME"
+    },
+    {
+      "id": 585,
+      "input": "half past three London to NYC"
+    },
+    {
+      "id": 586,
+      "input": "quarter to nine Berlin"
+    },
+    {
+      "id": 587,
+      "input": "3 o'clock London to NYC"
+    },
+    {
+      "id": 588,
+      "input": "0900 Zulu to NYC"
+    },
+    {
+      "id": 591,
+      "input": "London at 3 in the afternoon"
+    },
+    {
+      "id": 594,
+      "input": "10pm Sun Tokyo"
+    },
+    {
+      "id": 598,
+      "input": "Georgia the country"
     }
   ]
 }

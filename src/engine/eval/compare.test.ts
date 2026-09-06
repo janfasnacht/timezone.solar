@@ -7,7 +7,7 @@ import type { TestCase } from './types'
 function baseline(over: Partial<EvalBaseline> = {}): EvalBaseline {
   return {
     adapter: 'v2',
-    fixture: { caseCount: 100, expectationsHash: 'sha256:abc', setCounts: { edge: 100 } },
+    fixture: { caseCount: 100, expectationsHash: 'sha256:abc', resolutionHash: 'sha256:res', setCounts: { edge: 100 } },
     metrics: {
       'accuracy.overall': { value: 0.9, n: 100 },
       'accuracy.tag.typo': { value: 1, n: 10 },
@@ -90,7 +90,7 @@ describe('compareToBaseline', () => {
 
   it('separates a ground-truth change from a score change', () => {
     const after = baseline({
-      fixture: { caseCount: 100, expectationsHash: 'sha256:def', setCounts: { edge: 100 } },
+      fixture: { caseCount: 100, expectationsHash: 'sha256:def', resolutionHash: 'sha256:res', setCounts: { edge: 100 } },
     })
     const c = compareToBaseline(baseline(), after)
     expect(c.diffs.map((d) => d.kind)).toEqual(['fixture'])

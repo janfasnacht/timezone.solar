@@ -97793,6 +97793,9 @@ function resolveLocation(input) {
   if (offset2) return { primary: offset2, alternatives: [] };
   const normalized = trimmed.toLowerCase();
   const normalizedKey = normalize(trimmed);
+  if (!normalizedKey) {
+    return resolveLocationUncached(normalized, normalizedKey, trimmed);
+  }
   const cached = cacheGet(normalizedKey);
   if (cached !== void 0) return cached;
   const result = resolveLocationUncached(normalized, normalizedKey, trimmed);

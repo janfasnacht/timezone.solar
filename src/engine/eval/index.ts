@@ -1,5 +1,8 @@
 export type {
   TestCase,
+  CaseProvenance,
+  ResolveAssertionResult,
+  ResolutionMetrics,
   ParserResult,
   ParserAdapter,
   ParseAssertionResult,
@@ -7,7 +10,8 @@ export type {
   EvalScorecard,
 } from './types'
 
-export { loadFixture, filterBySet, filterBySplit, groupByTag } from './fixture'
+export { loadFixture, filterBySet, filterBySplit, groupByTag, SETS } from './fixture'
+export type { CaseSet } from './fixture'
 
 export {
   computeComposite,
@@ -19,6 +23,8 @@ export {
 
 export {
   assertParseResult,
+  assertParsed,
+  assertResolution,
   runEvaluation,
   printScorecard,
   printComparisonTable,

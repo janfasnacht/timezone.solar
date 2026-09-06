@@ -2,10 +2,13 @@ import type { TimeRef, DateModifier } from '../types'
 import type {
   TestCase,
   ParserAdapter,
+  ParserResult,
   ParseAssertionResult,
+  ResolveAssertionResult,
+  ResolutionMetrics,
   EvalScorecard,
 } from './types'
-import { groupByTag, filterBySet } from './fixture'
+import { groupByTag, SETS } from './fixture'
 import { computeComposite, calibrationCurve, complexityMetric, percentile } from './metrics'
 
 // --- Assertion logic ---
@@ -37,7 +40,11 @@ function dateModifierEqual(a: DateModifier, b: DateModifier): boolean {
 }
 
 export function assertParseResult(adapter: ParserAdapter, tc: TestCase): ParseAssertionResult {
-  const { parsed } = adapter.parse(tc.input)
+  return assertParsed(adapter.parse(tc.input), tc)
+}
+
+export function assertParsed(result: ParserResult, tc: TestCase): ParseAssertionResult {
+  const { parsed } = result
 
   if (tc.expectedTarget === null) {
     const parseReturned = parsed !== null
@@ -77,38 +84,79 @@ export function assertParseResult(adapter: ParserAdapter, tc: TestCase): ParseAs
   }
 }
 
+// --- Resolution assertion ---
+
+/** An unannotated case is kept out of every denominator, not counted as a pass. */
+export function assertResolution(result: ParserResult, tc: TestCase): ResolveAssertionResult {
+  const wantsSource = tc.expectedSourceIana !== undefined
+  const wantsTarget = tc.expectedTargetIana !== undefined
+  const wantsAmbiguity = tc.expectedAmbiguous !== undefined
+
+  if (!wantsSource && !wantsTarget && !wantsAmbiguity) {
+    return { annotated: false, passed: false, sourceMatch: false, targetMatch: false, ambiguityMatch: false }
+  }
+
+  const got = result.resolution ?? { sourceIana: null, targetIana: null, ambiguous: false }
+  const sourceMatch = !wantsSource || got.sourceIana === tc.expectedSourceIana
+  const targetMatch = !wantsTarget || got.targetIana === tc.expectedTargetIana
+  const ambiguityMatch = !wantsAmbiguity || got.ambiguous === tc.expectedAmbiguous
+
+  return {
+    annotated: true,
+    passed: sourceMatch && targetMatch && ambiguityMatch,
+    sourceMatch,
+    targetMatch,
+    ambiguityMatch,
+  }
+}
+
+/** Null for cases whose expected answer is "no answer". */
+function answered(result: ParserResult, tc: TestCase): boolean | null {
+  if (tc.expectedTarget === null) return null
+  const { parsed, resolution } = result
+  if (!parsed || !resolution) return false
+  if (resolution.targetIana === null) return false
+  if (parsed.sourceLocation !== null && resolution.sourceIana === null) return false
+  return true
+}
+
 // --- Main orchestrator ---
 
 const WARMUP_RUNS = 2
 const TIMED_RUNS = 10
 
 export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalScorecard {
-  // --- Per-case results + latency ---
-  const results: Array<{ tc: TestCase; assertion: ParseAssertionResult; medianMs: number }> = []
+  // One adapter call per case feeds every assertion below.
+  type CaseResult = {
+    tc: TestCase
+    result: ParserResult
+    assertion: ParseAssertionResult
+    resolution: ResolveAssertionResult
+    answered: boolean | null
+    medianMs: number
+  }
+  const results: CaseResult[] = []
 
   for (const tc of cases) {
-    // Warmup
     for (let i = 0; i < WARMUP_RUNS; i++) adapter.parse(tc.input)
 
-    // Timed runs
     const timings: number[] = []
-    let assertion!: ParseAssertionResult
+    let result!: ParserResult
     for (let i = 0; i < TIMED_RUNS; i++) {
       const start = performance.now()
-      const { parsed } = adapter.parse(tc.input)
-      const end = performance.now()
-      timings.push(end - start)
-      // Use last run for assertion (all should be identical)
-      if (i === TIMED_RUNS - 1) {
-        // Re-run through assertParseResult for consistent assertion logic
-        assertion = assertParseResult(adapter, tc)
-        // Suppress unused variable — parsed is consumed by timing
-        void parsed
-      }
+      result = adapter.parse(tc.input)
+      timings.push(performance.now() - start)
     }
     timings.sort((a, b) => a - b)
-    const medianMs = percentile(timings, 50)
-    results.push({ tc, assertion, medianMs })
+
+    results.push({
+      tc,
+      result,
+      assertion: assertParsed(result, tc),
+      resolution: assertResolution(result, tc),
+      answered: answered(result, tc),
+      medianMs: percentile(timings, 50),
+    })
   }
 
   // --- Accuracy ---
@@ -127,41 +175,77 @@ export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalSc
     if (r.dateModifierMatch) dateModPassed++
   }
 
+  const rate = (matching: number, of: number): number => (of > 0 ? matching / of : 0)
+  const groupRate = (
+    subset: CaseResult[],
+    passed: (r: CaseResult) => boolean
+  ): number => rate(subset.filter(passed).length, subset.length)
+
   // By set
   const bySet: Record<string, number> = {}
-  for (const set of ['realistic', 'edge', 'regression'] as const) {
-    const setCases = filterBySet(cases, set)
-    if (setCases.length === 0) continue
-    const setIds = new Set(setCases.map((tc) => tc.id))
-    const setResults = results.filter((r) => setIds.has(r.tc.id))
-    bySet[set] = setResults.filter((r) => r.assertion.passed).length / setCases.length
+  for (const set of SETS) {
+    const setResults = results.filter((r) => r.tc.set === set)
+    if (setResults.length === 0) continue
+    bySet[set] = groupRate(setResults, (r) => r.assertion.passed)
   }
 
-  // By tag
+  const byProvenance: Record<string, number> = {}
+  for (const p of new Set(cases.map((tc) => tc.provenance).filter(Boolean))) {
+    const group = results.filter((r) => r.tc.provenance === p)
+    byProvenance[p as string] = groupRate(group, (r) => r.assertion.passed)
+  }
+
+  // Across every set that carries tags, not just `edge`.
   const byTag: Record<string, number> = {}
-  const tagGroups = groupByTag(filterBySet(cases, 'edge'))
+  const tagGroups = groupByTag(cases)
   for (const [tag, tagCases] of tagGroups) {
     const tagIds = new Set(tagCases.map((tc) => tc.id))
-    const tagResults = results.filter((r) => tagIds.has(r.tc.id))
-    byTag[tag] = tagResults.filter((r) => r.assertion.passed).length / tagCases.length
+    byTag[tag] = groupRate(results.filter((r) => tagIds.has(r.tc.id)), (r) => r.assertion.passed)
   }
 
   // --- Tier safety (Tier 1 expected accuracy) ---
   const tier1Cases = results.filter((r) => r.tc.expectedTier === 1)
   const tierSafety = tier1Cases.length > 0
-    ? tier1Cases.filter((r) => r.assertion.passed).length / tier1Cases.length
+    ? groupRate(tier1Cases, (r) => r.assertion.passed)
     : 1.0
 
   // --- Tier accuracy (only when adapter produces tiers) ---
-  const adapterResults = cases.map((tc) => adapter.parse(tc.input))
-  const hasTiers = adapterResults.some((r) => r.tier !== undefined)
-  let tierAccuracy: number | null = null
-  if (hasTiers) {
-    let tierMatches = 0
-    for (let i = 0; i < cases.length; i++) {
-      if (adapterResults[i].tier === cases[i].expectedTier) tierMatches++
-    }
-    tierAccuracy = tierMatches / cases.length
+  const hasTiers = results.some((r) => r.result.tier !== undefined)
+  const tierAccuracy = hasTiers
+    ? groupRate(results, (r) => r.result.tier === r.tc.expectedTier)
+    : null
+
+  // --- Resolution ---
+  const annotated = results.filter((r) => r.resolution.annotated)
+  const answerable = results.filter((r) => r.answered !== null)
+  const confident = results.filter((r) => r.result.tier === 1 && r.answered !== null)
+  const confidentAnnotated = confident.filter((r) => r.resolution.annotated)
+  const ambiguous = results.filter((r) => r.tc.expectedAmbiguous === true)
+
+  const resolutionBySet: Record<string, number> = {}
+  for (const set of SETS) {
+    const group = annotated.filter((r) => r.tc.set === set)
+    if (group.length === 0) continue
+    resolutionBySet[set] = groupRate(group, (r) => r.resolution.passed)
+  }
+
+  const resolution: ResolutionMetrics = {
+    annotated: annotated.length,
+    accuracy: annotated.length > 0 ? groupRate(annotated, (r) => r.resolution.passed) : null,
+    byField: {
+      source: annotated.length > 0 ? groupRate(annotated, (r) => r.resolution.sourceMatch) : null,
+      target: annotated.length > 0 ? groupRate(annotated, (r) => r.resolution.targetMatch) : null,
+    },
+    bySet: resolutionBySet,
+    answerRate: groupRate(answerable, (r) => r.answered === true),
+    // Complements: see ResolutionMetrics.
+    confidentAnswerable: groupRate(confident, (r) => r.answered === true),
+    confidentCorrect: confidentAnnotated.length > 0
+      ? groupRate(confidentAnnotated, (r) => r.resolution.passed)
+      : null,
+    ambiguityRecall: ambiguous.length > 0
+      ? groupRate(ambiguous, (r) => r.resolution.ambiguityMatch)
+      : null,
   }
 
   // --- Latency ---
@@ -176,15 +260,13 @@ export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalSc
   const complexity = adapter.sourceFiles ? complexityMetric(adapter.sourceFiles) : null
 
   // --- Calibration ---
-  const hasConfidence = adapterResults.some((r) => r.confidence !== undefined)
-  let calibration = null
-  if (hasConfidence) {
-    const calData = results.map((r, i) => ({
-      confidence: adapterResults[i].confidence!,
-      correct: r.assertion.passed,
-    })).filter((d) => d.confidence !== undefined)
-    calibration = calibrationCurve(calData)
-  }
+  const hasConfidence = results.some((r) => r.result.confidence !== undefined)
+  const calibration = hasConfidence
+    ? calibrationCurve(results.map((r) => ({
+        confidence: r.result.confidence!,
+        correct: r.assertion.passed,
+      })))
+    : null
 
   // --- Assemble scorecard (without composite, then compute it) ---
   const partial = {
@@ -200,7 +282,13 @@ export function runEvaluation(adapter: ParserAdapter, cases: TestCase[]): EvalSc
         dateMod: dateModPassed / total,
       },
       byTag,
+      byProvenance,
     },
+    resolution,
+    setCounts: Object.fromEntries(SETS.map((set) => [set, results.filter((r) => r.tc.set === set).length]).filter(([, n]) => (n as number) > 0)),
+    provenanceCounts: Object.fromEntries(
+      Object.keys(byProvenance).map((p) => [p, results.filter((r) => r.tc.provenance === p).length])
+    ),
     tierSafety,
     tierAccuracy,
     latency,
@@ -222,13 +310,33 @@ function ms(n: number): string {
   return n.toFixed(2) + 'ms'
 }
 
+/** Flags a gated metric that has nothing left to measure. */
+function saturation(value: number, n: number): string {
+  return value === 1 && n > 50 ? '  (saturated — nothing left to measure)' : ''
+}
+
 export function printScorecard(sc: EvalScorecard): void {
+  const r = sc.resolution
   console.log(`\n=== Eval Scorecard: ${sc.adapterName} ===\n`)
   console.log(`Total cases: ${sc.totalCases}`)
-  console.log(`\nAccuracy (overall): ${pct(sc.accuracy.overall)}`)
+
+  console.log(`\nAnswer rate (parse and resolve): ${pct(r.answerRate)}`)
+  console.log(`  of results served at tier 1:   ${pct(r.confidentAnswerable)}`)
+
+  console.log(
+    `\nExtraction accuracy (overall): ${pct(sc.accuracy.overall)}` +
+    saturation(sc.accuracy.overall, sc.totalCases)
+  )
 
   for (const [set, acc] of Object.entries(sc.accuracy.bySet)) {
-    console.log(`  ${set}: ${pct(acc)}`)
+    console.log(`  ${set}: ${pct(acc)}${saturation(acc, sc.setCounts[set] ?? 0)}`)
+  }
+
+  if (Object.keys(sc.accuracy.byProvenance).length > 0) {
+    console.log(`\nBy provenance:`)
+    for (const [prov, acc] of Object.entries(sc.accuracy.byProvenance).sort()) {
+      console.log(`  ${prov}: ${pct(acc)}${saturation(acc, sc.provenanceCounts[prov] ?? 0)}`)
+    }
   }
 
   console.log(`\nPer-field accuracy:`)
@@ -238,11 +346,23 @@ export function printScorecard(sc: EvalScorecard): void {
   console.log(`  DateMod:  ${pct(sc.accuracy.byField.dateMod)}`)
 
   if (Object.keys(sc.accuracy.byTag).length > 0) {
-    console.log(`\nEdge case breakdown by tag:`)
+    console.log(`\nBreakdown by difficulty tag:`)
     for (const [tag, acc] of Object.entries(sc.accuracy.byTag).sort((a, b) => a[0].localeCompare(b[0]))) {
       console.log(`  ${tag}: ${pct(acc)}`)
     }
   }
+
+  console.log(`\nResolution:`)
+  console.log(`  Annotated cases: ${r.annotated}`)
+  if (r.accuracy !== null) {
+    console.log(`  Accuracy:        ${pct(r.accuracy)}`)
+    console.log(`    source: ${r.byField.source !== null ? pct(r.byField.source) : 'N/A'}`)
+    console.log(`    target: ${r.byField.target !== null ? pct(r.byField.target) : 'N/A'}`)
+  } else {
+    console.log(`  Accuracy:        N/A — no case says where a name should land yet`)
+  }
+  if (r.confidentCorrect !== null) console.log(`  Confident+correct: ${pct(r.confidentCorrect)}`)
+  if (r.ambiguityRecall !== null) console.log(`  Ambiguity recall:  ${pct(r.ambiguityRecall)}`)
 
   console.log(`\nTier safety (Tier 1): ${pct(sc.tierSafety)}`)
   console.log(`Tier accuracy:        ${sc.tierAccuracy !== null ? pct(sc.tierAccuracy) : 'N/A'}`)
